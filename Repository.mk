@@ -275,6 +275,10 @@ $(eval $(call gb_Helper_register_libraries_for_install,OOOLIBS,base, \
 	dbu \
 ))
 
+# 可圈office V2 W1: AI Provider runtime (Day-1 will register kqoffice_ai
+# library once UNO bootstrap is wired). Day-0 ships pure-logic test only.
+# Spec: docs/product/v2/w1-provider-runtime-spec.md
+
 $(eval $(call gb_Helper_register_libraries_for_install,OOOLIBS,calc, \
 	analysis \
 	$(call gb_Helper_optional,DBCONNECTIVITY,calc) \

@@ -1659,6 +1659,11 @@ $(eval $(call gb_UnoApi_add_idlfiles,offapi,com/sun/star/auth,\
 	XSSOManagerFactory \
 	XSSOPasswordCache \
 ))
+$(eval $(call gb_UnoApi_add_idlfiles,offapi,com/sun/star/ai,\
+	ProviderRequest \
+	ProviderResponse \
+	XProvider \
+))
 $(eval $(call gb_UnoApi_add_idlfiles,offapi,com/sun/star/awt,\
 	ActionEvent \
 	AdjustmentEvent \

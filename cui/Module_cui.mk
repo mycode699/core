@@ -15,6 +15,10 @@ $(eval $(call gb_Module_add_targets,cui,\
 	UIConfig_cui \
 ))
 
+$(eval $(call gb_Module_add_check_targets,cui,\
+    CppunitTest_cui_commandpalette_fuzzy \
+))
+
 $(eval $(call gb_Module_add_l10n_targets,cui,\
     AllLangMoTarget_cui \
 ))

@@ -1,0 +1,59 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/*
+ * This file is part of the 可圈office project (V2 W1: Provider Runtime).
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * V2 W1 Day-0 — Service mode gate.
+ * Spec: docs/product/v2/w1-provider-runtime-spec.md §"Service Mode Policy".
+ */
+
+#ifndef INCLUDED_KQOFFICE_SOURCE_AI_PROVIDER_SERVICEMODEPOLICY_HXX
+#define INCLUDED_KQOFFICE_SOURCE_AI_PROVIDER_SERVICEMODEPOLICY_HXX
+
+#include <rtl/ustring.hxx>
+
+namespace kqoffice::ai
+{
+/// Three-tier service mode contract:
+///   "offline" — default; localhost only; no data leaves the device
+///   "private" — admin-configured private endpoint
+///   "cloud"   — explicit user opt-in for public cloud providers
+///
+/// Day-0 implementation: only "offline" mode is wired; "private"/"cloud"
+/// are recognized as values but no allow-list is yet enforced.
+class ServiceModePolicy
+{
+public:
+    enum class Mode
+    {
+        Offline,
+        Private,
+        Cloud,
+    };
+
+    /// Default-constructs in Offline mode (Day-0 invariant).
+    ServiceModePolicy();
+
+    /// True iff the active mode permits the named capability.
+    /// Day-0 rule:
+    ///   - Offline mode allows: rewrite, summarize, format-fix, intent-to-uno
+    ///   - Other modes deny everything until Day-1 wiring.
+    bool allows(const OUString& capability) const;
+
+    /// Stringified mode for ProviderResponse / evidence.
+    OUString modeName() const;
+
+    Mode mode() const { return m_mode; }
+
+private:
+    Mode m_mode;
+};
+
+} // namespace kqoffice::ai
+
+#endif
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

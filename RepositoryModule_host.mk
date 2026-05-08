@@ -100,6 +100,7 @@ $(eval $(call gb_Module_add_moduledirs,libreoffice,\
 	jurt \
 	jvmaccess \
 	jvmfwk \
+	kqoffice \
 	$(call gb_Helper_optional,LIBRELOGO,librelogo) \
 	libreofficekit \
 	lingucomponent \
