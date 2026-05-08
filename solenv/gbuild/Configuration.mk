@@ -49,10 +49,15 @@ gb_Configuration_PRIMARY_REGISTRY_SCHEMA_ROOT = \
 gb_Configuration__stringparam_schemaRoot = --stringparam schemaRoot \
     $(if $(PRIMARY_REGISTRY), \
         $(gb_Configuration_PRIMARY_REGISTRY_SCHEMA_ROOT), \
-        $(call gb_XcsTarget_get_target,))
+        $(call gb_Configuration__xslt_path,$(call gb_XcsTarget_get_target,)))
 
 gb_Configuration_XSLTCOMMAND = $(call gb_ExternalExecutable_get_command,xsltproc)
 gb_Configuration_XSLTCOMMAND_DEPS = $(call gb_ExternalExecutable_get_dependencies,xsltproc)
+gb_Configuration_ASCII_WORKDIR := /Users/lu/kdoffice-build/workdir
+
+define gb_Configuration__xslt_path
+$(if $(filter $(WORKDIR)%,$(1)),$(patsubst $(WORKDIR)%,$(gb_Configuration_ASCII_WORKDIR)%,$(1)),$(1))
+endef
 
 # XcsTarget class
 
@@ -110,14 +115,14 @@ $(call gb_Helper_abbreviate_dirs,\
 	mkdir -p $(dir $(1)) && \
 	$(gb_Configuration_XSLTCOMMAND) --nonet \
 		--noout \
-		--stringparam xcs $(call gb_XcsTarget_for_XcuTarget,$(XCUFILE)) \
+		--stringparam xcs $(call gb_Configuration__xslt_path,$(call gb_XcsTarget_for_XcuTarget,$(XCUFILE))) \
 		$(gb_Configuration__stringparam_schemaRoot) \
 		--path $(SRCDIR)/officecfg/registry \
 		$(gb_XcuDataTarget_XSLT_DataVal) \
 		$(3) && \
 	$(gb_Configuration_XSLTCOMMAND) --nonet \
 		-o $(1) \
-		--stringparam xcs $(call gb_XcsTarget_for_XcuTarget,$(XCUFILE)) \
+		--stringparam xcs $(call gb_Configuration__xslt_path,$(call gb_XcsTarget_for_XcuTarget,$(XCUFILE))) \
 		$(gb_Configuration__stringparam_schemaRoot) \
 		--stringparam LIBO_SHARE_FOLDER $(LIBO_SHARE_FOLDER) \
 		--stringparam LIBO_SHARE_HELP_FOLDER $(LIBO_SHARE_HELP_FOLDER) \
@@ -155,7 +160,7 @@ $(call gb_Helper_abbreviate_dirs,\
 	mkdir -p $(dir $(1)) && \
 	$(gb_Configuration_XSLTCOMMAND) --nonet \
 		-o $(1) \
-		--stringparam xcs $(4) \
+		--stringparam xcs $(call gb_Configuration__xslt_path,$(4)) \
 		$(gb_Configuration__stringparam_schemaRoot) \
 		--stringparam module $(notdir $(subst -,/,$(basename $(notdir $(2))))) \
 		--stringparam LIBO_SHARE_FOLDER $(LIBO_SHARE_FOLDER) \
@@ -258,7 +263,7 @@ $(call gb_Helper_abbreviate_dirs,\
 	mkdir -p $(dir $(1)) && \
 	$(gb_Configuration_XSLTCOMMAND) --nonet \
 		-o $(1) \
-		--stringparam xcs $(call gb_XcsTarget_for_XcuTarget,$(XCUFILE)) \
+		--stringparam xcs $(call gb_Configuration__xslt_path,$(call gb_XcsTarget_for_XcuTarget,$(XCUFILE))) \
 		$(gb_Configuration__stringparam_schemaRoot) \
 		--stringparam locale $(word 2,$(subst /, ,$(2))) \
 		--stringparam LIBO_SHARE_FOLDER $(LIBO_SHARE_FOLDER) \

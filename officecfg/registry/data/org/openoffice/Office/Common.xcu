@@ -34,7 +34,13 @@
   <node oor:name="Help">
     <node oor:name="StartCenter">
       <prop oor:name="InfoURL" oor:type="xs:string">
-        <value>${STARTCENTER_INFO_URL}</value>
+        <value/>
+      </prop>
+      <prop oor:name="StartCenterThumbnailsBackgroundColor" oor:type="xs:int">
+        <value>1980975</value>
+      </prop>
+      <prop oor:name="StartCenterThumbnailsTextColor" oor:type="xs:int">
+        <value>15661041</value>
       </prop>
     </node>
     <prop oor:name="System">
@@ -103,6 +109,7 @@
         </prop>
         <prop oor:name="Title">
           <value xml:lang="en-US">~Text Document</value>
+          <value xml:lang="zh-CN">文档</value>
         </prop>
         <prop oor:name="TargetName" oor:type="xs:string">
           <value>_default</value>
@@ -114,6 +121,7 @@
         </prop>
         <prop oor:name="Title">
           <value xml:lang="en-US">~Spreadsheet</value>
+          <value xml:lang="zh-CN">表格</value>
         </prop>
         <prop oor:name="TargetName" oor:type="xs:string">
           <value>_default</value>
@@ -125,6 +133,7 @@
         </prop>
         <prop oor:name="Title">
           <value xml:lang="en-US">~Presentation</value>
+          <value xml:lang="zh-CN">PPT演示</value>
         </prop>
         <prop oor:name="TargetName" oor:type="xs:string">
           <value>_default</value>
@@ -136,6 +145,7 @@
         </prop>
         <prop oor:name="Title">
           <value xml:lang="en-US">~Drawing</value>
+          <value xml:lang="zh-CN">绘图</value>
         </prop>
         <prop oor:name="TargetName" oor:type="xs:string">
           <value>_default</value>
@@ -147,6 +157,7 @@
         </prop>
         <prop oor:name="Title">
           <value xml:lang="en-US">F~ormula</value>
+          <value xml:lang="zh-CN">公式</value>
         </prop>
         <prop oor:name="TargetName" oor:type="xs:string">
           <value>_default</value>
@@ -158,6 +169,7 @@
         </prop>
         <prop oor:name="Title">
           <value xml:lang="en-US">Database</value>
+          <value xml:lang="zh-CN">数据库</value>
         </prop>
         <prop oor:name="TargetName" oor:type="xs:string">
           <value>_default</value>
@@ -180,6 +192,7 @@
         </prop>
         <prop oor:name="Title">
           <value xml:lang="en-US">~HTML Document</value>
+          <value xml:lang="zh-CN">网页文档</value>
         </prop>
         <prop oor:name="TargetName" oor:type="xs:string">
           <value>_default</value>
@@ -191,6 +204,7 @@
         </prop>
         <prop oor:name="Title">
           <value xml:lang="en-US">~XML Form Document</value>
+          <value xml:lang="zh-CN">XML 表单文档</value>
         </prop>
         <prop oor:name="TargetName" oor:type="xs:string">
           <value>_default</value>
@@ -210,6 +224,7 @@
         </prop>
         <prop oor:name="Title">
           <value xml:lang="en-US">~Labels</value>
+          <value xml:lang="zh-CN">标签</value>
         </prop>
         <prop oor:name="TargetName" oor:type="xs:string">
           <value>_default</value>
@@ -224,6 +239,7 @@
         </prop>
         <prop oor:name="Title">
           <value xml:lang="en-US">B~usiness Cards</value>
+          <value xml:lang="zh-CN">名片</value>
         </prop>
         <prop oor:name="TargetName" oor:type="xs:string">
           <value>_default</value>
@@ -246,6 +262,7 @@
         </prop>
         <prop oor:name="Title">
           <value xml:lang="en-US">M~aster Document</value>
+          <value xml:lang="zh-CN">主控文档</value>
         </prop>
         <prop oor:name="TargetName" oor:type="xs:string">
           <value>_default</value>
@@ -257,6 +274,7 @@
         </prop>
         <prop oor:name="Title">
           <value xml:lang="en-US">Templates...</value>
+          <value xml:lang="zh-CN">模板...</value>
         </prop>
         <prop oor:name="TargetName" oor:type="xs:string">
           <value>_self</value>
@@ -270,6 +288,7 @@
         </prop>
         <prop oor:name="Title">
           <value xml:lang="en-US">~Letter...</value>
+          <value xml:lang="zh-CN">信函...</value>
         </prop>
         <prop oor:name="TargetName" oor:type="xs:string">
           <value>_self</value>
@@ -281,6 +300,7 @@
         </prop>
         <prop oor:name="Title">
           <value xml:lang="en-US">~Fax...</value>
+          <value xml:lang="zh-CN">传真...</value>
         </prop>
         <prop oor:name="TargetName" oor:type="xs:string">
           <value>_self</value>
@@ -292,6 +312,7 @@
         </prop>
         <prop oor:name="Title">
           <value xml:lang="en-US">~Agenda...</value>
+          <value xml:lang="zh-CN">议程...</value>
         </prop>
         <prop oor:name="TargetName" oor:type="xs:string">
           <value>_self</value>
@@ -311,6 +332,7 @@
         </prop>
         <prop oor:name="Title">
           <value xml:lang="en-US">Document ~Converter...</value>
+          <value xml:lang="zh-CN">文档转换器...</value>
         </prop>
         <prop oor:name="TargetName" oor:type="xs:string">
           <value>_self</value>
@@ -330,6 +352,7 @@
         </prop>
         <prop oor:name="Title">
           <value xml:lang="en-US">Address Data Source...</value>
+          <value xml:lang="zh-CN">地址数据源...</value>
         </prop>
         <prop oor:name="TargetName" oor:type="xs:string">
           <value>_self</value>
@@ -337,40 +360,40 @@
       </node>
     </node>
     <prop oor:name="SendFeedbackURL" oor:type="xs:string">
-      <value>https://hub.libreoffice.org/send-feedback/</value>
+      <value/>
     </prop>
     <prop oor:name="QA_URL" oor:type="xs:string">
-      <value>https://hub.libreoffice.org/forum/</value>
+      <value/>
     </prop>
     <prop oor:name="DocumentationURL" oor:type="xs:string">
-      <value>https://hub.libreoffice.org/documentation/</value>
+      <value/>
     </prop>
     <prop oor:name="GetInvolvedURL" oor:type="xs:string">
-      <value>https://hub.libreoffice.org/joinus/</value>
+      <value/>
     </prop>
     <prop oor:name="DonationURL" oor:type="xs:string">
-      <value>https://hub.libreoffice.org/donation/</value>
+      <value/>
     </prop>
     <prop oor:name="ReleaseNotesURL" oor:type="xs:string">
-      <value>https://hub.libreoffice.org/ReleaseNotes/</value>
+      <value/>
     </prop>
     <prop oor:name="CreditsURL" oor:type="xs:string">
-      <value>https://hub.libreoffice.org/credits/</value>
+      <value/>
     </prop>
     <prop oor:name="HyphenationMissingURL" oor:type="xs:string">
-      <value>https://hub.libreoffice.org/HyphenationMissing/</value>
+      <value/>
     </prop>
     <prop oor:name="InstallJavaURL" oor:type="xs:string">
-      <value>https://hub.libreoffice.org/InstallJava/</value>
+      <value/>
     </prop>
     <prop oor:name="VolunteerURL" oor:type="xs:string">
-      <value>https://hub.libreoffice.org/volunteersupport/</value>
+      <value/>
     </prop>
     <prop oor:name="PrivacyPolicyURL" oor:type="xs:string">
       <value>${PRIVACY_POLICY_URL}</value>
     </prop>
     <prop oor:name="ExtensionsURL" oor:type="xs:string">
-      <value>https://hub.libreoffice.org/extensions/</value>
+      <value/>
     </prop>
   </node>
   <node oor:name="Forms">
@@ -402,6 +425,18 @@
     </node>
   </node>
   <node oor:name="Misc">
+    <prop oor:name="SymbolStyle" oor:type="xs:string">
+      <value>colibre_svg</value>
+    </prop>
+    <prop oor:name="SidebarIconSize" oor:type="xs:short">
+      <value>1</value>
+    </prop>
+    <prop oor:name="NotebookbarIconSize" oor:type="xs:short">
+      <value>1</value>
+    </prop>
+    <prop oor:name="UseVerticalNotebookbar" oor:type="xs:boolean">
+      <value>false</value>
+    </prop>
     <prop oor:name="UseSystemColorDialog">
     </prop>
     <prop oor:name="UseSystemFileDialog">
@@ -463,7 +498,7 @@
       <value install:module="wnt">true</value>
     </prop>
     <prop oor:name="ShowDonation">
-     <value install:module="macosxsandbox">false</value>
+     <value>false</value>
     </prop>
   </node>
   <node oor:name="Save">

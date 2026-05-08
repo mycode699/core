@@ -23,7 +23,7 @@
 
       <node oor:name="PropertyDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Properties</value>
+          <value xml:lang="en-US">属性</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>PropertyDeck</value>
@@ -46,7 +46,7 @@
 
       <node oor:name="InspectorDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Style Inspector</value>
+          <value xml:lang="en-US">样式检查器</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>InspectorDeck</value>
@@ -60,7 +60,7 @@
           </value>
         </prop>
         <prop oor:name="OrderIndex" oor:type="xs:int">
-          <value>600</value>
+          <value>950</value>
         </prop>
         <prop oor:name="HiddenInViewer" oor:type="xs:boolean">
           <value>true</value>
@@ -69,7 +69,7 @@
 
       <node oor:name="WriterPageDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Page</value>
+          <value xml:lang="en-US">页面</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>WriterPageDeck</value>
@@ -83,7 +83,7 @@
           </value>
         </prop>
         <prop oor:name="OrderIndex" oor:type="xs:int">
-          <value>500</value>
+          <value>300</value>
         </prop>
         <prop oor:name="HiddenInViewer" oor:type="xs:boolean">
           <value>true</value>
@@ -92,7 +92,7 @@
 
       <node oor:name="CommentsDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Comments</value>
+          <value xml:lang="en-US">批注</value>
         </prop>
         <prop oor:name="IsExperimental" oor:type="xs:boolean">
           <value>true</value>
@@ -109,13 +109,13 @@
           </value>
         </prop>
         <prop oor:name="OrderIndex" oor:type="xs:int">
-          <value>900</value>
+          <value>600</value>
         </prop>
       </node>
 
       <node oor:name="A11yCheckDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Accessibility Check</value>
+          <value xml:lang="en-US">辅助功能检查</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>A11yCheckDeck</value>
@@ -129,7 +129,7 @@
           </value>
         </prop>
         <prop oor:name="OrderIndex" oor:type="xs:int">
-          <value>900</value>
+          <value>1000</value>
         </prop>
         <prop oor:name="HiddenInViewer" oor:type="xs:boolean">
           <value>true</value>
@@ -138,7 +138,7 @@
 
       <node oor:name="ShapesDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Shapes</value>
+          <value xml:lang="en-US">形状</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>ShapesDeck</value>
@@ -152,7 +152,7 @@
           </value>
         </prop>
         <prop oor:name="OrderIndex" oor:type="xs:int">
-          <value>500</value>
+          <value>850</value>
         </prop>
         <prop oor:name="HiddenInViewer" oor:type="xs:boolean">
           <value>true</value>
@@ -162,7 +162,7 @@
 
       <node oor:name="GalleryDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Gallery</value>
+          <value xml:lang="en-US">图库</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>GalleryDeck</value>
@@ -178,7 +178,7 @@
           </value>
         </prop>
         <prop oor:name="OrderIndex" oor:type="xs:int">
-          <value>300</value>
+          <value>800</value>
         </prop>
         <prop oor:name="HiddenInViewer" oor:type="xs:boolean">
           <value>true</value>
@@ -187,7 +187,7 @@
 
       <node oor:name="SdMasterPagesDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Master Slides</value>
+          <value xml:lang="en-US">母版幻灯片</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>SdMasterPagesDeck</value>
@@ -201,7 +201,7 @@
           </value>
         </prop>
         <prop oor:name="OrderIndex" oor:type="xs:int">
-          <value>700</value>
+          <value>120</value>
         </prop>
         <prop oor:name="HiddenInViewer" oor:type="xs:boolean">
           <value>true</value>
@@ -210,7 +210,7 @@
 
       <node oor:name="SdCustomAnimationDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Animation</value>
+          <value xml:lang="en-US">动画</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>SdCustomAnimationDeck</value>
@@ -224,7 +224,7 @@
           </value>
         </prop>
         <prop oor:name="OrderIndex" oor:type="xs:int">
-          <value>600</value>
+          <value>140</value>
         </prop>
         <prop oor:name="HiddenInViewer" oor:type="xs:boolean">
           <value>true</value>
@@ -233,7 +233,7 @@
 
       <node oor:name="SdSlideTransitionDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Slide Transition</value>
+          <value xml:lang="en-US">幻灯片切换</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>SdSlideTransitionDeck</value>
@@ -247,7 +247,7 @@
           </value>
         </prop>
         <prop oor:name="OrderIndex" oor:type="xs:int">
-          <value>500</value>
+          <value>160</value>
         </prop>
         <prop oor:name="HiddenInViewer" oor:type="xs:boolean">
           <value>true</value>
@@ -256,7 +256,7 @@
 
       <node oor:name="NavigatorDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Navigator</value>
+          <value xml:lang="en-US">导航</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>NavigatorDeck</value>
@@ -278,7 +278,7 @@
 
       <node oor:name="StyleListDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Styles</value>
+          <value xml:lang="en-US">样式</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>StyleListDeck</value>
@@ -303,7 +303,7 @@
 
       <node oor:name="ScFunctionsDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Functions</value>
+          <value xml:lang="en-US">函数</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>ScFunctionsDeck</value>
@@ -317,7 +317,7 @@
           </value>
         </prop>
         <prop oor:name="OrderIndex" oor:type="xs:int">
-          <value>500</value>
+          <value>300</value>
         </prop>
         <prop oor:name="HiddenInViewer" oor:type="xs:boolean">
           <value>true</value>
@@ -326,7 +326,7 @@
 
       <node oor:name="SwManageChangesDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Manage Changes</value>
+          <value xml:lang="en-US">管理修订</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>SwManageChangesDeck</value>
@@ -344,7 +344,7 @@
           </value>
         </prop>
         <prop oor:name="OrderIndex" oor:type="xs:int">
-          <value>600</value>
+          <value>500</value>
         </prop>
         <prop oor:name="HiddenInViewer" oor:type="xs:boolean">
           <value>true</value>
@@ -353,7 +353,7 @@
 
       <node oor:name="SwDesignDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Design</value>
+          <value xml:lang="en-US">设计</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>SwDesignDeck</value>
@@ -367,7 +367,7 @@
           </value>
         </prop>
         <prop oor:name="OrderIndex" oor:type="xs:int">
-          <value>600</value>
+          <value>900</value>
         </prop>
         <prop oor:name="IsExperimental" oor:type="xs:boolean">
           <value>true</value>
@@ -379,7 +379,7 @@
 
       <node oor:name="ElementsDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Elements</value>
+          <value xml:lang="en-US">元素</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>ElementsDeck</value>
@@ -393,7 +393,7 @@
           </value>
         </prop>
         <prop oor:name="OrderIndex" oor:type="xs:int">
-          <value>300</value>
+          <value>900</value>
         </prop>
         <prop oor:name="HiddenInViewer" oor:type="xs:boolean">
           <value>true</value>
@@ -402,7 +402,7 @@
 
       <node oor:name="FindDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Find</value>
+          <value xml:lang="en-US">查找</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>FindDeck</value>
@@ -416,7 +416,7 @@
           </value>
         </prop>
         <prop oor:name="OrderIndex" oor:type="xs:int">
-          <value>1000</value>
+          <value>700</value>
         </prop>
       </node>
 
@@ -426,7 +426,7 @@
 
       <node oor:name="StylesPropertyPanel" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Style</value>
+          <value xml:lang="en-US">样式</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>StylesPropertyPanel</value>
@@ -516,7 +516,7 @@
 
       <node oor:name="InspectorTextPanel" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Style Inspector</value>
+          <value xml:lang="en-US">样式检查器</value>
         </prop>
         <prop oor:name="TitleBarIsOptional" oor:type="xs:boolean">
           <value>true</value>
@@ -571,7 +571,7 @@
 
       <node oor:name="PageStylesPanel" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Styles</value>
+          <value xml:lang="en-US">样式</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>PageStylesPanel</value>
@@ -687,7 +687,7 @@
 
       <node oor:name="CommentsPanel" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Comments</value>
+          <value xml:lang="en-US">批注</value>
         </prop>
         <prop oor:name="IsExperimental" oor:type="xs:boolean">
           <value>true</value>
@@ -938,7 +938,7 @@
 
       <node oor:name="GalleryPanel" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Gallery</value>
+          <value xml:lang="en-US">图库</value>
         </prop>
         <prop oor:name="TitleBarIsOptional" oor:type="xs:boolean">
           <value>true</value>
@@ -967,7 +967,7 @@
 
       <node oor:name="MathPropertiesPanel" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Properties</value>
+          <value xml:lang="en-US">属性</value>
         </prop>
         <prop oor:name="TitleBarIsOptional" oor:type="xs:boolean">
           <value>true</value>
@@ -996,7 +996,7 @@
 
       <node oor:name="MathElementsPanel" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Elements</value>
+          <value xml:lang="en-US">元素</value>
         </prop>
         <prop oor:name="TitleBarIsOptional" oor:type="xs:boolean">
           <value>true</value>
@@ -1194,7 +1194,7 @@
 
       <node oor:name="DrawPageDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Page</value>
+          <value xml:lang="en-US">页面</value>
         </prop>
         <prop oor:name="TitleBarIsOptional" oor:type="xs:boolean">
           <value>false</value>
@@ -1343,7 +1343,7 @@
 
       <node oor:name="SdCustomAnimationPanel" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Animation</value>
+          <value xml:lang="en-US">动画</value>
         </prop>
         <prop oor:name="TitleBarIsOptional" oor:type="xs:boolean">
           <value>true</value>
@@ -1372,7 +1372,7 @@
 
       <node oor:name="SdSlideTransitionPanel" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Slide Transition</value>
+          <value xml:lang="en-US">幻灯片切换</value>
         </prop>
         <prop oor:name="TitleBarIsOptional" oor:type="xs:boolean">
           <value>true</value>
@@ -1698,7 +1698,7 @@
 
       <node oor:name="SwNavigatorPanel" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Navigator</value>
+          <value xml:lang="en-US">导航</value>
         </prop>
         <prop oor:name="TitleBarIsOptional" oor:type="xs:boolean">
           <value>true</value>
@@ -1730,7 +1730,7 @@
 
       <node oor:name="ScNavigatorPanel" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Navigator</value>
+          <value xml:lang="en-US">导航</value>
         </prop>
         <prop oor:name="TitleBarIsOptional" oor:type="xs:boolean">
           <value>true</value>
@@ -1762,7 +1762,7 @@
 
       <node oor:name="SdNavigatorPanel" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Navigator</value>
+          <value xml:lang="en-US">导航</value>
         </prop>
         <prop oor:name="TitleBarIsOptional" oor:type="xs:boolean">
           <value>true</value>
@@ -1794,7 +1794,7 @@
 
       <node oor:name="SwManageChangesPanel" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Manage Changes</value>
+          <value xml:lang="en-US">管理修订</value>
         </prop>
         <prop oor:name="TitleBarIsOptional" oor:type="xs:boolean">
           <value>true</value>
@@ -1826,7 +1826,7 @@
 
       <node oor:name="StyleListPanel" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Styles</value>
+          <value xml:lang="en-US">样式</value>
         </prop>
         <prop oor:name="TitleBarIsOptional" oor:type="xs:boolean">
           <value>true</value>
@@ -1855,7 +1855,7 @@
 
       <node oor:name="ScFunctionsPanel" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Functions</value>
+          <value xml:lang="en-US">函数</value>
         </prop>
         <prop oor:name="TitleBarIsOptional" oor:type="xs:boolean">
           <value>true</value>
@@ -1884,7 +1884,7 @@
 
       <node oor:name="SwStylePresetsPanel" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Style Presets</value>
+          <value xml:lang="en-US">样式预设</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>SwStylePresetsPanel</value>
@@ -1913,7 +1913,7 @@
 
       <node oor:name="SwThemePanel" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Themes</value>
+          <value xml:lang="en-US">主题</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>SwThemePanel</value>
@@ -1942,7 +1942,7 @@
 
       <node oor:name="ChartElementsPanel" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Elements</value>
+          <value xml:lang="en-US">元素</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>ChartElementsPanel</value>

@@ -18,6 +18,12 @@ postprocess_XCU := $(call gb_XcuDataTarget_get_target,officecfg/registry/data/or
 postprocess_MOD := $(call gb_XcuModuleTarget_get_target,officecfg/registry/data)
 postprocess_DRIVERS :=
 
+postprocess_ASCII_WORKDIR := /Users/lu/kdoffice-build/workdir
+
+define postprocess__ascii_path
+$(if $(filter $(WORKDIR)%,$(1)),$(patsubst $(WORKDIR)%,$(postprocess_ASCII_WORKDIR)%,$(1)),$(1))
+endef
+
 postprocess_XCDS := \
 	base.xcd \
 	calc.xcd \
@@ -580,7 +586,7 @@ postprocess_main_SED := \
 	-e 's,$${PRODUCTNAME},$(PRODUCTNAME),g' \
 	-e 's,$${PRODUCTVERSION},$(PRODUCTVERSION),g' \
 	-e 's,$${PRODUCTEXTENSION},.$(LIBO_VERSION_MICRO).$(LIBO_VERSION_PATCH)$(LIBO_VERSION_SUFFIX),g' \
-	-e 's,$${STARTCENTER_INFO_URL},https://www.libreoffice.org/,g' \
+	-e 's,$${STARTCENTER_INFO_URL},,g' \
 	-e 's,$${SYSTEM_LIBEXTTEXTCAT_DATA},$(SYSTEM_LIBEXTTEXTCAT_DATA),g' \
 	-e 's,$${SYSTEM_LIBNUMBERTEXT_DATA},$(SYSTEM_LIBNUMBERTEXT_DATA),g' \
 	-e 's,$${PRIVACY_POLICY_URL},$(PRIVACY_POLICY_URL),g' \
@@ -628,7 +634,7 @@ $(call gb_XcdTarget_get_target,%.xcd) : \
 $(gb_CustomTarget_workdir)/postprocess/registry/Langpack-%.list :
 	$(call gb_Output_announce,$(subst $(WORKDIR)/,,$@),$(true),ECH,2)
 	$(call gb_Trace_StartRange,$(subst $(WORKDIR)/,,$@),ECH)
-	echo '<list><dependency file="main"/><filename>$(call gb_XcuLangpackTarget_get_target,Langpack-$*.xcu)</filename></list>' > $@
+	echo '<list><dependency file="main"/><filename>$(call postprocess__ascii_path,$(call gb_XcuLangpackTarget_get_target,Langpack-$*.xcu))</filename></list>' > $@
 	$(call gb_Trace_EndRange,$(subst $(WORKDIR)/,,$@),ECH)
 
 # It can happen that localized fcfg_langpack_*.zip contains
@@ -638,7 +644,7 @@ $(gb_CustomTarget_workdir)/postprocess/registry/fcfg_langpack_%.list :
 	$(call gb_Output_announce,$(subst $(WORKDIR)/,,$@),$(true),AWK,2)
 	$(call gb_Trace_StartRange,$(subst $(WORKDIR)/,,$@),AWK)
 	$(call gb_Helper_abbreviate_dirs,\
-	    $(FIND) $(call gb_XcuResTarget_get_target,fcfg_langpack/$*/) \
+	    $(FIND) $(call postprocess__ascii_path,$(call gb_XcuResTarget_get_target,fcfg_langpack/$*/)) \
 	         -name "*.xcu" -size +0c \
 		| LC_ALL=C $(SORT) \
 	        | $(gb_AWK) 'BEGIN{print "<list>"} \
@@ -651,12 +657,12 @@ $(gb_CustomTarget_workdir)/postprocess/registry/registry_%.list :
 	$(call gb_Output_announce,$(subst $(WORKDIR)/,,$@),$(true),AWK,2)
 	$(call gb_Trace_StartRange,$(subst $(WORKDIR)/,,$@),AWK)
 	$(call gb_Helper_abbreviate_dirs,\
-	    $(FIND) $(call gb_XcuResTarget_get_target,registry/$*/) \
+	    $(FIND) $(call postprocess__ascii_path,$(call gb_XcuResTarget_get_target,registry/$*/)) \
 	         $(if $(filter DBCONNECTIVITY,$(BUILD_TYPE)),\
 	             $(foreach driver,$(postprocess_DRIVERS),\
-	                 $(call gb_XcuResTarget_get_target,$(driver)/$*/)))\
+	                 $(call postprocess__ascii_path,$(call gb_XcuResTarget_get_target,$(driver)/$*/))))\
 	         $(if $(filter TRUE,$(ENABLE_ONLINE_UPDATE)),\
-	             $(call gb_XcuResTarget_get_target,updchk/$*/))\
+	             $(call postprocess__ascii_path,$(call gb_XcuResTarget_get_target,updchk/$*/)))\
 	         -name "*.xcu" \
 		| LC_ALL=C $(SORT) \
 	        | $(gb_AWK) 'BEGIN{print "<list>"} \
@@ -670,7 +676,7 @@ $(gb_CustomTarget_workdir)/postprocess/registry/%.list :
 	$(call gb_Trace_StartRange,$(subst $(WORKDIR)/,,$@),ECH)
 	$(file >$@,<list> $(foreach i,$(postprocess_DEPS_$*), <dependency file='$i'/>) \
 		   $(foreach i,$(postprocess_OPTDEPS_$*), <dependency file='$i' optional='true'/>) \
-		   $(foreach i,$(postprocess_FILES_$*), <filename>$(i)</filename>) </list>)
+		   $(foreach i,$(postprocess_FILES_$*), <filename>$(call postprocess__ascii_path,$(i))</filename>) </list>)
 	$(call gb_Trace_EndRange,$(subst $(WORKDIR)/,,$@),ECH)
 
 # vim: set noet sw=4 ts=4:
