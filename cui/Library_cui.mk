@@ -91,12 +91,6 @@ $(eval $(call gb_Library_add_exception_objects,cui,\
 ))
 endif
 
-ifneq ($(ENABLE_WASM_STRIP_PINGUSER),TRUE)
-$(eval $(call gb_Library_add_exception_objects,cui,\
-    cui/source/dialogs/tipofthedaydlg \
-))
-endif
-
 ifneq ($(ENABLE_WASM_STRIP_HUNSPELL),TRUE)
 $(eval $(call gb_Library_add_exception_objects,cui,\
     cui/source/dialogs/hyphen \
@@ -159,7 +153,6 @@ $(eval $(call gb_Library_add_exception_objects,cui,\
     cui/source/dialogs/srchxtra \
     cui/source/dialogs/thesdlg \
     cui/source/dialogs/uipickerdlg \
-    cui/source/dialogs/whatsnewtabpage \
     cui/source/dialogs/uitabpage \
     cui/source/dialogs/toolbartabpage \
     cui/source/dialogs/welcomedlg \

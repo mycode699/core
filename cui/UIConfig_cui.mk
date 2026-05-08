@@ -15,12 +15,6 @@ $(eval $(call gb_UIConfig_add_uifiles,cui,\
 ))
 endif
 
-ifneq ($(ENABLE_WASM_STRIP_PINGUSER),TRUE)
-$(eval $(call gb_UIConfig_add_uifiles,cui,\
-	cui/uiconfig/ui/tipofthedaydialog \
-))
-endif
-
 $(eval $(call gb_UIConfig_add_uifiles,cui,\
 	cui/uiconfig/ui/aboutdialog \
 	cui/uiconfig/ui/aboutconfigdialog\
@@ -230,7 +224,6 @@ $(eval $(call gb_UIConfig_add_uifiles,cui,\
 	cui/uiconfig/ui/zoomdialog \
 	cui/uiconfig/ui/widgettestdialog \
 	cui/uiconfig/ui/welcomedialog \
-	cui/uiconfig/ui/whatsnewtabpage \
 ))
 
 # vim: set noet sw=4 ts=4:
