@@ -24,7 +24,7 @@ Name: %pkgprefix-freedesktop-menus
 #BuildRequires: perl
 Group: Office
 License: LGPLv3 with MPLv2, ALv2 and others
-Provides: libreoffice-desktop-integration
+Provides: %pkgprefix-desktop-integration
 Conflicts: %pkgprefix-suse-menus
 Conflicts: %pkgprefix-debian-menus
 Conflicts: %pkgprefix-redhat-menus

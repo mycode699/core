@@ -39,14 +39,7 @@ office_root=${office_prefix}/${PREFIX}
 #this symlink is needed to have the API bootstrap functions running right
 ln -sf "${office_root}/program/soffice" "${DESTDIR}/${BINDIR}/${PREFIX}"
 
-if test "${PREFIX}" != libreoffice${PRODUCTVERSION} -a "${PREFIX}" != libreofficedev${PRODUCTVERSION}  ; then
-    # compat symlinks
-    mkdir -p "${DESTDIR}${office_prefix}"
-    ln -sf libreoffice${PRODUCTVERSION} "${DESTDIR}${office_root}"
-    ln -sf /${BINDIR}/${PREFIX} "${DESTDIR}/${BINDIR}/libreoffice${PRODUCTVERSION}"
-fi
-
-test "${PREFIX}" = libreofficedev${PRODUCTVERSION} && mime_def_file="libreofficedev${PRODUCTVERSION}.xml" || mime_def_file="libreoffice${PRODUCTVERSION}.xml"
+mime_def_file="${PREFIX}.xml"
 mkdir -p "${DESTDIR}/${PREFIXDIR}/share/mime/packages"
 cp openoffice.org.xml "${DESTDIR}/${PREFIXDIR}/share/mime/packages/$mime_def_file"
 chmod 0644 "${DESTDIR}/${PREFIXDIR}/share/mime/packages/$mime_def_file"
@@ -58,7 +51,10 @@ done
 
 mkdir -p "${DESTDIR}/${PREFIXDIR}/share/metainfo"
 for i in base calc draw impress writer; do
-    cp "${APPDATA_SOURCE_DIR}/libreoffice-${i}.appdata.xml" "${DESTDIR}/${PREFIXDIR}/share/metainfo/${PREFIX}-${i}.appdata.xml"
+    sed -e "s/%PREFIX/${PREFIX}/g" "${APPDATA_SOURCE_DIR}/libreoffice-${i}.appdata.xml" \
+        > "${DESTDIR}/${PREFIXDIR}/share/metainfo/${PREFIX}-${i}.appdata.xml"
+    chmod 0644 "${DESTDIR}/${PREFIXDIR}/share/metainfo/${PREFIX}-${i}.appdata.xml"
 done
-cp "${APPDATA_SOURCE_DIR}/org.libreoffice.kde.metainfo.xml" "${DESTDIR}/${PREFIXDIR}/share/metainfo/org.${PREFIX}.kde.metainfo.xml"
-
+sed -e "s/%PREFIX/${PREFIX}/g" "${APPDATA_SOURCE_DIR}/org.libreoffice.kde.metainfo.xml" \
+    > "${DESTDIR}/${PREFIXDIR}/share/metainfo/org.${PREFIX}.kde.metainfo.xml"
+chmod 0644 "${DESTDIR}/${PREFIXDIR}/share/metainfo/org.${PREFIX}.kde.metainfo.xml"

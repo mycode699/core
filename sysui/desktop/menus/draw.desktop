@@ -18,23 +18,29 @@
 [Desktop Entry]
 Version=1.0
 Terminal=false
+NoDisplay=true
 Icon=draw
 Type=Application
 Categories=Office;FlowChart;Graphics;2DGraphics;VectorGraphics;X-Red-Hat-Base;
 Exec=${UNIXBASISROOTNAME} --draw %%FILE%%
 MimeType=application/clarisworks;application/pdf;application/vnd.corel-draw;application/vnd.ms-publisher;application/vnd.oasis.opendocument.graphics;application/vnd.oasis.opendocument.graphics-flat-xml;application/vnd.oasis.opendocument.graphics-template;application/vnd.quark.quarkxpress;application/vnd.stardivision.draw;application/vnd.sun.xml.draw;application/vnd.sun.xml.draw.template;application/vnd.visio;application/x-pagemaker;application/x-stardraw;application/x-wpg;image/x-emf;image/x-freehand;image/x-wmf;
-Name=%PRODUCTNAME Draw
-GenericName=Drawing Program
-Comment=Create and edit drawings, flow charts and logos.
+Name=%PRODUCTNAME Diagrams
+Name[zh_CN]=可圈office 绘图
+GenericName=Diagram and Drawing Editor
+GenericName[zh_CN]=绘图程序
+Comment=Create diagrams, flowcharts, layouts, and vector graphics.
+Comment[zh_CN]=创建流程图、结构图、页面版式和矢量图形。
 StartupNotify=true
 X-GIO-NoFuse=true
-Keywords=Vector;Schema;Diagram;Layout;OpenDocument Graphics;Microsoft Publisher;Microsoft Visio;Corel Draw;cdr;odg;svg;pdf;vsd;
+Keywords=Diagram;Flowchart;Drawing;Layout;Vector;Graphics;odg;svg;pdf;vsd;
+Keywords[zh_CN]=绘图;流程图;图示;版式;矢量;图形;odg;svg;pdf;vsd;
 InitialPreference=5
-StartupWMClass=libreoffice-draw
+StartupWMClass=%PREFIX-draw
 X-KDE-Protocols=file,http,webdav,webdavs
 
 Actions=NewDocument;
 [Desktop Action NewDocument]
 UnityQuickList=New Drawing
+UnityQuickList[zh_CN]=新建绘图
 Icon=document-new
 Exec=${UNIXBASISROOTNAME} --draw

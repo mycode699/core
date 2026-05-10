@@ -1,6 +1,6 @@
-.TH unopkg "1" "2008-03-18" "LibreOffice Extension Manager" "User Command"
+.TH unopkg "1" "2026-04-09" "可圈office Extension Manager" "User Command"
 .SH "Name"
-unopkg \- LibreOffice Extension Manager
+unopkg \- 可圈office extension manager
 .SH SYNOPSIS
 .B unopkg
 [\fBadd\fR] <\fIoptions\fR> \fIextension-path...\fR
@@ -21,13 +21,11 @@ unopkg \- LibreOffice Extension Manager
 [\fB--help\fR|\fB-h\fR]
 
 .SH DESCRIPTION
-LibreOffice is a fully featured office suite for the daily use with all
-features you would normally expect in an office suite.
+可圈office supports deployable extensions for document workflows, templates,
+language tools, import/export filters, and integration components.
 
-There exists many LibreOffice extensions all over the world. For example, see
-\fBhttps://extensions.libreoffice.org/\fR
-
-This tool allows managing the extensions from the command line.
+This tool manages extensions from the command line for the current user or for
+the shared installation.
 
 .SH SUB\-COMMANDS
 .TP
@@ -72,9 +70,9 @@ operate on explicit deployment context (only for experts)
 
 
 .SH TROUBLESHOOTING PROBLEMS
-See \fBhttp://wiki.documentfoundation.org/BugReport\fR for more details about how to report
-bugs in LibreOffice.
+If an extension cannot be added or removed, make sure no other Office process
+is running and verify that the target deployment context is writable.
 .SH SEE ALSO
-.BR http://www.documentfoundation.org/
+.BR libreoffice (1)
 .SH AUTHOR
 This manual page was created by Petr Mladek <pmladek@suse.cz>.

@@ -18,24 +18,29 @@
 [Desktop Entry]
 Version=1.0
 Terminal=false
-NoDisplay=false
+NoDisplay=true
 Icon=math
 Type=Application
 Categories=Office;Education;Science;Math;X-Red-Hat-Base;
 Exec=${UNIXBASISROOTNAME} --math %%FILE%%
 MimeType=application/mathml+xml;application/vnd.oasis.opendocument.formula;application/vnd.oasis.opendocument.formula-template;application/vnd.stardivision.math;application/vnd.sun.xml.math;application/x-starmath;text/mathml;
-Name=%PRODUCTNAME Math
-GenericName=Formula Editor
-Comment=Create and edit scientific formulas and equations.
+Name=%PRODUCTNAME Formula
+Name[zh_CN]=可圈office 公式
+GenericName=Formula and Equation Editor
+GenericName[zh_CN]=公式编辑器
+Comment=Create formulas, equations, and technical notation.
+Comment[zh_CN]=创建公式、方程和技术符号表达。
 StartupNotify=true
 X-GIO-NoFuse=true
-Keywords=Equation;OpenDocument Formula;Formula;odf;MathML;
+Keywords=Formula;Equation;Math;MathML;odf;
+Keywords[zh_CN]=公式;方程;数学;MathML;odf;
 InitialPreference=5
-StartupWMClass=libreoffice-math
+StartupWMClass=%PREFIX-math
 X-KDE-Protocols=file,http,webdav,webdavs
 
 Actions=NewDocument;
 [Desktop Action NewDocument]
 UnityQuickList=New Formula
+UnityQuickList[zh_CN]=新建公式
 Icon=document-new
 Exec=${UNIXBASISROOTNAME} --math

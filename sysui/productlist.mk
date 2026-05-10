@@ -10,9 +10,9 @@
 PRODUCTLIST := libreoffice libreofficedev
 PKGVERSION := $(LIBO_VERSION_MAJOR).$(LIBO_VERSION_MINOR).$(LIBO_VERSION_MICRO)
 PKGVERSIONSHORT := $(LIBO_VERSION_MAJOR).$(LIBO_VERSION_MINOR)
-PRODUCTNAME.libreoffice := LibreOffice
+PRODUCTNAME.libreoffice := 可圈office
 PRODUCTNAME.libreofficedev := LibreOfficeDev
-UNIXFILENAME.libreoffice := libreoffice$(PKGVERSIONSHORT)
+UNIXFILENAME.libreoffice := kequanoffice$(PKGVERSIONSHORT)
 UNIXFILENAME.libreofficedev := libreofficedev$(PKGVERSIONSHORT)
 
 # vim: set noet sw=4 ts=4:

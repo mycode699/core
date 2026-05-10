@@ -23,4 +23,5 @@ Icon=spreadsheet-template
 Type=MimeType
 Patterns=*.stc
 MimeType=application/vnd.sun.xml.calc.template
-Comment=OpenOffice.org 1.0 Spreadsheet Template
+Comment=可圈office Spreadsheet Template
+Comment[zh_CN]=可圈office 表格模板

@@ -23,4 +23,5 @@ Icon=presentation-template
 Type=MimeType
 Patterns=*.sti
 MimeType=application/vnd.sun.xml.impress.template
-Comment=OpenOffice.org 1.0 Presentation Template
+Comment=可圈office Presentation Template
+Comment[zh_CN]=可圈office 演示文稿模板

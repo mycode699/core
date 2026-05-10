@@ -1,6 +1,6 @@
-.TH libreoffice "1" "2010-12-18" "LibreOffice" "User Commands"
+.TH libreoffice "1" "2026-04-09" "可圈office" "User Commands"
 .SH Name
-libreoffice \- LibreOffice office suite
+libreoffice \- 可圈office command-line launcher
 
 .SH SYNOPSIS
 .B libreoffice
@@ -35,8 +35,8 @@ libreoffice \- LibreOffice office suite
 .br
 
 .SH DESCRIPTION
-LibreOffice (LO for short) is a multi-platform office productivity suite.
-It was derived from OpenOffice.org 3.3 Beta on September 28, 2010.
+可圈office is a multi-platform office productivity suite for documents,
+spreadsheets, presentations, drawings, formulas, and templates.
 
 \fBlibreoffice\fR is a shell script that sets up the environment and
 passes the command line arguments to the \fBsoffice.bin\fR binary.
@@ -104,7 +104,7 @@ It implies \-\-invisible and strictly ignores any GUI environment.
 
 .TP
 \fB\-\-help\fR|\fB\-h\fR|\fB\-?\fR
-Lists LibreOffice command line parameters.
+Lists 可圈office command line parameters.
 
 .TP
 \fB\-\-impress\fR
@@ -145,7 +145,7 @@ Starts LO without creating a new document.
 The next time you start LO, the welcome screen is shown.
 
 It's used together with \fB\-\-nologo\fR by quick starters. Note that \fB\-\-quickstart\fR
-has no longer been supported since OpenOffice.org 2.0.0.
+is no longer supported.
 
 .TP
 \fB\-\-nolockcheck\fR
@@ -237,13 +237,15 @@ Starts with a new HTML document.
 Starts with a new Writer document.
 
 .SH TROUBLESHOOTING PROBLEMS
-See \fBhttp://wiki.documentfoundation.org/BugReport\fR for more details on how to report
-bugs in LibreOffice.
+If startup, conversion, or extension deployment fails, rerun the same command
+with \fB\-\-headless\fR or \fB\-\-safe-mode\fR when appropriate and check the
+user profile and log output for the failing document or extension.
 .SH SEE ALSO
-.BR http://www.documentfoundation.org/
+.BR soffice (1),
+.BR unopkg (1)
 
 .SH AUTHOR
 This manual page was created by Rene Engelhard <rene@debian.org> for
 the Debian GNU/Linux Distribution, because the original package does not have
 one. It was updated for Novell by Petr Mladek <petr.mladek@novell.com> and
-adapted for LibreOffice by Philipp Weissenbacher <philipp.weissenbacher@gmail.com>.
+adapted for 可圈office packaging and branding.

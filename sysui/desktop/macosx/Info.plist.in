@@ -28,7 +28,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.openoffice.text</string>
             <key>UTTypeDescription</key>
-            <string>OpenOffice.org 1.0 Text</string>
+            <string>可圈office 经典文本文档</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -52,7 +52,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.oasis-open.opendocument.text</string>
             <key>UTTypeDescription</key>
-            <string>OpenDocument Text</string>
+            <string>ODF 文本文档</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -76,7 +76,7 @@
             <key>UTTypeIdentifier</key>
             <string>vnd.oasis.opendocument.text-flat-xml</string>
             <key>UTTypeDescription</key>
-            <string>OpenDocument Text (Flat XML)</string>
+            <string>ODF 文本文档（扁平 XML）</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -102,7 +102,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.openoffice.spreadsheet</string>
             <key>UTTypeDescription</key>
-            <string>OpenOffice.org 1.0 Spreadsheet</string>
+            <string>可圈office 经典电子表格</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -127,7 +127,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.oasis-open.opendocument.spreadsheet</string>
             <key>UTTypeDescription</key>
-            <string>OpenDocument Spreadsheet</string>
+            <string>ODF 电子表格</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -152,7 +152,7 @@
             <key>UTTypeIdentifier</key>
             <string>vnd.oasis.opendocument.spreadsheet-flat-xml</string>
             <key>UTTypeDescription</key>
-            <string>OpenDocument Spreadsheet (Flat XML)</string>
+            <string>ODF 电子表格（扁平 XML）</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -179,7 +179,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.openoffice.presentation</string>
             <key>UTTypeDescription</key>
-            <string>OpenOffice.org 1.0 Presentation</string>
+            <string>可圈office 经典演示文稿</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -203,7 +203,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.oasis-open.opendocument.presentation</string>
             <key>UTTypeDescription</key>
-            <string>OpenDocument Presentation</string>
+            <string>ODF 演示文稿</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -227,7 +227,7 @@
             <key>UTTypeIdentifier</key>
             <string>vnd.oasis.opendocument.presentation-flat-xml</string>
             <key>UTTypeDescription</key>
-            <string>OpenDocument Presentation</string>
+            <string>ODF 演示文稿（扁平 XML）</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -253,7 +253,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.openoffice.graphics</string>
             <key>UTTypeDescription</key>
-            <string>OpenOffice.org 1.0 Drawing</string>
+            <string>可圈office 经典绘图文档</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -277,7 +277,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.oasis-open.opendocument.graphics</string>
             <key>UTTypeDescription</key>
-            <string>OpenDocument Drawing</string>
+            <string>ODF 绘图文档</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -301,7 +301,7 @@
             <key>UTTypeIdentifier</key>
             <string>vnd.oasis.opendocument.graphics-flat-xml</string>
             <key>UTTypeDescription</key>
-            <string>OpenDocument Drawing (Flat XML)</string>
+            <string>ODF 绘图文档（扁平 XML）</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -327,7 +327,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.oasis-open.opendocument.chart</string>
             <key>UTTypeDescription</key>
-            <string>OpenDocument Chart</string>
+            <string>ODF 图表文档</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -351,7 +351,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.openoffice.text-master</string>
             <key>UTTypeDescription</key>
-            <string>OpenOffice.org 1.0 Master</string>
+            <string>可圈office 经典主控文档</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -375,7 +375,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.oasis-open.opendocument.text-master</string>
             <key>UTTypeDescription</key>
-            <string>OpenDocument Master</string>
+            <string>ODF 主控文档</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -401,7 +401,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.openoffice.formula</string>
             <key>UTTypeDescription</key>
-            <string>OpenOffice.org 1.0 Formula</string>
+            <string>可圈office 经典公式文档</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -425,7 +425,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.oasis-open.opendocument.formula</string>
             <key>UTTypeDescription</key>
-            <string>OpenDocument Formula</string>
+            <string>ODF 公式文档</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -451,7 +451,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.openoffice.text-template</string>
             <key>UTTypeDescription</key>
-            <string>OpenOffice.org 1.0 Text Template</string>
+            <string>可圈office 经典文本模板</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -475,7 +475,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.oasis-open.opendocument.text-template</string>
             <key>UTTypeDescription</key>
-            <string>OpenDocument Text Template</string>
+            <string>ODF 文本模板</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -501,7 +501,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.oasis-open.opendocument.text-master-template</string>
             <key>UTTypeDescription</key>
-            <string>OpenDocument Text Master Template</string>
+            <string>ODF 主控文档模板</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -527,7 +527,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.openoffice.spreadsheet-template</string>
             <key>UTTypeDescription</key>
-            <string>OpenOffice.org 1.0 Spreadsheet Template</string>
+            <string>可圈office 经典电子表格模板</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -552,7 +552,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.oasis-open.opendocument.spreadsheet-template</string>
             <key>UTTypeDescription</key>
-            <string>OpenDocument Spreadsheet Template</string>
+            <string>ODF 电子表格模板</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -579,7 +579,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.openoffice.presentation-template</string>
             <key>UTTypeDescription</key>
-            <string>OpenOffice.org 1.0 Presentation Template</string>
+            <string>可圈office 经典演示模板</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -603,7 +603,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.oasis-open.opendocument.presentation-template</string>
             <key>UTTypeDescription</key>
-            <string>OpenDocument Presentation Template</string>
+            <string>ODF 演示模板</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -629,7 +629,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.openoffice.graphics-template</string>
             <key>UTTypeDescription</key>
-            <string>OpenOffice.org 1.0 Drawing Template</string>
+            <string>可圈office 经典绘图模板</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -653,7 +653,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.oasis-open.opendocument.graphics-template</string>
             <key>UTTypeDescription</key>
-            <string>OpenDocument Drawing Template</string>
+            <string>ODF 绘图模板</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -679,7 +679,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.oasis-open.opendocument.database</string>
             <key>UTTypeDescription</key>
-            <string>OpenDocument Database</string>
+            <string>ODF 数据库</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -705,7 +705,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.openoffice.extension</string>
             <key>UTTypeDescription</key>
-            <string>@PRODUCTNAME@ Extension</string>
+            <string>@PRODUCTNAME@ 扩展</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -1560,7 +1560,7 @@
     <array>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenOffice.org 1.0 Text</string>
+            <string>可圈office 经典文本文档</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1572,7 +1572,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenDocument Text</string>
+            <string>ODF 文本文档</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1584,7 +1584,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenOffice.org 1.0 Spreadsheet</string>
+            <string>可圈office 经典电子表格</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1596,7 +1596,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenDocument Spreadsheet</string>
+            <string>ODF 电子表格</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1608,7 +1608,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenOffice.org 1.0 Presentation</string>
+            <string>可圈office 经典演示文稿</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1620,7 +1620,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenDocument Presentation</string>
+            <string>ODF 演示文稿</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1632,7 +1632,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenOffice.org 1.0 Drawing</string>
+            <string>可圈office 经典绘图文档</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1644,7 +1644,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenDocument Drawing</string>
+            <string>ODF 绘图文档</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1656,7 +1656,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenDocument Chart</string>
+            <string>ODF 图表文档</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1668,7 +1668,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenOffice.org 1.0 Master</string>
+            <string>可圈office 经典主控文档</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1680,7 +1680,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenDocument Master</string>
+            <string>ODF 主控文档</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1692,7 +1692,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenOffice.org 1.0 Formula</string>
+            <string>可圈office 经典公式文档</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1704,7 +1704,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenDocument Formula</string>
+            <string>ODF 公式文档</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1716,7 +1716,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenOffice.org 1.0 Text Template</string>
+            <string>可圈office 经典文本模板</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1728,7 +1728,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenDocument Text Template</string>
+            <string>ODF 文本模板</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1740,7 +1740,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenDocument Master Template</string>
+            <string>ODF 主控文档模板</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1752,7 +1752,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenOffice.org 1.0 Spreadsheet Template</string>
+            <string>可圈office 经典电子表格模板</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1764,7 +1764,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenDocument Spreadsheet Template</string>
+            <string>ODF 电子表格模板</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1776,7 +1776,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenOffice.org 1.0 Presentation Template</string>
+            <string>可圈office 经典演示模板</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1788,7 +1788,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenDocument Presentation Template</string>
+            <string>ODF 演示模板</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1800,7 +1800,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenOffice.org 1.0 Drawing Template</string>
+            <string>可圈office 经典绘图模板</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1812,7 +1812,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenDocument Drawing Template</string>
+            <string>ODF 绘图模板</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1824,7 +1824,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>OpenDocument Database</string>
+            <string>ODF 数据库</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1836,7 +1836,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>@PRODUCTNAME@ Extension</string>
+            <string>@PRODUCTNAME@ 扩展</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1848,7 +1848,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>Flat ODF</string>
+            <string>ODF 扁平 XML 文档</string>
             <key>LSItemContentTypes</key>
             <array>
                 <string>vnd.oasis.opendocument.text-flat-xml</string>
@@ -1863,7 +1863,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>3rd party formats</string>
+            <string>其他办公文档格式</string>
             <key>LSItemContentTypes</key>
             <array>
                 <string>public.plain-text</string>

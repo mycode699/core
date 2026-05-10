@@ -1,3 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-<svg width="48" height="48" version="1.1" viewBox="0 0 48 48" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="linearGradient4873" x1="6" x2="42" y1="47" y2="1" gradientUnits="userSpaceOnUse"><stop stop-color="#7324a9" offset="0"/><stop stop-color="#fa51fd" offset="1"/></linearGradient></defs><path d="m11 0c-3.324 0-6 2.676-6 6v36c0 3.324 2.676 6 6 6h26c3.324 0 6-2.676 6-6v-24l-18-18h-14zm19 0 13 13v-13h-13z" fill="url(#linearGradient4873)" fill-rule="evenodd" stroke-linecap="square"/><g fill-rule="evenodd" stroke-linecap="square"><path d="m5 41v1c0 3.324 2.676 6 6 6h26c3.324 0 6-2.676 6-6v-1c0 3.324-2.676 6-6 6h-26c-3.324 0-6-2.676-6-6z" fill-opacity=".19933"/><path d="m30 0 13 13v-1.4l-11.6-11.6z" fill-opacity=".1982"/></g><g fill-rule="evenodd"><path d="m18 19a6 1.5 0 0 0-6 1.5v1a6 2 0 0 0 6 2 6 2 0 0 0 6-2v-1a6 1.5 0 0 0-6-1.5zm-6 4.5v3c0 0.82842 2.6863 1.5 6 1.5s6-0.67158 6-1.5v-3a6 1.5 0 0 1-6 1.5 6 1.5 0 0 1-6-1.5zm0 4.5v3c0 0.82842 2.6863 1.5 6 1.5s6-0.67158 6-1.5v-3a6 1.5 0 0 1-6 1.5 6 1.5 0 0 1-6-1.5zm0 4.5v3c0 0.82842 2.6863 1.5 6 1.5s6-0.67158 6-1.5v-3a6 1.5 0 0 1-6 1.5 6 1.5 0 0 1-6-1.5z" fill="#fa9bfd"/><path d="m26 21c-0.554 0-1 0.446-1 1v14c0 0.554 0.446 1 1 1h9c0.554 0 1-0.446 1-1v-14c0-0.554-0.446-1-1-1h-9zm0 1h4v4h-4v-4zm5 0h4v4h-4v-4zm-5 5h4v4h-4v-4zm5 0h4v4h-4v-4zm-5 5h4v4h-4v-4zm5 0h4v4h-4v-4z" fill="#fafafa"/></g></svg>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bg" x1="72" y1="48" x2="448" y2="464" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#64D2C8"/>
+              <stop offset="1" stop-color="#0F766E"/>
+            </linearGradient>
+            <linearGradient id="panel" x1="132" y1="112" x2="380" y2="400" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#ffffff"/>
+              <stop offset="1" stop-color="#f8fbff"/>
+            </linearGradient>
+          </defs>
+          <rect x="40" y="40" width="432" height="432" rx="104" fill="url(#bg)"/>
+          <rect x="96" y="96" width="320" height="320" rx="84" fill="#ffffff" opacity=".16"/>
+          <rect x="128" y="112" width="256" height="288" rx="52" fill="url(#panel)"/>
+          <rect x="128" y="112" width="256" height="48" rx="52" fill="#0F766E" opacity=".14"/>
+          <circle cx="166" cy="136" r="6" fill="#0F766E" opacity="0.72"/>
+          <circle cx="188" cy="136" r="6" fill="#0F766E" opacity="0.5"/>
+          <circle cx="210" cy="136" r="6" fill="#0F766E" opacity="0.34"/>
+          <g>
+  <ellipse cx="256" cy="214" rx="76" ry="28" fill="#C8F3EE" opacity=".22" stroke="#0F766E" stroke-width="12"/>
+  <path d="M180 214v108c0 18 34 32 76 32s76-14 76-32V214" fill="#C8F3EE" opacity=".14" stroke="#0F766E" stroke-width="12"/>
+  <path d="M180 256c0 18 34 32 76 32s76-14 76-32M180 298c0 18 34 32 76 32s76-14 76-32" fill="none" stroke="#0F766E" stroke-width="12" opacity=".8"/>
+</g>
+        </svg>

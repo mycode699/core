@@ -1,3 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-<svg width="48" height="48" version="1.1" viewBox="0 0 48 48" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="linearGradient4873" x1="6" x2="42" y1="47" y2="1" gradientUnits="userSpaceOnUse"><stop stop-color="#cb6d30" offset="0"/><stop stop-color="#fffb57" offset="1"/></linearGradient></defs><path d="m11 0c-3.324 0-6 2.676-6 6v36c0 3.324 2.676 6 6 6h26c3.324 0 6-2.676 6-6v-24l-18-18h-14zm19 0 13 13v-13h-13z" fill="url(#linearGradient4873)" fill-rule="evenodd" stroke-linecap="square"/><g fill-rule="evenodd" stroke-linecap="square"><path d="m5 41v1c0 3.324 2.676 6 6 6h26c3.324 0 6-2.676 6-6v-1c0 3.324-2.676 6-6 6h-26c-3.324 0-6-2.676-6-6z" fill-opacity=".19933"/><path d="m30 0 13 13v-1.4l-11.6-11.6z" fill-opacity=".1982"/></g><g fill-rule="evenodd"><circle cx="18" cy="25" r="6" fill="#fafafa"/><path d="m27 22c-0.554 0-1 0.446-1 1v8c0 0.554 0.446 1 1 1h8c0.554 0 1-0.446 1-1v-8c0-0.554-0.446-1-1-1h-8zm0 1h8v8h-8v-8z" fill="#fafafa"/><path transform="translate(-.49977 .5)" d="m23.5 23.866 6.7942 11.768a0.57735 0.57735 120 0 1-0.5 0.86602h-13.588a0.57735 0.57735 60 0 1-0.5-0.86603l6.7942-11.768a0.57735 0.57735 1.5352e-6 0 1 1 0z" fill="#f9e186"/></g></svg>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bg" x1="72" y1="48" x2="448" y2="464" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#FFD65A"/>
+              <stop offset="1" stop-color="#F59E0B"/>
+            </linearGradient>
+            <linearGradient id="panel" x1="132" y1="112" x2="380" y2="400" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#ffffff"/>
+              <stop offset="1" stop-color="#f8fbff"/>
+            </linearGradient>
+          </defs>
+          <rect x="40" y="40" width="432" height="432" rx="104" fill="url(#bg)"/>
+          <rect x="96" y="96" width="320" height="320" rx="84" fill="#ffffff" opacity=".16"/>
+          <rect x="128" y="112" width="256" height="288" rx="52" fill="url(#panel)"/>
+          <rect x="128" y="112" width="256" height="48" rx="52" fill="#D97706" opacity=".14"/>
+          <circle cx="166" cy="136" r="6" fill="#D97706" opacity="0.72"/>
+          <circle cx="188" cy="136" r="6" fill="#D97706" opacity="0.5"/>
+          <circle cx="210" cy="136" r="6" fill="#D97706" opacity="0.34"/>
+          <g>
+  <circle cx="210" cy="292" r="48" fill="#FFF0BA" opacity=".2" stroke="#D97706" stroke-width="12"/>
+  <rect x="274" y="244" width="102" height="102" rx="18" fill="#FFF0BA" opacity=".16" stroke="#D97706" stroke-width="12"/>
+  <path d="M176 356h94l-47-82z" fill="#D97706" opacity=".72"/>
+</g>
+        </svg>

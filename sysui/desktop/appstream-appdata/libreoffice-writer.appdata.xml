@@ -1,49 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-  <id>libreoffice-writer.desktop</id>
+  <id>%PREFIX-writer.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MPL-2.0</project_license>
-  <name>LibreOffice Writer</name>
-  <summary>Word processor part of the LibreOffice productivity suite</summary>
+  <name>可圈office Documents</name>
+  <name xml:lang="zh-CN">可圈office 文档</name>
+  <summary>Write letters, reports, contracts, and everyday documents</summary>
+  <summary xml:lang="zh-CN">可圈office 办公套件中的文档编辑器</summary>
   <description>
     <p>
-Writer is the word processor inside LibreOffice productivity suite.
-Use it for everything, from dashing off a quick letter to producing an entire
-book with tables of contents, embedded illustrations, bibliographies and diagrams.
-The while-you-type auto-completion, auto-formatting and automatic spell-checking
-make difficult tasks easy (but are easy to disable if you prefer).
-Writer is powerful enough to tackle desktop publishing tasks such as creating
-multi-column newsletters and brochures. The only limit is your imagination.
+Documents is the document editor in 可圈office.
+It is built for letters, reports, contracts, forms, notes,
+and everyday ODT or DOCX work.
 </p>
     <p>
-Based on the what-you-see-is-what-you-get principle, Writer allows you to apply
-various styles and formatting effects to your document and view the results
-immediately.
-</p>
-    <p>
-LibreOffice supports opening and saving into a wide variety of formats, so you
-can easily share documents with users of other popular office suites without
-worrying about compatibility.
+Use it for templates, local editing, PDF export,
+and exchanging common office document formats.
 </p>
   </description>
-  <url type="homepage">http://www.libreoffice.org/discover/writer/</url>
-  <url type="bugtracker">https://bugs.documentfoundation.org/</url>
-  <url type="donation">https://donate.libreoffice.org/</url>
-  <url type="faq">https://hub.libreoffice.org/faq</url>
-  <url type="help">http://www.libreoffice.org/get-help/documentation/</url>
-  <url type="translate">https://hub.libreoffice.org/translate</url>
-  <screenshots>
-    <screenshot type="default">
-      <image>https://hub.libreoffice.org/screenshots/writer-01.png</image>
-      <caption><!-- Describe this screenshot in less than ~10 words --></caption>
-    </screenshot>
-    <screenshot>
-      <image>https://hub.libreoffice.org/screenshots/writer-02.png</image>
-      <caption><!-- Describe this screenshot in less than ~10 words --></caption>
-    </screenshot>
-  </screenshots>
-  <developer_name>The Document Foundation</developer_name>
-  <update_contact>libreoffice_at_lists.freedesktop.org</update_contact>
+  <description xml:lang="zh-CN">
+    <p>
+文档是可圈office 办公套件中的文字处理组件，适合处理信函、通知、合同、报告、
+会议纪要等常见办公文档。
+</p>
+    <p>
+它支持模板、本地文档编辑、PDF 导出，以及常见文档格式的兼容处理。
+</p>
+  </description>
+  <developer_name>可圈office</developer_name>
   <kudos>
     <kudo>HiDpiIcon</kudo>
     <kudo>HighContrast</kudo>

@@ -19,7 +19,7 @@
 
 use File::Basename;
 $basedir = dirname($0);
-$productname = 'LibreOffice';
+$productname = '可圈office';
 $mimedir = $basedir.'/../mimetypes';
 
 $FS= ' ';       # field separator (space) - for documents.ulf

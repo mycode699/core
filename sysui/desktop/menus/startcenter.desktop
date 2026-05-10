@@ -23,40 +23,31 @@ Icon=startcenter
 Type=Application
 Categories=Office;X-Red-Hat-Base;X-SuSE-Core-Office;
 Exec=${UNIXBASISROOTNAME} %%FILE%%
-MimeType=application/vnd.openofficeorg.extension;x-scheme-handler/vnd.libreoffice.cmis;x-scheme-handler/vnd.sun.star.webdav;x-scheme-handler/vnd.sun.star.webdavs;x-scheme-handler/vnd.libreoffice.command;x-scheme-handler/ms-word;x-scheme-handler/ms-powerpoint;x-scheme-handler/ms-excel;x-scheme-handler/ms-visio;x-scheme-handler/ms-access;
+MimeType=application/vnd.openofficeorg.extension;x-scheme-handler/vnd.libreoffice.cmis;x-scheme-handler/vnd.sun.star.webdav;x-scheme-handler/vnd.sun.star.webdavs;x-scheme-handler/vnd.libreoffice.command;x-scheme-handler/ms-word;x-scheme-handler/ms-excel;
 Name=%PRODUCTNAME
-GenericName=Office
-Comment=Launch applications to create text documents, spreadsheets, presentations, drawings, formulas, and databases, or open recently used documents.
+Name[zh_CN]=可圈office
+GenericName=Office Suite
+GenericName[zh_CN]=办公工作台
+Comment=Open documents and sheets, and jump into common office tasks.
+Comment[zh_CN]=打开文档和表格，并快速进入常用办公场景。
 StartupNotify=true
 X-GIO-NoFuse=true
-StartupWMClass=libreoffice-startcenter
+Keywords=Office;Workspace;Document;Sheet;Word;Excel;
+Keywords[zh_CN]=办公;工作台;文档;表格;Word;Excel;
+StartupWMClass=%PREFIX-startcenter
 X-KDE-Protocols=file,http,webdav,webdavs
 
 ##Define Actions
-Actions=Writer;Calc;Impress;Draw;Base;Math;
+Actions=Writer;Calc;
 
 [Desktop Action Writer]
-Name=Writer
+Name=Documents
+Name[zh_CN]=文档
 Exec=${UNIXBASISROOTNAME} --writer
 
 [Desktop Action Calc]
-Name=Calc
+Name=Sheets
+Name[zh_CN]=表格
 Exec=${UNIXBASISROOTNAME} --calc
-
-[Desktop Action Impress]
-Name=Impress
-Exec=${UNIXBASISROOTNAME} --impress
-
-[Desktop Action Draw]
-Name=Draw
-Exec=${UNIXBASISROOTNAME} --draw
-
-[Desktop Action Base]
-Name=Base
-Exec=${UNIXBASISROOTNAME} --base
-
-[Desktop Action Math]
-Name=Math
-Exec=${UNIXBASISROOTNAME} --math
 
 ##End of actions menu

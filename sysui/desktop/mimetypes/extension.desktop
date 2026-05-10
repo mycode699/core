@@ -23,4 +23,5 @@ Icon=extension
 Type=MimeType
 Patterns=*.oxt
 MimeType=application/vnd.openofficeorg.extension
-Comment=%PRODUCTNAME Extension
+Comment=可圈office Extension Package
+Comment[zh_CN]=可圈office 扩展包

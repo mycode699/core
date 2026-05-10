@@ -1,3 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-<svg id="SVGRoot" width="16" height="16" version="1.1" viewBox="0 0 16 16" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><path d="m3 0c-1.108 0-2 0.892-2 2v12c0 1.108 0.892 2 2 2h10c1.108 0 2-0.892 2-2v-9l-5-5z" fill="#1a85d1"/><rect x="8" y="6" width="4" height="2" ry="1.3878e-16" fill="#9ae9f9"/><g fill="#fafafa"><rect x="4" y="7" width="3" height="1" ry="1.3878e-16"/><rect x="4" y="9" width="8" height="1" ry="1.3878e-16"/><rect x="4" y="11" width="5" height="1" ry="1.3878e-16"/></g><path d="m10 0v5h5z" fill="#9ae9f9" fill-rule="evenodd" stroke-linecap="square"/></svg>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="accent" x1="116" y1="110" x2="178" y2="420" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#64B5FF"/>
+              <stop offset="1" stop-color="#1D4ED8"/>
+            </linearGradient>
+            <linearGradient id="panel" x1="116" y1="84" x2="360" y2="444" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#ffffff"/>
+              <stop offset="1" stop-color="#f8fbff"/>
+            </linearGradient>
+            <linearGradient id="fold" x1="278" y1="84" x2="348" y2="154" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#edf5ff"/>
+              <stop offset="1" stop-color="#ffffff"/>
+            </linearGradient>
+          </defs>
+          <path d="M132 98h130l74 74v238c0 22-18 40-40 40H132c-22 0-40-18-40-40V138c0-22 18-40 40-40z" fill="#000000" opacity=".08"/>
+          <path d="M116 84h130l74 74v238c0 22-18 40-40 40H116c-22 0-40-18-40-40V124c0-22 18-40 40-40z" fill="url(#panel)"/>
+          <rect x="116" y="84" width="58" height="352" rx="22" fill="url(#accent)"/>
+          <path d="M246 84v54c0 11.046 8.954 20 20 20h54z" fill="url(#fold)"/>
+
+          <g transform="translate(46 58)"><g transform="scale(.72)"><g>
+  <rect x="184" y="184" width="134" height="22" rx="11" fill="#2563EB" opacity="0.16"/>
+  <rect x="184" y="228" width="188" height="16" rx="8" fill="#2563EB" opacity="0.88"/>
+  <rect x="184" y="264" width="164" height="16" rx="8" fill="#2563EB" opacity="0.62"/>
+  <rect x="184" y="300" width="178" height="16" rx="8" fill="#2563EB" opacity="0.62"/>
+  <rect x="184" y="336" width="116" height="16" rx="8" fill="#2563EB" opacity="0.62"/>
+</g></g></g>
+        </svg>

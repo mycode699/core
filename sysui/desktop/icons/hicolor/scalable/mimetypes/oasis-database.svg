@@ -1,3 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-<svg width="32" height="32" version="1.1" viewBox="0 0 32 32" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><g fill-rule="evenodd"><path d="m7 0c-2.216 0-4 1.784-4 4v24c0 2.216 1.784 4 4 4h18c2.216 0 4-1.784 4-4v-17l-11-11z" fill="#b63ad3" stroke-linecap="square"/><path d="m12 13a4 1 0 0 0-4 1v1a4 1 0 0 0 4 1 4 1 0 0 0 4-1v-1a4 1 0 0 0-4-1zm-4 3v2a4 1 0 0 0 4 1 4 1 0 0 0 4-1v-2a4 1 0 0 1-4 1 4 1 0 0 1-4-1zm0 3v2a4 1 0 0 0 4 1 4 1 0 0 0 4-1v-2a4 1 0 0 1-4 1 4 1 0 0 1-4-1zm0 3v2a4 1 0 0 0 4 1 4 1 0 0 0 4-1v-2a4 1 0 0 1-4 1 4 1 0 0 1-4-1z" fill="#fa9bfd"/><path d="m18 15c-0.554 0-1 0.446-1 1v8c0 0.554 0.446 1 1 1h5c0.554 0 1-0.446 1-1v-8c0-0.554-0.446-1-1-1h-5zm0 1h2v2h-2v-2zm3 0h2v2h-2v-2zm-3 3h2v2h-2v-2zm3 0h2v2h-2v-2zm-3 3h2v2h-2v-2zm3 0h2v2h-2v-2z" fill="#fafafa"/><path d="m18 0 11 11h-11z" fill="#fa9bfd" fill-rule="evenodd" stroke-linecap="round" stroke-width="2"/></g></svg>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="accent" x1="116" y1="110" x2="178" y2="420" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#64D2C8"/>
+              <stop offset="1" stop-color="#0F766E"/>
+            </linearGradient>
+            <linearGradient id="panel" x1="116" y1="84" x2="360" y2="444" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#ffffff"/>
+              <stop offset="1" stop-color="#f8fbff"/>
+            </linearGradient>
+            <linearGradient id="fold" x1="278" y1="84" x2="348" y2="154" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#edf5ff"/>
+              <stop offset="1" stop-color="#ffffff"/>
+            </linearGradient>
+          </defs>
+          <path d="M132 98h130l74 74v238c0 22-18 40-40 40H132c-22 0-40-18-40-40V138c0-22 18-40 40-40z" fill="#000000" opacity=".08"/>
+          <path d="M116 84h130l74 74v238c0 22-18 40-40 40H116c-22 0-40-18-40-40V124c0-22 18-40 40-40z" fill="url(#panel)"/>
+          <rect x="116" y="84" width="58" height="352" rx="22" fill="url(#accent)"/>
+          <path d="M246 84v54c0 11.046 8.954 20 20 20h54z" fill="url(#fold)"/>
+
+          <g transform="translate(36 62)"><g transform="scale(.74)"><g>
+  <ellipse cx="256" cy="214" rx="76" ry="28" fill="#C8F3EE" opacity=".22" stroke="#0F766E" stroke-width="12"/>
+  <path d="M180 214v108c0 18 34 32 76 32s76-14 76-32V214" fill="#C8F3EE" opacity=".14" stroke="#0F766E" stroke-width="12"/>
+  <path d="M180 256c0 18 34 32 76 32s76-14 76-32M180 298c0 18 34 32 76 32s76-14 76-32" fill="none" stroke="#0F766E" stroke-width="12" opacity=".8"/>
+</g></g></g>
+        </svg>

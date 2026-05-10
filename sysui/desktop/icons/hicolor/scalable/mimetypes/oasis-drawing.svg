@@ -1,3 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-<svg width="32" height="32" version="1.1" viewBox="0 0 32 32" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><g fill-rule="evenodd"><path d="m7 0c-2.216 0-4 1.784-4 4v24c0 2.216 1.784 4 4 4h18c2.216 0 4-1.784 4-4v-17l-11-11z" fill="#e5b443" stroke-linecap="square"/><circle cx="12" cy="17" r="4" fill="#fafafa"/><path d="m18 15c-0.554 0-1 0.446-1 1v5c0 0.554 0.446 1 1 1h5c0.554 0 1-0.446 1-1v-5c0-0.554-0.446-1-1-1h-5zm0 1h5v5h-5v-5z" fill="#fafafa"/><path transform="translate(.50015)" d="m14.5 16.866 4.1962 7.268a0.57735 0.57735 120 0 1-0.5 0.86602h-8.3923a0.57735 0.57735 60 0 1-0.5-0.86603l4.1962-7.2679a0.57735 0.57735 1.5352e-6 0 1 1 0z" fill="#f9e186"/><path d="m18 0 11 11h-11z" fill="#f9e186" fill-rule="evenodd" stroke-linecap="round" stroke-width="2"/></g></svg>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="accent" x1="116" y1="110" x2="178" y2="420" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#FFD65A"/>
+              <stop offset="1" stop-color="#F59E0B"/>
+            </linearGradient>
+            <linearGradient id="panel" x1="116" y1="84" x2="360" y2="444" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#ffffff"/>
+              <stop offset="1" stop-color="#f8fbff"/>
+            </linearGradient>
+            <linearGradient id="fold" x1="278" y1="84" x2="348" y2="154" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#edf5ff"/>
+              <stop offset="1" stop-color="#ffffff"/>
+            </linearGradient>
+          </defs>
+          <path d="M132 98h130l74 74v238c0 22-18 40-40 40H132c-22 0-40-18-40-40V138c0-22 18-40 40-40z" fill="#000000" opacity=".08"/>
+          <path d="M116 84h130l74 74v238c0 22-18 40-40 40H116c-22 0-40-18-40-40V124c0-22 18-40 40-40z" fill="url(#panel)"/>
+          <rect x="116" y="84" width="58" height="352" rx="22" fill="url(#accent)"/>
+          <path d="M246 84v54c0 11.046 8.954 20 20 20h54z" fill="url(#fold)"/>
+
+          <g transform="translate(48 58)"><g transform="scale(.72)"><g>
+  <circle cx="210" cy="292" r="48" fill="#FFF0BA" opacity=".2" stroke="#D97706" stroke-width="12"/>
+  <rect x="274" y="244" width="102" height="102" rx="18" fill="#FFF0BA" opacity=".16" stroke="#D97706" stroke-width="12"/>
+  <path d="M176 356h94l-47-82z" fill="#D97706" opacity=".72"/>
+</g></g></g>
+        </svg>

@@ -1,3 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-<svg id="SVGRoot" width="16" height="16" version="1.1" viewBox="0 0 16 16" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="linearGradient3921" x1="2" x2="14" y1="15" y2="1" gradientUnits="userSpaceOnUse"><stop stop-color="#083fa6" offset="0"/><stop stop-color="#2dcbfd" offset="1"/></linearGradient></defs><path d="m3 0c-1.108 0-2 0.892-2 2v12c0 1.108 0.892 2 2 2h10c1.108 0 2-0.892 2-2v-8l-6-6h-6zm7.5996 0 4.4004 4.4004v-4.4004h-4.4004z" fill="url(#linearGradient3921)"/><path d="m1 13v1c0 1.108 0.892 2 2 2h10c1.108 0 2-0.892 2-2v-1c0 1.108-0.892 2-2 2h-10c-1.108 0-2-0.892-2-2z" fill-opacity=".20106"/><path d="m12 0h-1.4l4.4 4.4v-1.4z" fill-opacity=".20097"/><rect x="8" y="6" width="4" height="2" ry="1.3878e-16" fill="#9ae9f9"/><g fill="#fafafa"><rect x="4" y="7" width="3" height="1" ry="1.3878e-16"/><rect x="4" y="9" width="8" height="1" ry="1.3878e-16"/><rect x="4" y="11" width="5" height="1" ry="1.3878e-16"/></g></svg>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bg" x1="72" y1="48" x2="448" y2="464" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#64B5FF"/>
+              <stop offset="1" stop-color="#1D4ED8"/>
+            </linearGradient>
+            <linearGradient id="panel" x1="132" y1="112" x2="380" y2="400" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#ffffff"/>
+              <stop offset="1" stop-color="#f8fbff"/>
+            </linearGradient>
+          </defs>
+          <rect x="40" y="40" width="432" height="432" rx="104" fill="url(#bg)"/>
+          <rect x="96" y="96" width="320" height="320" rx="84" fill="#ffffff" opacity=".16"/>
+          <rect x="128" y="112" width="256" height="288" rx="52" fill="url(#panel)"/>
+          <rect x="128" y="112" width="256" height="48" rx="52" fill="#2563EB" opacity=".14"/>
+          <circle cx="166" cy="136" r="6" fill="#2563EB" opacity="0.72"/>
+          <circle cx="188" cy="136" r="6" fill="#2563EB" opacity="0.5"/>
+          <circle cx="210" cy="136" r="6" fill="#2563EB" opacity="0.34"/>
+          <g>
+  <rect x="184" y="184" width="134" height="22" rx="11" fill="#2563EB" opacity="0.16"/>
+  <rect x="184" y="228" width="188" height="16" rx="8" fill="#2563EB" opacity="0.88"/>
+  <rect x="184" y="264" width="164" height="16" rx="8" fill="#2563EB" opacity="0.62"/>
+  <rect x="184" y="300" width="178" height="16" rx="8" fill="#2563EB" opacity="0.62"/>
+  <rect x="184" y="336" width="116" height="16" rx="8" fill="#2563EB" opacity="0.62"/>
+</g>
+        </svg>

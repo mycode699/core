@@ -1,3 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-<svg id="SVGRoot" width="16" height="16" version="1.1" viewBox="0 0 16 16" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="linearGradient3921" x1="2" x2="14" y1="15" y2="1" gradientUnits="userSpaceOnUse"><stop stop-color="#cb6d30" offset="0"/><stop stop-color="#fffb57" offset="1"/></linearGradient></defs><path d="m3 0c-1.108 0-2 0.892-2 2v12c0 1.108 0.892 2 2 2h10c1.108 0 2-0.892 2-2v-8l-6-6h-6zm7.5996 0 4.4004 4.4004v-4.4004h-4.4004z" fill="url(#linearGradient3921)"/><path d="m1 13v1c0 1.108 0.892 2 2 2h10c1.108 0 2-0.892 2-2v-1c0 1.108-0.892 2-2 2h-10c-1.108 0-2-0.892-2-2z" fill-opacity=".20106"/><path d="m12 0h-1.4l4.4 4.4v-1.4z" fill-opacity=".20097"/><circle cx="6" cy="8" r="2" fill="#fafafa"/><path d="m9 7v3h3v-3h-3zm1 1h1v1h-1v-1z" fill="#fafafa"/><path transform="translate(0 .5)" d="m8 7 2.5981 4.5h-5.1962z" fill="#f9e186"/></svg>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bg" x1="72" y1="48" x2="448" y2="464" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#FFD65A"/>
+              <stop offset="1" stop-color="#F59E0B"/>
+            </linearGradient>
+            <linearGradient id="panel" x1="132" y1="112" x2="380" y2="400" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#ffffff"/>
+              <stop offset="1" stop-color="#f8fbff"/>
+            </linearGradient>
+          </defs>
+          <rect x="40" y="40" width="432" height="432" rx="104" fill="url(#bg)"/>
+          <rect x="96" y="96" width="320" height="320" rx="84" fill="#ffffff" opacity=".16"/>
+          <rect x="128" y="112" width="256" height="288" rx="52" fill="url(#panel)"/>
+          <rect x="128" y="112" width="256" height="48" rx="52" fill="#D97706" opacity=".14"/>
+          <circle cx="166" cy="136" r="6" fill="#D97706" opacity="0.72"/>
+          <circle cx="188" cy="136" r="6" fill="#D97706" opacity="0.5"/>
+          <circle cx="210" cy="136" r="6" fill="#D97706" opacity="0.34"/>
+          <g>
+  <circle cx="210" cy="292" r="48" fill="#FFF0BA" opacity=".2" stroke="#D97706" stroke-width="12"/>
+  <rect x="274" y="244" width="102" height="102" rx="18" fill="#FFF0BA" opacity=".16" stroke="#D97706" stroke-width="12"/>
+  <path d="M176 356h94l-47-82z" fill="#D97706" opacity=".72"/>
+</g>
+        </svg>

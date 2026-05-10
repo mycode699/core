@@ -1,3 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-<svg id="SVGRoot" width="16" height="16" version="1.1" viewBox="0 0 16 16" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="linearGradient3921" x1="2" x2="14" y1="15" y2="1" gradientUnits="userSpaceOnUse"><stop stop-color="#4b4b4b" offset="0"/><stop stop-color="#969696" offset="1"/></linearGradient><linearGradient id="linearGradient41820" x1="12" x2="4" y1="12" y2="3" gradientUnits="userSpaceOnUse"><stop stop-color="#fafafa" stop-opacity=".79949" offset="0"/><stop stop-color="#fafafa" offset="1"/></linearGradient></defs><path d="m3 0c-1.108 0-2 0.892-2 2v12c0 1.108 0.892 2 2 2h10c1.108 0 2-0.892 2-2v-8l-6-6h-6zm7.5996 0 4.4004 4.4004v-4.4004h-4.4004z" fill="url(#linearGradient3921)"/><path d="m1 13v1c0 1.108 0.892 2 2 2h10c1.108 0 2-0.892 2-2v-1c0 1.108-0.892 2-2 2h-10c-1.108 0-2-0.892-2-2z" fill-opacity=".20106"/><path d="m12 0h-1.4l4.4 4.4v-1.4z" fill-opacity=".20097"/><path d="m3 2v11h10v-6l-5-5z" fill="url(#linearGradient41820)"/><path d="m7.5 2v6h5.5v-1l-5-5h-0.5z" fill-opacity=".096556" fill-rule="evenodd" stroke-linecap="square" stroke-width="2"/><path d="m8 2v5h5z" fill="#fafafa"/></svg>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="72" y1="48" x2="448" y2="464" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#9AE96F"/>
+      <stop offset="1" stop-color="#0E8D46"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="140" y1="96" x2="372" y2="432" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f5fbff"/>
+    </linearGradient>
+    <linearGradient id="fold" x1="286" y1="96" x2="362" y2="172" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#eaf6ff"/>
+      <stop offset="1" stop-color="#ffffff"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="120" y1="316" x2="216" y2="412" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#22C55E"/>
+      <stop offset="1" stop-color="#166534"/>
+    </linearGradient>
+  </defs>
+  <rect x="40" y="40" width="432" height="432" rx="108" fill="url(#bg)"/>
+  <rect x="40" y="40" width="432" height="432" rx="108" fill="none" opacity=".14" stroke="#ffffff" stroke-width="8"/>
+  <path d="M164 96h122l74 74v246c0 22.091-17.909 40-40 40H164c-22.091 0-40-17.909-40-40V136c0-22.091 17.909-40 40-40z" fill="url(#panel)"/>
+  <path d="M286 96v54c0 11.046 8.954 20 20 20h54z" fill="url(#fold)"/>
+  <circle cx="166" cy="364" r="42" fill="none" stroke="url(#ring)" stroke-width="24"/>
+  <circle cx="166" cy="364" r="12" fill="#ECFFF3"/>
+  <path d="M196 333a42 42 0 0 1 9 24" fill="none" stroke="#FEF08A" stroke-linecap="round" stroke-width="8"/>
+
+</svg>

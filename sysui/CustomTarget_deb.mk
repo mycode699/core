@@ -21,11 +21,23 @@ $(foreach product,$(PRODUCTLIST),\
 	$(product)/DEBIAN/postinst \
 	$(product)/DEBIAN/postrm \
 	$(product)/DEBIAN/prerm \
-	$(product)$(PKGVERSIONSHORT)-debian-menus_$(PKGVERSION)-$(LIBO_VERSION_PATCH)_all.deb) \
+	$(UNIXFILENAME.$(product))-debian-menus_$(PKGVERSION)-$(LIBO_VERSION_PATCH)_all.deb) \
 ))
 
-$(deb_WORKDIR)/%-desktop-integration.tar.gz: $(deb_WORKDIR)/%$(PKGVERSIONSHORT)-debian-menus_$(PKGVERSION)-$(LIBO_VERSION_PATCH)_all.deb
-	fakeroot $(GNUTAR) -C $(deb_WORKDIR) -cf - $(notdir $<) | gzip > $@
+define deb_register_target
+$(deb_WORKDIR)/$(1)-desktop-integration.tar.gz: $(deb_WORKDIR)/$(UNIXFILENAME.$(1))-debian-menus_$(PKGVERSION)-$(LIBO_VERSION_PATCH)_all.deb
+	fakeroot $(GNUTAR) -C $(deb_WORKDIR) -cf - $$(notdir $$<) | gzip > $$@
+
+$(deb_WORKDIR)/$(UNIXFILENAME.$(1))-debian-menus_$(PKGVERSION)-$(LIBO_VERSION_PATCH)_all.deb: $(deb_WORKDIR)/$(1)/DEBIAN/postrm $(deb_WORKDIR)/$(1)/DEBIAN/postinst $(deb_WORKDIR)/$(1)/DEBIAN/prerm $(deb_WORKDIR)/$(1)/DEBIAN/control
+	chmod -R g-w $(deb_WORKDIR)/$(1)
+	chmod a+rx $(deb_WORKDIR)/$(1)/DEBIAN \
+		$(deb_WORKDIR)/$(1)/DEBIAN/pre* $(deb_WORKDIR)/$(1)/DEBIAN/post*
+	chmod g-s $(deb_WORKDIR)/$(1)/DEBIAN
+	fakeroot dpkg-deb --build $(deb_WORKDIR)/$(1) $$@
+endef
+
+$(foreach product,$(PRODUCTLIST),\
+$(eval $(call deb_register_target,$(product))))
 
 $(deb_WORKDIR)/%/DEBIAN/postrm: $(deb_SRCDIR)/postrm
 	cat $< | tr -d "\015" | \
@@ -51,20 +63,12 @@ $(deb_WORKDIR)/%/DEBIAN/control: $(deb_SRCDIR)/control $(gb_CustomTarget_workdir
 		-e 's/%PRODUCTNAME/$(PRODUCTNAME.$*) $(PRODUCTVERSION)/' \
 		-e 's/%PREFIX/$(UNIXFILENAME.$*)/' \
 		-e 's/%ICONPREFIX/$(UNIXFILENAME.$*)/' \
-		> $(deb_WORKDIR)/$*/usr/lib/menu/$*$(PKGVERSIONSHORT)
-	echo "Package: $*$(PKGVERSIONSHORT)-debian-menus" >$@
+		> $(deb_WORKDIR)/$*/usr/lib/menu/$(UNIXFILENAME.$*)
+	echo "Package: $(UNIXFILENAME.$*)-debian-menus" >$@
 	cat $< | tr -d "\015" | \
 		sed 's/%productname/$(PRODUCTNAME.$*) $(PRODUCTVERSION)/' \
 		>> $@
 	echo "Version: $(PKGVERSION)-$(LIBO_VERSION_PATCH)" >>$@
 	du -k -s $(deb_WORKDIR)/$* | $(gb_AWK) -F ' ' '{ printf "Installed-Size: %s\n", $$1 ; }' >>$@
-
-$(deb_WORKDIR)/%$(PKGVERSIONSHORT)-debian-menus_$(PKGVERSION)-$(LIBO_VERSION_PATCH)_all.deb: $(deb_WORKDIR)/%/DEBIAN/postrm $(deb_WORKDIR)/%/DEBIAN/postinst $(deb_WORKDIR)/%/DEBIAN/prerm $(deb_WORKDIR)/%/DEBIAN/control
-
-	chmod -R g-w $(deb_WORKDIR)/$*
-	chmod a+rx $(deb_WORKDIR)/$*/DEBIAN \
-		$(deb_WORKDIR)/$*/DEBIAN/pre* $(deb_WORKDIR)/$*/DEBIAN/post*
-	chmod g-s $(deb_WORKDIR)/$*/DEBIAN
-	fakeroot dpkg-deb --build $(deb_WORKDIR)/$* $@
 
 # vim: set noet sw=4 ts=4:

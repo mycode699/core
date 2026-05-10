@@ -1,3 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-<svg width="48" height="48" version="1.1" viewBox="0 0 48 48" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="linearGradient4873" x1="6" x2="42" y1="47" y2="1" gradientUnits="userSpaceOnUse"><stop stop-color="#c10018" offset="0"/><stop stop-color="#ff5a96" offset="1"/></linearGradient></defs><path d="m11 0c-3.324 0-6 2.676-6 6v36c0 3.324 2.676 6 6 6h26c3.324 0 6-2.676 6-6v-24l-18-18h-14zm19 0 13 13v-13h-13z" fill="url(#linearGradient4873)" fill-rule="evenodd" stroke-linecap="square"/><g fill-rule="evenodd" stroke-linecap="square"><path d="m5 41v1c0 3.324 2.676 6 6 6h26c3.324 0 6-2.676 6-6v-1c0 3.324-2.676 6-6 6h-26c-3.324 0-6-2.676-6-6z" fill-opacity=".19933"/><path d="m30 0 13 13v-1.4l-11.6-11.6z" fill-opacity=".1982"/></g><g fill-rule="evenodd"><g fill="#fafafa"><path d="m24.191 19-6.6914 13.383-3.6914-7.3828h-1.3086a0.5 0.5 0 0 0-0.5 0.5 0.5 0.5 0 0 0 0.5 0.5h0.69141l4.3086 8.6172 7.3086-14.617h10.691a0.5 0.5 0 0 0 0.5-0.5 0.5 0.5 0 0 0-0.5-0.5z" color="#000000" stroke-linecap="round" style="-inkscape-stroke:none"/><g><rect x="12" y="36" width="6" height="1" ry=".5"/><rect x="30" y="36" width="6" height="1" ry=".5"/><rect x="21" y="36" width="6" height="1" ry=".5"/></g></g><path d="m26.844 24.012a1 1 0 0 0-0.55078 0.28125 1 1 0 0 0 0 1.4141l2.793 2.793-2.793 2.793a1 1 0 0 0 0 1.4141 1 1 0 0 0 1.4141 0l2.793-2.793 2.793 2.793a1 1 0 0 0 1.4141 0 1 1 0 0 0 0-1.4141l-2.793-2.793 2.793-2.793a1 1 0 0 0 0-1.4141 1 1 0 0 0-1.4141 0l-2.793 2.793-2.793-2.793a1 1 0 0 0-0.86328-0.28125z" color="#000000" fill="#fda8b3" stroke-linecap="round"/></g></svg>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bg" x1="72" y1="48" x2="448" y2="464" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#FF9B85"/>
+              <stop offset="1" stop-color="#D9485F"/>
+            </linearGradient>
+            <linearGradient id="panel" x1="132" y1="112" x2="380" y2="400" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#ffffff"/>
+              <stop offset="1" stop-color="#f8fbff"/>
+            </linearGradient>
+          </defs>
+          <rect x="40" y="40" width="432" height="432" rx="104" fill="url(#bg)"/>
+          <rect x="96" y="96" width="320" height="320" rx="84" fill="#ffffff" opacity=".16"/>
+          <rect x="128" y="112" width="256" height="288" rx="52" fill="url(#panel)"/>
+          <rect x="128" y="112" width="256" height="48" rx="52" fill="#E11D48" opacity=".14"/>
+          <circle cx="166" cy="136" r="6" fill="#E11D48" opacity="0.72"/>
+          <circle cx="188" cy="136" r="6" fill="#E11D48" opacity="0.5"/>
+          <circle cx="210" cy="136" r="6" fill="#E11D48" opacity="0.34"/>
+          <g>
+  <path d="M188 226l42 42M230 226l-42 42" fill="none" stroke="#E11D48" stroke-linecap="round" stroke-width="16"/>
+  <path d="M272 248h64M304 216v64" fill="none" stroke="#E11D48" stroke-linecap="round" stroke-width="16"/>
+  <path d="M372 230h64M372 270h64" fill="none" stroke="#FFD6CF" stroke-linecap="round" stroke-width="16"/>
+  <path d="M196 334h240" fill="none" stroke="#E11D48" stroke-linecap="round" stroke-width="16" opacity=".74"/>
+</g>
+        </svg>

@@ -28,8 +28,8 @@ eval 'exec perl -wS $0 ${1+"$@"}'
 $destdir = pop @ARGV;
 mkdir $destdir,0777;
 
-$productname = "LibreOffice";
-$productfilename = "libreoffice";
+$productname = "可圈office";
+$productfilename = "kequanoffice";
 $urls = 0;
 $prefix = "";
 $iconprefix = "";
@@ -111,6 +111,8 @@ while ($arg = shift) {
 
         # replace %PRODUCTNAME placeholders
         s/%PRODUCTNAME/$productname/g;
+        s/%PREFIX/$productfilename/g;
+        s/%ICONPREFIX/$iconprefix/g;
 
         if ( $urls ) {
             s/%%FILE%%/%U/g;

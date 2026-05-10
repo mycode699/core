@@ -23,4 +23,5 @@ Icon=drawing
 Type=MimeType
 Patterns=*.sxd
 MimeType=application/vnd.sun.xml.draw
-Comment=OpenOffice.org 1.0 Drawing
+Comment=可圈office Drawing
+Comment[zh_CN]=可圈office 绘图文档

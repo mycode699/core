@@ -18,23 +18,29 @@
 [Desktop Entry]
 Version=1.0
 Terminal=false
+NoDisplay=true
 Icon=base
 Type=Application
 Categories=Office;Database;X-Red-Hat-Base;
 Exec=${UNIXBASISROOTNAME} --base %%FILE%%
 MimeType=application/vnd.oasis.opendocument.base;application/vnd.sun.xml.base;
-Name=%PRODUCTNAME Base
-GenericName=Database Development
-Comment=Manage databases, create queries and reports to track and manage your information.
+Name=%PRODUCTNAME Database
+Name[zh_CN]=可圈office 数据库
+GenericName=Database Manager
+GenericName[zh_CN]=数据库管理
+Comment=Organize tables, queries, forms, reports, and office databases.
+Comment[zh_CN]=整理表、查询、表单、报表和办公数据库。
 StartupNotify=true
 X-GIO-NoFuse=true
-Keywords=Data;SQL;
+Keywords=Database;Data;Query;Form;Report;SQL;
+Keywords[zh_CN]=数据库;数据;查询;表单;报表;SQL;
 InitialPreference=5
-StartupWMClass=libreoffice-base
+StartupWMClass=%PREFIX-base
 X-KDE-Protocols=file,http,webdav,webdavs
 
 Actions=NewDocument;
 [Desktop Action NewDocument]
 UnityQuickList=New Database
+UnityQuickList[zh_CN]=新建数据库
 Icon=document-new
 Exec=${UNIXBASISROOTNAME} --base

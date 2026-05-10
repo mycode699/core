@@ -23,4 +23,5 @@ Icon=formula
 Type=MimeType
 Patterns=*.sxm
 MimeType=application/vnd.sun.xml.math
-Comment=OpenOffice.org 1.0 Formula
+Comment=可圈office Formula
+Comment[zh_CN]=可圈office 公式文档

@@ -23,4 +23,5 @@ Icon=master-document
 Type=MimeType
 Patterns=*.sxg
 MimeType=application/vnd.sun.xml.writer.global
-Comment=OpenOffice.org 1.0 Master Document
+Comment=可圈office Master Document
+Comment[zh_CN]=可圈office 主控文档

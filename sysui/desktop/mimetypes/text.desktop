@@ -23,4 +23,5 @@ Icon=text
 Type=MimeType
 Patterns=*.sxw
 MimeType=application/vnd.sun.xml.writer
-Comment=OpenOffice.org 1.0 Text Document
+Comment=可圈office Text Document
+Comment[zh_CN]=可圈office 文档

@@ -23,4 +23,5 @@ Icon=presentation
 Type=MimeType
 Patterns=*.sxi
 MimeType=application/vnd.sun.xml.impress
-Comment=OpenOffice.org 1.0 Presentation
+Comment=可圈office Presentation
+Comment[zh_CN]=可圈office 演示文稿

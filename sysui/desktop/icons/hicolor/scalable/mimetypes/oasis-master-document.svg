@@ -1,3 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-<svg width="32" height="32" version="1.1" viewBox="0 0 32 32" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><g fill-rule="evenodd"><path d="m7 0c-2.216 0-4 1.784-4 4v24c0 2.216 1.784 4 4 4h18c2.216 0 4-1.784 4-4v-17l-11-11z" fill="#6e6e6e" stroke-linecap="square"/><path d="m18 0v11h11z" fill="#afafaf" fill-rule="evenodd" stroke-linecap="round" stroke-width="2"/><g fill="#fafafa" fill-rule="evenodd" stroke-linecap="round" stroke-width="2"><path d="m10.5 13c-0.277 0-0.5 0.223-0.5 0.5v4c0 0.277 0.223 0.5 0.5 0.5h4c0.277 0 0.5-0.223 0.5-0.5v-0.79297l-3.707-3.707zm2.207 0 2.293 2.293v-1.793c0-0.277-0.223-0.5-0.5-0.5z"/><path d="m10.5 20c-0.277 0-0.5 0.223-0.5 0.5v4c0 0.277 0.223 0.5 0.5 0.5h4c0.277 0 0.5-0.223 0.5-0.5v-0.79297l-3.707-3.707zm2.207 0 2.293 2.293v-1.793c0-0.277-0.223-0.5-0.5-0.5z"/><path d="m17.5 13c-0.277 0-0.5 0.223-0.5 0.5v4c0 0.277 0.223 0.5 0.5 0.5h4c0.277 0 0.5-0.223 0.5-0.5v-0.79297l-3.707-3.707zm2.207 0 2.293 2.293v-1.793c0-0.277-0.223-0.5-0.5-0.5z"/><path d="m17.5 20c-0.277 0-0.5 0.223-0.5 0.5v4c0 0.277 0.223 0.5 0.5 0.5h4c0.277 0 0.5-0.223 0.5-0.5v-0.79297l-3.707-3.707zm2.207 0 2.293 2.293v-1.793c0-0.277-0.223-0.5-0.5-0.5z"/></g></g></svg>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="accent" x1="116" y1="110" x2="178" y2="420" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#94A3B8"/>
+              <stop offset="1" stop-color="#334155"/>
+            </linearGradient>
+            <linearGradient id="panel" x1="116" y1="84" x2="360" y2="444" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#ffffff"/>
+              <stop offset="1" stop-color="#f8fbff"/>
+            </linearGradient>
+            <linearGradient id="fold" x1="278" y1="84" x2="348" y2="154" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#edf5ff"/>
+              <stop offset="1" stop-color="#ffffff"/>
+            </linearGradient>
+          </defs>
+          <path d="M132 98h130l74 74v238c0 22-18 40-40 40H132c-22 0-40-18-40-40V138c0-22 18-40 40-40z" fill="#000000" opacity=".08"/>
+          <path d="M116 84h130l74 74v238c0 22-18 40-40 40H116c-22 0-40-18-40-40V124c0-22 18-40 40-40z" fill="url(#panel)"/>
+          <rect x="116" y="84" width="58" height="352" rx="22" fill="url(#accent)"/>
+          <path d="M246 84v54c0 11.046 8.954 20 20 20h54z" fill="url(#fold)"/>
+
+          <g transform="translate(46 66)"><g transform="scale(.72)"><g>
+  <path d="M220 204h94l42 42v118h-136z" fill="#D8E0EB" opacity=".16" stroke="#475569" stroke-linejoin="round" stroke-width="12"/>
+  <path d="M176 246h94l42 42v118H176z" fill="#D8E0EB" opacity=".28" stroke="#475569" stroke-linejoin="round" stroke-width="12"/>
+  <rect x="204" y="304" width="78" height="14" rx="7" fill="#475569" opacity="0.62"/>
+  <rect x="204" y="338" width="78" height="14" rx="7" fill="#475569" opacity="0.62"/>
+</g></g></g>
+        </svg>

@@ -23,4 +23,5 @@ Icon=spreadsheet
 Type=MimeType
 Patterns=*.sxc
 MimeType=application/vnd.sun.xml.calc
-Comment=OpenOffice.org 1.0 Spreadsheet
+Comment=可圈office Spreadsheet
+Comment[zh_CN]=可圈office 表格

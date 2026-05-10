@@ -1,86 +1,114 @@
 [text]
-en-US = "OpenOffice.org 1.0 Text Document"
+en-US = "可圈office 经典文本文档"
+zh-CN = "可圈office 经典文本文档"
 
 [text-template]
-en-US = "OpenOffice.org 1.0 Text Document Template"
+en-US = "可圈office 经典文本模板"
+zh-CN = "可圈office 经典文本模板"
 
 [master-document]
-en-US = "OpenOffice.org 1.0 Master Document"
+en-US = "可圈office 经典主控文档"
+zh-CN = "可圈office 经典主控文档"
 
 [formula]
-en-US = "OpenOffice.org 1.0 Formula"
+en-US = "可圈office 经典公式文档"
+zh-CN = "可圈office 经典公式文档"
 
 [presentation]
-en-US = "OpenOffice.org 1.0 Presentation"
+en-US = "可圈office 经典演示文稿"
+zh-CN = "可圈office 经典演示文稿"
 
 [presentation-template]
-en-US = "OpenOffice.org 1.0 Presentation Template"
+en-US = "可圈office 经典演示模板"
+zh-CN = "可圈office 经典演示模板"
 
 [drawing]
-en-US = "OpenOffice.org 1.0 Drawing"
+en-US = "可圈office 经典绘图文档"
+zh-CN = "可圈office 经典绘图文档"
 
 [drawing-template]
-en-US = "OpenOffice.org 1.0 Drawing Template"
+en-US = "可圈office 经典绘图模板"
+zh-CN = "可圈office 经典绘图模板"
 
 [spreadsheet]
-en-US = "OpenOffice.org 1.0 Spreadsheet"
+en-US = "可圈office 经典电子表格"
+zh-CN = "可圈office 经典电子表格"
 
 [spreadsheet-template]
-en-US = "OpenOffice.org 1.0 Spreadsheet Template"
+en-US = "可圈office 经典电子表格模板"
+zh-CN = "可圈office 经典电子表格模板"
 
 [oasis-text]
-en-US = "OpenDocument Text"
+en-US = "ODF 文本文档"
+zh-CN = "ODF 文本文档"
 
 [oasis-text-flat-xml]
-en-US = "OpenDocument Text (Flat XML)"
+en-US = "ODF 文本文档（扁平 XML）"
+zh-CN = "ODF 文本文档（扁平 XML）"
 
 [oasis-text-template]
-en-US = "OpenDocument Text Template"
+en-US = "ODF 文本模板"
+zh-CN = "ODF 文本模板"
 
 [oasis-master-document]
-en-US = "OpenDocument Master Document"
+en-US = "ODF 主控文档"
+zh-CN = "ODF 主控文档"
 
 [oasis-master-document-template]
-en-US = "OpenDocument Master Document Template"
+en-US = "ODF 主控文档模板"
+zh-CN = "ODF 主控文档模板"
 
 [oasis-formula]
-en-US = "OpenDocument Formula"
+en-US = "ODF 公式文档"
+zh-CN = "ODF 公式文档"
 
 [oasis-presentation]
-en-US = "OpenDocument Presentation"
+en-US = "ODF 演示文稿"
+zh-CN = "ODF 演示文稿"
 
 [oasis-presentation-flat-xml]
-en-US = "OpenDocument Presentation (Flat XML)"
+en-US = "ODF 演示文稿（扁平 XML）"
+zh-CN = "ODF 演示文稿（扁平 XML）"
 
 [oasis-presentation-template]
-en-US = "OpenDocument Presentation Template"
+en-US = "ODF 演示模板"
+zh-CN = "ODF 演示模板"
 
 [oasis-drawing]
-en-US = "OpenDocument Drawing"
+en-US = "ODF 绘图文档"
+zh-CN = "ODF 绘图文档"
 
 [oasis-drawing-flat-xml]
-en-US = "OpenDocument Drawing (Flat XML)"
+en-US = "ODF 绘图文档（扁平 XML）"
+zh-CN = "ODF 绘图文档（扁平 XML）"
 
 [oasis-drawing-template]
-en-US = "OpenDocument Drawing Template"
+en-US = "ODF 绘图模板"
+zh-CN = "ODF 绘图模板"
 
 [oasis-spreadsheet]
-en-US = "OpenDocument Spreadsheet"
+en-US = "ODF 电子表格"
+zh-CN = "ODF 电子表格"
 
 [oasis-spreadsheet-flat-xml]
-en-US = "OpenDocument Spreadsheet (Flat XML)"
+en-US = "ODF 电子表格（扁平 XML）"
+zh-CN = "ODF 电子表格（扁平 XML）"
 
 [oasis-spreadsheet-template]
-en-US = "OpenDocument Spreadsheet Template"
+en-US = "ODF 电子表格模板"
+zh-CN = "ODF 电子表格模板"
 
 [oasis-database]
-en-US = "OpenDocument Database"
+en-US = "ODF 数据库"
+zh-CN = "ODF 数据库"
 
 [oasis-web-template]
-en-US = "HTML Document Template"
+en-US = "HTML 文档模板"
+zh-CN = "HTML 文档模板"
 
 [extension]
-en-US = "%PRODUCTNAME Extension"
+en-US = "%PRODUCTNAME 扩展"
+zh-CN = "%PRODUCTNAME 扩展"
 
 [ms-excel-sheet]
 en-US = "Microsoft Excel Worksheet"
