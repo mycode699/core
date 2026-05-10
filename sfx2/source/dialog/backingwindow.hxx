@@ -36,9 +36,12 @@
 #include <com/sun/star/frame/XDispatchProvider.hpp>
 #include <com/sun/star/frame/XFrame.hpp>
 
+#include <array>
 #include <memory>
+#include <string_view>
 
 class BrandImage;
+class SfxDocumentTemplates;
 
 class BackingWindow : public InterimItemWindow
 {
@@ -55,6 +58,14 @@ class BackingWindow : public InterimItemWindow
     std::unique_ptr<weld::ToggleButton> mxTemplateButton;
 
     std::unique_ptr<weld::Label> mxCreateLabel;
+    std::unique_ptr<weld::Label> mxAllRecentLabel;
+    std::unique_ptr<weld::Label> mxLocalViewLabel;
+    std::unique_ptr<weld::Label> mxScenarioLabel;
+    std::unique_ptr<weld::Label> mxScenarioWriterGroup;
+    std::unique_ptr<weld::Label> mxScenarioCalcGroup;
+    std::unique_ptr<weld::Label> mxScenarioImpressGroup;
+    std::unique_ptr<weld::Label> mxScenarioCompatGroup;
+    std::unique_ptr<weld::Label> mxScenarioFallbackHint;
     std::unique_ptr<weld::Label> mxAltHelpLabel;
     std::unique_ptr<weld::ComboBox> mxFilter;
     std::unique_ptr<weld::MenuButton> mxActions;
@@ -65,23 +76,41 @@ class BackingWindow : public InterimItemWindow
     std::unique_ptr<weld::Button> mxDrawAllButton;
     std::unique_ptr<weld::Button> mxDBAllButton;
     std::unique_ptr<weld::Button> mxMathAllButton;
+    std::unique_ptr<weld::Container> mxScenarioBox;
+    std::unique_ptr<weld::Button> mxScenarioReportButton;
+    std::unique_ptr<weld::Button> mxScenarioMinutesButton;
+    std::unique_ptr<weld::Button> mxScenarioNoticeButton;
+    std::unique_ptr<weld::Button> mxScenarioPlanButton;
+    std::unique_ptr<weld::Button> mxScenarioOutlineButton;
+    std::unique_ptr<weld::Button> mxScenarioBudgetButton;
+    std::unique_ptr<weld::Button> mxScenarioSalesButton;
+    std::unique_ptr<weld::Button> mxScenarioScheduleButton;
+    std::unique_ptr<weld::Button> mxScenarioPitchButton;
+    std::unique_ptr<weld::Button> mxScenarioProjectReportButton;
+    std::unique_ptr<weld::Button> mxScenarioCompatOpenButton;
+    struct ScenarioTemplate
+    {
+        weld::Button* pButton;
+        std::u16string_view aFileName;
+        std::u16string_view aFallbackTitle;
+        FILTER_APPLICATION eFilter;
+    };
+
+    std::unique_ptr<weld::Button> mxScenarioCoursewareButton;
     std::unique_ptr<BrandImage> mxBrandImage;
     std::unique_ptr<weld::CustomWeld> mxBrandImageWeld;
 
     std::unique_ptr<weld::Button> mxHelpButton;
     std::unique_ptr<weld::Button> mxExtensionsButton;
-    std::unique_ptr<weld::Button> mxDonateButton;
 
     std::unique_ptr<weld::Container> mxAllButtonsBox;
     std::unique_ptr<weld::Container> mxButtonsBox;
     std::unique_ptr<weld::Container> mxSmallButtonsBox;
-    std::unique_ptr<weld::Container> mxRightBox;
 
     std::unique_ptr<sfx2::RecentDocsView> mxAllRecentThumbnails;
     std::unique_ptr<weld::CustomWeld> mxAllRecentThumbnailsWin;
     std::unique_ptr<TemplateDefaultView> mxLocalView;
     std::unique_ptr<weld::CustomWeld> mxLocalViewWin;
-    std::unique_ptr<weld::Image> mxDonation;
 
     bool mbLocalViewInitialized;
 
@@ -105,14 +134,22 @@ class BackingWindow : public InterimItemWindow
     DECL_LINK(CreateContextMenuHdl, TemplateViewItem*, void);
     DECL_LINK(OpenTemplateHdl, const OUString&, void);
     DECL_LINK(EditTemplateHdl, const OUString&, void);
-    DECL_LINK(ResizeHdl, const Size&, void);
-    DECL_STATIC_LINK(BackingWindow, MouseReleaseHdl, const MouseEvent&, bool);
+    DECL_LINK(OpenScenarioHdl, weld::Button&, void);
+    DECL_LINK(OpenCompatibilityHdl, weld::Button&, void);
 
     void initControls();
 
     void initializeLocalView();
 
     void checkInstalledModules();
+    bool resolveTemplatePathByFileName(const SfxDocumentTemplates& rTemplates,
+                                       std::u16string_view rTemplateFileName,
+                                       OUString& rTemplatePath);
+    void showTemplateHub(FILTER_APPLICATION eFilter);
+    std::array<ScenarioTemplate, 11> getScenarioTemplates();
+    void openScenarioTemplate(std::u16string_view rTemplateFileName,
+                              std::u16string_view rFallbackTitle,
+                              FILTER_APPLICATION eFilter);
 
     void DataChanged(const DataChangedEvent&) override;
 
@@ -120,7 +157,6 @@ class BackingWindow : public InterimItemWindow
     void ApplyStyleSettings();
 
 private:
-    long nRand;
     void applyFilter();
 
 public:

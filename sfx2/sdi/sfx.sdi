@@ -5255,8 +5255,8 @@ SfxVoidItem Credits SID_CREDITS
     RecordAbsolute = FALSE,
     RecordPerSet;
 
-    AccelConfig = TRUE,
-    MenuConfig = TRUE,
+    AccelConfig = FALSE,
+    MenuConfig = FALSE,
     GroupId = SfxGroupId::Application;
 ]
 SfxVoidItem HyphenationMissing SID_HYPHENATIONMISSING
@@ -5303,9 +5303,9 @@ SfxVoidItem ShowCredits SID_SHOW_CREDITS
     RecordAbsolute = FALSE,
     RecordPerSet;
 
-    AccelConfig = TRUE,
-    MenuConfig = TRUE,
-    ToolBoxConfig = TRUE,
+    AccelConfig = FALSE,
+    MenuConfig = FALSE,
+    ToolBoxConfig = FALSE,
     GroupId = SfxGroupId::Application;
 ]
 

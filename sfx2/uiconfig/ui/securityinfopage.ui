@@ -14,21 +14,21 @@
       <object class="GtkGrid" id="grid9">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="margin-start">12</property>
-        <property name="margin-top">6</property>
+        <property name="margin-start">14</property>
+        <property name="margin-top">8</property>
         <property name="row-spacing">6</property>
         <child>
           <object class="GtkCheckButton" id="readonly">
-            <property name="label" translatable="yes" context="securityinfopage|readonly">_Open file read-only</property>
+            <property name="label" translatable="yes" context="securityinfopage|readonly">以只读方式打开文件</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">False</property>
             <property name="halign">start</property>
-            <property name="use-underline">True</property>
+            <property name="use-underline">False</property>
             <property name="draw-indicator">True</property>
             <child internal-child="accessible">
               <object class="AtkObject" id="readonly-atkobject">
-                <property name="AtkObject::accessible-description" translatable="yes" context="securityinfopage|extended_tip|readonly">Select to allow this document to be opened in read-only mode only.</property>
+                <property name="AtkObject::accessible-description" translatable="yes" context="securityinfopage|extended_tip|readonly">选择后，此文档只能以只读模式打开。</property>
               </object>
             </child>
           </object>
@@ -39,15 +39,15 @@
         </child>
         <child>
           <object class="GtkCheckButton" id="recordchanges">
-            <property name="label" translatable="yes" context="securityinfopage|recordchanges">Record _changes</property>
+            <property name="label" translatable="yes" context="securityinfopage|recordchanges">记录更改</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">False</property>
-            <property name="use-underline">True</property>
+            <property name="use-underline">False</property>
             <property name="draw-indicator">True</property>
             <child internal-child="accessible">
               <object class="AtkObject" id="recordchanges-atkobject">
-                <property name="AtkObject::accessible-description" translatable="yes" context="securityinfopage|extended_tip|recordchanges">Select to enable recording changes. This is the same as Edit - Track Changes - Record.</property>
+                <property name="AtkObject::accessible-description" translatable="yes" context="securityinfopage|extended_tip|recordchanges">选择后启用更改记录。等同于“编辑 - 跟踪更改 - 记录”。</property>
               </object>
             </child>
           </object>
@@ -63,13 +63,13 @@
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkButton" id="protect">
-                <property name="label" translatable="yes" context="securityinfopage|protect">Protect...</property>
+                <property name="label" translatable="yes" context="securityinfopage|protect">保护</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="protect-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="securityinfopage|extended_tip|protect">Protects the change recording state with a password. If change recording is protected for the current document, the button is named Unprotect. Click Unprotect and type the correct password to disable the protection.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="securityinfopage|extended_tip|protect">使用密码保护更改记录状态。如果当前文档的更改记录已受保护，该按钮会显示为“取消保护”。点击“取消保护”并输入正确密码即可关闭保护。</property>
                   </object>
                 </child>
               </object>
@@ -81,14 +81,14 @@
             </child>
             <child>
               <object class="GtkButton" id="unprotect">
-                <property name="label" translatable="yes" context="securityinfopage|unprotect">_Unprotect...</property>
+                <property name="label" translatable="yes" context="securityinfopage|unprotect">取消保护</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="unprotect-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="securityinfopage|extended_tip|unprotect">Protects the change recording state with a password. If change recording is protected for the current document, the button is named Unprotect. Click Unprotect and type the correct password to disable the protection.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="securityinfopage|extended_tip|unprotect">使用密码保护更改记录状态。如果当前文档的更改记录已受保护，该按钮会显示为“取消保护”。点击“取消保护”并输入正确密码即可关闭保护。</property>
                   </object>
                 </child>
               </object>
@@ -110,7 +110,7 @@
       <object class="GtkLabel" id="label47">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="securityinfopage|label47">File Sharing Options</property>
+        <property name="label" translatable="yes" context="securityinfopage|label47">文件共享选项</property>
         <attributes>
           <attribute name="weight" value="bold"/>
         </attributes>
@@ -118,7 +118,7 @@
     </child>
     <child internal-child="accessible">
       <object class="AtkObject" id="SecurityInfoPage-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="securityinfopage|extended_tip|SecurityInfoPage">Sets password options for the current document.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="securityinfopage|extended_tip|SecurityInfoPage">设置当前文档的密码选项。</property>
       </object>
     </child>
   </object>

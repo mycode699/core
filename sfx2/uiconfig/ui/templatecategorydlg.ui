@@ -12,8 +12,8 @@
   </object>
   <object class="GtkDialog" id="TemplatesCategoryDialog">
     <property name="can-focus">False</property>
-    <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="templatecategorydlg|TemplatesCategoryDialog">Select Category</property>
+    <property name="border-width">10</property>
+    <property name="title" translatable="yes" context="templatecategorydlg|TemplatesCategoryDialog">选择分类</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
     <property name="default-height">0</property>
@@ -26,14 +26,15 @@
         <child internal-child="action_area">
           <object class="GtkButtonBox" id="dialog-action_area1">
             <property name="can-focus">False</property>
+            <property name="homogeneous">False</property>
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -44,13 +45,16 @@
             </child>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="stock">_OK</property>
+                <property name="label" translatable="yes" context="stock">确定</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
                 <property name="has-default">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
+                <style>
+                  <class name="suggested-action"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -60,11 +64,11 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="stock">_Cancel</property>
+                <property name="label" translatable="yes" context="stock">取消</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -102,8 +106,8 @@
                   <object class="GtkLabel" id="select_label">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="templatecategorydlg|select_label">Select from Existing Category</property>
-                    <property name="use-underline">True</property>
+                    <property name="label" translatable="yes" context="templatecategorydlg|select_label">选择现有分类</property>
+                    <property name="use-underline">False</property>
                     <property name="mnemonic-widget">categorylb</property>
                     <property name="xalign">0</property>
                     <attributes>
@@ -117,12 +121,12 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkScrolledWindow">
+                  <object class="GtkScrolledWindow" id="category_scroll">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="hexpand">True</property>
                     <property name="vexpand">True</property>
-                    <property name="shadow-type">in</property>
+                    <property name="shadow-type">none</property>
                     <child>
                       <object class="GtkTreeView" id="categorylb">
                         <property name="visible">True</property>
@@ -139,7 +143,9 @@
                         <child>
                           <object class="GtkTreeViewColumn" id="treeviewcolumn1">
                             <child>
-                              <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                              <object class="GtkCellRendererText" id="cellrenderertext1">
+                                <property name="ypad">4</property>
+                              </object>
                               <attributes>
                                 <attribute name="text">0</attribute>
                               </attributes>
@@ -172,8 +178,8 @@
                   <object class="GtkLabel" id="create_label">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="templatecategorydlg|create_label">or Create a New Category</property>
-                    <property name="use-underline">True</property>
+                    <property name="label" translatable="yes" context="templatecategorydlg|create_label">新建分类</property>
+                    <property name="use-underline">False</property>
                     <property name="mnemonic-widget">category_entry</property>
                     <property name="xalign">0</property>
                     <attributes>
@@ -191,6 +197,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">260</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                   </object>

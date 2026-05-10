@@ -4,8 +4,8 @@
   <requires lib="gtk+" version="3.24"/>
   <object class="GtkDialog" id="SearchDialog">
     <property name="can-focus">False</property>
-    <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="searchdialog|SearchDialog">Find on this Page</property>
+    <property name="border-width">10</property>
+    <property name="title" translatable="yes" context="searchdialog|SearchDialog">在此页面查找</property>
     <property name="default-width">0</property>
     <property name="default-height">0</property>
     <property name="type-hint">dialog</property>
@@ -18,15 +18,19 @@
           <object class="GtkButtonBox" id="dialog-action_area3">
             <property name="can-focus">False</property>
             <property name="layout-style">end</property>
+            <property name="homogeneous">False</property>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="searchdialog|search">_Find</property>
+                <property name="label" translatable="yes" context="searchdialog|search">查找</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
                 <property name="has-default">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
+                <style>
+                  <class name="suggested-action"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -36,11 +40,11 @@
             </child>
             <child>
               <object class="GtkButton" id="close">
-                <property name="label" translatable="yes" context="stock">_Close</property>
+                <property name="label" translatable="yes" context="stock">关闭</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -71,6 +75,7 @@
                 <property name="row-spacing">6</property>
                 <child>
                   <object class="GtkComboBoxText" id="searchterm">
+                    <property name="width-request">280</property>
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="valign">center</property>
@@ -93,8 +98,8 @@
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="searchdialog|label1">_Search for:</property>
-                    <property name="use-underline">True</property>
+                    <property name="label" translatable="yes" context="searchdialog|label1">查找内容</property>
+                    <property name="use-underline">False</property>
                     <property name="mnemonic-widget">searchterm</property>
                     <property name="xalign">0</property>
                   </object>
@@ -119,11 +124,11 @@
                 <property name="column-spacing">12</property>
                 <child>
                   <object class="GtkCheckButton" id="matchcase">
-                    <property name="label" translatable="yes" context="searchdialog|matchcase">Ma_tch case</property>
+                    <property name="label" translatable="yes" context="searchdialog|matchcase">区分大小写</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
-                    <property name="use-underline">True</property>
+                    <property name="use-underline">False</property>
                     <property name="draw-indicator">True</property>
                   </object>
                   <packing>
@@ -133,11 +138,11 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="wholewords">
-                    <property name="label" translatable="yes" context="searchdialog|wholewords">Whole wor_ds only</property>
+                    <property name="label" translatable="yes" context="searchdialog|wholewords">仅匹配完整词语</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
-                    <property name="use-underline">True</property>
+                    <property name="use-underline">False</property>
                     <property name="draw-indicator">True</property>
                   </object>
                   <packing>
@@ -147,11 +152,11 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="backwards">
-                    <property name="label" translatable="yes" context="searchdialog|backwards">Bac_kwards</property>
+                    <property name="label" translatable="yes" context="searchdialog|backwards">向上查找</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
-                    <property name="use-underline">True</property>
+                    <property name="use-underline">False</property>
                     <property name="draw-indicator">True</property>
                   </object>
                   <packing>
@@ -161,11 +166,11 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="wrap">
-                    <property name="label" translatable="yes" context="searchdialog|wrap">Wrap _around</property>
+                    <property name="label" translatable="yes" context="searchdialog|wrap">循环查找</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
-                    <property name="use-underline">True</property>
+                    <property name="use-underline">False</property>
                     <property name="draw-indicator">True</property>
                   </object>
                   <packing>

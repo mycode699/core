@@ -4,14 +4,14 @@
   <requires lib="gtk+" version="3.24"/>
   <object class="GtkMessageDialog" id="EditDocumentDialog">
     <property name="can-focus">False</property>
-    <property name="title" translatable="yes" context="editdocumentdialog|EditDocumentDialog">Confirm editing of document</property>
+    <property name="title" translatable="yes" context="editdocumentdialog|EditDocumentDialog">确认编辑文档</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="type-hint">dialog</property>
     <property name="skip-taskbar-hint">True</property>
     <property name="message-type">question</property>
-    <property name="text" translatable="yes" context="editdocumentdialog|EditDocumentDialog">Are you sure you want to edit the document?</property>
-    <property name="secondary-text" translatable="yes" context="editdocumentdialog|EditDocumentDialog">The original file can be signed without editing the document. Existing signatures on the document will be lost in case of saving an edited version.</property>
+    <property name="text" translatable="yes" context="editdocumentdialog|EditDocumentDialog">要切换到可编辑状态吗？</property>
+    <property name="secondary-text" translatable="yes" context="editdocumentdialog|EditDocumentDialog">无需编辑即可签署原始文件。保存编辑后的版本会移除文档上的现有签名。</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="messagedialog-vbox">
         <property name="can-focus">False</property>
@@ -20,15 +20,20 @@
         <child internal-child="action_area">
           <object class="GtkButtonBox" id="messagedialog-action_area">
             <property name="can-focus">False</property>
+            <property name="layout-style">end</property>
+            <property name="homogeneous">False</property>
             <child>
               <object class="GtkButton" id="edit">
-                <property name="label" translatable="yes" context="editdocumentdialog|edit">Edit Document</property>
+                <property name="label" translatable="yes" context="editdocumentdialog|edit">继续编辑</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
                 <property name="has-default">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
+                <style>
+                  <class name="suggested-action"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -39,11 +44,11 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="editdocumentdialog|cancel">Cancel</property>
+                <property name="label" translatable="yes" context="editdocumentdialog|cancel">保持只读</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>

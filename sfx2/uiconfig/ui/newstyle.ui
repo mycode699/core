@@ -12,8 +12,8 @@
   </object>
   <object class="GtkDialog" id="CreateStyleDialog">
     <property name="can-focus">False</property>
-    <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="newstyle|CreateStyleDialog">New Style from Selection</property>
+    <property name="border-width">10</property>
+    <property name="title" translatable="yes" context="newstyle|CreateStyleDialog">从所选内容新建样式</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
     <property name="default-height">0</property>
@@ -28,17 +28,21 @@
         <child internal-child="action_area">
           <object class="GtkButtonBox" id="dialog-action_area3">
             <property name="can-focus">False</property>
+            <property name="homogeneous">False</property>
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="stock">_OK</property>
+                <property name="label" translatable="yes" context="stock">确定</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
                 <property name="has-default">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
+                <style>
+                  <class name="suggested-action"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -48,11 +52,11 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="stock">_Cancel</property>
+                <property name="label" translatable="yes" context="stock">取消</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -62,11 +66,11 @@
             </child>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -102,12 +106,12 @@
                 <property name="vexpand">True</property>
                 <property name="row-spacing">3</property>
                 <child>
-                  <object class="GtkScrolledWindow">
+                  <object class="GtkScrolledWindow" id="styles_scroll">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="hexpand">True</property>
                     <property name="vexpand">True</property>
-                    <property name="shadow-type">in</property>
+                    <property name="shadow-type">none</property>
                     <child>
                       <object class="GtkTreeView" id="styles">
                         <property name="visible">True</property>
@@ -125,7 +129,9 @@
                         <child>
                           <object class="GtkTreeViewColumn" id="treeviewcolumn1">
                             <child>
-                              <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                              <object class="GtkCellRendererText" id="cellrenderertext1">
+                                <property name="ypad">4</property>
+                              </object>
                               <attributes>
                                 <attribute name="text">0</attribute>
                               </attributes>
@@ -150,6 +156,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">260</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
@@ -167,7 +174,7 @@
                   <object class="GtkLabel" id="categorylabel">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="newstyle|categorylabel">Custom styles for current document</property>
+                    <property name="label" translatable="yes" context="newstyle|categorylabel">当前文档的自定义样式</property>
                     <property name="mnemonic-widget">styles</property>
                     <property name="xalign">0</property>
                     <attributes>
@@ -185,7 +192,7 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="newstyle|label1">Enter new style name:</property>
+                <property name="label" translatable="yes" context="newstyle|label1">新样式名称</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>

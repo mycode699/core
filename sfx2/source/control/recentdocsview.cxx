@@ -283,11 +283,10 @@ void RecentDocsView::Paint(vcl::RenderContext& rRenderContext, const tools::Rect
     if (!mItemList.empty())
         return;
 
-    if (maWelcomeImage.IsEmpty())
-    {
-        const tools::Long aWidth(aRect.GetWidth() > aRect.getOpenHeight() ? aRect.GetHeight()/2 : aRect.GetWidth()/2);
-        maWelcomeImage = SfxApplication::GetApplicationLogo(aWidth);
-    }
+    const tools::Long nLogoWidth(
+        aRect.GetWidth() > aRect.getOpenHeight() ? aRect.GetHeight() / 2 : aRect.GetWidth() / 2);
+    if (maWelcomeImage.IsEmpty() || maWelcomeImage.GetSizePixel().Width() != nLogoWidth)
+        maWelcomeImage = SfxApplication::GetApplicationLogo(nLogoWidth);
 
     // No recent files to be shown yet. Show a welcome screen.
     auto popIt = rRenderContext.ScopedPush(vcl::PushFlags::FONT | vcl::PushFlags::TEXTCOLOR);
@@ -298,17 +297,19 @@ void RecentDocsView::Paint(vcl::RenderContext& rRenderContext, const tools::Rect
 
     const Size aImgSize = maWelcomeImage.GetSizePixel();
     const Size& rSize = GetOutputSizePixel();
+    const tools::Long nGap = nTextHeight;
+    const tools::Long nTextBlockHeight = 3 * nTextHeight + nGap;
 
-    const int nX = (rSize.Width() - aImgSize.Width())/2;
-    int nY = (rSize.Height() - 3 * nTextHeight - aImgSize.Height())/2;
+    const int nX = (rSize.Width() - aImgSize.Width()) / 2;
+    int nY = (rSize.Height() - nTextBlockHeight - aImgSize.Height()) / 2;
     Point aImgPoint(nX, nY);
     rRenderContext.DrawBitmap(aImgPoint, aImgSize, maWelcomeImage);
 
-    nY = nY + aImgSize.Height();
-    rRenderContext.DrawText(tools::Rectangle(0, nY + 1 * nTextHeight, rSize.Width(), nY + nTextHeight),
+    nY += aImgSize.Height() + nGap;
+    rRenderContext.DrawText(tools::Rectangle(0, nY, rSize.Width(), nY + nTextHeight),
                             maWelcomeLine1,
                             DrawTextFlags::Center);
-    rRenderContext.DrawText(tools::Rectangle(0, nY + 2 * nTextHeight, rSize.Width(), rSize.Height()),
+    rRenderContext.DrawText(tools::Rectangle(0, nY + nTextHeight, rSize.Width(), rSize.Height()),
                             maWelcomeLine2,
                             DrawTextFlags::MultiLine | DrawTextFlags::WordBreak | DrawTextFlags::Center);
 }

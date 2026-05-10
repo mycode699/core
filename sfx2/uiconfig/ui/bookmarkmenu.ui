@@ -9,7 +9,7 @@
       <object class="GtkMenuItem" id="display">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="bookmarkmenu|display">Display</property>
+        <property name="label" translatable="yes" context="bookmarkmenu|display">显示</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -23,7 +23,7 @@
       <object class="GtkMenuItem" id="rename">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="bookmarkmenu|rename">Rename...</property>
+        <property name="label" translatable="yes" context="bookmarkmenu|rename">重命名...</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -31,7 +31,7 @@
       <object class="GtkMenuItem" id="delete">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="bookmarkmenu|delete">Delete</property>
+        <property name="label" translatable="yes" context="bookmarkmenu|delete">删除</property>
         <property name="use-underline">True</property>
       </object>
     </child>

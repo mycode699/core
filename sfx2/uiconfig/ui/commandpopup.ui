@@ -32,7 +32,7 @@
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="truncate-multiline">True</property>
-            <property name="placeholder-text" translatable="yes" context="commandpopup|entry">Search command</property>
+            <property name="placeholder-text" translatable="yes" context="commandpopup|entry">搜索命令</property>
           </object>
           <packing>
             <property name="expand">False</property>

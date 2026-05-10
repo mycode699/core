@@ -4,8 +4,8 @@
   <requires lib="gtk+" version="3.24"/>
   <object class="GtkDialog" id="LinkEditDialog">
     <property name="can-focus">False</property>
-    <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="linkeditdialog|title">Modify DDE Link</property>
+    <property name="border-width">10</property>
+    <property name="title" translatable="yes" context="linkeditdialog|title">修改 DDE 链接</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
     <property name="default-height">0</property>
@@ -18,16 +18,20 @@
         <child internal-child="action_area">
           <object class="GtkButtonBox" id="dialog-action_area1">
             <property name="can-focus">False</property>
+            <property name="homogeneous">False</property>
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="stock">_OK</property>
+                <property name="label" translatable="yes" context="stock">确定</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
                 <property name="has-default">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
+                <style>
+                  <class name="suggested-action"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -37,11 +41,11 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="stock">_Cancel</property>
+                <property name="label" translatable="yes" context="stock">取消</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -51,11 +55,11 @@
             </child>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -96,8 +100,8 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="label" translatable="yes" context="linkeditdialog|label2">_Application:</property>
-                    <property name="use-underline">True</property>
+                    <property name="label" translatable="yes" context="linkeditdialog|label2">应用程序</property>
+                    <property name="use-underline">False</property>
                     <property name="mnemonic-widget">app</property>
                   </object>
                   <packing>
@@ -110,8 +114,8 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="label" translatable="yes" context="linkeditdialog|label3">_File:</property>
-                    <property name="use-underline">True</property>
+                    <property name="label" translatable="yes" context="linkeditdialog|label3">文件</property>
+                    <property name="use-underline">False</property>
                     <property name="mnemonic-widget">file</property>
                   </object>
                   <packing>
@@ -124,8 +128,8 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="label" translatable="yes" context="linkeditdialog|label4">_Category:</property>
-                    <property name="use-underline">True</property>
+                    <property name="label" translatable="yes" context="linkeditdialog|label4">类别</property>
+                    <property name="use-underline">False</property>
                     <property name="mnemonic-widget">category</property>
                   </object>
                   <packing>
@@ -138,6 +142,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">280</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
@@ -156,6 +161,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">280</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
@@ -174,6 +180,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">280</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
@@ -193,7 +200,7 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="linkeditdialog|label1">Modify Link</property>
+                <property name="label" translatable="yes" context="linkeditdialog|label1">修改链接</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>

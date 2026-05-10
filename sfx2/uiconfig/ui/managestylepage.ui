@@ -30,8 +30,8 @@
               <object class="GtkLabel" id="nameft">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="managestylepage|nameft">_Name:</property>
-                <property name="use-underline">True</property>
+                <property name="label" translatable="yes" context="managestylepage|nameft">名称:</property>
+                <property name="use-underline">False</property>
                 <property name="mnemonic-widget">name</property>
                 <property name="xalign">0</property>
               </object>
@@ -44,8 +44,8 @@
               <object class="GtkLabel" id="nextstyleft">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="managestylepage|nextstyleft">Ne_xt style:</property>
-                <property name="use-underline">True</property>
+                <property name="label" translatable="yes" context="managestylepage|nextstyleft">下一样式:</property>
+                <property name="use-underline">False</property>
                 <property name="mnemonic-widget">nextstyle</property>
                 <property name="xalign">0</property>
               </object>
@@ -58,8 +58,8 @@
               <object class="GtkLabel" id="linkedwithft">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="managestylepage|linkedwithft">Inherit from:</property>
-                <property name="use-underline">True</property>
+                <property name="label" translatable="yes" context="managestylepage|linkedwithft">继承自:</property>
+                <property name="use-underline">False</property>
                 <property name="mnemonic-widget">linkedwith</property>
                 <property name="xalign">0</property>
               </object>
@@ -72,8 +72,8 @@
               <object class="GtkLabel" id="categoryft">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="managestylepage|categoryft">_Category:</property>
-                <property name="use-underline">True</property>
+                <property name="label" translatable="yes" context="managestylepage|categoryft">分类:</property>
+                <property name="use-underline">False</property>
                 <property name="mnemonic-widget">category</property>
                 <property name="xalign">0</property>
               </object>
@@ -101,7 +101,7 @@
             </child>
             <child>
               <object class="GtkButton" id="editstyle">
-                <property name="label" translatable="yes" context="managestylepage|editstyle">Edit Style</property>
+                <property name="label" translatable="yes" context="managestylepage|editstyle">编辑样式</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -135,7 +135,7 @@
             </child>
             <child>
               <object class="GtkButton" id="editlinkstyle">
-                <property name="label" translatable="yes" context="managestylepage|editlinkstyle">Edit Style</property>
+                <property name="label" translatable="yes" context="managestylepage|editlinkstyle">编辑样式</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -169,12 +169,12 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="autoupdate">
-                <property name="label" translatable="yes" context="managestylepage|autoupdate">_Automatic update from document</property>
+                <property name="label" translatable="yes" context="managestylepage|autoupdate">根据文档自动更新</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
                 <property name="no-show-all">True</property>
-                <property name="tooltip-text" translatable="yes" context="managestylepage|autoupdate|tooltip_text">Any paragraph formatting changes in the document to a paragraph with this style are applied automatically to modify the paragraph style.</property>
-                <property name="use-underline">True</property>
+                <property name="tooltip-text" translatable="yes" context="managestylepage|autoupdate|tooltip_text">文档中使用此样式的段落发生格式变化时，会自动更新段落样式。</property>
+                <property name="use-underline">False</property>
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="autoupdate-atkobject">
@@ -225,7 +225,7 @@
           <object class="GtkLabel" id="label1">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="managestylepage|label1">Style</property>
+            <property name="label" translatable="yes" context="managestylepage|label1">样式</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -316,7 +316,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
-                    <property name="label" translatable="yes" context="managestylepage|viewprops">View</property>
+                    <property name="label" translatable="yes" context="managestylepage|viewprops">查看</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="viewprops-atkobject">
                         <property name="AtkObject::accessible-name" translatable="yes" context="managestylepage|viewprops">View style properties as description text</property>
@@ -334,7 +334,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
-                    <property name="label" translatable="yes" context="managestylepage|editprops">Edit</property>
+                    <property name="label" translatable="yes" context="managestylepage|editprops">编辑</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="editprops-atkobject">
                         <property name="AtkObject::accessible-name" translatable="yes" context="managestylepage|editprops">Edit style properties as interactive chips</property>
@@ -360,7 +360,7 @@
           <object class="GtkLabel" id="label2">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="managestylepage|label2">Contains</property>
+            <property name="label" translatable="yes" context="managestylepage|label2">包含内容</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>

@@ -66,7 +66,7 @@
                 <child>
                   <object class="GtkToolButton" id="backward">
                     <property name="visible">True</property>
-                    <property name="tooltip-text" translatable="yes" context="helpwindow|backward|tooltip_text">Previous Page</property>
+                    <property name="tooltip-text" translatable="yes" context="helpwindow|backward|tooltip_text">上一页</property>
                     <property name="icon-name">res/sc06301.png</property>
                   </object>
                   <packing>
@@ -77,7 +77,7 @@
                 <child>
                   <object class="GtkToolButton" id="forward">
                     <property name="visible">True</property>
-                    <property name="tooltip-text" translatable="yes" context="helpwindow|forward|tooltip_text">Next Page</property>
+                    <property name="tooltip-text" translatable="yes" context="helpwindow|forward|tooltip_text">下一页</property>
                     <property name="icon-name">res/sc06300.png</property>
                   </object>
                   <packing>
@@ -88,7 +88,7 @@
                 <child>
                   <object class="GtkToolButton" id="start">
                     <property name="visible">True</property>
-                    <property name="tooltip-text" translatable="yes" context="helpwindow|start|tooltip_text">First Page</property>
+                    <property name="tooltip-text" translatable="yes" context="helpwindow|start|tooltip_text">第一页</property>
                     <property name="icon-name">res/sc06303.png</property>
                   </object>
                   <packing>
@@ -109,7 +109,7 @@
                 <child>
                   <object class="GtkToolButton" id="print">
                     <property name="visible">True</property>
-                    <property name="tooltip-text" translatable="yes" context="helpwindow|print|tooltip_text">Print</property>
+                    <property name="tooltip-text" translatable="yes" context="helpwindow|print|tooltip_text">打印</property>
                     <property name="icon-name">res/sc05504.png</property>
                   </object>
                   <packing>
@@ -120,7 +120,7 @@
                 <child>
                   <object class="GtkToolButton" id="bookmarks">
                     <property name="visible">True</property>
-                    <property name="tooltip-text" translatable="yes" context="helpwindow|bookmarks|tooltip_text">Add to Bookmarks</property>
+                    <property name="tooltip-text" translatable="yes" context="helpwindow|bookmarks|tooltip_text">添加到书签</property>
                     <property name="icon-name">sfx2/res/favourite.png</property>
                   </object>
                   <packing>
@@ -131,7 +131,7 @@
                 <child>
                   <object class="GtkToolButton" id="searchdialog">
                     <property name="visible">True</property>
-                    <property name="tooltip-text" translatable="yes" context="helpwindow|searchdialog|tooltip_text">Find on this Page</property>
+                    <property name="tooltip-text" translatable="yes" context="helpwindow|searchdialog|tooltip_text">在此页面查找</property>
                     <property name="icon-name">sfx2/res/sc05961.png</property>
                   </object>
                   <packing>

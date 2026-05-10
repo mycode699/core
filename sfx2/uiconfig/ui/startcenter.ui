@@ -14,14 +14,14 @@
       <object class="GtkMenuItem" id="clear_all">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="startcenter|clear_all">Clear Recent Documents</property>
+        <property name="label" translatable="yes" context="startcenter|clear_all">清空最近记录</property>
       </object>
     </child>
     <child>
       <object class="GtkMenuItem" id="clear_unavailable">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="startcenter|clear_unavailable">Clear Unavailable Files</property>
+        <property name="label" translatable="yes" context="startcenter|clear_unavailable">移除不可用记录</property>
       </object>
     </child>
   </object>
@@ -109,16 +109,16 @@
                     <property name="can-focus">False</property>
                     <property name="vexpand">True</property>
                     <property name="orientation">vertical</property>
-                    <property name="spacing">3</property>
+                    <property name="spacing">6</property>
                     <child>
                       <object class="GtkButton" id="open_all">
-                        <property name="label" translatable="yes" context="startcenter|open_all">_Open File</property>
+                        <property name="label" translatable="yes" context="startcenter|open_all">打开本地文件</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="margin-start">6</property>
-                        <property name="margin-end">6</property>
-                        <property name="margin-top">6</property>
+                        <property name="margin-start">10</property>
+                        <property name="margin-end">10</property>
+                        <property name="margin-top">8</property>
                         <property name="image">open_all_image</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
@@ -133,12 +133,12 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="open_remote">
-                        <property name="label" translatable="yes" context="startcenter|open_remote">Remote File_s</property>
+                        <property name="label" translatable="yes" context="startcenter|open_remote">云端文件</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="margin-start">6</property>
-                        <property name="margin-end">6</property>
+                        <property name="margin-start">10</property>
+                        <property name="margin-end">10</property>
                         <property name="image">open_all_image2</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
@@ -155,8 +155,8 @@
                       <object class="GtkSeparator" id="separator3">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="margin-start">6</property>
-                        <property name="margin-end">6</property>
+                        <property name="margin-start">10</property>
+                        <property name="margin-end">10</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -166,12 +166,12 @@
                     </child>
                     <child>
                       <object class="GtkToggleButton" id="open_recent">
-                        <property name="label" translatable="yes" context="startcenter|open_recent">_Recent Documents</property>
+                        <property name="label" translatable="yes" context="startcenter|open_recent">最近文件</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="margin-start">6</property>
-                        <property name="margin-end">6</property>
+                        <property name="margin-start">10</property>
+                        <property name="margin-end">10</property>
                         <property name="image">open_all_image1</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
@@ -186,12 +186,12 @@
                     </child>
                     <child>
                       <object class="GtkToggleButton" id="templates_all">
-                        <property name="label" translatable="yes" context="startcenter|templates_all">T_emplates</property>
+                        <property name="label" translatable="yes" context="startcenter|templates_all">任务模板</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="margin-start">6</property>
-                        <property name="margin-end">6</property>
+                        <property name="margin-start">10</property>
+                        <property name="margin-end">10</property>
                         <property name="image">templates_all_image</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
@@ -208,8 +208,8 @@
                       <object class="GtkSeparator" id="separator1">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="margin-start">6</property>
-                        <property name="margin-end">6</property>
+                        <property name="margin-start">10</property>
+                        <property name="margin-end">10</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -221,9 +221,10 @@
                       <object class="GtkLabel" id="create_label">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="margin-start">12</property>
+                        <property name="margin-start">14</property>
+                        <property name="margin-top">14</property>
                         <property name="margin-bottom">6</property>
-                        <property name="label" translatable="yes" context="startcenter|create_label">Create:</property>
+                        <property name="label" translatable="yes" context="startcenter|create_label">新建文件</property>
                         <property name="xalign">0</property>
                       </object>
                       <packing>
@@ -234,12 +235,12 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="writer_all">
-                        <property name="label" translatable="yes" context="startcenter|writer_all">_Writer Document</property>
+                        <property name="label" translatable="yes" context="startcenter|writer_all">空白文档</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="margin-start">6</property>
-                        <property name="margin-end">6</property>
+                        <property name="margin-start">10</property>
+                        <property name="margin-end">10</property>
                         <property name="image">writer_all_image</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
@@ -254,12 +255,12 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="calc_all">
-                        <property name="label" translatable="yes" context="startcenter|calc_all">_Calc Spreadsheet</property>
+                        <property name="label" translatable="yes" context="startcenter|calc_all">空白表格</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="margin-start">6</property>
-                        <property name="margin-end">6</property>
+                        <property name="margin-start">10</property>
+                        <property name="margin-end">10</property>
                         <property name="image">calc_all_image</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
@@ -274,12 +275,12 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="impress_all">
-                        <property name="label" translatable="yes" context="startcenter|impress_all">_Impress Presentation</property>
+                        <property name="label" translatable="yes" context="startcenter|impress_all">空白演示</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="margin-start">6</property>
-                        <property name="margin-end">6</property>
+                        <property name="margin-start">10</property>
+                        <property name="margin-end">10</property>
                         <property name="image">impress_all_image</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
@@ -294,12 +295,12 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="draw_all">
-                        <property name="label" translatable="yes" context="startcenter|draw_all">_Draw Drawing</property>
+                        <property name="label" translatable="yes" context="startcenter|draw_all">绘图</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="margin-start">6</property>
-                        <property name="margin-end">6</property>
+                        <property name="margin-start">10</property>
+                        <property name="margin-end">10</property>
                         <property name="image">draw_all_image</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
@@ -314,12 +315,12 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="math_all">
-                        <property name="label" translatable="yes" context="startcenter|math_all">_Math Formula</property>
+                        <property name="label" translatable="yes" context="startcenter|math_all">公式</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="margin-start">6</property>
-                        <property name="margin-end">6</property>
+                        <property name="margin-start">10</property>
+                        <property name="margin-end">10</property>
                         <property name="image">math_all_image</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
@@ -334,12 +335,12 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="database_all">
-                        <property name="label" translatable="yes" context="startcenter|database_all">_Base Database</property>
+                        <property name="label" translatable="yes" context="startcenter|database_all">数据库</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="margin-start">6</property>
-                        <property name="margin-end">6</property>
+                        <property name="margin-start">10</property>
+                        <property name="margin-end">10</property>
                         <property name="image">database_all_image</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
@@ -356,7 +357,7 @@
                       <object class="GtkLabel" id="althelplabel">
                         <property name="can-focus">False</property>
                         <property name="no-show-all">True</property>
-                        <property name="label" translatable="yes" context="startcenter|althelplabel">He_lp</property>
+                        <property name="label" translatable="yes" context="startcenter|althelplabel">帮助</property>
                         <property name="use-underline">True</property>
                       </object>
                       <packing>
@@ -403,15 +404,15 @@
                   <object class="GtkBox" id="small_buttons_box">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="margin-start">6</property>
-                    <property name="margin-end">6</property>
-                    <property name="margin-top">6</property>
-                    <property name="margin-bottom">6</property>
+                    <property name="margin-start">10</property>
+                    <property name="margin-end">10</property>
+                    <property name="margin-top">8</property>
+                    <property name="margin-bottom">8</property>
                     <property name="spacing">6</property>
                     <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkButton" id="help">
-                        <property name="label" translatable="yes" context="stock">_Help</property>
+                        <property name="label" translatable="yes" context="stock">帮助</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
@@ -426,7 +427,7 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="extensions">
-                        <property name="label" translatable="yes" context="startcenter|extensions">E_xtensions</property>
+                        <property name="label" translatable="yes" context="startcenter|extensions">扩展</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
@@ -438,53 +439,6 @@
                         <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="donate">
-                        <property name="can-focus">True</property>
-                        <property name="receives-default">True</property>
-                        <property name="no-show-all">True</property>
-                        <property name="relief">none</property>
-                        <property name="use-underline">True</property>
-                        <property name="always-show-image">True</property>
-                        <child>
-                          <object class="GtkBox">
-                            <property name="visible">True</property>
-                            <property name="can-focus">False</property>
-                            <property name="spacing">2</property>
-                            <child>
-                              <object class="GtkImage" id="donate_image">
-                                <property name="visible">True</property>
-                                <property name="can-focus">False</property>
-                                <property name="icon-name">res/donate.png</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkLabel">
-                                <property name="visible">True</property>
-                                <property name="can-focus">False</property>
-                                <property name="label" comments="Translated via STR_DONATE_BUTTON">Donate</property>
-                                <property name="use-underline">True</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">2</property>
                       </packing>
                     </child>
                   </object>
@@ -499,7 +453,7 @@
             <child type="label">
               <object class="GtkLabel" id="label1">
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="startcenter|label1">Application</property>
+                <property name="label" translatable="yes" context="startcenter|label1">可圈office</property>
               </object>
             </child>
           </object>
@@ -518,10 +472,23 @@
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkLabel" id="all_recent_label">
+                <property name="visible">False</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="startcenter|all_recent_label">Recent Files List</property>
-                <property name="use-underline">True</property>
+                <property name="no-show-all">True</property>
+                <property name="margin-start">12</property>
+                <property name="margin-end">12</property>
+                <property name="margin-top">12</property>
+                <property name="margin-bottom">8</property>
+                <property name="xalign">0</property>
+                <property name="yalign">0</property>
+                <property name="wrap">False</property>
+                <property name="label" translatable="yes" context="startcenter|all_recent_label">最近文件</property>
+                <property name="use-underline">False</property>
                 <property name="mnemonic-widget">all_recent</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                  <attribute name="scale" value="1.08"/>
+                </attributes>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -531,10 +498,22 @@
             </child>
             <child>
               <object class="GtkLabel" id="local_view_label">
+                <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="startcenter|local_view_label">Templates List</property>
-                <property name="use-underline">True</property>
+                <property name="margin-start">12</property>
+                <property name="margin-end">12</property>
+                <property name="margin-top">12</property>
+                <property name="margin-bottom">8</property>
+                <property name="xalign">0</property>
+                <property name="yalign">0</property>
+                <property name="wrap">False</property>
+                <property name="label" translatable="yes" context="startcenter|local_view_label">工作台</property>
+                <property name="use-underline">False</property>
                 <property name="mnemonic-widget">local_view</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                  <attribute name="scale" value="1.08"/>
+                </attributes>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -543,21 +522,385 @@
               </packing>
             </child>
             <child>
+              <object class="GtkBox" id="scenario_box">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">8</property>
+                <property name="margin-start">12</property>
+                <property name="margin-end">12</property>
+                <property name="margin-top">0</property>
+                <property name="margin-bottom">8</property>
+                <child>
+                  <object class="GtkLabel" id="scenario_label">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-bottom">2</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes" context="startcenter|scenario_label">常用任务</property>
+                    <property name="mnemonic-widget">scenario_report</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="scenario_subtitle">
+                    <property name="visible">False</property>
+                    <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
+                    <property name="margin-bottom">4</property>
+                    <property name="xalign">0</property>
+                    <property name="wrap">True</property>
+                    <property name="label" translatable="yes" context="startcenter|scenario_subtitle">选择任务模板。</property>
+                    <attributes>
+                      <attribute name="scale" value="0.92"/>
+                      <attribute name="foreground-alpha" value="75%"/>
+                    </attributes>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="scenario_subtitle-atkobject">
+                        <property name="AtkObject::accessible-role" translatable="no">static</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <!-- n-columns=3 n-rows=7 -->
+                  <object class="GtkGrid" id="scenario_grid">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="row-spacing">8</property>
+                    <property name="column-spacing">8</property>
+                    <property name="column-homogeneous">True</property>
+                    <child>
+                      <object class="GtkLabel" id="scenario_writer_group">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="label" translatable="yes" context="startcenter|scenario_writer_group">文档写作</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                          <attribute name="scale" value="0.88"/>
+                          <attribute name="foreground-alpha" value="80%"/>
+                        </attributes>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="scenario_writer_group-atkobject">
+                            <property name="AtkObject::accessible-role" translatable="no">static</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="scenario_calc_group">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="label" translatable="yes" context="startcenter|scenario_calc_group">数据表格</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                          <attribute name="scale" value="0.88"/>
+                          <attribute name="foreground-alpha" value="80%"/>
+                        </attributes>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="scenario_calc_group-atkobject">
+                            <property name="AtkObject::accessible-role" translatable="no">static</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="scenario_impress_group">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="label" translatable="yes" context="startcenter|scenario_impress_group">演示汇报</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                          <attribute name="scale" value="0.88"/>
+                          <attribute name="foreground-alpha" value="80%"/>
+                        </attributes>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="scenario_impress_group-atkobject">
+                            <property name="AtkObject::accessible-role" translatable="no">static</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="scenario_compat_group">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="label" translatable="yes" context="startcenter|scenario_compat_group">打开文件</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                          <attribute name="scale" value="0.88"/>
+                          <attribute name="foreground-alpha" value="80%"/>
+                        </attributes>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="scenario_compat_group-atkobject">
+                            <property name="AtkObject::accessible-role" translatable="no">static</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">5</property>
+                        <property name="width">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="scenario_report">
+                        <property name="label" translatable="yes" context="startcenter|scenario_report">工作汇报</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="halign">fill</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_report|tool_tip">从汇报模板开始，快速整理进展、问题和下一步。</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="scenario_minutes">
+                        <property name="label" translatable="yes" context="startcenter|scenario_minutes">会议纪要</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="halign">fill</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_minutes|tool_tip">记录议题、结论、负责人和待办事项。</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="scenario_notice">
+                        <property name="label" translatable="yes" context="startcenter|scenario_notice">通知</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="halign">fill</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_notice|tool_tip">创建正式通知、公告或内部说明。</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="scenario_plan">
+                        <property name="label" translatable="yes" context="startcenter|scenario_plan">项目方案</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="halign">fill</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_plan|tool_tip">搭建项目目标、范围、计划和交付说明。</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="scenario_outline">
+                        <property name="label" translatable="yes" context="startcenter|scenario_outline">演示提纲</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="halign">fill</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_outline|tool_tip">先整理演示结构和要点，再制作正式演示文稿。</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="scenario_budget">
+                        <property name="label" translatable="yes" context="startcenter|scenario_budget">预算总览</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="halign">fill</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_budget|tool_tip">从预算表开始汇总收入、成本和差异。</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="scenario_sales">
+                        <property name="label" translatable="yes" context="startcenter|scenario_sales">销售跟进</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="halign">fill</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_sales|tool_tip">管理客户、阶段、金额和下一次跟进。</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="scenario_schedule">
+                        <property name="label" translatable="yes" context="startcenter|scenario_schedule">项目排期</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="halign">fill</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_schedule|tool_tip">规划里程碑、任务、负责人和时间节点。</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="scenario_pitch">
+                        <property name="label" translatable="yes" context="startcenter|scenario_pitch">商务路演</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="halign">fill</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_pitch|tool_tip">准备面向客户或投资人的商务演示。</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="scenario_project_report">
+                        <property name="label" translatable="yes" context="startcenter|scenario_project_report">项目汇报</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="halign">fill</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_project_report|tool_tip">用演示稿汇报项目背景、进展、风险和计划。</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="scenario_courseware">
+                        <property name="label" translatable="yes" context="startcenter|scenario_courseware">教学课件</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="halign">fill</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_courseware|tool_tip">创建课程讲义、培训材料或课堂演示。</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="scenario_compat_open">
+                        <property name="label" translatable="yes" context="startcenter|scenario_compat_open">打开现有文件</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="halign">fill</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_compat_open|tool_tip">选择本地 DOCX、XLSX、PPTX 或 ODF 文件。</property>
+                        <style>
+                          <class name="suggested-action"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">6</property>
+                        <property name="width">3</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="scenario_fallback_hint">
+                    <property name="visible">False</property>
+                    <property name="can-focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="wrap">True</property>
+                    <property name="label" translatable="yes" context="startcenter|scenario_fallback_hint">未找到匹配模板，已显示相关模板。</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="scenario_fallback_hint-atkobject">
+                        <property name="AtkObject::accessible-role" translatable="no">static</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
               <!-- n-columns=3 n-rows=1 -->
               <object class="GtkGrid" id="actions">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="margin-start">6</property>
-                <property name="margin-end">6</property>
+                <property name="margin-start">12</property>
+                <property name="margin-end">12</property>
                 <property name="margin-top">6</property>
-                <property name="margin-bottom">6</property>
-                <property name="column-spacing">3</property>
+                <property name="margin-bottom">10</property>
+                <property name="column-spacing">8</property>
                 <child>
                   <object class="GtkLabel" id="lbFilter">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="label" translatable="yes" context="startcenter|filter_label">Filter:</property>
+                    <property name="label" translatable="yes" context="startcenter|filter_label">类型</property>
                     <accessibility>
                       <relation type="label-for" target="cbFilter"/>
                     </accessibility>
@@ -570,15 +913,14 @@
                 <child>
                   <object class="GtkComboBoxText" id="cbFilter">
                     <property name="visible">True</property>
-                    <property name="can-focus">False</property>
+                    <property name="can-focus">True</property>
                     <property name="halign">start</property>
                     <property name="active">0</property>
                     <items>
-                      <item id="filter_none" translatable="yes" context="startcenter|filter_none">All Documents</item>
-                      <item id="filter_writer" translatable="yes" context="startcenter|filter_writer">Text Documents</item>
-                      <item id="filter_calc" translatable="yes" context="startcenter|filter_calc">Spreadsheets</item>
-                      <item id="filter_impress" translatable="yes" context="startcenter|filter_impress">Presentations</item>
-                      <item id="filter_draw" translatable="yes" context="startcenter|filter_draw">Drawings</item>
+                      <item id="filter_none" translatable="yes" context="startcenter|filter_none">全部</item>
+                      <item id="filter_writer" translatable="yes" context="startcenter|filter_writer">文档</item>
+                      <item id="filter_calc" translatable="yes" context="startcenter|filter_calc">表格</item>
+                      <item id="filter_impress" translatable="yes" context="startcenter|filter_impress">演示</item>
                     </items>
                     <accessibility>
                       <relation type="labelled-by" target="lbFilter"/>
@@ -595,7 +937,7 @@
                     <property name="can-focus">True</property>
                     <property name="focus-on-click">False</property>
                     <property name="receives-default">True</property>
-                    <property name="tooltip-text" translatable="yes" context="startcenter|mbActions|tool_tip">Actions</property>
+                    <property name="tooltip-text" translatable="yes" context="startcenter|mbActions|tool_tip">更多操作</property>
                     <property name="halign">end</property>
                     <property name="hexpand">True</property>
                     <property name="image">imActions</property>
@@ -611,7 +953,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">2</property>
+                <property name="position">3</property>
               </packing>
             </child>
             <child>
@@ -620,7 +962,7 @@
                 <property name="can-focus">True</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
-                <property name="shadow-type">in</property>
+                <property name="shadow-type">none</property>
                 <child>
                   <object class="GtkViewport">
                     <property name="visible">True</property>
@@ -640,9 +982,9 @@
                 </child>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
-                <property name="position">3</property>
+                <property name="position">4</property>
               </packing>
             </child>
             <child>
@@ -651,7 +993,7 @@
                 <property name="can-focus">True</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
-                <property name="shadow-type">in</property>
+                <property name="shadow-type">none</property>
                 <child>
                   <object class="GtkViewport">
                     <property name="visible">True</property>
@@ -671,18 +1013,7 @@
                 </child>
               </object>
               <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">4</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="imgDonation">
-                <property name="can-focus">False</property>
-                <property name="hexpand">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="position">5</property>
               </packing>
@@ -696,7 +1027,7 @@
         </child>
       </object>
       <packing>
-        <property name="expand">False</property>
+        <property name="expand">True</property>
         <property name="fill">True</property>
         <property name="position">0</property>
       </packing>

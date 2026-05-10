@@ -41,6 +41,7 @@
 #include <comphelper/propertysequence.hxx>
 #include <comphelper/propertyvalue.hxx>
 #include <sfx2/app.hxx>
+#include <sfx2/doctempl.hxx>
 #include <officecfg/Office/Common.hxx>
 
 #include <i18nlangtag/languagetag.hxx>
@@ -69,12 +70,6 @@
 #include <sfx2/sfxsids.hrc>
 #include <sfx2/strings.hrc>
 #include <sfx2/sfxresid.hxx>
-#include <sfx2/donationbanner.hrc>
-#include <bitmaps.hlst>
-#include <rtl/bootstrap.hxx>
-#include <vcl/virdev.hxx>
-#include <vcl/graph.hxx>
-#include <vcl/graphicfilter.hxx>
 
 #include <config_folders.h>
 
@@ -146,7 +141,11 @@ public:
         if (rMEvt.IsLeft())
         {
             OUString sURL = officecfg::Office::Common::Menus::VolunteerURL::get();
+            if (sURL.isEmpty())
+                return true;
             localizeWebserviceURI(sURL);
+            if (sURL.isEmpty())
+                return true;
 
             Reference<css::system::XSystemShellExecute> const xSystemShellExecute(
                 css::system::SystemShellExecute::create(
@@ -173,6 +172,14 @@ BackingWindow::BackingWindow(vcl::Window* i_pParent)
     , mxRemoteButton(m_xBuilder->weld_button(u"open_remote"_ustr))
     , mxTemplateButton(m_xBuilder->weld_toggle_button(u"templates_all"_ustr))
     , mxCreateLabel(m_xBuilder->weld_label(u"create_label"_ustr))
+    , mxAllRecentLabel(m_xBuilder->weld_label(u"all_recent_label"_ustr))
+    , mxLocalViewLabel(m_xBuilder->weld_label(u"local_view_label"_ustr))
+    , mxScenarioLabel(m_xBuilder->weld_label(u"scenario_label"_ustr))
+    , mxScenarioWriterGroup(m_xBuilder->weld_label(u"scenario_writer_group"_ustr))
+    , mxScenarioCalcGroup(m_xBuilder->weld_label(u"scenario_calc_group"_ustr))
+    , mxScenarioImpressGroup(m_xBuilder->weld_label(u"scenario_impress_group"_ustr))
+    , mxScenarioCompatGroup(m_xBuilder->weld_label(u"scenario_compat_group"_ustr))
+    , mxScenarioFallbackHint(m_xBuilder->weld_label(u"scenario_fallback_hint"_ustr))
     , mxAltHelpLabel(m_xBuilder->weld_label(u"althelplabel"_ustr))
     , mxFilter(m_xBuilder->weld_combo_box(u"cbFilter"_ustr))
     , mxActions(m_xBuilder->weld_menu_button(u"mbActions"_ustr))
@@ -182,44 +189,38 @@ BackingWindow::BackingWindow(vcl::Window* i_pParent)
     , mxDrawAllButton(m_xBuilder->weld_button(u"draw_all"_ustr))
     , mxDBAllButton(m_xBuilder->weld_button(u"database_all"_ustr))
     , mxMathAllButton(m_xBuilder->weld_button(u"math_all"_ustr))
+    , mxScenarioBox(m_xBuilder->weld_container(u"scenario_box"_ustr))
+    , mxScenarioReportButton(m_xBuilder->weld_button(u"scenario_report"_ustr))
+    , mxScenarioMinutesButton(m_xBuilder->weld_button(u"scenario_minutes"_ustr))
+    , mxScenarioNoticeButton(m_xBuilder->weld_button(u"scenario_notice"_ustr))
+    , mxScenarioPlanButton(m_xBuilder->weld_button(u"scenario_plan"_ustr))
+    , mxScenarioOutlineButton(m_xBuilder->weld_button(u"scenario_outline"_ustr))
+    , mxScenarioBudgetButton(m_xBuilder->weld_button(u"scenario_budget"_ustr))
+    , mxScenarioSalesButton(m_xBuilder->weld_button(u"scenario_sales"_ustr))
+    , mxScenarioScheduleButton(m_xBuilder->weld_button(u"scenario_schedule"_ustr))
+    , mxScenarioPitchButton(m_xBuilder->weld_button(u"scenario_pitch"_ustr))
+    , mxScenarioProjectReportButton(m_xBuilder->weld_button(u"scenario_project_report"_ustr))
+    , mxScenarioCompatOpenButton(m_xBuilder->weld_button(u"scenario_compat_open"_ustr))
+    , mxScenarioCoursewareButton(m_xBuilder->weld_button(u"scenario_courseware"_ustr))
     , mxBrandImage(new BrandImage)
     , mxBrandImageWeld(new weld::CustomWeld(*m_xBuilder, u"daBrand"_ustr, *mxBrandImage))
     , mxHelpButton(m_xBuilder->weld_button(u"help"_ustr))
     , mxExtensionsButton(m_xBuilder->weld_button(u"extensions"_ustr))
-    , mxDonateButton(m_xBuilder->weld_button(u"donate"_ustr))
     , mxAllButtonsBox(m_xBuilder->weld_container(u"all_buttons_box"_ustr))
     , mxButtonsBox(m_xBuilder->weld_container(u"buttons_box"_ustr))
     , mxSmallButtonsBox(m_xBuilder->weld_container(u"small_buttons_box"_ustr))
-    , mxRightBox(m_xBuilder->weld_container(u"box2"_ustr))
     , mxAllRecentThumbnails(new sfx2::RecentDocsView(m_xBuilder->weld_scrolled_window(u"scrollrecent"_ustr, true)))
     , mxAllRecentThumbnailsWin(new weld::CustomWeld(*m_xBuilder, u"all_recent"_ustr, *mxAllRecentThumbnails))
     , mxLocalView(new TemplateDefaultView(m_xBuilder->weld_scrolled_window(u"scrolllocal"_ustr, true),
                                           m_xBuilder->weld_menu(u"localmenu"_ustr)))
     , mxLocalViewWin(new weld::CustomWeld(*m_xBuilder, u"local_view"_ustr, *mxLocalView))
-    , mxDonation(m_xBuilder->weld_image(u"imgDonation"_ustr))
     , mbLocalViewInitialized(false)
     , mbInitControls(false)
 {
     // init background, undo InterimItemWindow defaults for this widget
     SetPaintTransparent(false);
 
-    // draw the donation image/text
-    const bool bShowDonation(officecfg::Office::Common::Misc::ShowDonation::get());
-    assert(DONATIONBANNER_FREQ > 0 && DONATIONBANNER_HEIGHT > 0 && DONATIONBANNER_HEIGHT < 1);
-    if (bShowDonation)
-    {
-        std::srand(std::time({}));
-        nRand = std::rand() % std::size(STR_DONATIONBANNER);
-
-        const auto t0 = std::chrono::system_clock::now().time_since_epoch();
-        const sal_Int32 nDay = std::chrono::duration_cast<std::chrono::hours>(t0).count()/24; // days since 1970-01-01
-        if (nDay % DONATIONBANNER_FREQ == 0)
-        {
-            mxDonation->set_visible(true);
-            mxDonation->connect_mouse_release(LINK(this, BackingWindow, MouseReleaseHdl));
-            mxRightBox->connect_size_allocate(LINK(this, BackingWindow, ResizeHdl));
-        }
-    }
+    const bool bHasExtensionsURL(!officecfg::Office::Common::Menus::ExtensionsURL::get().isEmpty());
 
     // square action button
     auto nHeight = mxFilter->get_preferred_size().getHeight();
@@ -229,19 +230,9 @@ BackingWindow::BackingWindow(vcl::Window* i_pParent)
     mxHelpButton->set_label(mxAltHelpLabel->get_label());
     mxHelpButton->connect_clicked(LINK(this, BackingWindow, ClickHelpHdl));
 
-    // tdf#161796 replace the extension button with a donate button
-    if (bShowDonation)
+    if (!bHasExtensionsURL)
     {
         mxExtensionsButton->hide();
-        mxDonateButton->show();
-        mxDonateButton->set_from_icon_name(BMP_DONATE);
-        OUString sDonate(SfxResId(STR_DONATE_BUTTON));
-        if (sDonate.getLength() > 8)
-        {
-            mxDonateButton->set_tooltip_text(sDonate);
-            sDonate = OUString::Concat(sDonate.subView(0, 7)) + "...";
-        }
-        mxDonateButton->set_label(sDonate);
     }
 
     mxDropTarget = mxAllRecentThumbnails->GetDropTarget();
@@ -269,75 +260,6 @@ IMPL_LINK(BackingWindow, ClickHelpHdl, weld::Button&, rButton, void)
         pHelp->Start(m_xContainer->get_help_id(), &rButton);
 }
 
-IMPL_STATIC_LINK(BackingWindow, MouseReleaseHdl, const MouseEvent&, rMEvt, bool)
-{
-    if (rMEvt.IsLeft())
-    {
-        SfxDispatcher &rDispatcher = *SfxGetpApp()->GetDispatcher_Impl();
-        rDispatcher.Execute(SID_DONATION, SfxCallMode::ASYNCHRON);
-    }
-    return true;
-}
-
-IMPL_LINK(BackingWindow, ResizeHdl, const Size&, rSize, void)
-{
-    if (rSize == Size(1,1)) //initial size
-        return;
-
-    const Size aBannerSize(Size(rSize.getWidth(), rSize.getHeight() * DONATIONBANNER_HEIGHT));
-    mxDonation->set_size_request(aBannerSize.getWidth(), aBannerSize.getHeight());
-
-    ScopedVclPtr<VirtualDevice> m_pVirDev = mxDonation->create_virtual_device();
-    m_pVirDev->SetOutputSizePixel(aBannerSize);
-
-    OUString aURL = "$BRAND_BASE_DIR/" LIBO_ETC_FOLDER + u"/shell/"_ustr + DONATIONBANNER_BACKGROUND;
-    rtl::Bootstrap::expandMacros( aURL );
-    Graphic aGraphic;
-    Size aGraphicSize;
-    if (GraphicFilter::LoadGraphic(aURL, OUString(), aGraphic) == ERRCODE_NONE)
-    {
-        aGraphicSize = aGraphic.GetBitmap().GetSizePixel();
-        m_pVirDev->DrawBitmap(Point(0, 0), aGraphicSize, aGraphic.GetBitmap());
-    }
-
-    auto[sText, sImage] = STR_DONATIONBANNER[nRand];
-
-    // image proportionally scaled to banner height and placed at the right side
-    aURL = "$BRAND_BASE_DIR/" LIBO_ETC_FOLDER + u"/shell/"_ustr + sImage;
-    rtl::Bootstrap::expandMacros( aURL );
-    if (GraphicFilter::LoadGraphic(aURL, OUString(), aGraphic) == ERRCODE_NONE)
-    {
-        aGraphicSize = aGraphic.GetBitmap().GetSizePixel();
-        const float nRel
-            = static_cast<float>(aBannerSize.getHeight()) / static_cast<float>(aGraphicSize.getHeight());
-        aGraphicSize = Size(aGraphicSize.getWidth() * nRel, aGraphicSize.getHeight() * nRel);
-        m_pVirDev->DrawBitmap(Point(aBannerSize.getWidth() - aGraphicSize.getWidth(), 0),
-                              aGraphicSize, aGraphic.GetBitmap());
-    }
-    else
-        aGraphicSize = Size(0,0);
-
-    // text
-    #define cMargin 24
-    tools::Rectangle aRect(Point(cMargin, 0), Size(aBannerSize.getWidth() - aGraphicSize.getWidth() - cMargin,
-                                             aBannerSize.getHeight()));
-    vcl::Font aFont = m_pVirDev->GetFont();
-    aFont.SetFontHeight(48);
-    m_pVirDev->SetFont(aFont);
-    DrawTextFlags const nTextStyle = DrawTextFlags::MultiLine | DrawTextFlags::WordBreak | DrawTextFlags::VCenter;
-    while (m_pVirDev->GetTextRect(aRect, SfxResId(sText), nTextStyle).GetHeight()
-           > aBannerSize.getHeight())
-    {
-        aFont.SetFontHeight(aFont.GetFontHeight() - 1);
-        m_pVirDev->SetFont(aFont);
-        if (aFont.GetFontHeight() < 12)
-            break;
-    }
-    m_pVirDev->DrawText(aRect, SfxResId(sText), nTextStyle);
-    mxDonation->set_image(m_pVirDev.get());
-    m_pVirDev.disposeAndClear();
-}
-
 BackingWindow::~BackingWindow()
 {
     disposeOnce();
@@ -361,6 +283,14 @@ void BackingWindow::dispose()
     mxRecentButton.reset();
     mxTemplateButton.reset();
     mxCreateLabel.reset();
+    mxAllRecentLabel.reset();
+    mxLocalViewLabel.reset();
+    mxScenarioLabel.reset();
+    mxScenarioWriterGroup.reset();
+    mxScenarioCalcGroup.reset();
+    mxScenarioImpressGroup.reset();
+    mxScenarioCompatGroup.reset();
+    mxScenarioFallbackHint.reset();
     mxAltHelpLabel.reset();
     mxFilter.reset();
     mxActions.reset();
@@ -370,10 +300,22 @@ void BackingWindow::dispose()
     mxDrawAllButton.reset();
     mxDBAllButton.reset();
     mxMathAllButton.reset();
+    mxScenarioBox.reset();
+    mxScenarioReportButton.reset();
+    mxScenarioMinutesButton.reset();
+    mxScenarioNoticeButton.reset();
+    mxScenarioPlanButton.reset();
+    mxScenarioOutlineButton.reset();
+    mxScenarioBudgetButton.reset();
+    mxScenarioSalesButton.reset();
+    mxScenarioScheduleButton.reset();
+    mxScenarioPitchButton.reset();
+    mxScenarioProjectReportButton.reset();
+    mxScenarioCompatOpenButton.reset();
+    mxScenarioCoursewareButton.reset();
     mxBrandImageWeld.reset();
     mxBrandImage.reset();
     mxHelpButton.reset();
-    mxDonateButton.reset();
     mxExtensionsButton.reset();
     mxAllButtonsBox.reset();
     mxButtonsBox.reset();
@@ -404,21 +346,11 @@ void BackingWindow::initControls()
     if (aModuleOptions.IsImpressInstalled())
         mxAllRecentThumbnails->mnFileTypes |= sfx2::ApplicationType::TYPE_IMPRESS;
 
-    if (aModuleOptions.IsDrawInstalled())
-        mxAllRecentThumbnails->mnFileTypes |= sfx2::ApplicationType::TYPE_DRAW;
-
-    if (aModuleOptions.IsDataBaseInstalled())
-        mxAllRecentThumbnails->mnFileTypes |= sfx2::ApplicationType::TYPE_DATABASE;
-
-    if (aModuleOptions.IsMathInstalled())
-        mxAllRecentThumbnails->mnFileTypes |= sfx2::ApplicationType::TYPE_MATH;
-
-    mxAllRecentThumbnails->mnFileTypes |= sfx2::ApplicationType::TYPE_OTHER;
     mxAllRecentThumbnails->Reload();
     mxAllRecentThumbnails->ShowTooltips( true );
 
-    mxRecentButton->set_active(true);
-    ToggleHdl(*mxRecentButton);
+    mxTemplateButton->set_active(true);
+    ToggleHdl(*mxTemplateButton);
 
     //set handlers
     mxLocalView->setCreateContextMenuHdl(LINK(this, BackingWindow, CreateContextMenuHdl));
@@ -429,7 +361,6 @@ void BackingWindow::initControls()
     checkInstalledModules();
 
     mxExtensionsButton->connect_clicked(LINK(this, BackingWindow, ExtLinkClickHdl));
-    mxDonateButton->connect_clicked(LINK(this, BackingWindow, ExtLinkClickHdl));
 
     mxOpenButton->connect_clicked(LINK(this, BackingWindow, ClickHdl));
 
@@ -446,6 +377,13 @@ void BackingWindow::initControls()
     mxDBAllButton->connect_clicked(LINK(this, BackingWindow, ClickHdl));
     mxImpressAllButton->connect_clicked(LINK(this, BackingWindow, ClickHdl));
     mxMathAllButton->connect_clicked(LINK(this, BackingWindow, ClickHdl));
+    for (const auto& rScenario : getScenarioTemplates())
+    {
+        if (rScenario.pButton)
+            rScenario.pButton->connect_clicked(LINK(this, BackingWindow, OpenScenarioHdl));
+    }
+    if (mxScenarioCompatOpenButton)
+        mxScenarioCompatOpenButton->connect_clicked(LINK(this, BackingWindow, OpenCompatibilityHdl));
 
     mxRecentButton->connect_toggled(LINK(this, BackingWindow, ToggleHdl));
     mxTemplateButton->connect_toggled(LINK(this, BackingWindow, ToggleHdl));
@@ -480,7 +418,8 @@ void BackingWindow::setLargerFont(WidgetClass& pWidget, const vcl::Font& rFont)
 void BackingWindow::ApplyStyleSettings()
 {
     const StyleSettings& rStyleSettings = GetSettings().GetStyleSettings();
-    const Color aButtonsBackground(rStyleSettings.GetWindowColor());
+    const Color aWorkbenchBackground(rStyleSettings.GetDialogColor());
+    const Color aRailBackground(rStyleSettings.GetFaceColor());
     const vcl::Font& aButtonFont(rStyleSettings.GetPushButtonFont());
     const vcl::Font& aLabelFont(rStyleSettings.GetLabelFont());
 
@@ -495,11 +434,40 @@ void BackingWindow::ApplyStyleSettings()
     setLargerFont(mxDBAllButton, aButtonFont);
     setLargerFont(mxImpressAllButton, aButtonFont);
     setLargerFont(mxMathAllButton, aButtonFont);
-    setLargerFont(mxCreateLabel, aLabelFont);
+    const sal_Int32 nScenarioButtonHeight = mxFilter->get_preferred_size().getHeight() + 8;
+    for (const auto& rScenario : getScenarioTemplates())
+    {
+        if (rScenario.pButton)
+        {
+            rScenario.pButton->set_font(aButtonFont);
+            rScenario.pButton->set_size_request(-1, nScenarioButtonHeight);
+        }
+    }
+    if (mxScenarioCompatOpenButton)
+    {
+        mxScenarioCompatOpenButton->set_font(aButtonFont);
+        mxScenarioCompatOpenButton->set_size_request(-1, nScenarioButtonHeight + 2);
+    }
 
-    mxAllButtonsBox->set_background(aButtonsBackground);
-    mxSmallButtonsBox->set_background(aButtonsBackground);
-    SetBackground(aButtonsBackground);
+    vcl::Font aSectionFont(aLabelFont);
+    aSectionFont.SetWeight(WEIGHT_BOLD);
+    aSectionFont.SetFontSize(Size(0, aSectionFont.GetFontSize().Height() * 1.18f));
+    vcl::Font aWorkspaceTitleFont(aLabelFont);
+    aWorkspaceTitleFont.SetWeight(WEIGHT_BOLD);
+    aWorkspaceTitleFont.SetFontSize(Size(0, aWorkspaceTitleFont.GetFontSize().Height() * 1.08f));
+    mxCreateLabel->set_font(aSectionFont);
+    if (mxAllRecentLabel)
+        mxAllRecentLabel->set_font(aWorkspaceTitleFont);
+    if (mxLocalViewLabel)
+        mxLocalViewLabel->set_font(aWorkspaceTitleFont);
+    if (mxScenarioLabel)
+        mxScenarioLabel->set_font(aSectionFont);
+    if (mxScenarioFallbackHint)
+        mxScenarioFallbackHint->set_label_type(weld::LabelType::Warning);
+
+    mxAllButtonsBox->set_background(aRailBackground);
+    mxSmallButtonsBox->set_background(aRailBackground);
+    SetBackground(aWorkbenchBackground);
 
     // compute the menubar height
     sal_Int32 nMenuHeight = 0;
@@ -535,6 +503,14 @@ void BackingWindow::initializeLocalView()
 
 void BackingWindow::checkInstalledModules()
 {
+    // Keep remote and secondary modules out of the first screen, while allowing
+    // Writer, Calc, and Impress task flows to define the native workbench.
+    mxRemoteButton->set_visible(false);
+    mxExtensionsButton->set_visible(false);
+    mxDrawAllButton->set_visible(false);
+    mxMathAllButton->set_visible(false);
+    mxDBAllButton->set_visible(false);
+
     if (officecfg::Office::Common::Misc::ViewerAppMode::get())
     {
         mxTemplateButton->set_visible(false);
@@ -545,17 +521,59 @@ void BackingWindow::checkInstalledModules()
         mxDrawAllButton->set_visible(false);
         mxMathAllButton->set_visible(false);
         mxDBAllButton->set_visible(false);
+        if (mxScenarioBox)
+            mxScenarioBox->set_visible(false);
         return;
     }
 
     SvtModuleOptions aModuleOpt;
 
-    mxWriterAllButton->set_sensitive(aModuleOpt.IsWriterInstalled());
-    mxCalcAllButton->set_sensitive(aModuleOpt.IsCalcInstalled());
-    mxImpressAllButton->set_sensitive(aModuleOpt.IsImpressInstalled());
+    const bool bWriterInstalled = aModuleOpt.IsWriterInstalled();
+    const bool bCalcInstalled = aModuleOpt.IsCalcInstalled();
+    const bool bImpressInstalled = aModuleOpt.IsImpressInstalled();
+    const bool bPresentationTasksAvailable = bWriterInstalled || bImpressInstalled;
+
+    mxWriterAllButton->set_sensitive(bWriterInstalled);
+    mxCalcAllButton->set_sensitive(bCalcInstalled);
+    mxImpressAllButton->set_sensitive(bImpressInstalled);
     mxDrawAllButton->set_sensitive(aModuleOpt.IsDrawInstalled());
     mxMathAllButton->set_sensitive(aModuleOpt.IsMathInstalled());
     mxDBAllButton->set_sensitive(aModuleOpt.IsDataBaseInstalled());
+
+    if (mxScenarioWriterGroup)
+        mxScenarioWriterGroup->set_sensitive(bWriterInstalled);
+    if (mxScenarioCalcGroup)
+        mxScenarioCalcGroup->set_sensitive(bCalcInstalled);
+    if (mxScenarioImpressGroup)
+        mxScenarioImpressGroup->set_sensitive(bPresentationTasksAvailable);
+
+    const bool bCanOpenCompatibleFiles = bWriterInstalled || bCalcInstalled || bImpressInstalled;
+    if (mxScenarioCompatGroup)
+        mxScenarioCompatGroup->set_sensitive(bCanOpenCompatibleFiles);
+    if (mxScenarioCompatOpenButton)
+        mxScenarioCompatOpenButton->set_sensitive(bCanOpenCompatibleFiles);
+    for (const auto& rScenario : getScenarioTemplates())
+    {
+        if (!rScenario.pButton)
+            continue;
+
+        bool bEnabled = false;
+        switch (rScenario.eFilter)
+        {
+            case FILTER_APPLICATION::WRITER:
+                bEnabled = bWriterInstalled;
+                break;
+            case FILTER_APPLICATION::CALC:
+                bEnabled = bCalcInstalled;
+                break;
+            case FILTER_APPLICATION::IMPRESS:
+                bEnabled = bImpressInstalled;
+                break;
+            default:
+                break;
+        }
+        rScenario.pButton->set_sensitive(bEnabled);
+    }
 }
 
 bool BackingWindow::PreNotify(NotifyEvent& rNEvt)
@@ -669,15 +687,11 @@ IMPL_STATIC_LINK_NOARG(BackingWindow, ExtLinkClickHdl, weld::Button&, void)
 {
     try
     {
-        OUString sURL;
-        if (officecfg::Office::Common::Misc::ShowDonation::get())
-            sURL = officecfg::Office::Common::Menus::DonationURL::get() +
-                "?BCP47=" + LanguageTag(utl::ConfigManager::getUILocale()).getBcp47() +
-                "&LOlang=" + LanguageTag(utl::ConfigManager::getUILocale()).getLanguage();
-        else
-            sURL = officecfg::Office::Common::Menus::ExtensionsURL::get() +
-                "?LOvers=" + utl::ConfigManager::getProductVersion() +
-                "&LOlocale=" + LanguageTag(utl::ConfigManager::getUILocale()).getBcp47();
+        OUString sURL = officecfg::Office::Common::Menus::ExtensionsURL::get();
+        if (sURL.isEmpty())
+            return;
+        sURL += "?LOvers=" + utl::ConfigManager::getProductVersion() +
+            "&LOlocale=" + LanguageTag(utl::ConfigManager::getUILocale()).getBcp47();
 
         Reference<css::system::XSystemShellExecute> const
             xSystemShellExecute(
@@ -691,23 +705,57 @@ IMPL_STATIC_LINK_NOARG(BackingWindow, ExtLinkClickHdl, weld::Button&, void)
     }
 }
 
+namespace
+{
+FILTER_APPLICATION lclGetTemplateFilter(int nFilter)
+{
+    if (nFilter == 1)
+        return FILTER_APPLICATION::WRITER;
+    if (nFilter == 2)
+        return FILTER_APPLICATION::CALC;
+    if (nFilter == 3)
+        return FILTER_APPLICATION::IMPRESS;
+    return FILTER_APPLICATION::NONE;
+}
+
+sfx2::ApplicationType lclGetRecentFilter(int nFilter)
+{
+    if (nFilter == 1)
+        return sfx2::ApplicationType::TYPE_WRITER;
+    if (nFilter == 2)
+        return sfx2::ApplicationType::TYPE_CALC;
+    if (nFilter == 3)
+        return sfx2::ApplicationType::TYPE_IMPRESS;
+    return sfx2::ApplicationType::TYPE_NONE;
+}
+
+int lclGetFilterIndex(FILTER_APPLICATION eFilter)
+{
+    switch (eFilter)
+    {
+        case FILTER_APPLICATION::WRITER:
+            return 1;
+        case FILTER_APPLICATION::CALC:
+            return 2;
+        case FILTER_APPLICATION::IMPRESS:
+            return 3;
+        default:
+            return 0;
+    }
+}
+
+}
+
 void BackingWindow::applyFilter()
 {
     const int nFilter = mxFilter->get_active();
     if (mxLocalView->IsVisible())
-    {
-        FILTER_APPLICATION aFilter = static_cast<FILTER_APPLICATION>(nFilter);
-        mxLocalView->filterItems(ViewFilter_Application(aFilter));
-    }
+        mxLocalView->filterItems(ViewFilter_Application(lclGetTemplateFilter(nFilter)));
     else
-    {
-        sfx2::ApplicationType aFilter;
-        if (nFilter == 0)
-            aFilter = sfx2::ApplicationType::TYPE_NONE;
-        else
-            aFilter = static_cast<sfx2::ApplicationType>(1 << (nFilter - 1));
-        mxAllRecentThumbnails->setFilter(aFilter);
-    }
+        mxAllRecentThumbnails->setFilter(lclGetRecentFilter(nFilter));
+
+    if (mxScenarioFallbackHint)
+        mxScenarioFallbackHint->hide();
 }
 
 IMPL_LINK_NOARG( BackingWindow, FilterHdl, weld::ComboBox&, void )
@@ -719,6 +767,9 @@ IMPL_LINK( BackingWindow, ToggleHdl, weld::Toggleable&, rButton, void )
 {
     if (&rButton == mxRecentButton.get())
     {
+        mxRecentButton->set_active(true);
+        mxAllRecentLabel->show();
+        mxLocalViewLabel->hide();
         mxLocalView->Hide();
         mxAllRecentThumbnails->Show();
         mxAllRecentThumbnails->GrabFocus();
@@ -727,6 +778,9 @@ IMPL_LINK( BackingWindow, ToggleHdl, weld::Toggleable&, rButton, void )
     }
     else
     {
+        mxTemplateButton->set_active(true);
+        mxAllRecentLabel->hide();
+        mxLocalViewLabel->show();
         mxAllRecentThumbnails->Hide();
         initializeLocalView();
         mxLocalView->Show();
@@ -829,6 +883,107 @@ IMPL_LINK(BackingWindow, EditTemplateHdl, const OUString&, rTemplatePath, void)
     catch( const uno::Exception& )
     {
     }
+}
+
+void BackingWindow::showTemplateHub(FILTER_APPLICATION eFilter)
+{
+    mxTemplateButton->set_active(true);
+    ToggleHdl(*mxTemplateButton);
+    mxFilter->set_active(lclGetFilterIndex(eFilter));
+    applyFilter();
+    if (mxScenarioFallbackHint)
+        mxScenarioFallbackHint->show();
+}
+
+bool BackingWindow::resolveTemplatePathByFileName(const SfxDocumentTemplates& rTemplates,
+                                                  std::u16string_view rTemplateFileName,
+                                                  OUString& rTemplatePath)
+{
+    if (rTemplateFileName.empty())
+        return false;
+
+    const sal_uInt16 nRegionCount = rTemplates.GetRegionCount();
+    for (sal_uInt16 nRegion = 0; nRegion < nRegionCount; ++nRegion)
+    {
+        const sal_uInt16 nTemplateCount = rTemplates.GetCount(nRegion);
+        for (sal_uInt16 nTemplate = 0; nTemplate < nTemplateCount; ++nTemplate)
+        {
+            OUString aCandidatePath = rTemplates.GetPath(nRegion, nTemplate);
+            if (!aCandidatePath.isEmpty() && aCandidatePath.endsWithIgnoreAsciiCase(rTemplateFileName))
+            {
+                rTemplatePath = std::move(aCandidatePath);
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+std::array<BackingWindow::ScenarioTemplate, 11> BackingWindow::getScenarioTemplates()
+{
+    return { { { mxScenarioReportButton.get(), u"Work_Report_CN.ott", u"工作汇报",
+                 FILTER_APPLICATION::WRITER },
+               { mxScenarioMinutesButton.get(), u"Meeting_Minutes_CN.ott", u"会议纪要",
+                 FILTER_APPLICATION::WRITER },
+               { mxScenarioNoticeButton.get(), u"Notice_CN.ott", u"通知",
+                 FILTER_APPLICATION::WRITER },
+               { mxScenarioPlanButton.get(), u"Project_Plan_CN.ott", u"项目方案",
+                 FILTER_APPLICATION::WRITER },
+               { mxScenarioBudgetButton.get(), u"Budget_CN.ots", u"预算总览",
+                 FILTER_APPLICATION::CALC },
+               { mxScenarioSalesButton.get(), u"Sales_Tracker_CN.ots", u"销售跟进",
+                 FILTER_APPLICATION::CALC },
+               { mxScenarioScheduleButton.get(), u"Project_Schedule_CN.ots", u"项目排期",
+                 FILTER_APPLICATION::CALC },
+               { mxScenarioOutlineButton.get(), u"PPT_Outline_CN.ott", u"PPT 提纲初稿",
+                 FILTER_APPLICATION::WRITER },
+               { mxScenarioPitchButton.get(), u"Business_Pitch_CN.otp", u"商务路演",
+                 FILTER_APPLICATION::IMPRESS },
+               { mxScenarioProjectReportButton.get(), u"Project_Report_CN.otp", u"项目汇报",
+                 FILTER_APPLICATION::IMPRESS },
+               { mxScenarioCoursewareButton.get(), u"Teaching_Courseware_CN.otp", u"教学课件",
+                 FILTER_APPLICATION::IMPRESS } } };
+}
+
+void BackingWindow::openScenarioTemplate(std::u16string_view rTemplateFileName,
+                                         std::u16string_view rFallbackTitle,
+                                         FILTER_APPLICATION eFilter)
+{
+    SfxDocumentTemplates aTemplates;
+    aTemplates.Update();
+
+    OUString aTemplatePath;
+    if (resolveTemplatePathByFileName(aTemplates, rTemplateFileName, aTemplatePath)
+        || (!rFallbackTitle.empty() && aTemplates.GetFull(u"", rFallbackTitle, aTemplatePath)))
+    {
+        if (!aTemplatePath.isEmpty())
+        {
+            OpenTemplateHdl(aTemplatePath);
+            return;
+        }
+    }
+
+    showTemplateHub(eFilter);
+}
+
+IMPL_LINK(BackingWindow, OpenScenarioHdl, weld::Button&, rButton, void)
+{
+    for (const auto& rScenario : getScenarioTemplates())
+    {
+        if (rScenario.pButton && &rButton == rScenario.pButton)
+        {
+            openScenarioTemplate(rScenario.aFileName, rScenario.aFallbackTitle, rScenario.eFilter);
+            return;
+        }
+    }
+}
+
+IMPL_LINK_NOARG(BackingWindow, OpenCompatibilityHdl, weld::Button&, void)
+{
+    Reference< XDispatchProvider > xFrame(mxFrame, UNO_QUERY);
+    dispatchURL(u".uno:Open"_ustr, OUString(), xFrame,
+                { comphelper::makePropertyValue(u"Referer"_ustr, u"private:user"_ustr) });
 }
 
 namespace {

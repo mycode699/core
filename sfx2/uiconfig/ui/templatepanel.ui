@@ -121,13 +121,13 @@
             <child>
               <object class="GtkToggleToolButton" id="watercan">
                 <property name="visible">True</property>
-                <property name="tooltip-text" translatable="yes" context="templatepanel|STR_STYLE_FILL_FORMAT_MODE">Fill Format Mode</property>
+                <property name="tooltip-text" translatable="yes" context="templatepanel|STR_STYLE_FILL_FORMAT_MODE">格式刷模式</property>
                 <property name="use-underline">True</property>
                 <property name="icon-name">res/sc05554.png</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="watercan-atkobject">
-                    <property name="AtkObject::accessible-name" translatable="yes" context="templatepanel|accessible_name|watercan">Fill Format Mode</property>
-                    <property name="AtkObject::accessible-description" translatable="yes" context="templatepanel|extended_tip|watercan">Applies the selected style to the object or text that you select in the document. </property>
+                    <property name="AtkObject::accessible-name" translatable="yes" context="templatepanel|accessible_name|watercan">格式刷模式</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="templatepanel|extended_tip|watercan">将所选样式应用到文档中您选中的对象或文本。</property>
                   </object>
                 </child>
               </object>
@@ -139,12 +139,12 @@
             <child>
               <object class="GtkToolButton" id="new">
                 <property name="visible">True</property>
-                <property name="tooltip-text" translatable="yes" context="templatepanel|STR_STYLE_NEW_STYLE_FROM_SELECTION">New Style from Selection</property>
+                <property name="tooltip-text" translatable="yes" context="templatepanel|STR_STYLE_NEW_STYLE_FROM_SELECTION">根据所选内容新建样式</property>
                 <property name="use-underline">True</property>
                 <property name="icon-name">res/sc05555.png</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="new-atkobject">
-                    <property name="AtkObject::accessible-name" translatable="yes" context="templatepanel|accessible_name|new">New Style from Selection</property>
+                    <property name="AtkObject::accessible-name" translatable="yes" context="templatepanel|accessible_name|new">根据所选内容新建样式</property>
                   </object>
                 </child>
               </object>
@@ -156,12 +156,12 @@
             <child>
               <object class="GtkMenuToolButton" id="newmenu">
                 <property name="no-show-all">True</property>
-                <property name="tooltip-text" translatable="yes" context="templatepanel|STR_STYLE_NEW_STYLE_ACTION">Styles actions</property>
+                <property name="tooltip-text" translatable="yes" context="templatepanel|STR_STYLE_NEW_STYLE_ACTION">样式操作</property>
                 <property name="use-underline">True</property>
                 <property name="icon-name">res/sc05555.png</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="newmenu-atkobject">
-                    <property name="AtkObject::accessible-name" translatable="yes" context="templatepanel|accessible_name|newmenu">Styles actions</property>
+                    <property name="AtkObject::accessible-name" translatable="yes" context="templatepanel|accessible_name|newmenu">样式操作</property>
                   </object>
                 </child>
               </object>
@@ -173,12 +173,12 @@
             <child>
               <object class="GtkToolButton" id="update">
                 <property name="visible">True</property>
-                <property name="tooltip-text" translatable="yes" context="templatepanel|STR_STYLE_UPDATE_STYLE">Update Style</property>
+                <property name="tooltip-text" translatable="yes" context="templatepanel|STR_STYLE_UPDATE_STYLE">更新样式</property>
                 <property name="use-underline">True</property>
                 <property name="icon-name">res/sc05556.png</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="update-atkobject">
-                    <property name="AtkObject::accessible-name" translatable="yes" context="templatepanel|accessible_name|update">Update Style</property>
+                    <property name="AtkObject::accessible-name" translatable="yes" context="templatepanel|accessible_name|update">更新样式</property>
                   </object>
                 </child>
               </object>
@@ -208,7 +208,7 @@
         <property name="can-focus">False</property>
         <child>
           <object class="GtkCheckButton" id="showpreview">
-            <property name="label" translatable="yes" context="commontemplate|STR_PREVIEW_CHECKBOX">Show previews</property>
+            <property name="label" translatable="yes" context="commontemplate|STR_PREVIEW_CHECKBOX">显示预览</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">False</property>
@@ -216,7 +216,7 @@
             <property name="draw-indicator">True</property>
             <child internal-child="accessible">
               <object class="AtkObject" id="showpreview-atkobject">
-                <property name="AtkObject::accessible-description" translatable="yes" context="templatepanel|extended_tip|showpreview">Display the style names as examples of their formatting. </property>
+                <property name="AtkObject::accessible-description" translatable="yes" context="templatepanel|extended_tip|showpreview">以格式示例的方式显示样式名称。</property>
               </object>
             </child>
           </object>
@@ -228,14 +228,14 @@
         </child>
         <child>
           <object class="GtkCheckButton" id="spotlightstyles">
-            <property name="label" translatable="yes" context="commontemplate|STR_SPOTLIGHT_CHECKBOX">Spotlight</property>
+            <property name="label" translatable="yes" context="commontemplate|STR_SPOTLIGHT_CHECKBOX">高亮显示</property>
             <property name="can-focus">True</property>
             <property name="receives-default">False</property>
             <property name="use-underline">True</property>
             <property name="draw-indicator">True</property>
             <child internal-child="accessible">
               <object class="AtkObject" id="spotlightstyles-atkobject">
-                <property name="AtkObject::accessible-description" translatable="yes" context="templatepanel|extended_tip|spotlightstyles">Displays a color and a unique number code for each applied paragraph or character style in the document. </property>
+                <property name="AtkObject::accessible-description" translatable="yes" context="templatepanel|extended_tip|spotlightstyles">为文档中每个已应用的段落样式或字符样式显示颜色和唯一编号。</property>
               </object>
             </child>
           </object>
@@ -258,7 +258,7 @@
         <property name="can-focus">False</property>
         <child internal-child="accessible">
           <object class="AtkObject" id="filter-atkobject">
-            <property name="AtkObject::accessible-description" translatable="yes" context="templatepanel|extended_tip|filter">Select a filter for the list of styles.</property>
+            <property name="AtkObject::accessible-description" translatable="yes" context="templatepanel|extended_tip|filter">为样式列表选择筛选条件。</property>
           </object>
         </child>
       </object>
@@ -312,7 +312,7 @@
             </child>
             <child internal-child="accessible">
               <object class="AtkObject" id="flatview-atkobject">
-                <property name="AtkObject::accessible-name" translatable="yes" context="templatepanel|STR_STYLE_ELEMTLIST">Style List</property>
+                <property name="AtkObject::accessible-name" translatable="yes" context="templatepanel|STR_STYLE_ELEMTLIST">样式列表</property>
               </object>
             </child>
           </object>
@@ -369,7 +369,7 @@
             </child>
             <child internal-child="accessible">
               <object class="AtkObject" id="treeview-atkobject">
-                <property name="AtkObject::accessible-name" translatable="yes" context="templatepanel|STR_STYLE_ELEMTLIST">Style List</property>
+                <property name="AtkObject::accessible-name" translatable="yes" context="templatepanel|STR_STYLE_ELEMTLIST">样式列表</property>
               </object>
             </child>
           </object>

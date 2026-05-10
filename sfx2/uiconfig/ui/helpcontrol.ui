@@ -50,7 +50,7 @@
               <object class="GtkLabel" id="contents">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="helpcontrol|contents">Contents</property>
+                <property name="label" translatable="yes" context="helpcontrol|contents">内容</property>
               </object>
               <packing>
                 <property name="tab-fill">False</property>
@@ -75,7 +75,7 @@
               <object class="GtkLabel" id="index">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="helpcontrol|index">Index</property>
+                <property name="label" translatable="yes" context="helpcontrol|index">索引</property>
               </object>
               <packing>
                 <property name="position">1</property>
@@ -101,7 +101,7 @@
               <object class="GtkLabel" id="find">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="helpcontrol|find">Find</property>
+                <property name="label" translatable="yes" context="helpcontrol|find">查找</property>
               </object>
               <packing>
                 <property name="position">2</property>
@@ -127,7 +127,7 @@
               <object class="GtkLabel" id="bookmarks">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="helpcontrol|bookmarks">Bookmarks</property>
+                <property name="label" translatable="yes" context="helpcontrol|bookmarks">书签</property>
               </object>
               <packing>
                 <property name="position">3</property>

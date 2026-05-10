@@ -133,6 +133,26 @@ using namespace ::com::sun::star::ui;
 
 namespace
 {
+    void lclShowOnlineResourceUnavailable(weld::Window* pParent)
+    {
+        std::unique_ptr<weld::MessageDialog> xBox(Application::CreateMessageDialog(
+            pParent, VclMessageType::Info, VclButtonsType::Ok,
+            SfxResId(STR_ONLINE_RESOURCE_UNAVAILABLE)));
+        xBox->run();
+    }
+
+    void lclOpenConfiguredUri(weld::Window* pParent, const OUString& rBaseURL,
+                              const OUString& rQuery = OUString())
+    {
+        if (rBaseURL.isEmpty())
+        {
+            lclShowOnlineResourceUnavailable(pParent);
+            return;
+        }
+
+        sfx2::openUriExternally(rBaseURL + rQuery, false, pParent);
+    }
+
     OUString lcl_getAppName( vcl::EnumContext::Application eApp )
     {
         switch ( eApp )
@@ -619,12 +639,7 @@ void SfxApplication::MiscExec_Impl( SfxRequest& rReq )
 
         case SID_SEND_FEEDBACK:
         {
-            OUString module = SfxHelp::GetCurrentModuleIdentifier();
-            OUString sURL(officecfg::Office::Common::Menus::SendFeedbackURL::get() + //officecfg/registry/data/org/openoffice/Office/Common.xcu => https://hub.libreoffice.org/send-feedback/
-                "?LOversion=" + utl::ConfigManager::getAboutBoxProductVersion() +
-                "&LOlocale=" + utl::ConfigManager::getUILocale() +
-                "&LOmodule=" + module.subView(module.lastIndexOf('.') + 1 )  );
-            sfx2::openUriExternally(sURL, false, rReq.GetFrameWeld());
+            // Downstream removes feedback/community funnels from the shipped product.
             break;
         }
 
@@ -633,60 +648,51 @@ void SfxApplication::MiscExec_Impl( SfxRequest& rReq )
             // Askbot has URL's normalized to languages, not locales
             // Get language from locale: ll or lll or ll-CC or lll-CC
 
-            OUString sURL(officecfg::Office::Common::Menus::QA_URL::get() + //https://hub.libreoffice.org/forum/
-                "?LOlocale=" + utl::ConfigManager::getUILocale());
-            sfx2::openUriExternally(sURL, false, rReq.GetFrameWeld());
+            lclOpenConfiguredUri(rReq.GetFrameWeld(), officecfg::Office::Common::Menus::QA_URL::get(),
+                                 "?LOlocale=" + utl::ConfigManager::getUILocale());
             break;
         }
         case SID_DOCUMENTATION:
         {
             // Open documentation page based on locales
-            OUString sURL(officecfg::Office::Common::Menus::DocumentationURL::get() + //https://hub.libreoffice.org/documentation/
-                "?LOlocale=" + utl::ConfigManager::getUILocale());
-            sfx2::openUriExternally(sURL, false, rReq.GetFrameWeld());
+            lclOpenConfiguredUri(rReq.GetFrameWeld(),
+                                 officecfg::Office::Common::Menus::DocumentationURL::get(),
+                                 "?LOlocale=" + utl::ConfigManager::getUILocale());
             break;
         }
 #if !ENABLE_WASM_STRIP_PINGUSER
         case SID_GETINVOLVED:
         {
-            // Open get involved/join us page based on locales
-            OUString sURL(officecfg::Office::Common::Menus::GetInvolvedURL::get() + //https://hub.libreoffice.org/joinus/
-                "?LOlocale=" + utl::ConfigManager::getUILocale());
-            sfx2::openUriExternally(sURL, false, rReq.GetFrameWeld());
+            // Downstream removes feedback/community funnels from the shipped product.
             break;
         }
         case SID_DONATION:
         {
-            // Open donation page based on language + script (BCP47) with language as fall back.
-            OUString aLang = LanguageTag(utl::ConfigManager::getUILocale()).getLanguage();
-            OUString aBcp47 = LanguageTag(utl::ConfigManager::getUILocale()).getBcp47();
-            OUString sURL(officecfg::Office::Common::Menus::DonationURL::get() + //https://hub.libreoffice.org/donation/
-                "?BCP47=" + aBcp47 + "&LOlang=" + aLang );
-            sfx2::openUriExternally(sURL, false, rReq.GetFrameWeld());
+            // Downstream removes feedback/community funnels from the shipped product.
             break;
         }
         case SID_WHATSNEW:
         {
             // Open release notes depending on version and locale
-            OUString sURL(officecfg::Office::Common::Menus::ReleaseNotesURL::get() + //https://hub.libreoffice.org/ReleaseNotes/
-                "?LOvers=" + utl::ConfigManager::getProductVersion() +
-                "&LOlocale=" + LanguageTag(utl::ConfigManager::getUILocale()).getBcp47() );
-            sfx2::openUriExternally(sURL, false, rReq.GetFrameWeld());
+            lclOpenConfiguredUri(
+                rReq.GetFrameWeld(), officecfg::Office::Common::Menus::ReleaseNotesURL::get(),
+                "?LOvers=" + utl::ConfigManager::getProductVersion()
+                    + "&LOlocale=" + LanguageTag(utl::ConfigManager::getUILocale()).getBcp47());
             break;
         }
         case SID_CREDITS:
         {
-            OUString sURL(officecfg::Office::Common::Menus::CreditsURL::get());
-            sfx2::openUriExternally(sURL, false, rReq.GetFrameWeld());
+            // Downstream does not expose a credits surface.
             break;
         }
         break;
         case SID_HYPHENATIONMISSING:
         {
             // Open wiki page about hyphenation
-            OUString sURL(officecfg::Office::Common::Menus::HyphenationMissingURL::get() + //https://hub.libreoffice.org/HyphenationMissing/
+            lclOpenConfiguredUri(
+                rReq.GetFrameWeld(),
+                officecfg::Office::Common::Menus::HyphenationMissingURL::get(),
                 "?LOlocale=" + utl::ConfigManager::getUILocale());
-            sfx2::openUriExternally(sURL, false, rReq.GetFrameWeld());
             break;
         }
 #endif
@@ -699,7 +705,7 @@ void SfxApplication::MiscExec_Impl( SfxRequest& rReq )
 
         case SID_SHOW_CREDITS:
         {
-            showDocument( "CREDITS" );
+            // Downstream does not ship a bundled credits document.
             break;
         }
 
@@ -856,9 +862,7 @@ void SfxApplication::MiscExec_Impl( SfxRequest& rReq )
 #if !ENABLE_WASM_STRIP_PINGUSER
         case SID_TIPOFTHEDAY:
         {
-            SfxAbstractDialogFactory* pFact = SfxAbstractDialogFactory::Create();
-            ScopedVclPtr<VclAbstractDialog> pDlg(pFact->CreateTipOfTheDayDialog(rReq.GetFrameWeld()));
-            pDlg->StartExecuteAsync(nullptr);
+            // Downstream disables the Tip of the Day workflow.
             bDone = true;
             break;
         }

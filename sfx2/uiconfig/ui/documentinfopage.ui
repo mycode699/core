@@ -9,15 +9,15 @@
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
     <property name="border-width">12</property>
-    <property name="row-spacing">6</property>
+    <property name="row-spacing">8</property>
     <property name="column-spacing">12</property>
     <child>
       <object class="GtkLabel" id="label13">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="halign">end</property>
-        <property name="label" translatable="yes" context="documentinfopage|label13">_Created:</property>
-        <property name="use-underline">True</property>
+        <property name="label" translatable="yes" context="documentinfopage|label13">创建时间</property>
+        <property name="use-underline">False</property>
         <property name="mnemonic-widget">showcreate</property>
       </object>
       <packing>
@@ -30,8 +30,8 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="halign">end</property>
-        <property name="label" translatable="yes" context="documentinfopage|label14">_Modified:</property>
-        <property name="use-underline">True</property>
+        <property name="label" translatable="yes" context="documentinfopage|label14">修改时间</property>
+        <property name="use-underline">False</property>
         <property name="mnemonic-widget">showmodify</property>
       </object>
       <packing>
@@ -44,8 +44,8 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="halign">end</property>
-        <property name="label" translatable="yes" context="documentinfopage|label15">_Digitally signed:</property>
-        <property name="use-underline">True</property>
+        <property name="label" translatable="yes" context="documentinfopage|label15">数字签名</property>
+        <property name="use-underline">False</property>
         <property name="mnemonic-widget">showsigned</property>
       </object>
       <packing>
@@ -58,8 +58,8 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="halign">end</property>
-        <property name="label" translatable="yes" context="documentinfopage|label16">Last pri_nted:</property>
-        <property name="use-underline">True</property>
+        <property name="label" translatable="yes" context="documentinfopage|label16">上次打印</property>
+        <property name="use-underline">False</property>
         <property name="mnemonic-widget">showprint</property>
       </object>
       <packing>
@@ -72,8 +72,8 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="halign">end</property>
-        <property name="label" translatable="yes" context="documentinfopage|label17">Total _editing time:</property>
-        <property name="use-underline">True</property>
+        <property name="label" translatable="yes" context="documentinfopage|label17">总编辑时长</property>
+        <property name="use-underline">False</property>
         <property name="mnemonic-widget">showedittime</property>
       </object>
       <packing>
@@ -86,8 +86,8 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="halign">end</property>
-        <property name="label" translatable="yes" context="documentinfopage|label18">Re_vision number:</property>
-        <property name="use-underline">True</property>
+        <property name="label" translatable="yes" context="documentinfopage|label18">版本号</property>
+        <property name="use-underline">False</property>
         <property name="mnemonic-widget">showrevision</property>
       </object>
       <packing>
@@ -128,7 +128,7 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="hexpand">True</property>
-        <property name="label" translatable="yes" context="documentinfopage|showsigned">Multiply signed document</property>
+        <property name="label" translatable="yes" context="documentinfopage|showsigned">多重签名文档</property>
         <property name="selectable">True</property>
         <property name="xalign">0</property>
       </object>
@@ -180,11 +180,11 @@
     </child>
     <child>
       <object class="GtkCheckButton" id="userdatacb">
-        <property name="label" translatable="yes" context="documentinfopage|userdatacb">_Apply user data</property>
+        <property name="label" translatable="yes" context="documentinfopage|userdatacb">应用用户数据</property>
         <property name="can-focus">True</property>
         <property name="receives-default">False</property>
         <property name="no-show-all">True</property>
-        <property name="use-underline">True</property>
+        <property name="use-underline">False</property>
         <property name="draw-indicator">True</property>
       </object>
       <packing>
@@ -194,14 +194,15 @@
     </child>
     <child>
       <object class="GtkButton" id="reset">
-        <property name="label" translatable="yes" context="documentinfopage|reset">Reset Properties</property>
+        <property name="label" translatable="yes" context="documentinfopage|reset">重置属性</property>
         <property name="can-focus">True</property>
         <property name="receives-default">True</property>
         <property name="no-show-all">True</property>
         <property name="valign">center</property>
+        <property name="use-underline">False</property>
         <child internal-child="accessible">
           <object class="AtkObject" id="reset-atkobject">
-            <property name="AtkObject::accessible-description" translatable="yes" context="documentinfopage|extended_tip|reset">Resets the editing time to zero, the creation date to the current date and time, and the version number to 1. The modification and printing dates are also deleted.</property>
+            <property name="AtkObject::accessible-description" translatable="yes" context="documentinfopage|extended_tip|reset">将编辑时间重置为零，将创建日期重置为当前日期和时间，并将版本号重置为 1。修改时间和打印时间也会被删除。</property>
           </object>
         </child>
       </object>
@@ -212,13 +213,13 @@
     </child>
     <child>
       <object class="GtkButton" id="signature">
-        <property name="label" translatable="yes" context="documentinfopage|signature">Di_gital Signatures...</property>
+        <property name="label" translatable="yes" context="documentinfopage|signature">数字签名</property>
         <property name="visible">True</property>
         <property name="can-focus">True</property>
         <property name="has-focus">True</property>
         <property name="receives-default">True</property>
         <property name="valign">center</property>
-        <property name="use-underline">True</property>
+        <property name="use-underline">False</property>
       </object>
       <packing>
         <property name="left-attach">2</property>
@@ -231,8 +232,8 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="halign">end</property>
-        <property name="label" translatable="yes" context="documentinfopage|label11">_Size:</property>
-        <property name="use-underline">True</property>
+        <property name="label" translatable="yes" context="documentinfopage|label11">大小</property>
+        <property name="use-underline">False</property>
         <property name="mnemonic-widget">showsize</property>
       </object>
       <packing>
@@ -244,7 +245,7 @@
       <object class="GtkLabel" id="showsize">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="documentinfopage|showsize">unknown</property>
+        <property name="label" translatable="yes" context="documentinfopage|showsize">未知</property>
         <property name="selectable">True</property>
         <property name="xalign">0</property>
       </object>
@@ -259,8 +260,8 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="halign">end</property>
-        <property name="label" translatable="yes" context="documentinfopage|label8">_Location:</property>
-        <property name="use-underline">True</property>
+        <property name="label" translatable="yes" context="documentinfopage|label8">位置</property>
+        <property name="use-underline">False</property>
         <property name="mnemonic-widget">showlocation</property>
       </object>
       <packing>
@@ -273,8 +274,8 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="halign">end</property>
-        <property name="label" translatable="yes" context="documentinfopage|label7">_Type:</property>
-        <property name="use-underline">True</property>
+        <property name="label" translatable="yes" context="documentinfopage|label7">类型</property>
+        <property name="use-underline">False</property>
         <property name="mnemonic-widget">showtype</property>
       </object>
       <packing>
@@ -287,6 +288,8 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="selectable">True</property>
+        <property name="ellipsize">end</property>
+        <property name="max-width-chars">42</property>
         <property name="xalign">0</property>
       </object>
       <packing>
@@ -296,12 +299,12 @@
     </child>
     <child>
       <object class="GtkButton" id="changepass">
-        <property name="label" translatable="yes" context="documentinfopage|changepass">Change _Password</property>
+        <property name="label" translatable="yes" context="documentinfopage|changepass">更改密码</property>
         <property name="visible">True</property>
         <property name="can-focus">True</property>
         <property name="receives-default">True</property>
         <property name="valign">start</property>
-        <property name="use-underline">True</property>
+        <property name="use-underline">False</property>
       </object>
       <packing>
         <property name="left-attach">2</property>
@@ -314,8 +317,8 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="halign">end</property>
-        <property name="label" translatable="yes" context="documentinfopage|templateft">Template:</property>
-        <property name="use-underline">True</property>
+        <property name="label" translatable="yes" context="documentinfopage|templateft">模板</property>
+        <property name="use-underline">False</property>
         <property name="mnemonic-widget">showtemplate</property>
       </object>
       <packing>
@@ -328,6 +331,7 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="selectable">True</property>
+        <property name="ellipsize">end</property>
         <property name="max-width-chars">56</property>
         <property name="xalign">0</property>
       </object>
@@ -363,7 +367,7 @@
             <property name="max-width-chars">56</property>
             <child internal-child="accessible">
               <object class="AtkObject" id="nameed-atkobject">
-                <property name="AtkObject::accessible-description" translatable="yes" context="documentinfopage|extended_tip|nameed">Displays the file name.</property>
+                <property name="AtkObject::accessible-description" translatable="yes" context="documentinfopage|extended_tip|nameed">显示文件名。</property>
               </object>
             </child>
           </object>
@@ -380,12 +384,13 @@
     </child>
     <child>
       <object class="GtkCheckButton" id="thumbnailsavecb">
-        <property name="label" translatable="yes" context="documentinfopage|thumbnailsavecb">Save preview image with this document</property>
+        <property name="label" translatable="yes" context="documentinfopage|thumbnailsavecb">随文档保存预览图</property>
         <property name="visible">True</property>
         <property name="can-focus">True</property>
         <property name="receives-default">False</property>
         <property name="no-show-all">True</property>
         <property name="draw-indicator">True</property>
+        <property name="use-underline">False</property>
       </object>
       <packing>
         <property name="left-attach">1</property>
@@ -399,12 +404,13 @@
         <property name="halign">start</property>
         <child>
           <object class="GtkCheckButton" id="image-preferred-dpi-checkbutton">
-            <property name="label" translatable="yes" context="documentinfopage|image-preferred-dpi-checkbutton">Preferred resolution for images:</property>
+            <property name="label" translatable="yes" context="documentinfopage|image-preferred-dpi-checkbutton">图片首选分辨率</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">False</property>
             <property name="margin-end">6</property>
             <property name="draw-indicator">True</property>
+            <property name="use-underline">False</property>
             <accessibility>
               <relation type="label-for" target="image-preferred-dpi-combobox"/>
             </accessibility>
@@ -465,11 +471,11 @@
     </child>
     <child>
       <object class="GtkButton" id="btnShowLocation">
-        <property name="label" translatable="yes" context="documentinfopage|btnShowLocation">Open</property>
+        <property name="label" translatable="yes" context="documentinfopage|btnShowLocation">打开</property>
         <property name="visible">True</property>
         <property name="can-focus">True</property>
         <property name="receives-default">True</property>
-        <property name="use-underline">True</property>
+        <property name="use-underline">False</property>
       </object>
       <packing>
         <property name="left-attach">2</property>
@@ -482,7 +488,14 @@
         <property name="can-focus">False</property>
         <property name="valign">center</property>
         <property name="selectable">True</property>
+        <property name="ellipsize">middle</property>
+        <property name="max-width-chars">64</property>
         <property name="xalign">0</property>
+        <child internal-child="accessible">
+          <object class="AtkObject" id="showlocation-atkobject">
+            <property name="AtkObject::accessible-role">static</property>
+          </object>
+        </child>
       </object>
       <packing>
         <property name="left-attach">1</property>
@@ -509,7 +522,7 @@
     </child>
     <child internal-child="accessible">
       <object class="AtkObject" id="DocumentInfoPage-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="documentinfopage|extended_tip|DocumentInfoPage">Contains basic information about the current file.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="documentinfopage|extended_tip|DocumentInfoPage">包含当前文件的基本信息。</property>
       </object>
     </child>
   </object>

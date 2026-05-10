@@ -503,6 +503,7 @@ const char* const TEMPLATE_SHORT_NAMES_ARY[] =
     "styles",
     "officorr",
     "offimisc",
+    "spreadsheets",
     "personal",
     "presnt",
     "draw",

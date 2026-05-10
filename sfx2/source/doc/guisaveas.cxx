@@ -2099,7 +2099,7 @@ bool SfxStoringHelper::WarnUnacceptableFormat( const uno::Reference< frame::XMod
     sInfoText = sInfoText.replaceAll("%FORMATNAME", aOldUIName);
     sInfoText = sInfoText.replaceAll("%EXTENSION", aExtension);
 
-    OUString sExtension = u"ODF"_ustr;
+    OUString sExtension = aDefExtension.toAsciiUpperCase();
     OUString sQuestion = "";
     if (bDefIsAlien) {
         sExtension = aDefExtension.toAsciiUpperCase();
@@ -2107,7 +2107,7 @@ bool SfxStoringHelper::WarnUnacceptableFormat( const uno::Reference< frame::XMod
     else
     {
         sQuestion = SfxResId(STR_QUERY_ALIENFORMAT_QUESTION);
-        sQuestion = sQuestion.replaceAll("%EXTENSION", aDefExtension);
+        sQuestion = sQuestion.replaceAll("%EXTENSION", sExtension);
     }
 
     VclAbstractDialogFactory* pFact = VclAbstractDialogFactory::Create();

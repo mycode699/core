@@ -40,9 +40,9 @@
   </object>
   <object class="GtkDialog" id="TemplateDialog">
     <property name="can-focus">False</property>
-    <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="templatedlg|TemplateDialog">Templates</property>
-    <property name="resizable">False</property>
+    <property name="border-width">12</property>
+    <property name="title" translatable="yes" context="templatedlg|TemplateDialog">模板</property>
+    <property name="resizable">True</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
     <property name="default-height">0</property>
@@ -51,7 +51,7 @@
       <object class="GtkBox" id="dialog-vbox1">
         <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
+        <property name="spacing">8</property>
         <child internal-child="action_area">
           <object class="GtkButtonBox" id="dialog-action_area1">
             <property name="can-focus">False</property>
@@ -73,7 +73,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="hidedialogcb">
-                <property name="label" translatable="yes" context="templatedlg|hidedialogcb">Show this dialog at startup</property>
+                <property name="label" translatable="yes" context="templatedlg|hidedialogcb">启动时显示此对话框</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
                 <property name="use-underline">True</property>
@@ -135,16 +135,17 @@
               <object class="GtkBox" id="filter_box">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="margin-bottom">6</property>
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkEntry" id="search_filter">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
-                    <property name="tooltip-text" translatable="yes" context="templatedlg|search_filter|tooltip_text">Search</property>
+                    <property name="tooltip-text" translatable="yes" context="templatedlg|search_filter|tooltip_text">搜索</property>
                     <property name="hexpand">True</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
-                    <property name="placeholder-text" translatable="yes" context="templatedlg|search_filter">Search...</property>
+                    <property name="placeholder-text" translatable="yes" context="templatedlg|search_filter">搜索模板</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -161,7 +162,7 @@
                       <object class="GtkLabel" id="label1">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="templatedlg|label1">Filter</property>
+                        <property name="label" translatable="yes" context="templatedlg|label1">类型</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -178,13 +179,13 @@
                           <object class="GtkComboBoxText" id="filter_application">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
-                            <property name="tooltip-text" translatable="yes" context="templatedlg|filter_application|tooltip_text">Filter by Application</property>
+                            <property name="tooltip-text" translatable="yes" context="templatedlg|filter_application|tooltip_text">按应用筛选</property>
                             <items>
-                              <item id="0" translatable="yes" context="templatedlg|applist">All Applications</item>
-                              <item id="0" translatable="yes" context="templatedlg|applist">Text Documents</item>
-                              <item id="0" translatable="yes" context="templatedlg|applist">Spreadsheets</item>
-                              <item id="0" translatable="yes" context="templatedlg|applist">Presentations</item>
-                              <item id="0" translatable="yes" context="templatedlg|applist">Drawings</item>
+                              <item id="0" translatable="yes" context="templatedlg|applist">全部应用</item>
+                              <item id="0" translatable="yes" context="templatedlg|applist">文本文档</item>
+                              <item id="0" translatable="yes" context="templatedlg|applist">电子表格</item>
+                              <item id="0" translatable="yes" context="templatedlg|applist">演示文稿</item>
+                              <item id="0" translatable="yes" context="templatedlg|applist">绘图</item>
                             </items>
                           </object>
                           <packing>
@@ -195,12 +196,12 @@
                         </child>
                         <child>
                           <object class="GtkComboBoxText" id="filter_folder">
-                            <property name="width-request">250</property>
+                            <property name="width-request">220</property>
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
-                            <property name="tooltip-text" translatable="yes" context="templatedlg|filter_folder|tooltip_text">Filter by Category</property>
+                            <property name="tooltip-text" translatable="yes" context="templatedlg|filter_folder|tooltip_text">按分类筛选</property>
                             <items>
-                              <item id="0" translatable="yes" context="templatedlg|folderlist">All Categories</item>
+                              <item id="0" translatable="yes" context="templatedlg|folderlist">全部分类</item>
                             </items>
                           </object>
                           <packing>
@@ -222,11 +223,11 @@
                         <property name="can-focus">False</property>
                         <child>
                           <object class="GtkMenuButton" id="action_menu">
-                            <property name="label" translatable="yes" context="templatedlg|action_menu|label">_Manage</property>
+                            <property name="label" translatable="yes" context="templatedlg|action_menu|label">管理</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                             <property name="always-show-image">True</property>
                             <property name="draw-indicator">True</property>
                             <property name="popup">menu1</property>
@@ -236,7 +237,7 @@
                             </child>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="action_menu-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="templatedlg|extended_tip|action_menu">Provides commands to create, rename and delete categories, reset default templates, and refresh the template manager.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="templatedlg|extended_tip|action_menu">提供新建、重命名和删除分类、重置默认模板以及刷新模板管理器的命令。</property>
                               </object>
                             </child>
                           </object>
@@ -289,7 +290,7 @@
                         <property name="no-show-all">True</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
-                        <property name="shadow-type">in</property>
+                        <property name="shadow-type">none</property>
                         <child>
                           <object class="GtkViewport">
                             <property name="visible">True</property>
@@ -329,6 +330,7 @@
                             <property name="hexpand">True</property>
                             <property name="vexpand">True</property>
                             <property name="model">list_store</property>
+                            <property name="headers-visible">True</property>
                             <property name="enable-search">False</property>
                             <property name="search-column">0</property>
                             <property name="show-expanders">False</property>
@@ -349,12 +351,12 @@
                               <object class="GtkTreeViewColumn" id="treeviewcolumn1">
                                 <property name="resizable">True</property>
                                 <property name="spacing">6</property>
-                                <property name="title" translatable="yes" context="templatedlg|treeviewcolumn1">Name</property>
+                                <property name="title" translatable="yes" context="templatedlg|treeviewcolumn1">名称</property>
                                 <property name="expand">True</property>
                                 <property name="clickable">True</property>
                                 <child>
                                   <object class="GtkCellRendererText" id="cellrenderer2">
-                                    <property name="ypad">3</property>
+                                    <property name="ypad">4</property>
                                   </object>
                                   <attributes>
                                     <attribute name="text">1</attribute>
@@ -366,11 +368,11 @@
                               <object class="GtkTreeViewColumn" id="treeviewcolumn2">
                                 <property name="resizable">True</property>
                                 <property name="spacing">6</property>
-                                <property name="title" translatable="yes" context="templatedlg|treeviewcolumn2">Category</property>
+                                <property name="title" translatable="yes" context="templatedlg|treeviewcolumn2">分类</property>
                                 <property name="clickable">True</property>
                                 <child>
                                   <object class="GtkCellRendererText" id="cellrenderer3">
-                                    <property name="ypad">3</property>
+                                    <property name="ypad">4</property>
                                   </object>
                                   <attributes>
                                     <attribute name="text">2</attribute>
@@ -381,11 +383,11 @@
                             <child>
                               <object class="GtkTreeViewColumn" id="treeviewcolumn3">
                                 <property name="resizable">True</property>
-                                <property name="title" translatable="yes" context="templatedlg|treeviewcolumn3">Application</property>
+                                <property name="title" translatable="yes" context="templatedlg|treeviewcolumn3">应用</property>
                                 <property name="clickable">True</property>
                                 <child>
                                   <object class="GtkCellRendererText" id="cellrenderer4">
-                                    <property name="ypad">3</property>
+                                    <property name="ypad">4</property>
                                   </object>
                                   <attributes>
                                     <attribute name="text">3</attribute>
@@ -396,11 +398,11 @@
                             <child>
                               <object class="GtkTreeViewColumn" id="treeviewcolumn4">
                                 <property name="resizable">True</property>
-                                <property name="title" translatable="yes" context="templatedlg|treeviewcolumn4">Modified</property>
+                                <property name="title" translatable="yes" context="templatedlg|treeviewcolumn4">修改时间</property>
                                 <property name="clickable">True</property>
                                 <child>
                                   <object class="GtkCellRendererText" id="cellrenderer5">
-                                    <property name="ypad">3</property>
+                                    <property name="ypad">4</property>
                                   </object>
                                   <attributes>
                                     <attribute name="text">4</attribute>
@@ -411,11 +413,11 @@
                             <child>
                               <object class="GtkTreeViewColumn" id="treeviewcolumn5">
                                 <property name="resizable">True</property>
-                                <property name="title" translatable="yes" context="templatedlg|treeviewcolumn5">Size</property>
+                                <property name="title" translatable="yes" context="templatedlg|treeviewcolumn5">大小</property>
                                 <property name="clickable">True</property>
                                 <child>
                                   <object class="GtkCellRendererText" id="cellrenderer6">
-                                    <property name="ypad">3</property>
+                                    <property name="ypad">4</property>
                                   </object>
                                   <attributes>
                                     <attribute name="text">5</attribute>
@@ -437,7 +439,7 @@
                 <child type="label">
                   <object class="GtkLabel" id="thumbnailviewlabel">
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="templatedlg|thumbnailviewlabel">Template List</property>
+                    <property name="label" translatable="yes" context="templatedlg|thumbnailviewlabel">模板</property>
                   </object>
                 </child>
               </object>
@@ -456,7 +458,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
-                    <property name="tooltip-text" translatable="yes" context="templatedlg|thumbnail_view_btn|tooltip_text">Thumbnail View</property>
+                    <property name="tooltip-text" translatable="yes" context="templatedlg|thumbnail_view_btn|tooltip_text">缩略图视图</property>
                     <property name="image">image8</property>
                     <property name="relief">none</property>
                     <property name="always-show-image">True</property>
@@ -473,7 +475,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
-                    <property name="tooltip-text" translatable="yes" context="templatedlg|list_view_btn|tooltip_text">List View</property>
+                    <property name="tooltip-text" translatable="yes" context="templatedlg|list_view_btn|tooltip_text">列表视图</property>
                     <property name="image">image9</property>
                     <property name="relief">none</property>
                     <property name="always-show-image">True</property>

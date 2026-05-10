@@ -20,8 +20,8 @@
   </object>
   <object class="GtkDialog" id="LoadTemplateDialog">
     <property name="can-focus">False</property>
-    <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="loadtemplatedialog|LoadTemplateDialog">New</property>
+    <property name="border-width">12</property>
+    <property name="title" translatable="yes" context="loadtemplatedialog|LoadTemplateDialog">载入模板样式</property>
     <property name="modal">True</property>
     <property name="type-hint">dialog</property>
     <child internal-child="vbox">
@@ -37,15 +37,15 @@
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="fromfile">
-                <property name="label" translatable="yes" context="loadtemplatedialog|fromfile">From File...</property>
+                <property name="label" translatable="yes" context="loadtemplatedialog|fromfile">从文件导入</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
                 <property name="no-show-all">True</property>
-                <property name="tooltip-text" translatable="yes" context="loadtemplatedialog|fromfile|tooltip_text">Copy styles from selected external document to current document.</property>
+                <property name="tooltip-text" translatable="yes" context="loadtemplatedialog|fromfile|tooltip_text">将所选外部文档中的样式复制到当前文档。</property>
                 <property name="use-underline">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="fromfile-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="loadtemplatedialog|extended_tip|fromfile">Locate the file containing the styles that you want to load, and then click Open.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="loadtemplatedialog|extended_tip|fromfile">找到包含所需样式的文件，然后点击“打开”。</property>
                   </object>
                 </child>
               </object>
@@ -117,8 +117,8 @@
             <property name="can-focus">False</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
-            <property name="row-spacing">6</property>
-            <property name="column-spacing">12</property>
+            <property name="row-spacing">8</property>
+            <property name="column-spacing">16</property>
             <property name="column-homogeneous">True</property>
             <child>
               <object class="GtkFrame" id="frame1">
@@ -162,7 +162,7 @@
                         </child>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="categories-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="loadtemplatedialog|extended_tip|categories">Lists the available template categories. Click a category to view its contents in the Templates list.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="loadtemplatedialog|extended_tip|categories">列出可用的模板分类。点击某个分类可在模板列表中查看其内容。</property>
                           </object>
                         </child>
                       </object>
@@ -173,7 +173,7 @@
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="loadtemplatedialog|label1">Categories</property>
+                    <property name="label" translatable="yes" context="loadtemplatedialog|label1">分类</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -227,7 +227,7 @@
                         </child>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="templates-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="loadtemplatedialog|extended_tip|templates">Lists the available templates for the selected category.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="loadtemplatedialog|extended_tip|templates">列出所选分类中的可用模板。</property>
                           </object>
                         </child>
                       </object>
@@ -238,8 +238,8 @@
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="tooltip-text" translatable="yes" context="loadtemplatedialog|label2|tooltip_text">Templates in the selected category</property>
-                    <property name="label" translatable="yes" context="loadtemplatedialog|label2">Templates</property>
+                    <property name="tooltip-text" translatable="yes" context="loadtemplatedialog|label2|tooltip_text">所选分类中的模板</property>
+                    <property name="label" translatable="yes" context="loadtemplatedialog|label2">模板</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -256,21 +256,22 @@
               <object class="GtkGrid" id="optionsgrid">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="margin-top">6</property>
                 <property name="row-spacing">6</property>
                 <property name="column-spacing">12</property>
                 <property name="column-homogeneous">True</property>
                 <child>
                   <object class="GtkCheckButton" id="text">
-                    <property name="label" translatable="yes" context="loadtemplatedialog|text">_Paragraph and Character</property>
+                    <property name="label" translatable="yes" context="loadtemplatedialog|text">_段落和字符</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
                     <property name="no-show-all">True</property>
-                    <property name="tooltip-text" translatable="yes" context="loadtemplatedialog|text|tooltip_text">Copy paragraph and character styles to current document.</property>
+                    <property name="tooltip-text" translatable="yes" context="loadtemplatedialog|text|tooltip_text">将段落样式和字符样式复制到当前文档。</property>
                     <property name="use-underline">True</property>
                     <property name="draw-indicator">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="text-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="loadtemplatedialog|extended_tip|text">Loads the paragraph and the character styles from the selected document into the current document.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="loadtemplatedialog|extended_tip|text">将所选文档中的段落样式和字符样式加载到当前文档。</property>
                       </object>
                     </child>
                   </object>
@@ -281,16 +282,16 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="frame">
-                    <property name="label" translatable="yes" context="loadtemplatedialog|frame">_Frame</property>
+                    <property name="label" translatable="yes" context="loadtemplatedialog|frame">_框架</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
                     <property name="no-show-all">True</property>
-                    <property name="tooltip-text" translatable="yes" context="loadtemplatedialog|frame|tooltip_text">Copy frame styles to current document.</property>
+                    <property name="tooltip-text" translatable="yes" context="loadtemplatedialog|frame|tooltip_text">将框架样式复制到当前文档。</property>
                     <property name="use-underline">True</property>
                     <property name="draw-indicator">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="frame-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="loadtemplatedialog|extended_tip|frame">Loads the frame styles from the selected document into the current document.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="loadtemplatedialog|extended_tip|frame">将所选文档中的框架样式加载到当前文档。</property>
                       </object>
                     </child>
                   </object>
@@ -301,16 +302,16 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="pages">
-                    <property name="label" translatable="yes" context="loadtemplatedialog|pages">Pa_ge</property>
+                    <property name="label" translatable="yes" context="loadtemplatedialog|pages">页_面</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
                     <property name="no-show-all">True</property>
-                    <property name="tooltip-text" translatable="yes" context="loadtemplatedialog|pages|tooltip_text">Copy page styles to current document.</property>
+                    <property name="tooltip-text" translatable="yes" context="loadtemplatedialog|pages|tooltip_text">将页面样式复制到当前文档。</property>
                     <property name="use-underline">True</property>
                     <property name="draw-indicator">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="pages-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="loadtemplatedialog|extended_tip|pages">Loads the page styles from the selected document into the current document.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="loadtemplatedialog|extended_tip|pages">将所选文档中的页面样式加载到当前文档。</property>
                       </object>
                     </child>
                   </object>
@@ -321,16 +322,16 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="numbering">
-                    <property name="label" translatable="yes" context="loadtemplatedialog|numbering">_List</property>
+                    <property name="label" translatable="yes" context="loadtemplatedialog|numbering">_列表</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
                     <property name="no-show-all">True</property>
-                    <property name="tooltip-text" translatable="yes" context="loadtemplatedialog|numbering|tooltip_text">Copy list styles to current document.</property>
+                    <property name="tooltip-text" translatable="yes" context="loadtemplatedialog|numbering|tooltip_text">将列表样式复制到当前文档。</property>
                     <property name="use-underline">True</property>
                     <property name="draw-indicator">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="numbering-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="loadtemplatedialog|extended_tip|numbering">Loads the list styles from the selected document into the current document.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="loadtemplatedialog|extended_tip|numbering">将所选文档中的列表样式加载到当前文档。</property>
                       </object>
                     </child>
                   </object>
@@ -341,16 +342,16 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="overwrite">
-                    <property name="label" translatable="yes" context="loadtemplatedialog|overwrite">_Overwrite</property>
+                    <property name="label" translatable="yes" context="loadtemplatedialog|overwrite">_覆盖</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
                     <property name="no-show-all">True</property>
-                    <property name="tooltip-text" translatable="yes" context="loadtemplatedialog|overwrite|tooltip_text">Overwrite styles with same name</property>
+                    <property name="tooltip-text" translatable="yes" context="loadtemplatedialog|overwrite|tooltip_text">覆盖同名样式</property>
                     <property name="use-underline">True</property>
                     <property name="draw-indicator">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="overwrite-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="loadtemplatedialog|extended_tip|overwrite">Replaces styles in the current document that have the same name as the styles you are loading.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="loadtemplatedialog|extended_tip|overwrite">替换当前文档中与正在加载的样式同名的样式。</property>
                       </object>
                     </child>
                   </object>
@@ -373,7 +374,7 @@
               <object class="GtkLabel" id="alttitle">
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
-                <property name="label" translatable="yes" context="loadtemplatedialog|alttitle">Load Styles from Template</property>
+                <property name="label" translatable="yes" context="loadtemplatedialog|alttitle">从模板载入样式</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>
@@ -410,13 +411,13 @@
                   <object class="GtkLabel" id="label3">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="loadtemplatedialog|label3">Pre_view</property>
+                    <property name="label" translatable="yes" context="loadtemplatedialog|label3">预_览</property>
                     <property name="use-underline">True</property>
                   </object>
                 </child>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="expander-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="loadtemplatedialog|extended_tip|expander">Shows or hides a preview of a selected template.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="loadtemplatedialog|extended_tip|expander">显示或隐藏所选模板的预览。</property>
                   </object>
                 </child>
               </object>
@@ -443,7 +444,7 @@
     </action-widgets>
     <child internal-child="accessible">
       <object class="AtkObject" id="LoadTemplateDialog-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="loadtemplatedialog|extended_tip|LoadTemplateDialog">Imports formatting styles from another document or template into the current document.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="loadtemplatedialog|extended_tip|LoadTemplateDialog">将其他文档或模板中的格式样式导入当前文档。</property>
       </object>
     </child>
   </object>

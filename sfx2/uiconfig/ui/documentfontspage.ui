@@ -7,7 +7,7 @@
     <property name="visible">True</property>
     <property name="can-focus">False</property>
     <property name="border-width">12</property>
-    <property name="row-spacing">6</property>
+    <property name="row-spacing">8</property>
     <property name="column-spacing">12</property>
     <child>
       <object class="GtkFrame" id="fontEmbeddingFrame">
@@ -20,20 +20,20 @@
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-start">12</property>
-            <property name="margin-top">6</property>
+            <property name="margin-start">14</property>
+            <property name="margin-top">8</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkCheckButton" id="embedFonts">
-                <property name="label" translatable="yes" context="documentfontspage|embedFonts">_Embed fonts in the document</property>
+                <property name="label" translatable="yes" context="documentfontspage|embedFonts">将字体嵌入文档</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="embedFonts-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="documentfontspage|extended_tip|embedFonts">Mark this box to embed document fonts into the document file, for portability between different computer systems.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="documentfontspage|extended_tip|embedFonts">勾选后将文档字体嵌入文件，便于在不同电脑上保持显示一致。</property>
                   </object>
                 </child>
               </object>
@@ -45,11 +45,11 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="embedUsedFonts">
-                <property name="label" translatable="yes" context="documentfontspage|embedUsedFonts">_Only embed fonts that are used in documents</property>
+                <property name="label" translatable="yes" context="documentfontspage|embedUsedFonts">仅嵌入文档中使用的字体</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <property name="draw-indicator">True</property>
               </object>
               <packing>
@@ -64,7 +64,7 @@
           <object class="GtkLabel" id="fontEmbeddingLabel">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="documentfontspage|fontEmbeddingLabel">Font Embedding</property>
+            <property name="label" translatable="yes" context="documentfontspage|fontEmbeddingLabel">字体嵌入</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -87,16 +87,16 @@
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-start">12</property>
-            <property name="margin-top">6</property>
+            <property name="margin-start">14</property>
+            <property name="margin-top">8</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkCheckButton" id="embedLatinScriptFonts">
-                <property name="label" translatable="yes" context="documentfontspage|embedLatinScriptFonts">_Latin fonts</property>
+                <property name="label" translatable="yes" context="documentfontspage|embedLatinScriptFonts">西文字体</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <property name="draw-indicator">True</property>
               </object>
               <packing>
@@ -107,11 +107,11 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="embedAsianScriptFonts">
-                <property name="label" translatable="yes" context="documentfontspage|embedAsianScriptFonts">_Asian fonts</property>
+                <property name="label" translatable="yes" context="documentfontspage|embedAsianScriptFonts">亚洲文字字体</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <property name="draw-indicator">True</property>
               </object>
               <packing>
@@ -122,11 +122,11 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="embedComplexScriptFonts">
-                <property name="label" translatable="yes" context="documentfontspage|embedComplexScriptFonts">_Complex fonts</property>
+                <property name="label" translatable="yes" context="documentfontspage|embedComplexScriptFonts">复杂文字字体</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <property name="draw-indicator">True</property>
               </object>
               <packing>
@@ -141,7 +141,7 @@
           <object class="GtkLabel" id="scriptlabel">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="documentfontspage|fontScriptFrameLabel">Font scripts to embed</property>
+            <property name="label" translatable="yes" context="documentfontspage|fontScriptFrameLabel">要嵌入的字体文字</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -155,7 +155,7 @@
     </child>
     <child internal-child="accessible">
       <object class="AtkObject" id="DocumentFontsPage-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="documentfontspage|extended_tip|DocumentFontsPage">Embed document fonts in the current file.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="documentfontspage|extended_tip|DocumentFontsPage">设置是否将当前文件使用的字体嵌入文档。</property>
       </object>
     </child>
   </object>

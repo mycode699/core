@@ -18,7 +18,7 @@
           <object class="GtkToolButton" id="remove">
             <property name="visible">True</property>
             <property name="icon-name">window-close-symbolic</property>
-            <property name="tooltip-text" translatable="yes" context="propertychip|remove">Reset this property to inherit from parent style</property>
+            <property name="tooltip-text" translatable="yes" context="propertychip|remove">重置此属性，改为继承父样式</property>
           </object>
           <packing>
             <property name="expand">False</property>

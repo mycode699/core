@@ -15,7 +15,7 @@
     <property name="can-focus">False</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
-    <property name="border-width">6</property>
+    <property name="border-width">10</property>
     <property name="orientation">vertical</property>
     <child>
       <!-- n-columns=1 n-rows=2 -->
@@ -24,15 +24,15 @@
         <property name="can-focus">False</property>
         <property name="hexpand">True</property>
         <property name="vexpand">True</property>
-        <property name="row-spacing">6</property>
+        <property name="row-spacing">8</property>
         <child>
           <object class="GtkButton" id="display">
-            <property name="label" translatable="yes" context="helpindexpage|display">_Display</property>
+            <property name="label" translatable="yes" context="helpindexpage|display">显示</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
             <property name="halign">end</property>
-            <property name="use-underline">True</property>
+            <property name="use-underline">False</property>
           </object>
           <packing>
             <property name="left-attach">0</property>
@@ -56,12 +56,12 @@
                 <property name="vexpand">True</property>
                 <property name="row-spacing">3</property>
                 <child>
-                  <object class="GtkScrolledWindow">
+                  <object class="GtkScrolledWindow" id="term_scroll">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="hexpand">True</property>
                     <property name="vexpand">True</property>
-                    <property name="shadow-type">in</property>
+                    <property name="shadow-type">none</property>
                     <child>
                       <object class="GtkTreeView" id="termlist">
                         <property name="visible">True</property>
@@ -79,7 +79,9 @@
                         <child>
                           <object class="GtkTreeViewColumn" id="treeviewcolumn2">
                             <child>
-                              <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                              <object class="GtkCellRendererText" id="cellrenderertext2">
+                                <property name="ypad">4</property>
+                              </object>
                               <attributes>
                                 <attribute name="text">0</attribute>
                               </attributes>
@@ -99,6 +101,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">260</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                   </object>
@@ -113,8 +116,8 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="helpindexpage|label1">_Search Term</property>
-                <property name="use-underline">True</property>
+                <property name="label" translatable="yes" context="helpindexpage|label1">搜索词</property>
+                <property name="use-underline">False</property>
                 <property name="xalign">0</property>
               </object>
             </child>

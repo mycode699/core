@@ -4,15 +4,15 @@
   <requires lib="gtk+" version="3.24"/>
   <object class="GtkMessageDialog" id="ErrorFindEmailDialog">
     <property name="can-focus">False</property>
-    <property name="title" translatable="yes" context="errorfindemaildialog|ErrorFindEmailDialog">No email configuration</property>
+    <property name="title" translatable="yes" context="errorfindemaildialog|ErrorFindEmailDialog">未配置电子邮件</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="type-hint">dialog</property>
     <property name="skip-taskbar-hint">True</property>
     <property name="message-type">error</property>
     <property name="buttons">ok</property>
-    <property name="text" translatable="yes" context="errorfindemaildialog|ErrorFindEmailDialog">%PRODUCTNAME was unable to find a working email configuration.</property>
-    <property name="secondary-text" translatable="yes" context="errorfindemaildialog|ErrorFindEmailDialog">Please save this document locally instead and attach it from within your email client.</property>
+    <property name="text" translatable="yes" context="errorfindemaildialog|ErrorFindEmailDialog">%PRODUCTNAME 未找到可用的电子邮件配置。</property>
+    <property name="secondary-text" translatable="yes" context="errorfindemaildialog|ErrorFindEmailDialog">请先将此文档保存到本地，然后在电子邮件客户端中作为附件发送。</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="messagedialog-vbox">
         <property name="can-focus">False</property>
@@ -21,6 +21,8 @@
         <child internal-child="action_area">
           <object class="GtkButtonBox" id="messagedialog-action_area">
             <property name="can-focus">False</property>
+            <property name="layout-style">end</property>
+            <property name="homogeneous">False</property>
           </object>
           <packing>
             <property name="expand">False</property>

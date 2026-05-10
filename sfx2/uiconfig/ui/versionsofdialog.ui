@@ -16,7 +16,7 @@
   </object>
   <object class="GtkDialog" id="VersionsOfDialog">
     <property name="can-focus">False</property>
-    <property name="border-width">6</property>
+    <property name="border-width">10</property>
     <property name="modal">True</property>
     <property name="type-hint">dialog</property>
     <child internal-child="vbox">
@@ -28,6 +28,7 @@
           <object class="GtkButtonBox" id="dialog-action_area1">
             <property name="can-focus">False</property>
             <property name="layout-style">end</property>
+            <property name="homogeneous">False</property>
             <child>
               <object class="GtkButton" id="cmis">
                 <property name="label" translatable="yes" context="versionsofdialog|cmis">CMIS</property>
@@ -43,14 +44,14 @@
             </child>
             <child>
               <object class="GtkButton" id="delete">
-                <property name="label" translatable="yes" context="stock">_Delete</property>
+                <property name="label" translatable="yes" context="stock">删除</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="delete-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="versionsofdialog|extended_tip|delete">Deletes the selected version.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="versionsofdialog|extended_tip|delete">删除所选版本。</property>
                   </object>
                 </child>
               </object>
@@ -62,14 +63,14 @@
             </child>
             <child>
               <object class="GtkButton" id="compare">
-                <property name="label" translatable="yes" context="versionsofdialog|compare">_Compare</property>
+                <property name="label" translatable="yes" context="versionsofdialog|compare">比较</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="compare-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="versionsofdialog|extended_tip|compare">Compare the changes that were made in each version.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="versionsofdialog|extended_tip|compare">比较各版本中的更改。</property>
                   </object>
                 </child>
               </object>
@@ -81,14 +82,14 @@
             </child>
             <child>
               <object class="GtkButton" id="show">
-                <property name="label" translatable="yes" context="versionsofdialog|show">_Show...</property>
+                <property name="label" translatable="yes" context="versionsofdialog|show">显示</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="show-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="versionsofdialog|extended_tip|show">Displays the entire comment for the selected version.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="versionsofdialog|extended_tip|show">显示所选版本的完整备注。</property>
                   </object>
                 </child>
               </object>
@@ -100,13 +101,13 @@
             </child>
             <child>
               <object class="GtkButton" id="close">
-                <property name="label" translatable="yes" context="stock">_Close</property>
+                <property name="label" translatable="yes" context="stock">关闭</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
                 <property name="has-default">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -116,14 +117,17 @@
             </child>
             <child>
               <object class="GtkButton" id="open">
-                <property name="label" translatable="yes" context="versionsofdialog|open">_Open</property>
+                <property name="label" translatable="yes" context="versionsofdialog|open">打开</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
+                <style>
+                  <class name="suggested-action"/>
+                </style>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="open-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="versionsofdialog|extended_tip|open">Opens the selected version in a read-only window.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="versionsofdialog|extended_tip|open">在只读窗口中打开所选版本。</property>
                   </object>
                 </child>
               </object>
@@ -135,11 +139,11 @@
             </child>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -176,19 +180,19 @@
                   <object class="GtkGrid" id="grid2">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="margin-start">12</property>
-                    <property name="margin-top">6</property>
+                    <property name="margin-start">14</property>
+                    <property name="margin-top">8</property>
                     <property name="column-spacing">12</property>
                     <child>
                       <object class="GtkButton" id="save">
-                        <property name="label" translatable="yes" context="versionsofdialog|save">Save _New Version</property>
+                        <property name="label" translatable="yes" context="versionsofdialog|save">保存新版本</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="use-underline">True</property>
+                        <property name="use-underline">False</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="save-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="versionsofdialog|extended_tip|save">Saves the current state of the document as a new version. If you want, you can also enter comments in the Insert Version Comment dialog before you save the new version.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="versionsofdialog|extended_tip|save">将文档当前状态保存为新版本。也可以在保存前输入版本备注。</property>
                           </object>
                         </child>
                       </object>
@@ -199,15 +203,15 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="always">
-                        <property name="label" translatable="yes" context="versionsofdialog|always">_Always save a new version on closing</property>
+                        <property name="label" translatable="yes" context="versionsofdialog|always">关闭时始终保存新版本</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
-                        <property name="use-underline">True</property>
+                        <property name="use-underline">False</property>
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="always-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="versionsofdialog|extended_tip|always">If you have made changes to your document then a new version is automatically saved when you close the document.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="versionsofdialog|extended_tip|always">如果文档已修改，关闭文档时会自动保存一个新版本。</property>
                           </object>
                         </child>
                       </object>
@@ -222,7 +226,7 @@
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="versionsofdialog|label1">New Versions</property>
+                    <property name="label" translatable="yes" context="versionsofdialog|label1">新版本</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -247,17 +251,17 @@
                   <object class="GtkGrid" id="grid3">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="margin-start">12</property>
-                    <property name="margin-top">6</property>
+                    <property name="margin-start">14</property>
+                    <property name="margin-top">8</property>
                     <property name="hexpand">True</property>
                     <property name="vexpand">True</property>
                     <child>
-                      <object class="GtkScrolledWindow">
+                      <object class="GtkScrolledWindow" id="versions_scroll">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
-                        <property name="shadow-type">in</property>
+                        <property name="shadow-type">none</property>
                         <child>
                           <object class="GtkTreeView" id="versions">
                             <property name="visible">True</property>
@@ -275,9 +279,11 @@
                               <object class="GtkTreeViewColumn" id="treeviewcolumn1">
                                 <property name="resizable">True</property>
                                 <property name="spacing">6</property>
-                                <property name="title" translatable="yes" context="versionsofdialog|datetime">Date and time</property>
+                                <property name="title" translatable="yes" context="versionsofdialog|datetime">日期和时间</property>
                                 <child>
-                                  <object class="GtkCellRendererText" id="cellrenderer1"/>
+                                  <object class="GtkCellRendererText" id="cellrenderer1">
+                                    <property name="ypad">4</property>
+                                  </object>
                                   <attributes>
                                     <attribute name="text">0</attribute>
                                   </attributes>
@@ -288,9 +294,11 @@
                               <object class="GtkTreeViewColumn" id="treeviewcolumn2">
                                 <property name="resizable">True</property>
                                 <property name="spacing">6</property>
-                                <property name="title" translatable="yes" context="versionsofdialog|savedby">Saved by</property>
+                                <property name="title" translatable="yes" context="versionsofdialog|savedby">保存者</property>
                                 <child>
-                                  <object class="GtkCellRendererText" id="cellrenderer2"/>
+                                  <object class="GtkCellRendererText" id="cellrenderer2">
+                                    <property name="ypad">4</property>
+                                  </object>
                                   <attributes>
                                     <attribute name="text">1</attribute>
                                   </attributes>
@@ -301,9 +309,11 @@
                               <object class="GtkTreeViewColumn" id="treeviewcolumn3">
                                 <property name="resizable">True</property>
                                 <property name="spacing">6</property>
-                                <property name="title" translatable="yes" context="versionsofdialog|comments">Comments</property>
+                                <property name="title" translatable="yes" context="versionsofdialog|comments">备注</property>
                                 <child>
-                                  <object class="GtkCellRendererText" id="cellrenderer3"/>
+                                  <object class="GtkCellRendererText" id="cellrenderer3">
+                                    <property name="ypad">4</property>
+                                  </object>
                                   <attributes>
                                     <attribute name="text">2</attribute>
                                   </attributes>
@@ -312,7 +322,7 @@
                             </child>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="versions-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="versionsofdialog|extended_tip|versions">Lists the existing versions of the current document, the date and the time they were created, the author and the associated comments.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="versionsofdialog|extended_tip|versions">列出当前文档的已有版本、创建日期和时间、作者以及相关备注。</property>
                               </object>
                             </child>
                           </object>
@@ -329,7 +339,7 @@
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="versionsofdialog|label2">Existing Versions</property>
+                    <property name="label" translatable="yes" context="versionsofdialog|label2">已有版本</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -361,7 +371,7 @@
     </action-widgets>
     <child internal-child="accessible">
       <object class="AtkObject" id="VersionsOfDialog-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="versionsofdialog|extended_tip|VersionsOfDialog">Saves and organizes multiple versions of the current document in the same file. You can also open, delete and compare previous versions.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="versionsofdialog|extended_tip|VersionsOfDialog">在同一文件中保存并管理当前文档的多个版本。也可以打开、删除和比较以前的版本。</property>
       </object>
     </child>
   </object>

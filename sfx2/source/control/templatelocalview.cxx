@@ -38,26 +38,33 @@ using namespace ::com::sun::star;
 
 bool ViewFilter_Application::isFilteredExtension(FILTER_APPLICATION filter, std::u16string_view rExt)
 {
-    bool bRet = rExt == u"ott" || rExt == u"stw" || rExt == u"oth" || rExt == u"dot" || rExt == u"dotx" || rExt == u"otm"
-          || rExt == u"ots" || rExt == u"stc" || rExt == u"xlt" || rExt == u"xltm" || rExt == u"xltx"
-          || rExt == u"otp" || rExt == u"sti" || rExt == u"pot" || rExt == u"potm" || rExt == u"potx"
-          || rExt == u"otg" || rExt == u"std";
+    const OUString aExt(rExt);
+    const OUString aLowerExt = aExt.toAsciiLowerCase();
+    bool bRet = aLowerExt == u"ott" || aLowerExt == u"stw" || aLowerExt == u"oth"
+                || aLowerExt == u"dot" || aLowerExt == u"dotx" || aLowerExt == u"otm"
+                || aLowerExt == u"ots" || aLowerExt == u"stc" || aLowerExt == u"xlt"
+                || aLowerExt == u"xltm" || aLowerExt == u"xltx" || aLowerExt == u"otp"
+                || aLowerExt == u"sti" || aLowerExt == u"pot" || aLowerExt == u"potm"
+                || aLowerExt == u"potx" || aLowerExt == u"otg" || aLowerExt == u"std";
 
     if (filter == FILTER_APPLICATION::WRITER)
     {
-        bRet = rExt == u"ott" || rExt == u"stw" || rExt == u"oth" || rExt == u"dot" || rExt == u"dotx" || rExt == u"otm";
+        bRet = aLowerExt == u"ott" || aLowerExt == u"stw" || aLowerExt == u"oth"
+               || aLowerExt == u"dot" || aLowerExt == u"dotx" || aLowerExt == u"otm";
     }
     else if (filter == FILTER_APPLICATION::CALC)
     {
-        bRet = rExt == u"ots" || rExt == u"stc" || rExt == u"xlt" || rExt == u"xltm" || rExt == u"xltx";
+        bRet = aLowerExt == u"ots" || aLowerExt == u"stc" || aLowerExt == u"xlt"
+               || aLowerExt == u"xltm" || aLowerExt == u"xltx";
     }
     else if (filter == FILTER_APPLICATION::IMPRESS)
     {
-        bRet = rExt == u"otp" || rExt == u"sti" || rExt == u"pot" || rExt == u"potm" || rExt == u"potx";
+        bRet = aLowerExt == u"otp" || aLowerExt == u"sti" || aLowerExt == u"pot"
+               || aLowerExt == u"potm" || aLowerExt == u"potx";
     }
     else if (filter == FILTER_APPLICATION::DRAW)
     {
-        bRet = rExt == u"otg" || rExt == u"std";
+        bRet = aLowerExt == u"otg" || aLowerExt == u"std";
     }
 
     return bRet;

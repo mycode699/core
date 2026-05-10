@@ -13,6 +13,7 @@
         <property name="can-focus">True</property>
         <property name="hexpand">True</property>
         <property name="vexpand">True</property>
+        <property name="shadow-type">none</property>
         <child>
           <object class="GtkViewport">
             <property name="visible">True</property>
@@ -44,7 +45,11 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="hexpand">True</property>
-        <property name="spacing">6</property>
+        <property name="margin-start">8</property>
+        <property name="margin-end">6</property>
+        <property name="margin-top">4</property>
+        <property name="margin-bottom">4</property>
+        <property name="spacing">8</property>
         <child>
           <object class="GtkDrawingArea" id="grip">
             <property name="visible">True</property>
@@ -59,10 +64,10 @@
         </child>
         <child>
           <object class="GtkImage" id="addonimage">
-            <property name="visible">True</property>
+            <property name="visible">False</property>
             <property name="can-focus">False</property>
+            <property name="no-show-all">True</property>
             <property name="valign">center</property>
-            <property name="icon-name">missing-image</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -76,6 +81,7 @@
             <property name="can-focus">False</property>
             <property name="valign">center</property>
             <property name="hexpand">True</property>
+            <property name="margin-start">2</property>
             <property name="ellipsize">end</property>
             <property name="xalign">0</property>
             <attributes>
@@ -101,7 +107,7 @@
                 <property name="tooltip-text" translatable="yes" context="deck|SFX_STR_SIDEBAR_HELP_DECK">Help about this sidebar deck</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
-                <property name="label">?</property>
+                <property name="icon-name">help-browser-symbolic</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="btn_help-atkobject">
                     <property name="AtkObject::accessible-name" translatable="yes" context="deck|SFX_STR_SIDEBAR_HELP_DECK">Sidebar Deck Help</property>

@@ -39,8 +39,8 @@
   </object>
   <object class="GtkDialog" id="EditDurationDialog">
     <property name="can-focus">False</property>
-    <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="editdurationdialog|EditDurationDialog">Edit Duration</property>
+    <property name="border-width">10</property>
+    <property name="title" translatable="yes" context="editdurationdialog|EditDurationDialog">编辑时长</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
@@ -54,16 +54,20 @@
         <child internal-child="action_area">
           <object class="GtkButtonBox" id="dialog-action_area1">
             <property name="can-focus">False</property>
+            <property name="homogeneous">False</property>
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="stock">_OK</property>
+                <property name="label" translatable="yes" context="stock">确定</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
                 <property name="has-default">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
+                <style>
+                  <class name="suggested-action"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -73,11 +77,11 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="stock">_Cancel</property>
+                <property name="label" translatable="yes" context="stock">取消</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -87,11 +91,11 @@
             </child>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -129,11 +133,11 @@
                 <property name="column-spacing">12</property>
                 <child>
                   <object class="GtkCheckButton" id="negative">
-                    <property name="label" translatable="yes" context="editdurationdialog|negative">_Negative</property>
+                    <property name="label" translatable="yes" context="editdurationdialog|negative">负值</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
-                    <property name="use-underline">True</property>
+                    <property name="use-underline">False</property>
                     <property name="draw-indicator">True</property>
                   </object>
                   <packing>
@@ -146,8 +150,8 @@
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="editdurationdialog|label1">_Years:</property>
-                    <property name="use-underline">True</property>
+                    <property name="label" translatable="yes" context="editdurationdialog|label1">年</property>
+                    <property name="use-underline">False</property>
                     <property name="mnemonic-widget">years</property>
                     <property name="xalign">1</property>
                   </object>
@@ -160,8 +164,8 @@
                   <object class="GtkLabel" id="label">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="editdurationdialog|label">_Months:</property>
-                    <property name="use-underline">True</property>
+                    <property name="label" translatable="yes" context="editdurationdialog|label">月</property>
+                    <property name="use-underline">False</property>
                     <property name="mnemonic-widget">months</property>
                     <property name="xalign">1</property>
                   </object>
@@ -174,8 +178,8 @@
                   <object class="GtkLabel" id="label3">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="editdurationdialog|label3">_Days:</property>
-                    <property name="use-underline">True</property>
+                    <property name="label" translatable="yes" context="editdurationdialog|label3">日</property>
+                    <property name="use-underline">False</property>
                     <property name="mnemonic-widget">days</property>
                     <property name="xalign">1</property>
                   </object>
@@ -188,8 +192,8 @@
                   <object class="GtkLabel" id="label4">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="editdurationdialog|label4">H_ours:</property>
-                    <property name="use-underline">True</property>
+                    <property name="label" translatable="yes" context="editdurationdialog|label4">小时</property>
+                    <property name="use-underline">False</property>
                     <property name="mnemonic-widget">hours</property>
                     <property name="xalign">1</property>
                   </object>
@@ -202,8 +206,8 @@
                   <object class="GtkLabel" id="label5">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="editdurationdialog|label5">Min_utes:</property>
-                    <property name="use-underline">True</property>
+                    <property name="label" translatable="yes" context="editdurationdialog|label5">分钟</property>
+                    <property name="use-underline">False</property>
                     <property name="mnemonic-widget">minutes</property>
                     <property name="xalign">1</property>
                   </object>
@@ -216,8 +220,8 @@
                   <object class="GtkLabel" id="label6">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="editdurationdialog|label6">_Seconds:</property>
-                    <property name="use-underline">True</property>
+                    <property name="label" translatable="yes" context="editdurationdialog|label6">秒</property>
+                    <property name="use-underline">False</property>
                     <property name="mnemonic-widget">seconds</property>
                     <property name="xalign">1</property>
                   </object>
@@ -230,8 +234,8 @@
                   <object class="GtkLabel" id="label7">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="editdurationdialog|label7">Millise_conds:</property>
-                    <property name="use-underline">True</property>
+                    <property name="label" translatable="yes" context="editdurationdialog|label7">毫秒</property>
+                    <property name="use-underline">False</property>
                     <property name="mnemonic-widget">milliseconds</property>
                     <property name="xalign">1</property>
                   </object>
@@ -244,6 +248,7 @@
                   <object class="GtkSpinButton" id="years">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
+                    <property name="width-request">90</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <property name="adjustment">adjustment1</property>
@@ -257,6 +262,7 @@
                   <object class="GtkSpinButton" id="months">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
+                    <property name="width-request">90</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <property name="adjustment">adjustment2</property>
@@ -270,6 +276,7 @@
                   <object class="GtkSpinButton" id="days">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
+                    <property name="width-request">90</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <property name="adjustment">adjustment3</property>
@@ -283,6 +290,7 @@
                   <object class="GtkSpinButton" id="hours">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
+                    <property name="width-request">90</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <property name="adjustment">adjustment4</property>
@@ -296,6 +304,7 @@
                   <object class="GtkSpinButton" id="minutes">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
+                    <property name="width-request">90</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <property name="adjustment">adjustment5</property>
@@ -309,6 +318,7 @@
                   <object class="GtkSpinButton" id="seconds">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
+                    <property name="width-request">90</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <property name="adjustment">adjustment6</property>
@@ -322,6 +332,7 @@
                   <object class="GtkSpinButton" id="milliseconds">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
+                    <property name="width-request">90</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <property name="adjustment">adjustment7</property>
@@ -337,7 +348,7 @@
               <object class="GtkLabel" id="label2">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="editdurationdialog|label2">Duration</property>
+                <property name="label" translatable="yes" context="editdurationdialog|label2">时长</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>

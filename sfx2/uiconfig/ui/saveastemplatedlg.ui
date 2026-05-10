@@ -12,8 +12,8 @@
   </object>
   <object class="GtkDialog" id="SaveAsTemplateDialog">
     <property name="can-focus">False</property>
-    <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="saveastemplatedlg|SaveAsTemplateDialog">Save As Template</property>
+    <property name="border-width">12</property>
+    <property name="title" translatable="yes" context="saveastemplatedlg|SaveAsTemplateDialog">另存为模板</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
     <property name="default-height">0</property>
@@ -22,7 +22,7 @@
       <object class="GtkBox" id="dialog-vbox1">
         <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
+        <property name="spacing">8</property>
         <child internal-child="action_area">
           <object class="GtkButtonBox" id="dialog-action_area1">
             <property name="can-focus">False</property>
@@ -88,7 +88,7 @@
             <property name="margin-bottom">6</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
-            <property name="row-spacing">12</property>
+            <property name="row-spacing">10</property>
             <property name="column-spacing">12</property>
             <child>
               <object class="GtkBox" id="box1">
@@ -101,8 +101,8 @@
                   <object class="GtkLabel" id="create_label">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="tooltip-text" translatable="yes" context="saveastemplatedlg|create_label">Enter a name for the template.</property>
-                    <property name="label" translatable="yes" context="saveastemplatedlg|create_label">Enter Template _Name:</property>
+                    <property name="tooltip-text" translatable="yes" context="saveastemplatedlg|create_label">输入模板名称。</property>
+                    <property name="label" translatable="yes" context="saveastemplatedlg|create_label">模板名称(_N)</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">name_entry</property>
                     <property name="xalign">0</property>
@@ -118,14 +118,15 @@
                 </child>
                 <child>
                   <object class="GtkEntry" id="name_entry">
-                    <property name="width-request">300</property>
+                    <property name="width-request">340</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
+                    <property name="placeholder-text" translatable="yes" context="saveastemplatedlg|name_entry">输入模板名称</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="name_entry-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="saveastemplatedlg|extended_tip|name_entry">Enter a name for the template.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="saveastemplatedlg|extended_tip|name_entry">输入模板名称。</property>
                       </object>
                     </child>
                   </object>
@@ -153,8 +154,8 @@
                   <object class="GtkLabel" id="select_label">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="tooltip-text" translatable="yes" context="saveastemplatedlg|select_label">Save template in selected category.</property>
-                    <property name="label" translatable="yes" context="saveastemplatedlg|select_label">Select Template _Category:</property>
+                    <property name="tooltip-text" translatable="yes" context="saveastemplatedlg|select_label">将模板保存到所选分类。</property>
+                    <property name="label" translatable="yes" context="saveastemplatedlg|select_label">保存到分类(_C)</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">categorylb</property>
                     <property name="xalign">0</property>
@@ -174,10 +175,10 @@
                     <property name="can-focus">True</property>
                     <property name="hexpand">True</property>
                     <property name="vexpand">True</property>
-                    <property name="shadow-type">in</property>
+                    <property name="shadow-type">none</property>
                     <child>
                       <object class="GtkTreeView" id="categorylb">
-                        <property name="height-request">146</property>
+                        <property name="height-request">170</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
@@ -202,7 +203,7 @@
                         </child>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="categorylb-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="saveastemplatedlg|extended_tip|categorylb">Select a category in which to save the new template.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="saveastemplatedlg|extended_tip|categorylb">选择要保存新模板的分类。</property>
                           </object>
                         </child>
                       </object>
@@ -222,15 +223,16 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="defaultcb">
-                <property name="label" translatable="yes" context="saveastemplatedlg|defaultcb">_Set as default template</property>
+                <property name="label" translatable="yes" context="saveastemplatedlg|defaultcb">设为_默认模板</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="margin-top">2</property>
                 <property name="receives-default">False</property>
                 <property name="use-underline">True</property>
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="defaultcb-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="saveastemplatedlg|extended_tip|defaultcb">The new template will be used as the default template.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="saveastemplatedlg|extended_tip|defaultcb">新模板将作为默认模板使用。</property>
                   </object>
                 </child>
               </object>
@@ -255,7 +257,7 @@
     </action-widgets>
     <child internal-child="accessible">
       <object class="AtkObject" id="SaveAsTemplateDialog-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="saveastemplatedlg|extended_tip|SaveAsTemplateDialog">Saves the current document as a template.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="saveastemplatedlg|extended_tip|SaveAsTemplateDialog">将当前文档保存为模板。</property>
       </object>
     </child>
   </object>

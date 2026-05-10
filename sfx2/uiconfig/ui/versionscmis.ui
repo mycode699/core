@@ -16,7 +16,7 @@
   </object>
   <object class="GtkDialog" id="VersionsCmisDialog">
     <property name="can-focus">False</property>
-    <property name="border-width">6</property>
+    <property name="border-width">10</property>
     <property name="modal">True</property>
     <property name="type-hint">dialog</property>
     <child internal-child="vbox">
@@ -28,13 +28,14 @@
           <object class="GtkButtonBox" id="dialog-action_area1">
             <property name="can-focus">False</property>
             <property name="layout-style">end</property>
+            <property name="homogeneous">False</property>
             <child>
               <object class="GtkButton" id="delete">
-                <property name="label" translatable="yes" context="stock">_Delete</property>
+                <property name="label" translatable="yes" context="stock">删除</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -44,11 +45,11 @@
             </child>
             <child>
               <object class="GtkButton" id="compare">
-                <property name="label" translatable="yes" context="versionscmis|compare">_Compare</property>
+                <property name="label" translatable="yes" context="versionscmis|compare">比较</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -58,11 +59,11 @@
             </child>
             <child>
               <object class="GtkButton" id="show">
-                <property name="label" translatable="yes" context="versionscmis|show">_Show...</property>
+                <property name="label" translatable="yes" context="versionscmis|show">显示</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -72,11 +73,11 @@
             </child>
             <child>
               <object class="GtkButton" id="close">
-                <property name="label" translatable="yes" context="stock">_Close</property>
+                <property name="label" translatable="yes" context="stock">关闭</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -86,11 +87,14 @@
             </child>
             <child>
               <object class="GtkButton" id="open">
-                <property name="label" translatable="yes" context="versionscmis|open">_Open</property>
+                <property name="label" translatable="yes" context="versionscmis|open">打开</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
+                <style>
+                  <class name="suggested-action"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -100,11 +104,11 @@
             </child>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -142,17 +146,17 @@
                   <object class="GtkGrid" id="grid3">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="margin-start">12</property>
-                    <property name="margin-top">6</property>
+                    <property name="margin-start">14</property>
+                    <property name="margin-top">8</property>
                     <property name="hexpand">True</property>
                     <property name="vexpand">True</property>
                     <child>
-                      <object class="GtkScrolledWindow">
+                      <object class="GtkScrolledWindow" id="versions_scroll">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
-                        <property name="shadow-type">in</property>
+                        <property name="shadow-type">none</property>
                         <child>
                           <object class="GtkTreeView" id="versions">
                             <property name="visible">True</property>
@@ -170,9 +174,11 @@
                               <object class="GtkTreeViewColumn" id="treeviewcolumn1">
                                 <property name="resizable">True</property>
                                 <property name="spacing">6</property>
-                                <property name="title" translatable="yes" context="versionscmis|datetime">Date and time</property>
+                                <property name="title" translatable="yes" context="versionscmis|datetime">日期和时间</property>
                                 <child>
-                                  <object class="GtkCellRendererText" id="cellrenderer1"/>
+                                  <object class="GtkCellRendererText" id="cellrenderer1">
+                                    <property name="ypad">4</property>
+                                  </object>
                                   <attributes>
                                     <attribute name="text">0</attribute>
                                   </attributes>
@@ -183,9 +189,11 @@
                               <object class="GtkTreeViewColumn" id="treeviewcolumn2">
                                 <property name="resizable">True</property>
                                 <property name="spacing">6</property>
-                                <property name="title" translatable="yes" context="versionscmis|savedby">Saved by</property>
+                                <property name="title" translatable="yes" context="versionscmis|savedby">保存者</property>
                                 <child>
-                                  <object class="GtkCellRendererText" id="cellrenderer2"/>
+                                  <object class="GtkCellRendererText" id="cellrenderer2">
+                                    <property name="ypad">4</property>
+                                  </object>
                                   <attributes>
                                     <attribute name="text">1</attribute>
                                   </attributes>
@@ -196,9 +204,11 @@
                               <object class="GtkTreeViewColumn" id="treeviewcolumn3">
                                 <property name="resizable">True</property>
                                 <property name="spacing">6</property>
-                                <property name="title" translatable="yes" context="versionscmis|comments">Comments</property>
+                                <property name="title" translatable="yes" context="versionscmis|comments">备注</property>
                                 <child>
-                                  <object class="GtkCellRendererText" id="cellrenderer3"/>
+                                  <object class="GtkCellRendererText" id="cellrenderer3">
+                                    <property name="ypad">4</property>
+                                  </object>
                                   <attributes>
                                     <attribute name="text">2</attribute>
                                   </attributes>
@@ -219,7 +229,7 @@
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="versionscmis|label2">Existing Versions</property>
+                    <property name="label" translatable="yes" context="versionscmis|label2">已有版本</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
