@@ -30,7 +30,7 @@ class tdf89958(UITestCase):
                 xcond1 = xDialog.getChild("cond1")
 
                 select_by_text(xfield1, "Column A")
-                select_by_text(xcond1, "Does not end with")
+                select_by_text(xcond1, "结尾不是")
                 xval1.executeAction("TYPE", mkPropertyValues({"TEXT":"CTORS"}))
 
             #Expected behaviours: A2 is not filtered as it does not end with "CTORS".

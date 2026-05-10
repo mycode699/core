@@ -9,7 +9,7 @@
       <object class="GtkMenuItem" id="delete">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes" context="scenariomenu|delete">Delete</property>
+        <property name="label" translatable="yes" context="scenariomenu|delete">删除</property>
         <property name="use_underline">True</property>
         <child internal-child="accessible">
           <object class="AtkObject" id="delete-atkobject">
@@ -22,7 +22,7 @@
       <object class="GtkMenuItem" id="edit">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes" context="scenariomenu|edit">Properties...</property>
+        <property name="label" translatable="yes" context="scenariomenu|edit">属性...</property>
         <property name="use_underline">True</property>
         <child internal-child="accessible">
           <object class="AtkObject" id="edit-atkobject">

@@ -19,7 +19,7 @@
   <object class="GtkDialog" id="SolverOptionsDialog">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
-    <property name="title" translatable="yes" context="solveroptionsdialog|SolverOptionsDialog">Options</property>
+    <property name="title" translatable="yes" context="solveroptionsdialog|SolverOptionsDialog">选项</property>
     <property name="resizable">False</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
@@ -102,7 +102,7 @@
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes" context="solveroptionsdialog|label2">Solver engine:</property>
+                    <property name="label" translatable="yes" context="solveroptionsdialog|label2">规划求解引擎:</property>
                     <property name="use_underline">True</property>
                     <property name="mnemonic_widget">engine</property>
                     <property name="xalign">0</property>
@@ -145,7 +145,7 @@
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes" context="solveroptionsdialog|label1">Settings:</property>
+                    <property name="label" translatable="yes" context="solveroptionsdialog|label1">设置:</property>
                     <property name="use_underline">True</property>
                     <property name="mnemonic_widget">settings</property>
                     <property name="xalign">0</property>
@@ -212,7 +212,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="edit">
-                    <property name="label" translatable="yes" context="solveroptionsdialog|edit">Edit...</property>
+                    <property name="label" translatable="yes" context="solveroptionsdialog|edit">编辑...</property>
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
                     <property name="can_focus">True</property>

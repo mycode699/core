@@ -51,7 +51,7 @@
                 <property name="valign">start</property>
                 <items>
                   <item translatable="yes" context="optcompatibilitypage|keybindings">Default</item>
-                  <item translatable="yes" context="optcompatibilitypage|keybindings">OpenOffice.org legacy</item>
+                  <item translatable="yes" context="optcompatibilitypage|keybindings">Legacy</item>
                 </items>
               </object>
               <packing>

@@ -26,7 +26,7 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="halign">start</property>
-        <property name="label" translatable="yes" context="splitcolumnentry|name">Split Column</property>
+        <property name="label" translatable="yes" context="splitcolumnentry|name">拆分列</property>
         <property name="use-underline">True</property>
         <property name="mnemonic-widget">ed_separator</property>
       </object>
@@ -43,7 +43,7 @@
         <property name="hexpand">True</property>
         <property name="width-chars">10</property>
         <property name="truncate-multiline">True</property>
-        <property name="placeholder-text" translatable="yes" context="splitcolumnentry/separator">Separator string</property>
+        <property name="placeholder-text" translatable="yes" context="splitcolumnentry/separator">分隔符字符串</property>
         <child internal-child="accessible">
           <object class="AtkObject" id="ed_separator-atkobject">
             <property name="AtkObject::accessible-description" translatable="yes" context="splitcolumnentry|extended_tip|ed_separator">The character or string used to separate the column in two.</property>
@@ -62,7 +62,7 @@
         <property name="hexpand">True</property>
         <property name="width-chars">10</property>
         <property name="truncate-multiline">True</property>
-        <property name="placeholder-text" translatable="yes" context="splitcolumnentry/cols">Column index</property>
+        <property name="placeholder-text" translatable="yes" context="splitcolumnentry/cols">列索引</property>
         <child internal-child="accessible">
           <object class="AtkObject" id="num_cols-atkobject">
             <property name="AtkObject::accessible-description" translatable="yes" context="splitcolumnentry|extended_tip|num_cols">The index of the column to split.</property>
@@ -76,7 +76,7 @@
     </child>
     <child>
       <object class="GtkButton" id="ed_delete">
-        <property name="label" translatable="yes" context="splitcolumnentry|delete">Delete</property>
+        <property name="label" translatable="yes" context="splitcolumnentry|delete">删除</property>
         <property name="visible">True</property>
         <property name="can-focus">True</property>
         <property name="receives-default">False</property>

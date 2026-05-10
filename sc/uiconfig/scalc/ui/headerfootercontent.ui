@@ -59,7 +59,7 @@
       <object class="GtkMenuItem" id="title">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="headerfootercontent|title">Title</property>
+        <property name="label" translatable="yes" context="headerfootercontent|title">标题</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -67,7 +67,7 @@
       <object class="GtkMenuItem" id="filename">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="headerfootercontent|filename">File Name</property>
+        <property name="label" translatable="yes" context="headerfootercontent|filename">文件名</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -75,7 +75,7 @@
       <object class="GtkMenuItem" id="pathname">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="headerfootercontent|pathname">Path/File Name</property>
+        <property name="label" translatable="yes" context="headerfootercontent|pathname">路径/文件名</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -112,7 +112,7 @@
           <object class="GtkLabel" id="labelFT_PRESET">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label">Preset</property>
+            <property name="label">预设</property>
             <property name="mnemonic-widget">comboLB_DEFINED</property>
             <property name="xalign">0</property>
           </object>
@@ -203,7 +203,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text" translatable="yes" context="headerfootercontent|buttonBTN_TEXT|tooltip_text">Text Attributes</property>
+                <property name="tooltip-text" translatable="yes" context="headerfootercontent|buttonBTN_TEXT|tooltip_text">文字属性</property>
                 <property name="image">imageBTN_TEXT</property>
                 <property name="always-show-image">True</property>
                 <child internal-child="accessible">
@@ -223,7 +223,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text">Bold</property>
+                <property name="tooltip-text">加粗</property>
                 <property name="image">imageBTN_BOLD</property>
                 <property name="always-show-image">True</property>
               </object>
@@ -238,7 +238,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text">Italic</property>
+                <property name="tooltip-text">斜体</property>
                 <property name="image">imageBTN_ITALIC</property>
                 <property name="always-show-image">True</property>
               </object>
@@ -253,7 +253,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text">Underline</property>
+                <property name="tooltip-text">下划线</property>
                 <property name="image">imageBTN_UNDERLINE</property>
                 <property name="always-show-image">True</property>
               </object>
@@ -273,7 +273,7 @@
           <object class="GtkLabel" id="labelFT_FORMAT">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label">Format</property>
+            <property name="label">格式</property>
             <property name="xalign">0</property>
           </object>
           <packing>
@@ -291,7 +291,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text" translatable="yes" context="headerfootercontent|buttonBTN_FILE|tooltip_text">Title</property>
+                <property name="tooltip-text" translatable="yes" context="headerfootercontent|buttonBTN_FILE|tooltip_text">标题</property>
                 <property name="image">imageBTN_FILE</property>
                 <property name="draw-indicator">True</property>
                 <property name="popup">popup</property>
@@ -313,7 +313,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text" translatable="yes" context="headerfootercontent|buttonBTN_TABLE|tooltip_text">Sheet Name</property>
+                <property name="tooltip-text" translatable="yes" context="headerfootercontent|buttonBTN_TABLE|tooltip_text">工作表名称</property>
                 <property name="image">imageBTN_TABLE</property>
                 <property name="always-show-image">True</property>
                 <child internal-child="accessible">
@@ -333,7 +333,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text" translatable="yes" context="headerfootercontent|buttonBTN_PAGE|tooltip_text">Page</property>
+                <property name="tooltip-text" translatable="yes" context="headerfootercontent|buttonBTN_PAGE|tooltip_text">页码</property>
                 <property name="image">imageBTN_PAGE</property>
                 <property name="always-show-image">True</property>
                 <child internal-child="accessible">
@@ -353,7 +353,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text" translatable="yes" context="headerfootercontent|buttonBTN_PAGES|tooltip_text">Pages</property>
+                <property name="tooltip-text" translatable="yes" context="headerfootercontent|buttonBTN_PAGES|tooltip_text">总页数</property>
                 <property name="image">imageBTN_PAGES</property>
                 <property name="always-show-image">True</property>
                 <child internal-child="accessible">
@@ -373,7 +373,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text" translatable="yes" context="headerfootercontent|buttonBTN_DATE|tooltip_text">Date</property>
+                <property name="tooltip-text" translatable="yes" context="headerfootercontent|buttonBTN_DATE|tooltip_text">日期</property>
                 <property name="image">imageBTN_DATE</property>
                 <property name="always-show-image">True</property>
                 <child internal-child="accessible">
@@ -393,7 +393,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text" translatable="yes" context="headerfootercontent|buttonBTN_TIME|tooltip_text">Time</property>
+                <property name="tooltip-text" translatable="yes" context="headerfootercontent|buttonBTN_TIME|tooltip_text">时间</property>
                 <property name="image">imageBTN_TIME</property>
                 <property name="always-show-image">True</property>
                 <child internal-child="accessible">
@@ -418,7 +418,7 @@
           <object class="GtkLabel" id="labelFT_FIELD">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label">Field</property>
+            <property name="label">字段</property>
             <property name="xalign">0</property>
           </object>
           <packing>
@@ -473,7 +473,7 @@
           <object class="GtkLabel" id="labelFT_RIGHT">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="headerfootercontent|labelFT_RIGHT">R_ight area</property>
+            <property name="label" translatable="yes" context="headerfootercontent|labelFT_RIGHT">右侧区域</property>
             <property name="use-underline">True</property>
             <property name="mnemonic-widget">textviewWND_RIGHT</property>
             <property name="xalign">0</property>
@@ -601,7 +601,7 @@
           <object class="GtkLabel" id="labelSTR_PAGE">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="headerfootercontent|labelSTR_PAGE">Page</property>
+            <property name="label" translatable="yes" context="headerfootercontent|labelSTR_PAGE">第</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -613,7 +613,7 @@
           <object class="GtkLabel" id="labelSTR_HF_OF_QUESTION">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="headerfootercontent|labelSTR_HF_OF_QUESTION">of ?</property>
+            <property name="label" translatable="yes" context="headerfootercontent|labelSTR_HF_OF_QUESTION">共 ?</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -625,7 +625,7 @@
           <object class="GtkLabel" id="labelSTR_HF_CONFIDENTIAL">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="headerfootercontent|labelSTR_HF_CONFIDENTIAL">Confidential</property>
+            <property name="label" translatable="yes" context="headerfootercontent|labelSTR_HF_CONFIDENTIAL">机密</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -637,7 +637,7 @@
           <object class="GtkLabel" id="labelSTR_HF_CREATED_BY">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="headerfootercontent|labelSTR_HF_CREATED_BY">Created by</property>
+            <property name="label" translatable="yes" context="headerfootercontent|labelSTR_HF_CREATED_BY">创建者</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -649,7 +649,7 @@
           <object class="GtkLabel" id="labelSTR_HF_CUSTOMIZED">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="headerfootercontent|labelSTR_HF_CUSTOMIZED">Customized</property>
+            <property name="label" translatable="yes" context="headerfootercontent|labelSTR_HF_CUSTOMIZED">自定义</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -661,7 +661,7 @@
           <object class="GtkLabel" id="labelSTR_HF_OF">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="headerfootercontent|labelSTR_HF_OF">of</property>
+            <property name="label" translatable="yes" context="headerfootercontent|labelSTR_HF_OF">共</property>
           </object>
           <packing>
             <property name="expand">False</property>

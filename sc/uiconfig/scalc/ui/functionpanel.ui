@@ -51,7 +51,7 @@
                     <property name="can-focus">True</property>
                     <property name="can-default">True</property>
                     <property name="receives-default">True</property>
-                    <property name="tooltip-text" translatable="yes" context="functionpanel|insert|tooltip_text">Insert Function into calculation sheet</property>
+                    <property name="tooltip-text" translatable="yes" context="functionpanel|insert|tooltip_text">将函数插入计算表</property>
                     <property name="image">image1</property>
                     <property name="always-show-image">True</property>
                   </object>
@@ -66,20 +66,20 @@
                     <property name="can-focus">False</property>
                     <property name="hexpand">True</property>
                     <items>
-                      <item translatable="yes" context="functionpanel|category">Last Used</item>
-                      <item translatable="yes" context="functionpanel|category">Favorites</item>
-                      <item translatable="yes" context="functionpanel|category">All</item>
-                      <item translatable="yes" context="functionpanel|category">Database</item>
-                      <item translatable="yes" context="functionpanel|category">Date&amp;Time</item>
-                      <item translatable="yes" context="functionpanel|category">Financial</item>
-                      <item translatable="yes" context="functionpanel|category">Information</item>
-                      <item translatable="yes" context="functionpanel|category">Logical</item>
-                      <item translatable="yes" context="functionpanel|category">Mathematical</item>
-                      <item translatable="yes" context="functionpanel|category">Array</item>
-                      <item translatable="yes" context="functionpanel|category">Statistical</item>
-                      <item translatable="yes" context="functionpanel|category">Spreadsheet</item>
-                      <item translatable="yes" context="functionpanel|category">Text</item>
-                      <item translatable="yes" context="functionpanel|category">Add-in</item>
+                      <item translatable="yes" context="functionpanel|category">最近使用</item>
+                      <item translatable="yes" context="functionpanel|category">收藏</item>
+                      <item translatable="yes" context="functionpanel|category">全部</item>
+                      <item translatable="yes" context="functionpanel|category">数据库</item>
+                      <item translatable="yes" context="functionpanel|category">日期和时间</item>
+                      <item translatable="yes" context="functionpanel|category">财务</item>
+                      <item translatable="yes" context="functionpanel|category">信息</item>
+                      <item translatable="yes" context="functionpanel|category">逻辑</item>
+                      <item translatable="yes" context="functionpanel|category">数学</item>
+                      <item translatable="yes" context="functionpanel|category">数组</item>
+                      <item translatable="yes" context="functionpanel|category">统计</item>
+                      <item translatable="yes" context="functionpanel|category">电子表格</item>
+                      <item translatable="yes" context="functionpanel|category">文本</item>
+                      <item translatable="yes" context="functionpanel|category">附加组件</item>
                     </items>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="category-atkobject">
@@ -154,11 +154,11 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="hexpand">True</property>
-                    <property name="placeholder-text" translatable="yes" context="functionpanel|search">Search all functions</property>
+                    <property name="placeholder-text" translatable="yes" context="functionpanel|search">搜索所有函数</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="search-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="functionpanel|accessiblename|search">Search all functions</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="functionpanel|accessiblename|search">搜索所有函数</property>
                       </object>
                     </child>
                   </object>
@@ -170,7 +170,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="similaritysearch">
-                    <property name="label" translatable="yes" context="functionpanel|similaritysearch">Similar</property>
+                    <property name="label" translatable="yes" context="functionpanel|similaritysearch">相似</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -223,12 +223,12 @@
         </child>
         <child>
           <object class="GtkButton" id="help">
-            <property name="label" translatable="yes" context="functionpanel|help">Help</property>
+            <property name="label" translatable="yes" context="functionpanel|help">帮助</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="can-default">True</property>
             <property name="receives-default">True</property>
-            <property name="tooltip-text" translatable="yes" context="functionpanel|help|tooltip_text">Go to Function's Help Page</property>
+            <property name="tooltip-text" translatable="yes" context="functionpanel|help|tooltip_text">转到函数帮助页面</property>
             <property name="halign">end</property>
           </object>
           <packing>

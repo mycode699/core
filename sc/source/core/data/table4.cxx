@@ -235,6 +235,24 @@ double approxTypedDiff( double a, double b, bool bTime, tools::Duration& rDurati
     }
     return approxDiff( a, b);
 }
+
+/** Round calculated series values to the 14th significant digit to remove
+    floating point noise produced by nStartVal + nStepValue * nIndex.
+ */
+double approxSeriesValue( double fValue )
+{
+    if (fValue == 0.0 || !std::isfinite(fValue))
+        return fValue;
+
+    const double fAbsValue = fabs(fValue);
+    if (fAbsValue < 1e-14)
+        return 0.0;
+    if (fAbsValue >= 1e14)
+        return fValue;
+
+    const int nExp = static_cast<int>(floor(log10(fAbsValue))) - 13;
+    return rtl::math::round(fValue, -nExp);
+}
 }
 
 void ScTable::FillAnalyse( SCCOL nCol1, SCROW nRow1, SCCOL nCol2, SCROW nRow2,
@@ -2492,7 +2510,7 @@ void ScTable::FillSeries( SCCOL nCol1, SCROW nRow1, SCCOL nCol2, SCROW nRow2,
                                                 // that accumulates from nStartVal + nStepValue * nIndex.
                                                 // rtl::math::approxValue rounds the 16th significant digit;
                                                 // safe for zero, large values and infinities.
-                                                nVal = rtl::math::approxValue(nVal);
+                                                nVal = approxSeriesValue(nVal);
                                         }
                                     }
                                     break;
@@ -2609,7 +2627,7 @@ void ScTable::FillSeries( SCCOL nCol1, SCROW nRow1, SCCOL nCol2, SCROW nRow2,
                                                 else
                                                     // Round to remove floating-point noise
                                                     // (see the symmetric block above).
-                                                    nVal = rtl::math::approxValue(nVal);
+                                                    nVal = approxSeriesValue(nVal);
                                             }
                                         }
                                         break;

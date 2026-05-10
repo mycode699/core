@@ -70,7 +70,7 @@
                 <property name="column-spacing">12</property>
                 <child>
                   <object class="GtkRadioButton" id="radioBTN_TOPDOWN">
-                    <property name="label" translatable="yes" context="sheetprintpage|radioBTN_TOPDOWN">_Top to bottom, then right</property>
+                    <property name="label" translatable="yes" context="sheetprintpage|radioBTN_TOPDOWN">从上到下，再向右(_T)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -91,7 +91,7 @@
                 </child>
                 <child>
                   <object class="GtkRadioButton" id="radioBTN_LEFTRIGHT">
-                    <property name="label" translatable="yes" context="sheetprintpage|radioBTN_LEFTRIGHT">_Left to right, then down</property>
+                    <property name="label" translatable="yes" context="sheetprintpage|radioBTN_LEFTRIGHT">从左到右，再向下(_L)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -113,7 +113,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="checkBTN_PAGENO">
-                    <property name="label" translatable="yes" context="sheetprintpage|checkBTN_PAGENO">First _page number:</property>
+                    <property name="label" translatable="yes" context="sheetprintpage|checkBTN_PAGENO">首页页码(_P):</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -202,7 +202,7 @@
           <object class="GtkLabel" id="labelPageOrder">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="sheetprintpage|labelPageOrder">Page Order</property>
+            <property name="label" translatable="yes" context="sheetprintpage|labelPageOrder">页面顺序</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -233,7 +233,7 @@
             <property name="column-homogeneous">True</property>
             <child>
               <object class="GtkCheckButton" id="checkBTN_HEADER">
-                <property name="label" translatable="yes" context="sheetprintpage|checkBTN_HEADER">_Column and row headers</property>
+                <property name="label" translatable="yes" context="sheetprintpage|checkBTN_HEADER">列标和行号(_C)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -252,7 +252,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="checkBTN_GRID">
-                <property name="label" translatable="yes" context="sheetprintpage|checkBTN_GRID">_Grid</property>
+                <property name="label" translatable="yes" context="sheetprintpage|checkBTN_GRID">网格(_G)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -271,7 +271,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="checkBTN_NOTES">
-                <property name="label" translatable="yes" context="sheetprintpage|checkBTN_NOTES">_Comments</property>
+                <property name="label" translatable="yes" context="sheetprintpage|checkBTN_NOTES">批注(_C)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -290,7 +290,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="checkBTN_OBJECTS">
-                <property name="label" translatable="yes" context="sheetprintpage|checkBTN_OBJECTS">_Objects/Images</property>
+                <property name="label" translatable="yes" context="sheetprintpage|checkBTN_OBJECTS">对象/图像(_O)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -309,7 +309,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="checkBTN_CHARTS">
-                <property name="label" translatable="yes" context="sheetprintpage|checkBTN_CHARTS">Charts</property>
+                <property name="label" translatable="yes" context="sheetprintpage|checkBTN_CHARTS">图表</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -328,7 +328,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="checkBTN_DRAWINGS">
-                <property name="label" translatable="yes" context="sheetprintpage|checkBTN_DRAWINGS">_Drawing objects</property>
+                <property name="label" translatable="yes" context="sheetprintpage|checkBTN_DRAWINGS">绘图对象(_D)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -347,7 +347,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="checkBTN_FORMULAS">
-                <property name="label" translatable="yes" context="sheetprintpage|checkBTN_FORMULAS">_Formulas</property>
+                <property name="label" translatable="yes" context="sheetprintpage|checkBTN_FORMULAS">公式(_F)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -366,7 +366,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="checkBTN_NULLVALS">
-                <property name="label" translatable="yes" context="sheetprintpage|checkBTN_NULLVALS">_Zero values</property>
+                <property name="label" translatable="yes" context="sheetprintpage|checkBTN_NULLVALS">零值(_Z)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -401,7 +401,7 @@
           <object class="GtkLabel" id="labelPrint">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="sheetprintpage|labelPrint">Print</property>
+            <property name="label" translatable="yes" context="sheetprintpage|labelPrint">打印</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -431,7 +431,7 @@
               <object class="GtkLabel" id="labelScalingMode">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="sheetprintpage|labelScalingMode">Scaling _mode:</property>
+                <property name="label" translatable="yes" context="sheetprintpage|labelScalingMode">缩放模式(_M):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">comboLB_SCALEMODE</property>
                 <property name="xalign">0</property>
@@ -456,7 +456,7 @@
                       <object class="GtkLabel" id="labelSF">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="sheetprintpage|labelSF">_Scaling factor:</property>
+                        <property name="label" translatable="yes" context="sheetprintpage|labelSF">缩放比例(_S):</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">spinED_SCALEALL</property>
                         <property name="xalign">0</property>
@@ -503,7 +503,7 @@
                     <property name="row-homogeneous">True</property>
                     <child>
                       <object class="GtkCheckButton" id="labelWP">
-                        <property name="label" translatable="yes" context="sheetprintpage|labelWP">_Width in pages:</property>
+                        <property name="label" translatable="yes" context="sheetprintpage|labelWP">宽度页数(_W):</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -520,7 +520,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="labelHP">
-                        <property name="label" translatable="yes" context="sheetprintpage|labelHP">_Height in pages:</property>
+                        <property name="label" translatable="yes" context="sheetprintpage|labelHP">高度页数(_H):</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -593,7 +593,7 @@
                       <object class="GtkLabel" id="labelNP">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="sheetprintpage|labelNP">N_umber of pages:</property>
+                        <property name="label" translatable="yes" context="sheetprintpage|labelNP">页数(_U):</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">spinED_SCALEPAGENUM</property>
                         <property name="xalign">0</property>
@@ -641,9 +641,9 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <items>
-                  <item translatable="yes" context="sheetprintpage|comboLB_SCALEMODE">Reduce/enlarge printout</item>
-                  <item translatable="yes" context="sheetprintpage|comboLB_SCALEMODE">Shrink print range(s) to width/height</item>
-                  <item translatable="yes" context="sheetprintpage|comboLB_SCALEMODE">Shrink print range(s) on number of pages</item>
+                  <item translatable="yes" context="sheetprintpage|comboLB_SCALEMODE">缩小/放大打印输出</item>
+                  <item translatable="yes" context="sheetprintpage|comboLB_SCALEMODE">将打印区域缩放到宽度/高度</item>
+                  <item translatable="yes" context="sheetprintpage|comboLB_SCALEMODE">将打印区域缩放到指定页数</item>
                 </items>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="comboLB_SCALEMODE-atkobject">
@@ -665,7 +665,7 @@
           <object class="GtkLabel" id="labelScale">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="sheetprintpage|labelScale">Scale</property>
+            <property name="label" translatable="yes" context="sheetprintpage|labelScale">缩放</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>

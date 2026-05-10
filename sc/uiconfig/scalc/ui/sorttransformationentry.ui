@@ -26,7 +26,7 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="halign">start</property>
-        <property name="label" translatable="yes" context="sorttransformationentry|name">Sort Columns</property>
+        <property name="label" translatable="yes" context="sorttransformationentry|name">排序列</property>
         <property name="use-underline">True</property>
         <property name="mnemonic-widget">ed_ascending</property>
       </object>
@@ -43,7 +43,7 @@
         <property name="hexpand">True</property>
         <property name="width-chars">10</property>
         <property name="truncate-multiline">True</property>
-        <property name="placeholder-text" translatable="yes" context="sorttransformationentry/cols">Column index</property>
+        <property name="placeholder-text" translatable="yes" context="sorttransformationentry/cols">列索引</property>
         <child internal-child="accessible">
           <object class="AtkObject" id="ed_columns-atkobject">
             <property name="AtkObject::accessible-description" translatable="yes" context="sorttransformationentry|extended_tip|ed_columns">The column index for sorting data.</property>
@@ -57,7 +57,7 @@
     </child>
     <child>
       <object class="GtkButton" id="ed_delete">
-        <property name="label" translatable="yes" context="sorttransformationentry|delete">Delete</property>
+        <property name="label" translatable="yes" context="sorttransformationentry|delete">删除</property>
         <property name="visible">True</property>
         <property name="can-focus">True</property>
         <property name="receives-default">False</property>
@@ -77,8 +77,8 @@
         <property name="active">0</property>
         <property name="active-id">1</property>
         <items>
-          <item id="0" translatable="yes" context="sorttransformationentry|order_descending">Descending Order</item>
-          <item id="1" translatable="yes" context="sorttransformationentry|order_ascending">Ascending Order</item>
+          <item id="0" translatable="yes" context="sorttransformationentry|order_descending">降序</item>
+          <item id="1" translatable="yes" context="sorttransformationentry|order_ascending">升序</item>
         </items>
       </object>
       <packing>

@@ -28,7 +28,7 @@
                 <property name="margin-top">6</property>
                 <child>
                   <object class="GtkCheckButton" id="formula">
-                    <property name="label" translatable="yes" context="tpviewpage|formula">_Formulas</property>
+                    <property name="label" translatable="yes" context="tpviewpage|formula">公式(_F)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -47,7 +47,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="nil">
-                    <property name="label" translatable="yes" context="tpviewpage|nil">Zero val_ues</property>
+                    <property name="label" translatable="yes" context="tpviewpage|nil">零值(_U)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -66,7 +66,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="annot">
-                    <property name="label" translatable="yes" context="tpviewpage|annot">_Comment indicator</property>
+                    <property name="label" translatable="yes" context="tpviewpage|annot">批注指示器(_C)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -85,7 +85,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="formulamark">
-                    <property name="label" translatable="yes" context="tpviewpage|formulamark">_Formula indicator and hint</property>
+                    <property name="label" translatable="yes" context="tpviewpage|formulamark">公式指示器和提示(_F)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -104,7 +104,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="value">
-                    <property name="label" translatable="yes" context="tpviewpage|value">Value h_ighlighting</property>
+                    <property name="label" translatable="yes" context="tpviewpage|value">值高亮(_I)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -123,7 +123,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="rangefind">
-                    <property name="label" translatable="yes" context="tpviewpage|rangefind">_Show references in color</property>
+                    <property name="label" translatable="yes" context="tpviewpage|rangefind">用颜色显示引用(_S)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -220,7 +220,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="anchor">
-                    <property name="label" translatable="yes" context="tpviewpage|anchor">_Anchor</property>
+                    <property name="label" translatable="yes" context="tpviewpage|anchor">锚点(_A)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -252,7 +252,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="colrowhigh">
-                    <property name="label" translatable="yes" context="tpviewpage|value">Column/Row highlighting</property>
+                    <property name="label" translatable="yes" context="tpviewpage|value">列/行高亮</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -284,7 +284,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="editcellbg">
-                    <property name="label" translatable="yes" context="tpviewpage|value">Highlight cell in edit mode</property>
+                    <property name="label" translatable="yes" context="tpviewpage|value">编辑模式下高亮单元格</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -316,7 +316,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="cbNoteAuthor">
-                    <property name="label" translatable="yes" context="tpviewpage|noteauthor">Comment authorship</property>
+                    <property name="label" translatable="yes" context="tpviewpage|noteauthor">批注作者信息</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -351,7 +351,7 @@
               <object class="GtkLabel" id="label4">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="tpviewpage|label4">Display</property>
+                <property name="label" translatable="yes" context="tpviewpage|label4">显示</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -378,7 +378,7 @@
                 <property name="margin-top">6</property>
                 <child>
                   <object class="GtkCheckButton" id="rowcolheader">
-                    <property name="label" translatable="yes" context="tpviewpage|rowcolheader">Colu_mn/row headers</property>
+                    <property name="label" translatable="yes" context="tpviewpage|rowcolheader">列标/行号(_M)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -397,7 +397,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="hscroll">
-                    <property name="label" translatable="yes" context="tpviewpage|hscroll">Hori_zontal scroll bar</property>
+                    <property name="label" translatable="yes" context="tpviewpage|hscroll">水平滚动条(_Z)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -416,7 +416,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="vscroll">
-                    <property name="label" translatable="yes" context="tpviewpage|vscroll">_Vertical scroll bar</property>
+                    <property name="label" translatable="yes" context="tpviewpage|vscroll">垂直滚动条(_V)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -435,7 +435,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="tblreg">
-                    <property name="label" translatable="yes" context="tpviewpage|tblreg">Sh_eet tabs</property>
+                    <property name="label" translatable="yes" context="tpviewpage|tblreg">工作表标签(_E)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -454,7 +454,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="outline">
-                    <property name="label" translatable="yes" context="tpviewpage|outline">_Outline symbols</property>
+                    <property name="label" translatable="yes" context="tpviewpage|outline">分级显示符号(_O)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -473,7 +473,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="cbSummary">
-                    <property name="label" translatable="yes" context="tpviewpage|summary">Summary o_n search</property>
+                    <property name="label" translatable="yes" context="tpviewpage|summary">搜索摘要(_N)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -575,7 +575,7 @@
               <object class="GtkLabel" id="label5">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="tpviewpage|label5">Window</property>
+                <property name="label" translatable="yes" context="tpviewpage|label5">窗口</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -602,7 +602,7 @@
                 <property name="margin-top">6</property>
                 <child>
                   <object class="GtkCheckButton" id="synczoom">
-                    <property name="label" translatable="yes" context="tpviewpage|synczoom">S_ynchronize sheets</property>
+                    <property name="label" translatable="yes" context="tpviewpage|synczoom">同步工作表(_Y)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -638,7 +638,7 @@
               <object class="GtkLabel" id="label3">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="tpviewpage|label3">Zoom</property>
+                <property name="label" translatable="yes" context="tpviewpage|label3">缩放</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -667,7 +667,7 @@
                 <property name="column-spacing">6</property>
                 <child>
                   <object class="GtkCheckButton" id="break">
-                    <property name="label" translatable="yes" context="tpviewpage|break">_Page breaks</property>
+                    <property name="label" translatable="yes" context="tpviewpage|break">分页符(_P)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -687,7 +687,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="guideline">
-                    <property name="label" translatable="yes" context="tpviewpage|guideline">Helplines _while moving</property>
+                    <property name="label" translatable="yes" context="tpviewpage|guideline">移动时显示辅助线(_W)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -709,7 +709,7 @@
                   <object class="GtkLabel" id="grid_label">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="tpviewpage|grid_label">_Grid lines:</property>
+                    <property name="label" translatable="yes" context="tpviewpage|grid_label">网格线(_G):</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">grid</property>
                     <property name="xalign">0</property>
@@ -729,9 +729,9 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <items>
-                      <item translatable="yes" context="tpviewpage|grid">Show</item>
-                      <item translatable="yes" context="tpviewpage|grid">Show on colored cells</item>
-                      <item translatable="yes" context="tpviewpage|grid">Hide</item>
+                      <item translatable="yes" context="tpviewpage|grid">显示</item>
+                      <item translatable="yes" context="tpviewpage|grid">在彩色单元格上显示</item>
+                      <item translatable="yes" context="tpviewpage|grid">隐藏</item>
                     </items>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="grid-atkobject">
@@ -749,7 +749,7 @@
                   <object class="GtkLabel" id="lbCursor">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="tpviewpage|labelCursor">Pointe_r:</property>
+                    <property name="label" translatable="yes" context="tpviewpage|labelCursor">指针(_R):</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">rbThemedCursor</property>
                     <property name="xalign">0</property>
@@ -761,11 +761,11 @@
                 </child>
                 <child>
                   <object class="GtkRadioButton" id="rbThemedCursor">
-                    <property name="label" translatable="yes" context="tpviewpage|radiobuttonThemed">T_hemed</property>
+                    <property name="label" translatable="yes" context="tpviewpage|radiobuttonThemed">主题样式(_H)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
-                    <property name="tooltip-text" translatable="yes" context="tpviewpage|radiobuttonThemedTip">Show the pointer as defined in the icon theme, typically as fat cross.</property>
+                    <property name="tooltip-text" translatable="yes" context="tpviewpage|radiobuttonThemedTip">按图标主题定义显示指针，通常为粗十字。</property>
                     <property name="use-underline">True</property>
                     <property name="draw-indicator">True</property>
                     <property name="group">rbSystemCursor</property>
@@ -782,11 +782,11 @@
                 </child>
                 <child>
                   <object class="GtkRadioButton" id="rbSystemCursor">
-                    <property name="label" translatable="yes" context="tpviewpage|radiobuttonSystem">S_ystem</property>
+                    <property name="label" translatable="yes" context="tpviewpage|radiobuttonSystem">系统样式(_Y)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
-                    <property name="tooltip-text" translatable="yes" context="tpviewpage|radiobuttonSystemTip">Show the pointer as system default, typically an arrow pointer.</property>
+                    <property name="tooltip-text" translatable="yes" context="tpviewpage|radiobuttonSystemTip">按系统默认样式显示指针，通常为箭头指针。</property>
                     <property name="use-underline">True</property>
                     <property name="active">True</property>
                     <property name="draw-indicator">True</property>
@@ -859,7 +859,7 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="tpviewpage|label1">Visual Aids</property>
+                <property name="label" translatable="yes" context="tpviewpage|label1">视觉辅助</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -890,7 +890,7 @@
                   <object class="GtkLabel" id="objgrf_label">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="tpviewpage|objgrf_label">Ob_jects/Images:</property>
+                    <property name="label" translatable="yes" context="tpviewpage|objgrf_label">对象/图像(_J):</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">objgrf</property>
                     <property name="xalign">0</property>
@@ -909,7 +909,7 @@
                   <object class="GtkLabel" id="diagram_label">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="tpviewpage|diagram_label">Char_ts:</property>
+                    <property name="label" translatable="yes" context="tpviewpage|diagram_label">图表(_T):</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">diagram</property>
                     <property name="xalign">0</property>
@@ -928,7 +928,7 @@
                   <object class="GtkLabel" id="draw_label">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="tpviewpage|draw_label">_Drawing objects:</property>
+                    <property name="label" translatable="yes" context="tpviewpage|draw_label">绘图对象(_D):</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">draw</property>
                     <property name="xalign">0</property>
@@ -948,8 +948,8 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <items>
-                      <item translatable="yes" context="tpviewpage|objgrf">Show</item>
-                      <item translatable="yes" context="tpviewpage|objgrf">Hide</item>
+                      <item translatable="yes" context="tpviewpage|objgrf">显示</item>
+                      <item translatable="yes" context="tpviewpage|objgrf">隐藏</item>
                     </items>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="objgrf-atkobject">
@@ -967,8 +967,8 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <items>
-                      <item translatable="yes" context="tpviewpage|diagram">Show</item>
-                      <item translatable="yes" context="tpviewpage|diagram">Hide</item>
+                      <item translatable="yes" context="tpviewpage|diagram">显示</item>
+                      <item translatable="yes" context="tpviewpage|diagram">隐藏</item>
                     </items>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="diagram-atkobject">
@@ -986,8 +986,8 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <items>
-                      <item translatable="yes" context="tpviewpage|draw">Show</item>
-                      <item translatable="yes" context="tpviewpage|draw">Hide</item>
+                      <item translatable="yes" context="tpviewpage|draw">显示</item>
+                      <item translatable="yes" context="tpviewpage|draw">隐藏</item>
                     </items>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="draw-atkobject">
@@ -1045,7 +1045,7 @@
               <object class="GtkLabel" id="label2">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="tpviewpage|label2">Objects</property>
+                <property name="label" translatable="yes" context="tpviewpage|label2">对象</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>

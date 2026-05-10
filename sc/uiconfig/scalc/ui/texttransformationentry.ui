@@ -26,7 +26,7 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="halign">start</property>
-        <property name="label" translatable="yes" context="texttransformationentry|name">Text Transformation</property>
+        <property name="label" translatable="yes" context="texttransformationentry|name">文本转换</property>
         <property name="use-underline">True</property>
         <property name="mnemonic-widget">ed_lst</property>
       </object>
@@ -45,10 +45,10 @@
         <property name="active">0</property>
         <property name="active-id">0</property>
         <items>
-          <item id="0" translatable="yes" context="texttransformation_type|tolower">To Lower</item>
-          <item id="1" translatable="yes" context="texttransformation_type|toupper">To Upper</item>
-          <item id="2" translatable="yes" context="texttransformation_type|capitalize">Capitalize</item>
-          <item id="3" translatable="yes" context="texttransformation_type|trim">Trim</item>
+          <item id="0" translatable="yes" context="texttransformation_type|tolower">转为小写</item>
+          <item id="1" translatable="yes" context="texttransformation_type|toupper">转为大写</item>
+          <item id="2" translatable="yes" context="texttransformation_type|capitalize">首字母大写</item>
+          <item id="3" translatable="yes" context="texttransformation_type|trim">去除空格</item>
         </items>
       </object>
       <packing>
@@ -63,7 +63,7 @@
         <property name="hexpand">True</property>
         <property name="width-chars">10</property>
         <property name="truncate-multiline">True</property>
-        <property name="placeholder-text" translatable="yes" context="texttransformationentry/cols">Cols(; Separated)</property>
+        <property name="placeholder-text" translatable="yes" context="texttransformationentry/cols">列号，用分号分隔</property>
         <child internal-child="accessible">
           <object class="AtkObject" id="ed_columns-atkobject">
             <property name="AtkObject::accessible-description" translatable="yes" context="texttransformationentry|extended_tip|ed_columns">List of column indexes to perform the text transformation, separated by semicolons.</property>
@@ -77,7 +77,7 @@
     </child>
     <child>
       <object class="GtkButton" id="ed_delete">
-        <property name="label" translatable="yes" context="texttransformation_type|delete">Delete</property>
+        <property name="label" translatable="yes" context="texttransformation_type|delete">删除</property>
         <property name="visible">True</property>
         <property name="can-focus">True</property>
         <property name="receives-default">False</property>

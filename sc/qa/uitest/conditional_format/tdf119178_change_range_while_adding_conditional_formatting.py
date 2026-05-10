@@ -31,7 +31,7 @@ class tdf119178(UITestCase):
                 xRange.executeAction("TYPE", mkPropertyValues({"TEXT": "$B$15"}))
 
                 xType = xCondFormatDlg.getChild("type")
-                select_by_text(xType, "Formula is")
+                select_by_text(xType, "公式为")
 
                 # After changing the type, the dialog is recalculated
                 xCondFormatDlg = self.xUITest.getTopFocusWindow()

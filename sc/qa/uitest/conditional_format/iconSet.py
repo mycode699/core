@@ -31,17 +31,17 @@ class IconSet(UITestCase):
 
             with self.ui_test.execute_dialog_through_command(".uno:IconSetFormatDialog", close_button="") as xCondFormat:
                 self.assertEqual("Condition 1", get_state_as_dict(xCondFormat.getChild("number"))["Text"])
-                self.assertEqual("All Cells", get_state_as_dict(xCondFormat.getChild("type"))["SelectEntryText"])
-                self.assertEqual("Icon Set", get_state_as_dict(xCondFormat.getChild("colorformat"))["SelectEntryText"])
-                self.assertEqual("3 Arrows", get_state_as_dict(xCondFormat.getChild("iconsettype"))["SelectEntryText"])
-                select_by_text(xCondFormat.getChild("iconsettype"), "4 Gray Arrows")
+                self.assertEqual("所有单元格", get_state_as_dict(xCondFormat.getChild("type"))["SelectEntryText"])
+                self.assertEqual("图标集", get_state_as_dict(xCondFormat.getChild("colorformat"))["SelectEntryText"])
+                self.assertEqual("3 个箭头", get_state_as_dict(xCondFormat.getChild("iconsettype"))["SelectEntryText"])
+                select_by_text(xCondFormat.getChild("iconsettype"), "4 个灰色箭头")
 
                 # we need to get a pointer again after changing the IconSet type
                 xCondFormat = self.xUITest.getTopFocusWindow()
 
-                self.assertEqual("Percent", get_state_as_dict(xCondFormat.getChild("listbox1"))["SelectEntryText"])
-                self.assertEqual("Percent", get_state_as_dict(xCondFormat.getChild("listbox2"))["SelectEntryText"])
-                self.assertEqual("Percent", get_state_as_dict(xCondFormat.getChild("listbox3"))["SelectEntryText"])
+                self.assertEqual("百分比", get_state_as_dict(xCondFormat.getChild("listbox1"))["SelectEntryText"])
+                self.assertEqual("百分比", get_state_as_dict(xCondFormat.getChild("listbox2"))["SelectEntryText"])
+                self.assertEqual("百分比", get_state_as_dict(xCondFormat.getChild("listbox3"))["SelectEntryText"])
                 self.assertEqual("", get_state_as_dict(xCondFormat.getChild("entry1"))["Text"])
                 self.assertEqual("", get_state_as_dict(xCondFormat.getChild("entry2"))["Text"])
                 self.assertEqual("", get_state_as_dict(xCondFormat.getChild("entry3"))["Text"])

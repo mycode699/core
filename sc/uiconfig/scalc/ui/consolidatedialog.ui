@@ -13,7 +13,7 @@
   <object class="GtkDialog" id="ConsolidateDialog">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
-    <property name="title" translatable="yes" context="consolidatedialog|ConsolidateDialog">Consolidate</property>
+    <property name="title" translatable="yes" context="consolidatedialog|ConsolidateDialog">合并计算</property>
     <property name="resizable">False</property>
     <property name="default_width">0</property>
     <property name="default_height">0</property>
@@ -107,7 +107,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="hexpand">True</property>
-                <property name="label" translatable="yes" context="consolidatedialog|label1">_Function:</property>
+                <property name="label" translatable="yes" context="consolidatedialog|label1">函数(_F):</property>
                 <property name="use_underline">True</property>
                 <property name="mnemonic_widget">func</property>
                 <property name="xalign">0</property>
@@ -122,7 +122,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="hexpand">True</property>
-                <property name="label" translatable="yes" context="consolidatedialog|label2">_Consolidation ranges:</property>
+                <property name="label" translatable="yes" context="consolidatedialog|label2">合并计算区域(_C):</property>
                 <property name="use_underline">True</property>
                 <property name="mnemonic_widget">consareas</property>
                 <property name="xalign">0</property>
@@ -138,17 +138,17 @@
                 <property name="can_focus">False</property>
                 <property name="hexpand">True</property>
                 <items>
-                  <item translatable="yes" context="consolidatedialog|func">Sum</item>
-                  <item translatable="yes" context="consolidatedialog|func">Count</item>
-                  <item translatable="yes" context="consolidatedialog|func">Average</item>
-                  <item translatable="yes" context="consolidatedialog|func">Max</item>
-                  <item translatable="yes" context="consolidatedialog|func">Min</item>
-                  <item translatable="yes" context="consolidatedialog|func">Product</item>
-                  <item translatable="yes" context="consolidatedialog|func">Count (numbers only)</item>
-                  <item translatable="yes" context="consolidatedialog|func">StDev (sample)</item>
-                  <item translatable="yes" context="consolidatedialog|func">StDevP (population)</item>
-                  <item translatable="yes" context="consolidatedialog|func">Var (sample)</item>
-                  <item translatable="yes" context="consolidatedialog|func">VarP (population)</item>
+                  <item translatable="yes" context="consolidatedialog|func">求和</item>
+                  <item translatable="yes" context="consolidatedialog|func">计数</item>
+                  <item translatable="yes" context="consolidatedialog|func">平均值</item>
+                  <item translatable="yes" context="consolidatedialog|func">最大值</item>
+                  <item translatable="yes" context="consolidatedialog|func">最小值</item>
+                  <item translatable="yes" context="consolidatedialog|func">乘积</item>
+                  <item translatable="yes" context="consolidatedialog|func">计数（仅数字）</item>
+                  <item translatable="yes" context="consolidatedialog|func">标准差（样本）</item>
+                  <item translatable="yes" context="consolidatedialog|func">总体标准差</item>
+                  <item translatable="yes" context="consolidatedialog|func">方差（样本）</item>
+                  <item translatable="yes" context="consolidatedialog|func">总体方差</item>
                 </items>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="func-atkobject">
@@ -413,7 +413,7 @@
               <object class="GtkLabel" id="ftdataarea">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes" context="consolidatedialog|ftdataarea">_Source data ranges:</property>
+                <property name="label" translatable="yes" context="consolidatedialog|ftdataarea">源数据区域(_S):</property>
                 <property name="use_underline">True</property>
                 <property name="mnemonic_widget">lbdataarea</property>
                 <property name="xalign">0</property>
@@ -427,7 +427,7 @@
               <object class="GtkLabel" id="ftdestarea">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes" context="consolidatedialog|ftdestarea">Copy results _to:</property>
+                <property name="label" translatable="yes" context="consolidatedialog|ftdestarea">复制结果到(_T):</property>
                 <property name="use_underline">True</property>
                 <property name="mnemonic_widget">lbdestarea</property>
                 <property name="xalign">0</property>
@@ -479,7 +479,7 @@
                         <property name="margin-top">6</property>
                         <child>
                           <object class="GtkCheckButton" id="byrow">
-                            <property name="label" translatable="yes" context="consolidatedialog|byrow">_Row labels</property>
+                            <property name="label" translatable="yes" context="consolidatedialog|byrow">行标签(_R)</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
@@ -499,7 +499,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="bycol">
-                            <property name="label" translatable="yes" context="consolidatedialog|bycol">C_olumn labels</property>
+                            <property name="label" translatable="yes" context="consolidatedialog|bycol">列标签(_O)</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
@@ -523,7 +523,7 @@
                       <object class="GtkLabel" id="label3">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes" context="consolidatedialog|label3">Consolidate by</property>
+                        <property name="label" translatable="yes" context="consolidatedialog|label3">合并依据</property>
                         <attributes>
                           <attribute name="weight" value="bold"/>
                         </attributes>
@@ -546,7 +546,7 @@
                     <property name="shadow_type">none</property>
                     <child>
                       <object class="GtkCheckButton" id="refs">
-                        <property name="label" translatable="yes" context="consolidatedialog|refs">_Link to source data</property>
+                        <property name="label" translatable="yes" context="consolidatedialog|refs">链接到源数据(_L)</property>
                         <property name="valign">start</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
@@ -569,7 +569,7 @@
                       <object class="GtkLabel" id="label4">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes" context="consolidatedialog|label4">Options</property>
+                        <property name="label" translatable="yes" context="consolidatedialog|label4">选项</property>
                         <attributes>
                           <attribute name="weight" value="bold"/>
                         </attributes>
@@ -588,7 +588,7 @@
               <object class="GtkLabel" id="more_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes" context="consolidatedialog|more_label">Options</property>
+                <property name="label" translatable="yes" context="consolidatedialog|more_label">选项</property>
               </object>
             </child>
             <child internal-child="accessible">

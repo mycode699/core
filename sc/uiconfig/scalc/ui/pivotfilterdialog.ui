@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="PivotFilterDialog">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
-    <property name="title" translatable="yes" context="pivotfilterdialog|PivotFilterDialog">Filter</property>
+    <property name="title" translatable="yes" context="pivotfilterdialog|PivotFilterDialog">筛选</property>
     <property name="modal">True</property>
     <property name="default_width">0</property>
     <property name="default_height">0</property>
@@ -99,15 +99,15 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <items>
-                      <item translatable="yes" context="pivotfilterdialog|connect1">AND</item>
-                      <item translatable="yes" context="pivotfilterdialog|connect1">OR</item>
+                      <item translatable="yes" context="pivotfilterdialog|connect1">与</item>
+                      <item translatable="yes" context="pivotfilterdialog|connect1">或</item>
                     </items>
                     <accessibility>
                       <relation type="labelled-by" target="label2"/>
                     </accessibility>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="connect1-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|connect1">Select a logical operator for the filter.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|connect1">选择用于筛选的逻辑运算符。</property>
                       </object>
                     </child>
                   </object>
@@ -121,12 +121,12 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <items>
-                      <item translatable="yes" context="pivotfilterdialog|connect2">AND</item>
-                      <item translatable="yes" context="pivotfilterdialog|connect2">OR</item>
+                      <item translatable="yes" context="pivotfilterdialog|connect2">与</item>
+                      <item translatable="yes" context="pivotfilterdialog|connect2">或</item>
                     </items>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="connect2-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|connect2">Select a logical operator for the filter.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|connect2">选择用于筛选的逻辑运算符。</property>
                       </object>
                     </child>
                   </object>
@@ -139,7 +139,7 @@
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes" context="pivotfilterdialog|label2">Operator</property>
+                    <property name="label" translatable="yes" context="pivotfilterdialog|label2">运算符</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -150,7 +150,7 @@
                   <object class="GtkLabel" id="label3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes" context="pivotfilterdialog|label3">Field name</property>
+                    <property name="label" translatable="yes" context="pivotfilterdialog|label3">字段名称</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -161,7 +161,7 @@
                   <object class="GtkLabel" id="label4">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes" context="pivotfilterdialog|label4">Condition</property>
+                    <property name="label" translatable="yes" context="pivotfilterdialog|label4">条件</property>
                   </object>
                   <packing>
                     <property name="left_attach">2</property>
@@ -172,7 +172,7 @@
                   <object class="GtkLabel" id="label5">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes" context="pivotfilterdialog|label5">Value</property>
+                    <property name="label" translatable="yes" context="pivotfilterdialog|label5">值</property>
                   </object>
                   <packing>
                     <property name="left_attach">3</property>
@@ -188,7 +188,7 @@
                     </accessibility>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="field1-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|field1">Select the field that you want to use in the filter. If field names are not available, the column labels are listed.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|field1">选择要在筛选中使用的字段。如果字段名称不可用，将列出列标签。</property>
                       </object>
                     </child>
                   </object>
@@ -206,7 +206,7 @@
                     </accessibility>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="field2-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|field2">Select the field that you want to use in the filter. If field names are not available, the column labels are listed.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|field2">选择要在筛选中使用的字段。如果字段名称不可用，将列出列标签。</property>
                       </object>
                     </child>
                   </object>
@@ -224,7 +224,7 @@
                     </accessibility>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="field3-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|field3">Select the field that you want to use in the filter. If field names are not available, the column labels are listed.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|field3">选择要在筛选中使用的字段。如果字段名称不可用，将列出列标签。</property>
                       </object>
                     </child>
                   </object>
@@ -250,7 +250,7 @@
                     </accessibility>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="cond1-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|cond1">Select an operator to compare the Field name and Value entries.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|cond1">选择用于比较“字段名称”和“值”条目的运算符。</property>
                       </object>
                     </child>
                   </object>
@@ -276,7 +276,7 @@
                     </accessibility>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="cond2-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|cond2">Select an operator to compare the Field name and Value entries.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|cond2">选择用于比较“字段名称”和“值”条目的运算符。</property>
                       </object>
                     </child>
                   </object>
@@ -302,7 +302,7 @@
                     </accessibility>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="cond3-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|cond3">Select an operator to compare the Field name and Value entries.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|cond3">选择用于比较“字段名称”和“值”条目的运算符。</property>
                       </object>
                     </child>
                   </object>
@@ -329,7 +329,7 @@
                     </accessibility>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="val1-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|val1">Select the value that you want to compare to the selected field.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|val1">选择要与所选字段比较的值。</property>
                       </object>
                     </child>
                   </object>
@@ -356,7 +356,7 @@
                     </accessibility>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="val2-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|val2">Select the value that you want to compare to the selected field.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|val2">选择要与所选字段比较的值。</property>
                       </object>
                     </child>
                   </object>
@@ -383,7 +383,7 @@
                     </accessibility>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="val3-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|val3">Select the value that you want to compare to the selected field.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|val3">选择要与所选字段比较的值。</property>
                       </object>
                     </child>
                   </object>
@@ -401,7 +401,7 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes" context="pivotfilterdialog|label1">Filter Criteria</property>
+                <property name="label" translatable="yes" context="pivotfilterdialog|label1">筛选条件</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -440,7 +440,7 @@
                     <property name="column_spacing">12</property>
                     <child>
                       <object class="GtkCheckButton" id="case">
-                        <property name="label" translatable="yes" context="pivotfilterdialog|case">_Case sensitive</property>
+                        <property name="label" translatable="yes" context="pivotfilterdialog|case">区分大小写(_C)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -449,7 +449,7 @@
                         <property name="draw_indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="case-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|case">Distinguishes between uppercase and lowercase letters.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|case">区分大写和小写字母。</property>
                           </object>
                         </child>
                       </object>
@@ -460,7 +460,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="regexp">
-                        <property name="label" translatable="yes" context="pivotfilterdialog|regexp">Regular _expressions</property>
+                        <property name="label" translatable="yes" context="pivotfilterdialog|regexp">正则表达式(_E)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -469,7 +469,7 @@
                         <property name="draw_indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="regexp-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|regexp">Allows you to use regular expressions in the filter definition.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|regexp">允许在筛选定义中使用正则表达式。</property>
                           </object>
                         </child>
                       </object>
@@ -480,7 +480,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="unique">
-                        <property name="label" translatable="yes" context="pivotfilterdialog|unique">_No duplications</property>
+                        <property name="label" translatable="yes" context="pivotfilterdialog|unique">无重复(_N)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -489,7 +489,7 @@
                         <property name="draw_indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="unique-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|unique">Excludes duplicate rows in the list of filtered data.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|unique">从筛选后的数据列表中排除重复行。</property>
                           </object>
                         </child>
                       </object>
@@ -517,7 +517,7 @@
                       <object class="GtkLabel" id="dbarealabel">
                         <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes" context="pivotfilterdialog|dbarealabel">Data range:</property>
+                        <property name="label" translatable="yes" context="pivotfilterdialog|dbarealabel">数据区域:</property>
                         <property name="xalign">0</property>
                       </object>
                       <packing>
@@ -534,7 +534,7 @@
                         <property name="xalign">0</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="dbarea-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|dbarea">Displays the name of the filtered data range in the table.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="pivotfilterdialog|extended_tip|dbarea">显示表中已筛选数据区域的名称。</property>
                           </object>
                         </child>
                       </object>
@@ -555,7 +555,7 @@
               <object class="GtkLabel" id="label6">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes" context="pivotfilterdialog|label6">Op_tions</property>
+                <property name="label" translatable="yes" context="pivotfilterdialog|label6">选项(_T)</property>
                 <property name="use_underline">True</property>
               </object>
             </child>

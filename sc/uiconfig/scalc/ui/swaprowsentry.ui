@@ -26,7 +26,7 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="halign">start</property>
-        <property name="label" translatable="yes" context="swaprows|action">Swap Rows</property>
+        <property name="label" translatable="yes" context="swaprows|action">交换行</property>
         <property name="use-underline">True</property>
         <property name="mnemonic-widget">ed_row1</property>
       </object>
@@ -43,7 +43,7 @@
         <property name="hexpand">True</property>
         <property name="width-chars">10</property>
         <property name="truncate-multiline">True</property>
-        <property name="placeholder-text" translatable="yes" context="swaprows|row1">First Row</property>
+        <property name="placeholder-text" translatable="yes" context="swaprows|row1">第一行</property>
         <child internal-child="accessible">
           <object class="AtkObject" id="ed_row1-atkobject">
             <property name="AtkObject::accessible-description" translatable="yes" context="swaprowsentry|extended_tip|ed_row1">The first row to swap position with the second row.</property>
@@ -62,7 +62,7 @@
         <property name="hexpand">True</property>
         <property name="width-chars">10</property>
         <property name="truncate-multiline">True</property>
-        <property name="placeholder-text" translatable="yes" context="swaprows|row2">Second Row</property>
+        <property name="placeholder-text" translatable="yes" context="swaprows|row2">第二行</property>
         <child internal-child="accessible">
           <object class="AtkObject" id="ed_row2-atkobject">
             <property name="AtkObject::accessible-description" translatable="yes" context="swaprowsentry|extended_tip|ed_row2">The second row to swap position with the first row.</property>
@@ -76,7 +76,7 @@
     </child>
     <child>
       <object class="GtkButton" id="ed_delete">
-        <property name="label" translatable="yes" context="swaprows|delete">Delete</property>
+        <property name="label" translatable="yes" context="swaprows|delete">删除</property>
         <property name="visible">True</property>
         <property name="can-focus">True</property>
         <property name="receives-default">False</property>

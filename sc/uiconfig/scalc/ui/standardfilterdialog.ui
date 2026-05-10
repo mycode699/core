@@ -73,7 +73,7 @@
   <object class="GtkDialog" id="StandardFilterDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="standardfilterdialog|StandardFilterDialog">Standard Filter</property>
+    <property name="title" translatable="yes" context="standardfilterdialog|StandardFilterDialog">标准筛选</property>
     <property name="resizable">False</property>
     <property name="default-width">0</property>
     <property name="default-height">0</property>
@@ -91,7 +91,7 @@
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="clear">
-                <property name="label" translatable="yes" context="standardfilterdialog|clear">_Clear</property>
+                <property name="label" translatable="yes" context="standardfilterdialog|clear">清除(_C)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
@@ -115,7 +115,7 @@
                 <property name="use-underline">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="ok-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|ok">Saves all changes and closes dialog.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|ok">保存所有更改并关闭对话框。</property>
                   </object>
                 </child>
               </object>
@@ -135,7 +135,7 @@
                 <property name="use-underline">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="cancel-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|cancel">Closes dialog and discards all changes.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|cancel">关闭对话框并放弃所有更改。</property>
                   </object>
                 </child>
               </object>
@@ -214,16 +214,16 @@
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
                                 <items>
-                                  <item translatable="yes" context="standardfilterdialog|connect1">AND</item>
-                                  <item translatable="yes" context="standardfilterdialog|connect1">OR</item>
+                                  <item translatable="yes" context="standardfilterdialog|connect1">与</item>
+                                  <item translatable="yes" context="standardfilterdialog|connect1">或</item>
                                 </items>
                                 <accessibility>
                                   <relation type="labelled-by" target="label2"/>
                                 </accessibility>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="connect1-atkobject">
-                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|connect1-atkobject">Operator 1</property>
-                                    <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|connect1">For the following arguments, you can choose between the logical operators AND / OR.</property>
+                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|connect1-atkobject">运算符 1</property>
+                                    <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|connect1">对于后续参数，可以在逻辑运算符“与”和“或”之间选择。</property>
                                   </object>
                                 </child>
                               </object>
@@ -237,16 +237,16 @@
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
                                 <items>
-                                  <item translatable="yes" context="standardfilterdialog|connect2">AND</item>
-                                  <item translatable="yes" context="standardfilterdialog|connect2">OR</item>
+                                  <item translatable="yes" context="standardfilterdialog|connect2">与</item>
+                                  <item translatable="yes" context="standardfilterdialog|connect2">或</item>
                                 </items>
                                 <accessibility>
                                   <relation type="labelled-by" target="label2"/>
                                 </accessibility>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="connect2-atkobject">
-                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|connect2-atkobject">Operator 2</property>
-                                    <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|connect2">For the following arguments, you can choose between the logical operators AND / OR.</property>
+                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|connect2-atkobject">运算符 2</property>
+                                    <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|connect2">对于后续参数，可以在逻辑运算符“与”和“或”之间选择。</property>
                                   </object>
                                 </child>
                               </object>
@@ -260,12 +260,12 @@
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
                                 <items>
-                                  <item translatable="yes" context="standardfilterdialog|connect3">AND</item>
-                                  <item translatable="yes" context="standardfilterdialog|connect3">OR</item>
+                                  <item translatable="yes" context="standardfilterdialog|connect3">与</item>
+                                  <item translatable="yes" context="standardfilterdialog|connect3">或</item>
                                 </items>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="connect3-atkobject">
-                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|connect3-atkobject">Operator 3</property>
+                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|connect3-atkobject">运算符 3</property>
                                   </object>
                                 </child>
                               </object>
@@ -279,12 +279,12 @@
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
                                 <items>
-                                  <item translatable="yes" context="standardfilterdialog|connect4">AND</item>
-                                  <item translatable="yes" context="standardfilterdialog|connect4">OR</item>
+                                  <item translatable="yes" context="standardfilterdialog|connect4">与</item>
+                                  <item translatable="yes" context="standardfilterdialog|connect4">或</item>
                                 </items>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="connect4-atkobject">
-                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|connect4-atkobject">Operator 4</property>
+                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|connect4-atkobject">运算符 4</property>
                                   </object>
                                 </child>
                               </object>
@@ -297,7 +297,7 @@
                               <object class="GtkLabel" id="label2">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="standardfilterdialog|label2">Operator</property>
+                                <property name="label" translatable="yes" context="standardfilterdialog|label2">运算符</property>
                               </object>
                               <packing>
                                 <property name="left-attach">0</property>
@@ -308,7 +308,7 @@
                               <object class="GtkLabel" id="label3">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="standardfilterdialog|label3">Field name</property>
+                                <property name="label" translatable="yes" context="standardfilterdialog|label3">字段名称</property>
                               </object>
                               <packing>
                                 <property name="left-attach">1</property>
@@ -319,7 +319,7 @@
                               <object class="GtkLabel" id="label4">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="standardfilterdialog|label4">Condition</property>
+                                <property name="label" translatable="yes" context="standardfilterdialog|label4">条件</property>
                               </object>
                               <packing>
                                 <property name="left-attach">2</property>
@@ -330,7 +330,7 @@
                               <object class="GtkLabel" id="label5">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="standardfilterdialog|label5">Value</property>
+                                <property name="label" translatable="yes" context="standardfilterdialog|label5">值</property>
                               </object>
                               <packing>
                                 <property name="left-attach">3</property>
@@ -346,8 +346,8 @@
                                 </accessibility>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="field1-atkobject">
-                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|field1-atkobject">Field Name 1</property>
-                                    <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|field1">Specifies the field names from the current table to set them in the argument.</property>
+                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|field1-atkobject">字段名称 1</property>
+                                    <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|field1">指定当前表中的字段名称，用于设置到参数中。</property>
                                   </object>
                                 </child>
                               </object>
@@ -365,8 +365,8 @@
                                 </accessibility>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="field2-atkobject">
-                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|field2-atkobject">Field Name 2</property>
-                                    <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|field2">Specifies the field names from the current table to set them in the argument.</property>
+                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|field2-atkobject">字段名称 2</property>
+                                    <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|field2">指定当前表中的字段名称，用于设置到参数中。</property>
                                   </object>
                                 </child>
                               </object>
@@ -384,8 +384,8 @@
                                 </accessibility>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="field3-atkobject">
-                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|field3-atkobject">Field Name 3</property>
-                                    <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|field3">Specifies the field names from the current table to set them in the argument.</property>
+                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|field3-atkobject">字段名称 3</property>
+                                    <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|field3">指定当前表中的字段名称，用于设置到参数中。</property>
                                   </object>
                                 </child>
                               </object>
@@ -400,7 +400,7 @@
                                 <property name="can-focus">False</property>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="field4-atkobject">
-                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|field4-atkobject">Field Name 4</property>
+                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|field4-atkobject">字段名称 4</property>
                                   </object>
                                 </child>
                               </object>
@@ -420,26 +420,26 @@
                                   <item>&lt;=</item>
                                   <item>&gt;=</item>
                                   <item>&lt;&gt;</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Largest</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Smallest</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Largest %</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Smallest %</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Contains</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Does not contain</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Begins with</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Does not begin with</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Ends with</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Does not end with</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Font color</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Background color</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">最大</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">最小</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">最大 %</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">最小 %</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">包含</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">不包含</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">开头为</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">开头不是</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">结尾为</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">结尾不是</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">字体颜色</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">背景颜色</item>
                                 </items>
                                 <accessibility>
                                   <relation type="labelled-by" target="label4"/>
                                 </accessibility>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="cond1-atkobject">
-                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|cond1-atkobject">Condition 1</property>
-                                    <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|cond1">Specifies the comparative operators through which the entries in the Field name and Value fields can be linked.</property>
+                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|cond1-atkobject">条件 1</property>
+                                    <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|cond1">指定用于连接“字段名称”和“值”字段中条目的比较运算符。</property>
                                   </object>
                                 </child>
                               </object>
@@ -459,26 +459,26 @@
                                   <item>&lt;=</item>
                                   <item>&gt;=</item>
                                   <item>&lt;&gt;</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Largest</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Smallest</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Largest %</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Smallest %</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Contains</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Does not contain</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Begins with</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Does not begin with</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Ends with</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Does not end with</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Font color</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Background color</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">最大</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">最小</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">最大 %</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">最小 %</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">包含</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">不包含</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">开头为</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">开头不是</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">结尾为</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">结尾不是</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">字体颜色</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">背景颜色</item>
                                 </items>
                                 <accessibility>
                                   <relation type="labelled-by" target="label4"/>
                                 </accessibility>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="cond2-atkobject">
-                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|cond2-atkobject">Condition 2</property>
-                                    <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|cond2">Specifies the comparative operators through which the entries in the Field name and Value fields can be linked.</property>
+                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|cond2-atkobject">条件 2</property>
+                                    <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|cond2">指定用于连接“字段名称”和“值”字段中条目的比较运算符。</property>
                                   </object>
                                 </child>
                               </object>
@@ -498,26 +498,26 @@
                                   <item>&lt;=</item>
                                   <item>&gt;=</item>
                                   <item>&lt;&gt;</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Largest</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Smallest</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Largest %</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Smallest %</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Contains</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Does not contain</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Begins with</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Does not begin with</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Ends with</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Does not end with</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Font color</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Background color</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">最大</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">最小</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">最大 %</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">最小 %</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">包含</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">不包含</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">开头为</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">开头不是</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">结尾为</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">结尾不是</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">字体颜色</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">背景颜色</item>
                                 </items>
                                 <accessibility>
                                   <relation type="labelled-by" target="label4"/>
                                 </accessibility>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="cond3-atkobject">
-                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|cond3-atkobject">Condition 3</property>
-                                    <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|cond3">Specifies the comparative operators through which the entries in the Field name and Value fields can be linked.</property>
+                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|cond3-atkobject">条件 3</property>
+                                    <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|cond3">指定用于连接“字段名称”和“值”字段中条目的比较运算符。</property>
                                   </object>
                                 </child>
                               </object>
@@ -537,22 +537,22 @@
                                   <item>&lt;=</item>
                                   <item>&gt;=</item>
                                   <item>&lt;&gt;</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Largest</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Smallest</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Largest %</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Smallest %</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Contains</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Does not contain</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Begins with</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Does not begin with</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Ends with</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Does not end with</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Font color</item>
-                                  <item translatable="yes" context="standardfilterdialog|cond">Background color</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">最大</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">最小</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">最大 %</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">最小 %</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">包含</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">不包含</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">开头为</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">开头不是</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">结尾为</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">结尾不是</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">字体颜色</item>
+                                  <item translatable="yes" context="standardfilterdialog|cond">背景颜色</item>
                                 </items>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="cond4-atkobject">
-                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|cond4-atkobject">Condition 4</property>
+                                    <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|cond4-atkobject">条件 4</property>
                                   </object>
                                 </child>
                               </object>
@@ -566,7 +566,7 @@
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="receives-default">True</property>
-                                <property name="tooltip-text" translatable="yes" context="standardfilterdialog|remove1|tooltip_text">Remove</property>
+                                <property name="tooltip-text" translatable="yes" context="standardfilterdialog|remove1|tooltip_text">移除</property>
                                 <property name="margin-end">8</property>
                                 <property name="image">image1</property>
                                 <property name="always-show-image">True</property>
@@ -581,7 +581,7 @@
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="receives-default">True</property>
-                                <property name="tooltip-text" translatable="yes" context="standardfilterdialog|remove2|tooltip_text">Remove</property>
+                                <property name="tooltip-text" translatable="yes" context="standardfilterdialog|remove2|tooltip_text">移除</property>
                                 <property name="margin-end">8</property>
                                 <property name="image">image2</property>
                                 <property name="always-show-image">True</property>
@@ -596,7 +596,7 @@
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="receives-default">True</property>
-                                <property name="tooltip-text" translatable="yes" context="standardfilterdialog|remove3|tooltip_text">Remove</property>
+                                <property name="tooltip-text" translatable="yes" context="standardfilterdialog|remove3|tooltip_text">移除</property>
                                 <property name="margin-end">8</property>
                                 <property name="image">image3</property>
                                 <property name="always-show-image">True</property>
@@ -611,7 +611,7 @@
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="receives-default">True</property>
-                                <property name="tooltip-text" translatable="yes" context="standardfilterdialog|remove4|tooltip_text">Remove</property>
+                                <property name="tooltip-text" translatable="yes" context="standardfilterdialog|remove4|tooltip_text">移除</property>
                                 <property name="margin-end">8</property>
                                 <property name="image">image4</property>
                                 <property name="always-show-image">True</property>
@@ -644,8 +644,8 @@
                                     </accessibility>
                                     <child internal-child="accessible">
                                       <object class="AtkObject" id="val2-atkobject">
-                                        <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|val1-atkobject">Value 1</property>
-                                        <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|val1">Specifies a value to filter the field.</property>
+                                        <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|val1-atkobject">值 1</property>
+                                        <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|val1">指定用于筛选字段的值。</property>
                                       </object>
                                     </child>
                                   </object>
@@ -712,8 +712,8 @@
                                     </accessibility>
                                     <child internal-child="accessible">
                                       <object class="AtkObject" id="val1-atkobject">
-                                        <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|val1-atkobject">Value 1</property>
-                                        <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|val1">Specifies a value to filter the field.</property>
+                                        <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|val1-atkobject">值 1</property>
+                                        <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|val1">指定用于筛选字段的值。</property>
                                       </object>
                                     </child>
                                   </object>
@@ -780,8 +780,8 @@
                                     </accessibility>
                                     <child internal-child="accessible">
                                       <object class="AtkObject" id="val3-atkobject">
-                                        <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|val1-atkobject">Value 1</property>
-                                        <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|val1">Specifies a value to filter the field.</property>
+                                        <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|val1-atkobject">值 1</property>
+                                        <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|val1">指定用于筛选字段的值。</property>
                                       </object>
                                     </child>
                                   </object>
@@ -848,8 +848,8 @@
                                     </accessibility>
                                     <child internal-child="accessible">
                                       <object class="AtkObject" id="val4-atkobject">
-                                        <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|val1-atkobject">Value 1</property>
-                                        <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|val1">Specifies a value to filter the field.</property>
+                                        <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|val1-atkobject">值 1</property>
+                                        <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|val1">指定用于筛选字段的值。</property>
                                       </object>
                                     </child>
                                   </object>
@@ -912,7 +912,7 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="standardfilterdialog|label1">Filter Criteria</property>
+                <property name="label" translatable="yes" context="standardfilterdialog|label1">筛选条件</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -951,7 +951,7 @@
                     <property name="column-spacing">12</property>
                     <child>
                       <object class="GtkCheckButton" id="case">
-                        <property name="label" translatable="yes" context="standardfilterdialog|case">_Case sensitive</property>
+                        <property name="label" translatable="yes" context="standardfilterdialog|case">区分大小写(_C)</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -960,7 +960,7 @@
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="case-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|case">Distinguishes between uppercase and lowercase letters when filtering the data.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|case">筛选数据时区分大写和小写字母。</property>
                           </object>
                         </child>
                       </object>
@@ -971,7 +971,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="header">
-                        <property name="label" translatable="yes" context="standardfilterdialog|header">Range c_ontains column labels</property>
+                        <property name="label" translatable="yes" context="standardfilterdialog|header">区域包含列标签(_O)</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -980,7 +980,7 @@
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="header-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|header">Includes the column labels in the first row of a cell range.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|header">包含单元格区域第一行中的列标签。</property>
                           </object>
                         </child>
                       </object>
@@ -991,7 +991,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="regexp">
-                        <property name="label" translatable="yes" context="standardfilterdialog|regexp">Regular _expressions</property>
+                        <property name="label" translatable="yes" context="standardfilterdialog|regexp">正则表达式(_E)</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -1000,7 +1000,7 @@
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="regexp-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|regexp">Allows you to use regular expressions in the filter definition.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|regexp">允许在筛选定义中使用正则表达式。</property>
                           </object>
                         </child>
                       </object>
@@ -1011,7 +1011,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="unique">
-                        <property name="label" translatable="yes" context="standardfilterdialog|unique">_No duplications</property>
+                        <property name="label" translatable="yes" context="standardfilterdialog|unique">无重复(_N)</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -1020,7 +1020,7 @@
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="unique-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|unique">Excludes duplicate rows in the list of filtered data.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|unique">从筛选后的数据列表中排除重复行。</property>
                           </object>
                         </child>
                       </object>
@@ -1031,7 +1031,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="copyresult">
-                        <property name="label" translatable="yes" context="standardfilterdialog|copyresult">Co_py results to:</property>
+                        <property name="label" translatable="yes" context="standardfilterdialog|copyresult">复制结果到(_P):</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -1044,7 +1044,7 @@
                         </accessibility>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="copyresult-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|copyresult">Select the check box, and then select the cell range where you want to display the filter results.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|copyresult">选中该复选框，然后选择要显示筛选结果的单元格区域。</property>
                           </object>
                         </child>
                       </object>
@@ -1055,7 +1055,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="destpers">
-                        <property name="label" translatable="yes" context="standardfilterdialog|destpers">_Keep filter criteria</property>
+                        <property name="label" translatable="yes" context="standardfilterdialog|destpers">保留筛选条件(_K)</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -1064,7 +1064,7 @@
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="destpers-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|destpers">Select the Copy results to check box, and then specify the destination range where you want to display the filtered data. If this box is checked, the destination range remains linked to the source range. You must have defined the source range under Data - Define range as a database range.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|destpers">选中“复制结果到”复选框，然后指定要显示筛选后数据的目标区域。如果选中此框，目标区域会保持与源区域的链接。必须已在“数据 - 定义区域”下将源区域定义为数据库区域。</property>
                           </object>
                         </child>
                       </object>
@@ -1096,8 +1096,8 @@
                         </accessibility>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="lbcopyarea-atkobject">
-                            <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|lbcopyarea-atkobject">Copy results to</property>
-                            <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|lbcopyarea">Select the check box, and then select the cell range where you want to display the filter results.</property>
+                            <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|lbcopyarea-atkobject">复制结果到</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|lbcopyarea">选中该复选框，然后选择要显示筛选结果的单元格区域。</property>
                           </object>
                         </child>
                       </object>
@@ -1119,8 +1119,8 @@
                         </accessibility>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="edcopyarea-atkobject">
-                            <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|edcopyarea-atkobject">Copy results to</property>
-                            <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|edcopyarea">Select the check box, and then select the cell range where you want to display the filter results.</property>
+                            <property name="AtkObject::accessible-name" translatable="yes" context="standardfilterdialog|edcopyarea-atkobject">复制结果到</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|edcopyarea">选中该复选框，然后选择要显示筛选结果的单元格区域。</property>
                           </object>
                         </child>
                       </object>
@@ -1139,7 +1139,7 @@
                         </child>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="rbcopyarea-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|rbcopyarea">Click the Shrink icon to reduce the dialog to the size of the input field. It is then easier to mark the required reference in the sheet. The icons then automatically convert to the Maximize icon. Click it to restore the dialog to its original size.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|rbcopyarea">单击“收缩”图标可将对话框缩小到输入字段大小。这样更容易在工作表中标记所需引用。图标随后会自动变为“最大化”图标。单击它可将对话框恢复为原始大小。</property>
                           </object>
                         </child>
                       </object>
@@ -1164,7 +1164,7 @@
                       <object class="GtkLabel" id="dbarealabel">
                         <property name="sensitive">False</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="standardfilterdialog|dbarealabel">Data range:</property>
+                        <property name="label" translatable="yes" context="standardfilterdialog|dbarealabel">数据区域:</property>
                         <property name="xalign">0</property>
                       </object>
                       <packing>
@@ -1197,13 +1197,13 @@
               <object class="GtkLabel" id="label6">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="standardfilterdialog|label6">Op_tions</property>
+                <property name="label" translatable="yes" context="standardfilterdialog|label6">选项(_T)</property>
                 <property name="use-underline">True</property>
               </object>
             </child>
             <child internal-child="accessible">
               <object class="AtkObject" id="more-atkobject">
-                <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|more">Shows additional filter options.</property>
+                <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|more">显示其他筛选选项。</property>
               </object>
             </child>
           </object>
@@ -1223,7 +1223,7 @@
     </action-widgets>
     <child internal-child="accessible">
       <object class="AtkObject" id="StandardFilterDialog-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|StandardFilterDialog">Specifies the logical conditions to filter your table data.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="standardfilterdialog|extended_tip|StandardFilterDialog">指定用于筛选表格数据的逻辑条件。</property>
       </object>
     </child>
   </object>

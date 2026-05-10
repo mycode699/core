@@ -22,7 +22,7 @@
   <object class="GtkDialog" id="TextImportCsvDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="textimportcsv|TextImportCsvDialog">Text Import</property>
+    <property name="title" translatable="yes" context="textimportcsv|TextImportCsvDialog">导入文本</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
     <property name="default-height">0</property>
@@ -38,7 +38,7 @@
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="stock">_OK</property>
+                <property name="label" translatable="yes" context="stock">确定(_O)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
@@ -54,7 +54,7 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="stock">_Cancel</property>
+                <property name="label" translatable="yes" context="stock">取消(_C)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -68,7 +68,7 @@
             </child>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助(_H)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -116,7 +116,7 @@
                       <object class="GtkLabel" id="textcharset">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="textimportcsv|textcharset">Ch_aracter set:</property>
+                        <property name="label" translatable="yes" context="textimportcsv|textcharset">字符集(_A)：</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">charset</property>
                         <property name="xalign">0</property>
@@ -130,7 +130,7 @@
                       <object class="GtkLabel" id="textlanguage">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="textimportcsv|textlanguage">_Locale:</property>
+                        <property name="label" translatable="yes" context="textimportcsv|textlanguage">区域设置(_L)：</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">language</property>
                         <property name="xalign">0</property>
@@ -144,7 +144,7 @@
                       <object class="GtkLabel" id="textfromrow">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="textimportcsv|textfromrow">From ro_w:</property>
+                        <property name="label" translatable="yes" context="textimportcsv|textfromrow">起始行(_W)：</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">fromrow</property>
                         <property name="xalign">0</property>
@@ -160,7 +160,7 @@
                         <property name="can-focus">False</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="charset-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|charset">Specifies the character set to be used in the imported file.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|charset">指定导入文件使用的字符集。</property>
                           </object>
                         </child>
                       </object>
@@ -187,7 +187,7 @@
                         <property name="can-focus">False</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="language-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|language">Determines how the number strings are imported.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|language">决定数字字符串的导入方式。</property>
                           </object>
                         </child>
                       </object>
@@ -206,7 +206,7 @@
                         <property name="adjustment">adjustment1</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="fromrow-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|fromrow">Specifies the row where you want to start the import.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|fromrow">指定导入数据的起始行。</property>
                           </object>
                         </child>
                       </object>
@@ -221,7 +221,7 @@
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="textimportcsv|label1">Import</property>
+                    <property name="label" translatable="yes" context="textimportcsv|label1">导入</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -259,7 +259,7 @@
                         <property name="spacing">12</property>
                         <child>
                           <object class="GtkRadioButton" id="tofixedwidth">
-                            <property name="label" translatable="yes" context="textimportcsv|tofixedwidth">_Fixed width</property>
+                            <property name="label" translatable="yes" context="textimportcsv|tofixedwidth">固定宽度(_F)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -268,7 +268,7 @@
                             <property name="group">todetectseparator</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="tofixedwidth-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|tofixedwidth">Separates fixed-width data (equal number of characters) into columns.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|tofixedwidth">按固定宽度（相同字符数）将数据拆分为多列。</property>
                               </object>
                             </child>
                           </object>
@@ -280,7 +280,7 @@
                         </child>
                         <child>
                           <object class="GtkRadioButton" id="toseparatedby">
-                            <property name="label" translatable="yes" context="textimportcsv|toseparatedby">_Separated by</property>
+                            <property name="label" translatable="yes" context="textimportcsv|toseparatedby">使用分隔符(_S)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -289,7 +289,7 @@
                             <property name="group">todetectseparator</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="toseparatedby-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|toseparatedby">Select the separator used in your data.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|toseparatedby">选择数据中使用的分隔符。</property>
                               </object>
                             </child>
                           </object>
@@ -301,7 +301,7 @@
                         </child>
                         <child>
                           <object class="GtkRadioButton" id="todetectseparator">
-                            <property name="label" translatable="yes" context="textimportcsv|todetectseparator">Detected</property>
+                            <property name="label" translatable="yes" context="textimportcsv|todetectseparator">自动检测</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -310,7 +310,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="todetectseparator-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|todetectseparator">Use detected separator.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|todetectseparator">使用自动检测到的分隔符。</property>
                               </object>
                             </child>
                           </object>
@@ -338,7 +338,7 @@
                         <property name="column-spacing">12</property>
                         <child>
                           <object class="GtkCheckButton" id="tab">
-                            <property name="label" translatable="yes" context="textimportcsv|tab">_Tab</property>
+                            <property name="label" translatable="yes" context="textimportcsv|tab">制表符(_T)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -347,7 +347,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="tab-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|tab">Separates data delimited by tabs into columns.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|tab">按制表符将数据拆分为多列。</property>
                               </object>
                             </child>
                           </object>
@@ -358,7 +358,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="mergedelimiters">
-                            <property name="label" translatable="yes" context="textimportcsv|mergedelimiters">Merge _delimiters</property>
+                            <property name="label" translatable="yes" context="textimportcsv|mergedelimiters">合并连续分隔符(_D)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -368,7 +368,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="mergedelimiters-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|mergedelimiters">Combines consecutive delimiters and removes blank data fields.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|mergedelimiters">合并连续出现的分隔符，并移除空白数据字段。</property>
                               </object>
                             </child>
                           </object>
@@ -380,7 +380,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="removespace">
-                            <property name="label" translatable="yes" context="textimportcsv|removespace">Tr_im spaces</property>
+                            <property name="label" translatable="yes" context="textimportcsv|removespace">去除首尾空格(_I)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -390,7 +390,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="removespace-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|removespace">Removes starting and trailing spaces from data fields.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|removespace">移除数据字段开头和结尾的空格。</property>
                               </object>
                             </child>
                           </object>
@@ -402,7 +402,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="comma">
-                            <property name="label" translatable="yes" context="textimportcsv|comma">_Comma</property>
+                            <property name="label" translatable="yes" context="textimportcsv|comma">逗号(_C)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -411,7 +411,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="comma-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|comma">Separates data delimited by commas into columns.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|comma">按逗号将数据拆分为多列。</property>
                               </object>
                             </child>
                           </object>
@@ -422,7 +422,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="semicolon">
-                            <property name="label" translatable="yes" context="textimportcsv|semicolon">S_emicolon</property>
+                            <property name="label" translatable="yes" context="textimportcsv|semicolon">分号(_E)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -431,7 +431,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="semicolon-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|semicolon">Separates data delimited by semicolons into columns.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|semicolon">按分号将数据拆分为多列。</property>
                               </object>
                             </child>
                           </object>
@@ -442,7 +442,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="space">
-                            <property name="label" translatable="yes" context="textimportcsv|space">S_pace</property>
+                            <property name="label" translatable="yes" context="textimportcsv|space">空格(_P)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -451,7 +451,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="space-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|space">Separates data delimited by spaces into columns.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|space">按空格将数据拆分为多列。</property>
                               </object>
                             </child>
                           </object>
@@ -469,7 +469,7 @@
                             <property name="column-spacing">12</property>
                             <child>
                               <object class="GtkCheckButton" id="other">
-                                <property name="label" translatable="yes" context="textimportcsv|other">Othe_r</property>
+                                <property name="label" translatable="yes" context="textimportcsv|other">其他(_R)</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="receives-default">False</property>
@@ -480,7 +480,7 @@
                                 </accessibility>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="other-atkobject">
-                                    <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|other">Separates data into columns using the custom separator that you specify. Note: The custom separator must also be contained in your data.</property>
+                                    <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|other">使用指定的自定义分隔符拆分数据。注意：数据中也必须包含该分隔符。</property>
                                   </object>
                                 </child>
                               </object>
@@ -503,8 +503,8 @@
                                 </accessibility>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="inputother-atkobject">
-                                    <property name="AtkObject::accessible-name" translatable="yes" context="textimportcsv|inputother-atkobject">Other</property>
-                                    <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|inputother">Separates data into columns using the custom separator that you specify. Note: The custom separator must also be contained in your data.</property>
+                                    <property name="AtkObject::accessible-name" translatable="yes" context="textimportcsv|inputother-atkobject">其他分隔符</property>
+                                    <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|inputother">使用指定的自定义分隔符拆分数据。注意：数据中也必须包含该分隔符。</property>
                                   </object>
                                 </child>
                               </object>
@@ -530,7 +530,7 @@
                               <object class="GtkLabel" id="texttextdelimiter">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="textimportcsv|texttextdelimiter">Strin_g delimiter:</property>
+                                <property name="label" translatable="yes" context="textimportcsv|texttextdelimiter">文本定界符(_G)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="mnemonic-widget">textdelimiter</property>
                                 <property name="xalign">0</property>
@@ -556,7 +556,7 @@
                                 </child>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="textdelimiter-atkobject">
-                                    <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|textdelimiter">Select a character to delimit text data. You can also enter a character in the text box.</property>
+                                    <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|textdelimiter">选择用于限定文本数据的字符，也可以直接输入字符。</property>
                                   </object>
                                 </child>
                               </object>
@@ -584,7 +584,7 @@
                   <object class="GtkLabel" id="separatoroptions">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="textimportcsv|separatoroptions">Separator Options</property>
+                    <property name="label" translatable="yes" context="textimportcsv|separatoroptions">分隔符选项</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -621,7 +621,7 @@
                         <property name="column-spacing">12</property>
                         <child>
                           <object class="GtkCheckButton" id="quotedfieldastext">
-                            <property name="label" translatable="yes" context="textimportcsv|quotedfieldastext">Format _quoted field as text</property>
+                            <property name="label" translatable="yes" context="textimportcsv|quotedfieldastext">将带引号字段作为文本(_Q)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -629,7 +629,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="quotedfieldastext-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|quotedfieldastext">When this option is enabled, fields or cells whose values are quoted in their entirety (the first and last characters of the value equal the text delimiter) are imported as text.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|quotedfieldastext">启用后，整段被文本定界符包住的字段或单元格会按文本导入。</property>
                               </object>
                             </child>
                           </object>
@@ -640,7 +640,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="detectspecialnumbers">
-                            <property name="label" translatable="yes" context="textimportcsv|detectspecialnumbers">Detect special _numbers</property>
+                            <property name="label" translatable="yes" context="textimportcsv|detectspecialnumbers">检测特殊数字格式(_N)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -648,7 +648,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="detectspecialnumbers-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|detectspecialnumbers">When this option is enabled, Calc will automatically detect all number formats, including special number formats such as dates, time, and scientific notation.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|detectspecialnumbers">启用后，Calc 会自动检测所有数字格式，包括日期、时间、科学记数法等特殊格式。</property>
                               </object>
                             </child>
                           </object>
@@ -659,16 +659,16 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="evaluateformulas">
-                            <property name="label" translatable="yes" context="textimportcsv|evaluateformulas">E_valuate formulas</property>
+                            <property name="label" translatable="yes" context="textimportcsv|evaluateformulas">计算公式(_V)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
-                            <property name="tooltip-text" translatable="yes" context="textimportcsv|evaluateformulas">If enabled, cells starting with '=' will be evaluated as formulas.</property>
+                            <property name="tooltip-text" translatable="yes" context="textimportcsv|evaluateformulas">启用后，以“=”开头的单元格会作为公式计算。</property>
                             <property name="use-underline">True</property>
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="evaluateformulas-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|evaluateformulas">When this option is enabled, cell content starting with an '=' equal sign is evaluated as formula expression. Otherwise, content is imported as text.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|evaluateformulas">启用后，以“=”开头的单元格内容会作为公式表达式计算；否则按文本导入。</property>
                               </object>
                             </child>
                           </object>
@@ -679,16 +679,16 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="skipemptycells">
-                            <property name="label" translatable="yes" context="textimportcsv|skipemptycells">S_kip empty cells</property>
+                            <property name="label" translatable="yes" context="textimportcsv|skipemptycells">跳过空单元格(_K)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
-                            <property name="tooltip-text" translatable="yes" context="textimportcsv|skipemptycells">If enabled, blank cells in source will not override the target.</property>
+                            <property name="tooltip-text" translatable="yes" context="textimportcsv|skipemptycells">启用后，源数据中的空白单元格不会覆盖目标单元格。</property>
                             <property name="use-underline">True</property>
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="skipemptycells-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|skipemptycells">When this option is enabled, Calc preserves previous content of cells when pasting empty ones. Otherwise, Calc deletes content of previous cells.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|skipemptycells">启用后，粘贴空单元格时 Calc 会保留原有内容；否则会清空原有单元格内容。</property>
                               </object>
                             </child>
                           </object>
@@ -699,7 +699,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="detectscientificnumbers">
-                            <property name="label" translatable="yes" context="textimportcsv|detectspecialnumbers">Detect scientific n_otation</property>
+                            <property name="label" translatable="yes" context="textimportcsv|detectspecialnumbers">检测科学记数法(_O)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -707,7 +707,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="detectscientificnumbers-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|detectscientificnumbers">When this option is enabled, Calc will automatically detect numbers in scientific notation in addition to basic decimal numbers.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|detectscientificnumbers">启用后，Calc 会在普通小数之外自动检测科学记数法数字。</property>
                               </object>
                             </child>
                           </object>
@@ -729,7 +729,7 @@
                   <object class="GtkLabel" id="label3">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="textimportcsv|label3">Other Options</property>
+                    <property name="label" translatable="yes" context="textimportcsv|label3">其他选项</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -767,7 +767,7 @@
                           <object class="GtkLabel" id="textcolumntype">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
-                            <property name="label" translatable="yes" context="textimportcsv|textcolumntype">Column t_ype:</property>
+                            <property name="label" translatable="yes" context="textimportcsv|textcolumntype">列类型(_Y)：</property>
                             <property name="use-underline">True</property>
                             <property name="mnemonic-widget">columntype</property>
                           </object>
@@ -783,7 +783,7 @@
                             <property name="can-focus">False</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="columntype-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|columntype">Choose a column in the preview window and select the data type to be applied the imported data.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|columntype">在预览窗口中选择列，并设置导入数据要使用的数据类型。</property>
                               </object>
                             </child>
                           </object>
@@ -828,7 +828,7 @@
                                     <property name="hexpand">True</property>
                                     <child internal-child="accessible">
                                       <object class="AtkObject" id="csvruler-atkobject">
-                                        <property name="AtkObject::accessible-name" translatable="yes" context="textimportcsv|csvruler-atkobject">Column break positions</property>
+                                        <property name="AtkObject::accessible-name" translatable="yes" context="textimportcsv|csvruler-atkobject">列分隔位置</property>
                                       </object>
                                     </child>
                                   </object>
@@ -847,7 +847,7 @@
                                     <property name="vexpand">True</property>
                                     <child internal-child="accessible">
                                       <object class="AtkObject" id="csvgrid-atkobject">
-                                        <property name="AtkObject::accessible-name" translatable="yes" context="textimportcsv|csvgrid-atkobject">Data preview</property>
+                                        <property name="AtkObject::accessible-name" translatable="yes" context="textimportcsv|csvgrid-atkobject">数据预览</property>
                                       </object>
                                     </child>
                                   </object>
@@ -872,7 +872,7 @@
                       <object class="GtkLabel" id="textalttitle">
                         <property name="can-focus">False</property>
                         <property name="no-show-all">True</property>
-                        <property name="label" translatable="yes" context="textimportcsv|textalttitle">Text to Columns</property>
+                        <property name="label" translatable="yes" context="textimportcsv|textalttitle">分列</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -882,7 +882,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="alwaysshowonimport">
-                        <property name="label" translatable="yes" context="textimportcsv|alwaysshow">_Always show on import</property>
+                        <property name="label" translatable="yes" context="textimportcsv|alwaysshow">导入时始终显示(_A)</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
                         <property name="use-underline">True</property>
@@ -902,7 +902,7 @@
                   <object class="GtkLabel" id="label4">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="textimportcsv|label4">Fields</property>
+                    <property name="label" translatable="yes" context="textimportcsv|label4">字段</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -931,7 +931,7 @@
     </action-widgets>
     <child internal-child="accessible">
       <object class="AtkObject" id="TextImportCsvDialog-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|TextImportCsvDialog">Sets the import options for delimited data.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="textimportcsv|extended_tip|TextImportCsvDialog">设置分隔数据的导入选项。</property>
       </object>
     </child>
   </object>

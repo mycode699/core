@@ -31,7 +31,7 @@ class standardFilter(UITestCase):
 
                 select_by_text(xfield1, "a")
                 xval1.executeAction("TYPE", mkPropertyValues({"TEXT":"1"}))
-                select_by_text(xconnect2, "OR")
+                select_by_text(xconnect2, "或")
                 select_by_text(xfield2, "b")
                 xval2.executeAction("TYPE", mkPropertyValues({"TEXT":"3"}))
             #3x down - should be on row 9
@@ -54,7 +54,7 @@ class standardFilter(UITestCase):
 
                 self.assertEqual(get_state_as_dict(xfield1)["SelectEntryText"], "a")
                 self.assertEqual(get_state_as_dict(xfield2)["SelectEntryText"], "b")
-                self.assertEqual(get_state_as_dict(xconnect2)["SelectEntryText"], "OR")
+                self.assertEqual(get_state_as_dict(xconnect2)["SelectEntryText"], "或")
                 self.assertEqual(get_state_as_dict(xval1)["Text"], "1")
                 self.assertEqual(get_state_as_dict(xval2)["Text"], "3")
 
@@ -74,7 +74,7 @@ class standardFilter(UITestCase):
                 xedcopyarea = xDialog.getChild("edcopyarea")
                 select_by_text(xfield1, "a")
                 xval1.executeAction("TYPE", mkPropertyValues({"TEXT":"1"}))
-                select_by_text(xconnect2, "OR")
+                select_by_text(xconnect2, "或")
                 select_by_text(xfield2, "b")
                 xval2.executeAction("TYPE", mkPropertyValues({"TEXT":"3"}))
                 xcopyresult.executeAction("CLICK", tuple())
@@ -106,7 +106,7 @@ class standardFilter(UITestCase):
                 xedcopyarea = xDialog.getChild("edcopyarea")
                 select_by_text(xfield1, "a")
                 xval1.executeAction("TYPE", mkPropertyValues({"TEXT":"1"}))
-                select_by_text(xconnect2, "OR")
+                select_by_text(xconnect2, "或")
                 select_by_text(xfield2, "b")
                 xval2.executeAction("TYPE", mkPropertyValues({"TEXT":"3"}))
                 xcopyresult.executeAction("CLICK", tuple())
@@ -290,7 +290,7 @@ class standardFilter(UITestCase):
                 xcond1 = xDialog.getChild("cond1")
 
                 select_by_text(xfield1, "A")
-                select_by_text(xcond1, "Contains")
+                select_by_text(xcond1, "包含")
                 xval1.executeAction("TYPE", mkPropertyValues({"TEXT":"cio"}))
 
             #Verify that row 1,3, 4 are visible (2 and 5 are hidden)
@@ -310,7 +310,7 @@ class standardFilter(UITestCase):
                 xcond1 = xDialog.getChild("cond1")
                 self.assertEqual(get_state_as_dict(xfield1)["SelectEntryText"], "A")
                 self.assertEqual(get_state_as_dict(xval1)["Text"], "cio")
-                self.assertEqual(get_state_as_dict(xcond1)["SelectEntryText"], "Contains")
+                self.assertEqual(get_state_as_dict(xcond1)["SelectEntryText"], "包含")
 
     def test_standard_filter_condition_does_not_contains(self):
         with self.ui_test.create_doc_in_start_center("calc"):
@@ -347,7 +347,7 @@ class standardFilter(UITestCase):
                 xcond1 = xDialog.getChild("cond1")
 
                 select_by_text(xfield1, "A")
-                select_by_text(xcond1, "Does not contain")
+                select_by_text(xcond1, "不包含")
                 xval1.executeAction("TYPE", mkPropertyValues({"TEXT":"cio"}))
 
             #Verify that row 1,2, 5 are visible (3 and 4 are hidden)
@@ -367,7 +367,7 @@ class standardFilter(UITestCase):
                 xcond1 = xDialog.getChild("cond1")
                 self.assertEqual(get_state_as_dict(xfield1)["SelectEntryText"], "A")
                 self.assertEqual(get_state_as_dict(xval1)["Text"], "cio")
-                self.assertEqual(get_state_as_dict(xcond1)["SelectEntryText"], "Does not contain")
+                self.assertEqual(get_state_as_dict(xcond1)["SelectEntryText"], "不包含")
 
 
     def test_standard_filter_condition_Begins_with(self):
@@ -405,7 +405,7 @@ class standardFilter(UITestCase):
                 xcond1 = xDialog.getChild("cond1")
 
                 select_by_text(xfield1, "A")
-                select_by_text(xcond1, "Begins with")
+                select_by_text(xcond1, "开头为")
                 xval1.executeAction("TYPE", mkPropertyValues({"TEXT":"so"}))
 
             #Verify that row 1,3, 4 are visible (2 and 5 are hidden)
@@ -425,7 +425,7 @@ class standardFilter(UITestCase):
                 xcond1 = xDialog.getChild("cond1")
                 self.assertEqual(get_state_as_dict(xfield1)["SelectEntryText"], "A")
                 self.assertEqual(get_state_as_dict(xval1)["Text"], "so")
-                self.assertEqual(get_state_as_dict(xcond1)["SelectEntryText"], "Begins with")
+                self.assertEqual(get_state_as_dict(xcond1)["SelectEntryText"], "开头为")
 
 
     def test_standard_filter_condition_Does_not_begin_with(self):
@@ -463,7 +463,7 @@ class standardFilter(UITestCase):
                 xcond1 = xDialog.getChild("cond1")
 
                 select_by_text(xfield1, "A")
-                select_by_text(xcond1, "Does not begin with")
+                select_by_text(xcond1, "开头不是")
                 xval1.executeAction("TYPE", mkPropertyValues({"TEXT":"so"}))
 
             #Verify that row 1,2, 5 are visible (3 and 4 are hidden)
@@ -483,7 +483,7 @@ class standardFilter(UITestCase):
                 xcond1 = xDialog.getChild("cond1")
                 self.assertEqual(get_state_as_dict(xfield1)["SelectEntryText"], "A")
                 self.assertEqual(get_state_as_dict(xval1)["Text"], "so")
-                self.assertEqual(get_state_as_dict(xcond1)["SelectEntryText"], "Does not begin with")
+                self.assertEqual(get_state_as_dict(xcond1)["SelectEntryText"], "开头不是")
 
 
     def test_standard_filter_condition_Ends_with(self):
@@ -521,7 +521,7 @@ class standardFilter(UITestCase):
                 xcond1 = xDialog.getChild("cond1")
 
                 select_by_text(xfield1, "A")
-                select_by_text(xcond1, "Ends with")
+                select_by_text(xcond1, "结尾为")
                 xval1.executeAction("TYPE", mkPropertyValues({"TEXT":"s"}))
 
             #Verify that row 1,2, 5 are visible (3 and 4 are hidden)
@@ -541,7 +541,7 @@ class standardFilter(UITestCase):
                 xcond1 = xDialog.getChild("cond1")
                 self.assertEqual(get_state_as_dict(xfield1)["SelectEntryText"], "A")
                 self.assertEqual(get_state_as_dict(xval1)["Text"], "s")
-                self.assertEqual(get_state_as_dict(xcond1)["SelectEntryText"], "Ends with")
+                self.assertEqual(get_state_as_dict(xcond1)["SelectEntryText"], "结尾为")
 
 
     def test_standard_filter_condition_Does_not_end_with(self):
@@ -579,7 +579,7 @@ class standardFilter(UITestCase):
                 xcond1 = xDialog.getChild("cond1")
 
                 select_by_text(xfield1, "A")
-                select_by_text(xcond1, "Does not end with")
+                select_by_text(xcond1, "结尾不是")
                 xval1.executeAction("TYPE", mkPropertyValues({"TEXT":"s"}))
 
             #Verify that row 1,3, 4 are visible (2 and 5 are hidden)
@@ -599,6 +599,6 @@ class standardFilter(UITestCase):
                 xcond1 = xDialog.getChild("cond1")
                 self.assertEqual(get_state_as_dict(xfield1)["SelectEntryText"], "A")
                 self.assertEqual(get_state_as_dict(xval1)["Text"], "s")
-                self.assertEqual(get_state_as_dict(xcond1)["SelectEntryText"], "Does not end with")
+                self.assertEqual(get_state_as_dict(xcond1)["SelectEntryText"], "结尾不是")
 
 # vim: set shiftwidth=4 softtabstop=4 expandtab:

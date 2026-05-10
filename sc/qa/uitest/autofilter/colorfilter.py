@@ -38,7 +38,7 @@ class ColorFilterTest(UITestCase):
                 # tdf#143103: Without the fix in place, this test would have failed with
                 # AssertionError: 'Font color' != ''
                 self.assertEqual("Text color", get_state_as_dict(xField1)['DisplayText'])
-                self.assertEqual("Font color", get_state_as_dict(xCond1)['DisplayText'])
+                self.assertEqual("字体颜色", get_state_as_dict(xCond1)['DisplayText'])
 
                 xColor1 = xDialog.getChild("color1")
 
@@ -82,7 +82,7 @@ class ColorFilterTest(UITestCase):
                 # tdf#143103: Without the fix in place, this test would have failed with
                 # AssertionError: 'aaa' != ''
                 self.assertEqual("aaa", get_state_as_dict(xField1)['DisplayText'])
-                self.assertEqual("Background color", get_state_as_dict(xCond1)['DisplayText'])
+                self.assertEqual("背景颜色", get_state_as_dict(xCond1)['DisplayText'])
 
                 xColor1 = xDialog.getChild("color1")
 
@@ -117,8 +117,8 @@ class ColorFilterTest(UITestCase):
 
                 self.assertEqual("Value", get_state_as_dict(xField1)['DisplayText'])
 
-                select_by_text(xCond1, "Font color")
-                self.assertEqual("Font color", get_state_as_dict(xCond1)['DisplayText'])
+                select_by_text(xCond1, "字体颜色")
+                self.assertEqual("字体颜色", get_state_as_dict(xCond1)['DisplayText'])
 
                 xColor1 = xDialog.getChild("color1")
 
@@ -157,8 +157,8 @@ class ColorFilterTest(UITestCase):
 
                 self.assertEqual("Another", get_state_as_dict(xField1)['DisplayText'])
 
-                select_by_text(xCond1, "Background color")
-                self.assertEqual("Background color", get_state_as_dict(xCond1)['DisplayText'])
+                select_by_text(xCond1, "背景颜色")
+                self.assertEqual("背景颜色", get_state_as_dict(xCond1)['DisplayText'])
 
                 xColor1 = xDialog.getChild("color1")
 

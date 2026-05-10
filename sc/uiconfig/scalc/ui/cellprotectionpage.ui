@@ -29,7 +29,7 @@
             <property name="margin-top">6</property>
             <child>
               <object class="GtkCheckButton" id="checkProtected">
-                <property name="label" translatable="yes" context="cellprotectionpage|checkProtected">_Protected</property>
+                <property name="label" translatable="yes" context="cellprotectionpage|checkProtected">受保护(_P)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -51,7 +51,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="checkHideFormula">
-                <property name="label" translatable="yes" context="cellprotectionpage|checkHideFormula">Hide _formula</property>
+                <property name="label" translatable="yes" context="cellprotectionpage|checkHideFormula">隐藏公式(_F)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -72,7 +72,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="checkHideAll">
-                <property name="label" translatable="yes" context="cellprotectionpage|checkHideAll">Hide _all</property>
+                <property name="label" translatable="yes" context="cellprotectionpage|checkHideAll">全部隐藏(_A)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -118,7 +118,7 @@ Select 'Protect Sheet' from the 'Tools' menu.</property>
           <object class="GtkLabel" id="LabelProtection">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes" context="cellprotectionpage|LabelProtection">Protection</property>
+            <property name="label" translatable="yes" context="cellprotectionpage|LabelProtection">保护</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -148,7 +148,7 @@ Select 'Protect Sheet' from the 'Tools' menu.</property>
             <property name="margin-top">6</property>
             <child>
               <object class="GtkCheckButton" id="checkHidePrinting">
-                <property name="label" translatable="yes" context="cellprotectionpage|checkHidePrinting">Hide _when printing</property>
+                <property name="label" translatable="yes" context="cellprotectionpage|checkHidePrinting">打印时隐藏(_W)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -172,7 +172,7 @@ Select 'Protect Sheet' from the 'Tools' menu.</property>
                 <property name="can_focus">False</property>
                 <property name="halign">end</property>
                 <property name="hexpand">True</property>
-                <property name="label" translatable="yes" context="cellprotectionpage|label4">The cells selected will be omitted when printing.</property>
+                <property name="label" translatable="yes" context="cellprotectionpage|label4">打印时将忽略所选单元格。</property>
                 <property name="wrap">True</property>
                 <property name="width_chars">52</property>
                 <property name="xalign">0</property>
@@ -191,7 +191,7 @@ Select 'Protect Sheet' from the 'Tools' menu.</property>
           <object class="GtkLabel" id="label3">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes" context="cellprotectionpage|label3">Print</property>
+            <property name="label" translatable="yes" context="cellprotectionpage|label3">打印</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>

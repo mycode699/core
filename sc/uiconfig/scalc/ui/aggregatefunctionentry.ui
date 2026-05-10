@@ -26,7 +26,7 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="halign">start</property>
-        <property name="label" translatable="yes" context="aggregatefunctionentry|name">Aggregate Functions</property>
+        <property name="label" translatable="yes" context="aggregatefunctionentry|name">聚合函数</property>
         <property name="use-underline">True</property>
         <property name="mnemonic-widget">ed_lst</property>
       </object>
@@ -45,10 +45,10 @@
         <property name="active">0</property>
         <property name="active-id">0</property>
         <items>
-          <item id="0" translatable="yes" context="aggregatefunctionentry|sum">Sum</item>
-          <item id="1" translatable="yes" context="aggregatefunctionentry|average">Average</item>
-          <item id="2" translatable="yes" context="aggregatefunctionentry|min">Minimum Value</item>
-          <item id="3" translatable="yes" context="aggregatefunctionentry|max">Maximum Value</item>
+          <item id="0" translatable="yes" context="aggregatefunctionentry|sum">求和</item>
+          <item id="1" translatable="yes" context="aggregatefunctionentry|average">平均值</item>
+          <item id="2" translatable="yes" context="aggregatefunctionentry|min">最小值</item>
+          <item id="3" translatable="yes" context="aggregatefunctionentry|max">最大值</item>
         </items>
       </object>
       <packing>
@@ -63,7 +63,7 @@
         <property name="hexpand">True</property>
         <property name="width-chars">10</property>
         <property name="truncate-multiline">True</property>
-        <property name="placeholder-text" translatable="yes" context="aggregatefunctionentry/cols">Columns</property>
+        <property name="placeholder-text" translatable="yes" context="aggregatefunctionentry/cols">列</property>
         <child internal-child="accessible">
           <object class="AtkObject" id="ed_columns-atkobject">
             <property name="AtkObject::accessible-description" translatable="yes" context="aggregatefunctionentry|extended_tip|ed_columns">Column index in the database range.</property>
@@ -77,7 +77,7 @@
     </child>
     <child>
       <object class="GtkButton" id="ed_delete">
-        <property name="label" translatable="yes" context="aggregatefunctionentry|delete">Delete</property>
+        <property name="label" translatable="yes" context="aggregatefunctionentry|delete">删除</property>
         <property name="visible">True</property>
         <property name="can-focus">True</property>
         <property name="receives-default">False</property>

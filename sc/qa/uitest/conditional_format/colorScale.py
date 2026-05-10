@@ -31,11 +31,11 @@ class colorScale(UITestCase):
 
             with self.ui_test.execute_dialog_through_command(".uno:ColorScaleFormatDialog") as xCondFormat:
                 self.assertEqual("Condition 1", get_state_as_dict(xCondFormat.getChild("number"))["Text"])
-                self.assertEqual("All Cells", get_state_as_dict(xCondFormat.getChild("type"))["SelectEntryText"])
-                self.assertEqual("Color Scale (3 Entries)", get_state_as_dict(xCondFormat.getChild("colorformat"))["SelectEntryText"])
-                self.assertEqual("Min", get_state_as_dict(xCondFormat.getChild("colscalemin"))["SelectEntryText"])
-                self.assertEqual("Percentile", get_state_as_dict(xCondFormat.getChild("colscalemiddle"))["SelectEntryText"])
-                self.assertEqual("Max", get_state_as_dict(xCondFormat.getChild("colscalemax"))["SelectEntryText"])
+                self.assertEqual("所有单元格", get_state_as_dict(xCondFormat.getChild("type"))["SelectEntryText"])
+                self.assertEqual("三条件色阶", get_state_as_dict(xCondFormat.getChild("colorformat"))["SelectEntryText"])
+                self.assertEqual("最小值", get_state_as_dict(xCondFormat.getChild("colscalemin"))["SelectEntryText"])
+                self.assertEqual("百分位数", get_state_as_dict(xCondFormat.getChild("colscalemiddle"))["SelectEntryText"])
+                self.assertEqual("最大值", get_state_as_dict(xCondFormat.getChild("colscalemax"))["SelectEntryText"])
                 self.assertEqual("Red", get_state_as_dict(xCondFormat.getChild("lbcolmin"))["Text"])
                 self.assertEqual("Yellow", get_state_as_dict(xCondFormat.getChild("lbcolmiddle"))["Text"])
                 self.assertEqual("Green", get_state_as_dict(xCondFormat.getChild("lbcolmax"))["Text"])
@@ -66,16 +66,16 @@ class colorScale(UITestCase):
 
             with self.ui_test.execute_dialog_through_command(".uno:ColorScaleFormatDialog", close_button="") as xCondFormat:
                 self.assertEqual("Condition 1", get_state_as_dict(xCondFormat.getChild("number"))["Text"])
-                self.assertEqual("All Cells", get_state_as_dict(xCondFormat.getChild("type"))["SelectEntryText"])
+                self.assertEqual("所有单元格", get_state_as_dict(xCondFormat.getChild("type"))["SelectEntryText"])
 
-                select_by_text(xCondFormat.getChild("colorformat"), "Color Scale (2 Entries)")
+                select_by_text(xCondFormat.getChild("colorformat"), "双条件色阶")
 
                 # we need to get a pointer again after changing the color format
                 xCondFormat = self.xUITest.getTopFocusWindow()
 
-                self.assertEqual("Color Scale (2 Entries)", get_state_as_dict(xCondFormat.getChild("colorformat"))["SelectEntryText"])
-                self.assertEqual("Min", get_state_as_dict(xCondFormat.getChild("colscalemin"))["SelectEntryText"])
-                self.assertEqual("Max", get_state_as_dict(xCondFormat.getChild("colscalemax"))["SelectEntryText"])
+                self.assertEqual("双条件色阶", get_state_as_dict(xCondFormat.getChild("colorformat"))["SelectEntryText"])
+                self.assertEqual("最小值", get_state_as_dict(xCondFormat.getChild("colscalemin"))["SelectEntryText"])
+                self.assertEqual("最大值", get_state_as_dict(xCondFormat.getChild("colscalemax"))["SelectEntryText"])
                 self.assertEqual("Light Yellow 2", get_state_as_dict(xCondFormat.getChild("lbcolmin"))["Text"])
                 self.assertEqual("Light Green 2", get_state_as_dict(xCondFormat.getChild("lbcolmax"))["Text"])
                 self.assertEqual("", get_state_as_dict(xCondFormat.getChild("edcolscalemin"))["Text"])
