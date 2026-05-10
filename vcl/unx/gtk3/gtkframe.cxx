@@ -2007,7 +2007,8 @@ void GtkSalFrame::Show( bool bVisible, bool /*bNoActivate*/ )
         if (bAppIdImmutable)
         {
             OString sOrigName(g_get_prgname());
-            g_set_prgname("libreoffice-startcenter");
+            const OString sStartCenterName(IconHelper::GetStartCenterAppIconName().toUtf8());
+            g_set_prgname(sStartCenterName.getStr());
             gtk_widget_set_visible(m_pWindow, true);
             g_set_prgname(sOrigName.getStr());
         }
