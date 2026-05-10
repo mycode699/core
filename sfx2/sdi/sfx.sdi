@@ -5933,6 +5933,23 @@ SfxVoidItem SafeMode SID_SAFE_MODE
     GroupId = SfxGroupId::Application;
 ]
 
+SfxVoidItem CommandPalette SID_COMMAND_PALETTE
+()
+[
+    AutoUpdate = FALSE,
+    FastCall = FALSE,
+    ReadOnlyDoc = TRUE,
+    Toggle = FALSE,
+    Container = FALSE,
+    RecordAbsolute = FALSE,
+    RecordPerSet;
+
+    AccelConfig = TRUE,
+    MenuConfig = TRUE,
+    ToolBoxConfig = TRUE,
+    GroupId = SfxGroupId::Application;
+]
+
 SfxBoolItem DevelopmentToolsDockingWindow SID_DEVELOPMENT_TOOLS_DOCKING_WINDOW
 [
     AutoUpdate = TRUE,

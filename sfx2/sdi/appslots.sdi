@@ -235,6 +235,11 @@ interface Application
         ExecMethod = MiscExec_Impl ;
         StateMethod = MiscState_Impl ;
     ]
+    SID_COMMAND_PALETTE
+    [
+        ExecMethod = MiscExec_Impl ;
+        StateMethod = MiscState_Impl ;
+    ]
     SID_DEVELOPMENT_TOOLS_DOCKING_WINDOW
     [
         ExecMethod = MiscExec_Impl ;

@@ -1318,6 +1318,17 @@ void SfxApplication::MiscExec_Impl( SfxRequest& rReq )
             aDialog.run();
             break;
         }
+        case SID_COMMAND_PALETTE:
+        {
+            // V2 W2 Cmd+K: slot dispatch landed; popover GUI is the next slice (D3.2).
+            // Placeholder confirms the .uno:CommandPalette pipeline reaches Exec.
+            std::unique_ptr<weld::MessageDialog> xBox(Application::CreateMessageDialog(
+                rReq.GetFrameWeld(),
+                VclMessageType::Info, VclButtonsType::Ok,
+                u"命令面板（Cmd+K）即将推出"_ustr));
+            xBox->run();
+            break;
+        }
         default:
             break;
     }
