@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="SelectBlockDialog">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
-    <property name="title" translatable="yes" context="selectblockdialog|SelectBlockDialog">Select Address Block</property>
+    <property name="title" translatable="yes" context="selectblockdialog|SelectBlockDialog">选择地址块</property>
     <property name="modal">True</property>
     <property name="default_width">0</property>
     <property name="default_height">0</property>
@@ -90,7 +90,7 @@
                 <property name="layout_style">start</property>
                 <child>
                   <object class="GtkButton" id="new">
-                    <property name="label" translatable="yes" context="selectblockdialog|new">_New...</property>
+                    <property name="label" translatable="yes" context="selectblockdialog|new">新建(_N)...</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -109,7 +109,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="edit">
-                    <property name="label" translatable="yes" context="selectblockdialog|edit">_Edit...</property>
+                    <property name="label" translatable="yes" context="selectblockdialog|edit">编辑(_E)...</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -128,7 +128,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="delete">
-                    <property name="label" translatable="yes" context="selectblockdialog|delete">_Delete</property>
+                    <property name="label" translatable="yes" context="selectblockdialog|delete">删除(_D)</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -156,7 +156,7 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes" context="selectblockdialog|label1">_Select your preferred address block</property>
+                <property name="label" translatable="yes" context="selectblockdialog|label1">选择首选地址块(_S)</property>
                 <property name="use_underline">True</property>
                 <property name="mnemonic_widget">preview</property>
                 <property name="xalign">0</property>
@@ -183,7 +183,7 @@
                     <property name="margin-top">6</property>
                     <child>
                       <object class="GtkRadioButton" id="never">
-                        <property name="label" translatable="yes" context="selectblockdialog|never">N_ever include the country/region</property>
+                        <property name="label" translatable="yes" context="selectblockdialog|never">从不包含国家/地区(_E)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -203,7 +203,7 @@
                     </child>
                     <child>
                       <object class="GtkRadioButton" id="always">
-                        <property name="label" translatable="yes" context="selectblockdialog|always">_Always include the country/region</property>
+                        <property name="label" translatable="yes" context="selectblockdialog|always">始终包含国家/地区(_A)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -223,7 +223,7 @@
                     </child>
                     <child>
                       <object class="GtkRadioButton" id="dependent">
-                        <property name="label" translatable="yes" context="selectblockdialog|dependent">Only _include the country/region if it is not:</property>
+                        <property name="label" translatable="yes" context="selectblockdialog|dependent">仅当国家/地区不是以下内容时包含(_I):</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -272,7 +272,7 @@
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes" context="selectblockdialog|label2">Address Block Settings</property>
+                    <property name="label" translatable="yes" context="selectblockdialog|label2">地址块设置</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>

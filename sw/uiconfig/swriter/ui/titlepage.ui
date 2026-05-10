@@ -30,7 +30,7 @@
   <object class="GtkDialog" id="DLG_TITLEPAGE">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="titlepage|DLG_TITLEPAGE">Title Page</property>
+    <property name="title" translatable="yes" context="titlepage|DLG_TITLEPAGE">标题页</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
@@ -47,7 +47,7 @@
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="stock">_OK</property>
+                <property name="label" translatable="yes" context="stock">确定(_O)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
@@ -63,7 +63,7 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="stock">_Cancel</property>
+                <property name="label" translatable="yes" context="stock">取消(_C)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -77,7 +77,7 @@
             </child>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助(_H)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -124,7 +124,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="halign">start</property>
-                        <property name="label" translatable="yes" context="titlepage|label6">Number of title pages:</property>
+                        <property name="label" translatable="yes" context="titlepage|label6">标题页数量：</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">NF_PAGE_COUNT</property>
                         <property name="xalign">0</property>
@@ -138,7 +138,7 @@
                       <object class="GtkLabel" id="label7">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="titlepage|label7">Place title pages at:</property>
+                        <property name="label" translatable="yes" context="titlepage|label7">标题页位置：</property>
                         <property name="xalign">0</property>
                         <accessibility>
                           <relation type="label-for" target="RB_DOCUMENT_START"/>
@@ -162,7 +162,7 @@
                         <property name="numeric">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="NF_PAGE_COUNT-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="titlepage|extended_tip|NF_PAGE_COUNT">Set the number of title pages to insert.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="titlepage|extended_tip|NF_PAGE_COUNT">设置要插入的标题页数量。</property>
                           </object>
                         </child>
                       </object>
@@ -193,7 +193,7 @@
                     </child>
                     <child>
                       <object class="GtkRadioButton" id="RB_USE_EXISTING_PAGES">
-                        <property name="label" translatable="yes" context="titlepage|RB_USE_EXISTING_PAGES">Converting existing pages to title pages</property>
+                        <property name="label" translatable="yes" context="titlepage|RB_USE_EXISTING_PAGES">将现有页面转换为标题页</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -203,7 +203,7 @@
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="RB_USE_EXISTING_PAGES-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="titlepage|extended_tip|RB_USE_EXISTING_PAGES">Change the current page style to First Page and the following pages will have the Default Page Style.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="titlepage|extended_tip|RB_USE_EXISTING_PAGES">将当前页面样式改为“首页”，后续页面使用“默认页面样式”。</property>
                           </object>
                         </child>
                       </object>
@@ -215,7 +215,7 @@
                     </child>
                     <child>
                       <object class="GtkRadioButton" id="RB_INSERT_NEW_PAGES">
-                        <property name="label" translatable="yes" context="titlepage|RB_INSERT_NEW_PAGES">Insert new title pages</property>
+                        <property name="label" translatable="yes" context="titlepage|RB_INSERT_NEW_PAGES">插入新的标题页</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -225,7 +225,7 @@
                         <property name="group">RB_USE_EXISTING_PAGES</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="RB_INSERT_NEW_PAGES-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="titlepage|extended_tip|RB_INSERT_NEW_PAGES">Insert a page break and change the current page style to First Page.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="titlepage|extended_tip|RB_INSERT_NEW_PAGES">插入分页符，并将当前页面样式改为“首页”。</property>
                           </object>
                         </child>
                       </object>
@@ -237,7 +237,7 @@
                     </child>
                     <child>
                       <object class="GtkRadioButton" id="RB_DOCUMENT_START">
-                        <property name="label" translatable="yes" context="titlepage|RB_DOCUMENT_START">Document start</property>
+                        <property name="label" translatable="yes" context="titlepage|RB_DOCUMENT_START">文档开头</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -249,7 +249,7 @@
                         </accessibility>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="RB_DOCUMENT_START-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="titlepage|extended_tip|RB_DOCUMENT_START">The title pages are inserted before the first page of the document.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="titlepage|extended_tip|RB_DOCUMENT_START">标题页会插入到文档第一页之前。</property>
                           </object>
                         </child>
                       </object>
@@ -261,7 +261,7 @@
                     </child>
                     <child>
                       <object class="GtkRadioButton" id="RB_PAGE_START">
-                        <property name="label" translatable="yes" context="titlepage|RB_PAGE_START">Page</property>
+                        <property name="label" translatable="yes" context="titlepage|RB_PAGE_START">第几页</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -273,7 +273,7 @@
                         </accessibility>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="RB_PAGE_START-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="titlepage|extended_tip|RB_PAGE_START">The title pages are inserted at the page specified by its current numbering.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="titlepage|extended_tip|RB_PAGE_START">标题页会按当前页码插入到指定页面位置。</property>
                           </object>
                         </child>
                       </object>
@@ -294,7 +294,7 @@
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="titlepage|label1">Make Title Pages</property>
+                    <property name="label" translatable="yes" context="titlepage|label1">创建标题页</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -323,7 +323,7 @@
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkCheckButton" id="CB_RESTART_NUMBERING">
-                        <property name="label" translatable="yes" context="titlepage|CB_RESTART_NUMBERING">Reset page numbering after title pages</property>
+                        <property name="label" translatable="yes" context="titlepage|CB_RESTART_NUMBERING">标题页之后重新开始页码编号</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -331,7 +331,7 @@
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="CB_RESTART_NUMBERING-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="titlepage|extended_tip|CB_RESTART_NUMBERING">When checked, stop current numbering page count and restart numbering after the last inserted title page.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="titlepage|extended_tip|CB_RESTART_NUMBERING">勾选后停止当前页码计数，并在最后一个标题页之后重新编号。</property>
                           </object>
                         </child>
                       </object>
@@ -351,7 +351,7 @@
                           <object class="GtkLabel" id="FT_PAGE_COUNT">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
-                            <property name="label" translatable="yes" context="titlepage|FT_PAGE_COUNT">Page number:</property>
+                            <property name="label" translatable="yes" context="titlepage|FT_PAGE_COUNT">页码：</property>
                             <property name="use-underline">True</property>
                             <property name="mnemonic-widget">NF_RESTART_NUMBERING</property>
                           </object>
@@ -373,7 +373,7 @@
                             <property name="numeric">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="NF_RESTART_NUMBERING-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="titlepage|extended_tip|NF_RESTART_NUMBERING">Set the page number of the page following the last title page.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="titlepage|extended_tip|NF_RESTART_NUMBERING">设置最后一个标题页之后页面的页码。</property>
                               </object>
                             </child>
                           </object>
@@ -392,7 +392,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="CB_SET_PAGE_NUMBER">
-                        <property name="label" translatable="yes" context="titlepage|CB_SET_PAGE_NUMBER">Set page number for first title page</property>
+                        <property name="label" translatable="yes" context="titlepage|CB_SET_PAGE_NUMBER">设置第一个标题页的页码</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -400,7 +400,7 @@
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="CB_SET_PAGE_NUMBER-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="titlepage|extended_tip|CB_SET_PAGE_NUMBER">When checked, set the page number for the first title page inserted.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="titlepage|extended_tip|CB_SET_PAGE_NUMBER">勾选后，为插入的第一个标题页设置页码。</property>
                           </object>
                         </child>
                       </object>
@@ -420,7 +420,7 @@
                           <object class="GtkLabel" id="FT_PAGE_PAGES">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
-                            <property name="label" translatable="yes" context="titlepage|FT_PAGE_PAGES">Page number:</property>
+                            <property name="label" translatable="yes" context="titlepage|FT_PAGE_PAGES">页码：</property>
                             <property name="use-underline">True</property>
                             <property name="mnemonic-widget">NF_SET_PAGE_NUMBER</property>
                           </object>
@@ -442,7 +442,7 @@
                             <property name="numeric">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="NF_SET_PAGE_NUMBER-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="titlepage|extended_tip|NF_SET_PAGE_NUMBER">Set the page number for the first title page.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="titlepage|extended_tip|NF_SET_PAGE_NUMBER">设置第一个标题页的页码。</property>
                               </object>
                             </child>
                           </object>
@@ -465,7 +465,7 @@
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="titlepage|label2">Page Numbering</property>
+                    <property name="label" translatable="yes" context="titlepage|label2">页码编号</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -495,7 +495,7 @@
                       <object class="GtkLabel" id="label4">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="titlepage|label4">_Style:</property>
+                        <property name="label" translatable="yes" context="titlepage|label4">样式(_S)：</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">LB_PAGE_PROPERTIES</property>
                       </object>
@@ -511,7 +511,7 @@
                         <property name="can-focus">False</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="LB_PAGE_PROPERTIES-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="titlepage|extended_tip|LB_PAGE_PROPERTIES">Select the page style from the available pages styles in the document.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="titlepage|extended_tip|LB_PAGE_PROPERTIES">从文档可用页面样式中选择标题页样式。</property>
                           </object>
                         </child>
                       </object>
@@ -523,13 +523,13 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="PB_PAGE_PROPERTIES">
-                        <property name="label" translatable="yes" context="titlepage|PB_PAGE_PROPERTIES">Edit...</property>
+                        <property name="label" translatable="yes" context="titlepage|PB_PAGE_PROPERTIES">编辑...</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="PB_PAGE_PROPERTIES-atkobject">
-                            <property name="AtkObject::accessible-name" translatable="yes" context="titlepage|extended_tip|PB_PAGE_PROPERTIES">Click to edit the page style.</property>
+                            <property name="AtkObject::accessible-name" translatable="yes" context="titlepage|extended_tip|PB_PAGE_PROPERTIES">点击编辑页面样式。</property>
                           </object>
                         </child>
                       </object>
@@ -545,7 +545,7 @@
                   <object class="GtkLabel" id="label3">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="titlepage|label3">Edit Page Properties</property>
+                    <property name="label" translatable="yes" context="titlepage|label3">编辑页面属性</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -574,7 +574,7 @@
     </action-widgets>
     <child internal-child="accessible">
       <object class="AtkObject" id="DLG_TITLEPAGE-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="titlepage|extended_tip|DLG_TITLEPAGE">Insert title pages in your document.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="titlepage|extended_tip|DLG_TITLEPAGE">在文档中插入标题页。</property>
       </object>
     </child>
   </object>

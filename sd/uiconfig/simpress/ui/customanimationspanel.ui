@@ -164,7 +164,7 @@
                             <property name="no-show-all">True</property>
                             <property name="hexpand">True</property>
                             <property name="vexpand">True</property>
-                            <property name="label" translatable="yes" context="customanimationspanel|STR_CUSTOMANIMATION_LIST_HELPTEXT">First select the slide element and then click 'Add' to add an animation effect.</property>
+                            <property name="label" translatable="yes" context="customanimationspanel|STR_CUSTOMANIMATION_LIST_HELPTEXT">请先选择幻灯片元素，然后点击“添加”来添加动画效果。</property>
                             <property name="justify">center</property>
                             <property name="wrap">True</property>
                           </object>
@@ -209,7 +209,7 @@
                   <object class="GtkLabel" id="lbEffect">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="customanimationspanel|lbEffect">Effects</property>
+                    <property name="label" translatable="yes" context="customanimationspanel|lbEffect">效果</property>
                     <property name="xalign">0</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
@@ -230,11 +230,11 @@
                     <property name="spacing">3</property>
                     <child>
                       <object class="GtkButton" id="add_effect">
-                        <property name="label" translatable="yes" context="customanimationspanel|add">_Add</property>
+                        <property name="label" translatable="yes" context="customanimationspanel|add">添加(_A)</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="tooltip-text" translatable="yes" context="customanimationspanel|add_effect|tooltip_text">Add Effect</property>
+                        <property name="tooltip-text" translatable="yes" context="customanimationspanel|add_effect|tooltip_text">添加效果</property>
                         <property name="image">image_add</property>
                         <property name="use-underline">True</property>
                         <property name="always-show-image">True</property>
@@ -255,7 +255,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="tooltip-text" translatable="yes" context="customanimationspanel|remove_effect|tooltip_text">Remove Effect</property>
+                        <property name="tooltip-text" translatable="yes" context="customanimationspanel|remove_effect|tooltip_text">移除效果</property>
                         <property name="image">image_remove</property>
                         <property name="use-underline">True</property>
                         <property name="always-show-image">True</property>
@@ -276,7 +276,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="tooltip-text" translatable="yes" context="customanimationspanel|move_up|tooltip_text">Move Up</property>
+                        <property name="tooltip-text" translatable="yes" context="customanimationspanel|move_up|tooltip_text">上移</property>
                         <property name="image">image_up</property>
                         <property name="use-underline">True</property>
                         <property name="always-show-image">True</property>
@@ -297,7 +297,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="tooltip-text" translatable="yes" context="customanimationspanel|move_down|tooltip_text">Move Down</property>
+                        <property name="tooltip-text" translatable="yes" context="customanimationspanel|move_down|tooltip_text">下移</property>
                         <property name="image">image_down</property>
                         <property name="use-underline">True</property>
                         <property name="always-show-image">True</property>
@@ -325,8 +325,9 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="halign">end</property>
-                    <property name="label" translatable="yes" context="customanimationspanel|categorylabel">Category:</property>
+                    <property name="label" translatable="yes" context="customanimationspanel|categorylabel">类别:</property>
                     <property name="use-underline">True</property>
+                    <property name="mnemonic-widget">categorylb</property>
                   </object>
                   <packing>
                     <property name="left-attach">0</property>
@@ -339,11 +340,11 @@
                     <property name="can-focus">True</property>
                     <property name="popup-fixed-width">False</property>
                     <items>
-                      <item translatable="yes" context="customanimationspanel|categorylb">Entrance</item>
-                      <item translatable="yes" context="customanimationspanel|categorylb">Emphasis</item>
-                      <item translatable="yes" context="customanimationspanel|categorylb">Exit</item>
-                      <item translatable="yes" context="customanimationspanel|categorylb">Motion Paths</item>
-                      <item translatable="yes" context="customanimationspanel|categorylb">Misc Effects</item>
+                      <item translatable="yes" context="customanimationspanel|categorylb">进入</item>
+                      <item translatable="yes" context="customanimationspanel|categorylb">强调</item>
+                      <item translatable="yes" context="customanimationspanel|categorylb">退出</item>
+                      <item translatable="yes" context="customanimationspanel|categorylb">动作路径</item>
+                      <item translatable="yes" context="customanimationspanel|categorylb">其他效果</item>
                     </items>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="categorylb-atkobject">
@@ -364,7 +365,7 @@
                     <property name="halign">end</property>
                     <property name="valign">start</property>
                     <property name="margin-top">3</property>
-                    <property name="label" translatable="yes" context="customanimationspanel|effectlabel">Effect:</property>
+                    <property name="label" translatable="yes" context="customanimationspanel|effectlabel">效果:</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">effect_list</property>
                   </object>
@@ -429,7 +430,7 @@
                   <object class="GtkLabel" id="effect_label">
                     <property name="can-focus">False</property>
                     <property name="hexpand">True</property>
-                    <property name="label" translatable="yes" context="customanimationspanel|effect_label">Options</property>
+                    <property name="label" translatable="yes" context="customanimationspanel|effect_label">选项</property>
                     <property name="xalign">0</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
@@ -446,8 +447,9 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="halign">end</property>
-                    <property name="label" translatable="yes" context="customanimationspanel|start_effect">_Start:</property>
+                    <property name="label" translatable="yes" context="customanimationspanel|start_effect">开始(_S):</property>
                     <property name="use-underline">True</property>
+                    <property name="mnemonic-widget">start_effect_list</property>
                   </object>
                   <packing>
                     <property name="left-attach">0</property>
@@ -460,9 +462,9 @@
                     <property name="can-focus">True</property>
                     <property name="hexpand">True</property>
                     <items>
-                      <item translatable="yes" context="customanimationspanel|start_effect_list">On click</item>
-                      <item translatable="yes" context="customanimationspanel|start_effect_list">With previous</item>
-                      <item translatable="yes" context="customanimationspanel|start_effect_list">After previous</item>
+                      <item translatable="yes" context="customanimationspanel|start_effect_list">单击时</item>
+                      <item translatable="yes" context="customanimationspanel|start_effect_list">与上一动画同时</item>
+                      <item translatable="yes" context="customanimationspanel|start_effect_list">上一动画之后</item>
                     </items>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="start_effect_list-atkobject">
@@ -481,8 +483,9 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="halign">end</property>
-                    <property name="label" translatable="yes" context="customanimationspanel|effect_property">_Direction:</property>
+                    <property name="label" translatable="yes" context="customanimationspanel|effect_property">方向(_D):</property>
                     <property name="use-underline">True</property>
+                    <property name="mnemonic-widget">dirspan</property>
                   </object>
                   <packing>
                     <property name="left-attach">0</property>
@@ -494,8 +497,9 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="halign">end</property>
-                    <property name="label" translatable="yes" context="customanimationspanel|effect_duration">D_uration:</property>
+                    <property name="label" translatable="yes" context="customanimationspanel|effect_duration">持续时间(_U):</property>
                     <property name="use-underline">True</property>
+                    <property name="mnemonic-widget">anim_duration</property>
                   </object>
                   <packing>
                     <property name="left-attach">0</property>
@@ -527,8 +531,9 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="halign">end</property>
-                    <property name="label" translatable="yes" context="customanimationspanel|delay_label">_Delay:</property>
+                    <property name="label" translatable="yes" context="customanimationspanel|delay_label">延迟(_D):</property>
                     <property name="use-underline">True</property>
+                    <property name="mnemonic-widget">delay_value</property>
                   </object>
                   <packing>
                     <property name="left-attach">0</property>
@@ -568,7 +573,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="auto_preview">
-                    <property name="label" translatable="yes" context="customanimationspanel|auto_preview">Automatic Preview</property>
+                    <property name="label" translatable="yes" context="customanimationspanel|auto_preview">自动预览</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -588,11 +593,11 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="play">
-                    <property name="label" translatable="yes" context="customanimationspanel|play">Play</property>
+                    <property name="label" translatable="yes" context="customanimationspanel|play">播放</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
-                    <property name="tooltip-text" translatable="yes" context="customanimationspanel|play|tooltip_text">Preview Effect</property>
+                    <property name="tooltip-text" translatable="yes" context="customanimationspanel|play|tooltip_text">预览效果</property>
                     <property name="image">image_play</property>
                     <property name="use-underline">True</property>
                     <property name="image-position">right</property>
@@ -611,7 +616,7 @@
                 <child>
                   <object class="GtkLabel" id="box1_label">
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="customanimationspanel|box1_label">Animation Deck</property>
+                    <property name="label" translatable="yes" context="customanimationspanel|box1_label">动画面板</property>
                     <property name="use-underline">True</property>
                   </object>
                   <packing>
@@ -623,7 +628,7 @@
                 <child>
                   <object class="GtkLabel" id="custom_animation_list_label">
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="customanimationspanel|custom_animation_list_label">Animation List</property>
+                    <property name="label" translatable="yes" context="customanimationspanel|custom_animation_list_label">动画列表</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">custom_animation_list</property>
                   </object>
@@ -658,7 +663,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="tooltip-text" translatable="yes" context="customanimationspanel|more_properties|tooltip_text">Options</property>
+                        <property name="tooltip-text" translatable="yes" context="customanimationspanel|more_properties|tooltip_text">选项</property>
                         <property name="image">image1</property>
                         <property name="always-show-image">True</property>
                         <child internal-child="accessible">

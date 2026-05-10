@@ -13,7 +13,7 @@
   <object class="GtkDialog" id="InsertAutoTextDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="insertautotextdialog|InsertAutoTextDialog">Insert AutoText</property>
+    <property name="title" translatable="yes" context="insertautotextdialog|InsertAutoTextDialog">插入自动图文集</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
@@ -133,7 +133,7 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="insertautotextdialog|label1">Autotexts for Shortcut </property>
+                <property name="label" translatable="yes" context="insertautotextdialog|label1">快捷键对应的自动图文集 </property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>

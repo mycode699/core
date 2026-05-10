@@ -21,6 +21,7 @@
 #include <memory>
 #include <vector>
 #include <rtl/ref.hxx>
+#include <rtl/string.hxx>
 #include <com/sun/star/uno/Sequence.h>
 #include <sfx2/docfac.hxx>
 #include <sfx2/objsh.hxx>
@@ -268,6 +269,7 @@ public:
     virtual std::shared_ptr<model::ColorSet> GetThemeColors() override;
 
     sfx::AccessibilityIssueCollection runAccessibilityCheck() override;
+    OString runIntelligentDiagnosticsPreview();
 
     virtual void LoadStyles( SfxObjectShell& rSource ) override;
 

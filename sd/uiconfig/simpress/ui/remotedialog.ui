@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="RemoteDialog">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
-    <property name="title" translatable="yes" context="remotedialog|RemoteDialog">Impress Remote</property>
+    <property name="title" translatable="yes" context="remotedialog|RemoteDialog">Impress 遥控器</property>
     <property name="modal">True</property>
     <property name="default_width">0</property>
     <property name="default_height">0</property>
@@ -22,7 +22,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="remotedialog|ok">C_onnect</property>
+                <property name="label" translatable="yes" context="remotedialog|ok">连接(_O)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -135,7 +135,7 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes" context="remotedialog|label1">Connections</property>
+                <property name="label" translatable="yes" context="remotedialog|label1">连接</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>

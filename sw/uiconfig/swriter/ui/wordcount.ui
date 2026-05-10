@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="WordCountDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="wordcount|WordCountDialog">Word Count</property>
+    <property name="title" translatable="yes" context="wordcount|WordCountDialog">字数统计</property>
     <property name="default-width">0</property>
     <property name="default-height">0</property>
     <property name="destroy-with-parent">True</property>
@@ -21,7 +21,7 @@
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="close">
-                <property name="label" translatable="yes" context="stock">_Close</property>
+                <property name="label" translatable="yes" context="stock">关闭(_C)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="has-focus">True</property>
@@ -38,7 +38,7 @@
             </child>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助(_H)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -73,7 +73,7 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="wordcount|label1">Words</property>
+                <property name="label" translatable="yes" context="wordcount|label1">词数</property>
                 <property name="xalign">1</property>
               </object>
               <packing>
@@ -85,7 +85,7 @@
               <object class="GtkLabel" id="label2">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="wordcount|label2">Characters including spaces</property>
+                <property name="label" translatable="yes" context="wordcount|label2">字符数（含空格）</property>
                 <property name="xalign">1</property>
               </object>
               <packing>
@@ -97,7 +97,7 @@
               <object class="GtkLabel" id="label3">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="wordcount|label3">Characters excluding spaces</property>
+                <property name="label" translatable="yes" context="wordcount|label3">字符数（不含空格）</property>
                 <property name="xalign">1</property>
               </object>
               <packing>
@@ -155,7 +155,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">end</property>
-                <property name="label" translatable="yes" context="wordcount|label9">Selection</property>
+                <property name="label" translatable="yes" context="wordcount|label9">选中内容</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -170,7 +170,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">end</property>
-                <property name="label" translatable="yes" context="wordcount|label10">Document</property>
+                <property name="label" translatable="yes" context="wordcount|label10">整篇文档</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -229,7 +229,7 @@
               <object class="GtkLabel" id="cjkcharsft">
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
-                <property name="label" translatable="yes" context="wordcount|cjkcharsft">Asian characters and Korean words</property>
+                <property name="label" translatable="yes" context="wordcount|cjkcharsft">中日韩字符与韩语词</property>
                 <property name="xalign">1</property>
               </object>
               <packing>
@@ -271,7 +271,7 @@
               <object class="GtkLabel" id="standardizedpages">
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
-                <property name="label" translatable="yes" context="wordcount|standardizedpages">Standardized pages</property>
+                <property name="label" translatable="yes" context="wordcount|standardizedpages">标准页数</property>
                 <property name="xalign">1</property>
               </object>
               <packing>
@@ -313,7 +313,7 @@
               <object class="GtkLabel" id="lbComments">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="wordcount|lbComments">Comments</property>
+                <property name="label" translatable="yes" context="wordcount|lbComments">批注</property>
                 <property name="xalign">1</property>
                 <accessibility>
                   <relation type="label-for" target="docComments"/>
@@ -351,7 +351,7 @@
               <object class="GtkLabel" id="label_cursor">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="wordcount|label_cursor">Words before/after cursor</property>
+                <property name="label" translatable="yes" context="wordcount|label_cursor">光标前后词数</property>
                 <property name="xalign">1</property>
                 <accessibility>
                   <relation type="label-for" target="wordscursor"/>

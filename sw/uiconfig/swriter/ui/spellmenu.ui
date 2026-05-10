@@ -80,7 +80,7 @@
       <object class="GtkMenuItem" id="langselection">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="spellmenu|langselection">Set Language for Selection</property>
+        <property name="label" translatable="yes" context="spellmenu|langselection">设置所选内容语言</property>
         <property name="use-underline">True</property>
         <child type="submenu">
           <object class="GtkMenu">
@@ -94,7 +94,7 @@
       <object class="GtkMenuItem" id="langpara">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="spellmenu|langpara">Set Language for Paragraph</property>
+        <property name="label" translatable="yes" context="spellmenu|langpara">设置段落语言</property>
         <property name="use-underline">True</property>
         <child type="submenu">
           <object class="GtkMenu">

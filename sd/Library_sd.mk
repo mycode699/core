@@ -432,6 +432,7 @@ $(eval $(call gb_Library_add_exception_objects,sd,\
 	sd/source/ui/tools/GraphicSizeCheck \
 	sd/source/ui/tools/IconCache \
 	sd/source/ui/tools/IdleDetection \
+	sd/source/ui/tools/PresentationOutlineBuilder \
 	sd/source/ui/tools/PreviewRenderer \
 	sd/source/ui/tools/SdGlobalResourceContainer \
 	sd/source/ui/tools/SlideshowLayerRenderer \

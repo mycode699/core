@@ -38,7 +38,7 @@
             <property name="row-spacing">6</property>
             <child>
               <object class="GtkCheckButton" id="STR_REMOVE_CROP_AREA">
-                <property name="label" translatable="yes" context="pmimagespage|STR_REMOVE_CROP_AREA">_Delete cropped image areas</property>
+                <property name="label" translatable="yes" context="pmimagespage|STR_REMOVE_CROP_AREA">删除裁剪掉的图像区域(_D)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -52,7 +52,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="STR_EMBED_LINKED_GRAPHICS">
-                <property name="label" translatable="yes" context="pmimagespage|STR_EMBED_LINKED_GRAPHICS">_Embed external images</property>
+                <property name="label" translatable="yes" context="pmimagespage|STR_EMBED_LINKED_GRAPHICS">嵌入外部图像(_E)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -73,7 +73,7 @@
                   <object class="GtkLabel" id="STR_IMAGE_RESOLUTION">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="pmimagespage|STR_IMAGE_RESOLUTION">Reduce _image resolution</property>
+                    <property name="label" translatable="yes" context="pmimagespage|STR_IMAGE_RESOLUTION">降低图像分辨率(_I)</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">LB_RESOLUTION</property>
                   </object>
@@ -89,11 +89,11 @@
                     <property name="can-focus">False</property>
                     <property name="active">0</property>
                     <items>
-                      <item id="0" translatable="yes" context="pmimagespage|LB_RESOLUTION">&lt;no change&gt;</item>
-                      <item id="96" translatable="yes" context="pmimagespage|LB_RESOLUTION">96 DPI (screen resolution)</item>
-                      <item id="150" translatable="yes" context="pmimagespage|LB_RESOLUTION">150 DPI (projector resolution)</item>
-                      <item id="300" translatable="yes" context="pmimagespage|LB_RESOLUTION">300 DPI (print resolution)</item>
-                      <item id="600" translatable="yes" context="pmimagespage|LB_RESOLUTION">600 DPI (print resolution)</item>
+                      <item id="0" translatable="yes" context="pmimagespage|LB_RESOLUTION">&lt;不更改&gt;</item>
+                      <item id="96" translatable="yes" context="pmimagespage|LB_RESOLUTION">96 DPI（屏幕分辨率）</item>
+                      <item id="150" translatable="yes" context="pmimagespage|LB_RESOLUTION">150 DPI（投影分辨率）</item>
+                      <item id="300" translatable="yes" context="pmimagespage|LB_RESOLUTION">300 DPI（打印分辨率）</item>
+                      <item id="600" translatable="yes" context="pmimagespage|LB_RESOLUTION">600 DPI（打印分辨率）</item>
                     </items>
                   </object>
                   <packing>
@@ -110,7 +110,7 @@
             </child>
             <child>
               <object class="GtkRadioButton" id="STR_LOSSLESS_COMPRESSION">
-                <property name="label" translatable="yes" context="pmimagespage|STR_LOSSLESS_COMPRESSION">_Lossless compression</property>
+                <property name="label" translatable="yes" context="pmimagespage|STR_LOSSLESS_COMPRESSION">无损压缩(_L)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -125,7 +125,7 @@
             </child>
             <child>
               <object class="GtkRadioButton" id="STR_JPEG_COMPRESSION">
-                <property name="label" translatable="yes" context="pmimagespage|STR_JPEG_COMPRESSION">_JPEG compression</property>
+                <property name="label" translatable="yes" context="pmimagespage|STR_JPEG_COMPRESSION">JPEG 压缩(_J)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -149,7 +149,7 @@
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="pmimagespage|STR_IMAGE_RESOLUTION">_Quality in %</property>
+                    <property name="label" translatable="yes" context="pmimagespage|STR_IMAGE_RESOLUTION">质量百分比(_Q)</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">SB_QUALITY</property>
                   </object>
@@ -185,7 +185,7 @@
           <object class="GtkLabel" id="STR_GRAPHIC_OPTIMIZATION">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="pmimagespages|STR_GRAPHIC_OPTIMIZATION">Choose settings for optimizing images</property>
+            <property name="label" translatable="yes" context="pmimagespages|STR_GRAPHIC_OPTIMIZATION">选择图像优化设置</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>

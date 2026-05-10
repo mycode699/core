@@ -9,7 +9,7 @@
       <object class="GtkRadioMenuItem" id="1">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="navigatorpanelSTR_DRAGTYPE_URL">Insert as Hyperlink</property>
+        <property name="label" translatable="yes" context="navigatorpanelSTR_DRAGTYPE_URL">作为超链接插入</property>
         <property name="draw-as-radio">True</property>
       </object>
     </child>
@@ -17,7 +17,7 @@
       <object class="GtkRadioMenuItem" id="2">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="navigatorpanel|STR_DRAGTYPE_LINK">Insert as Link</property>
+        <property name="label" translatable="yes" context="navigatorpanel|STR_DRAGTYPE_LINK">作为链接插入</property>
         <property name="draw-as-radio">True</property>
         <property name="group">1</property>
       </object>
@@ -26,7 +26,7 @@
       <object class="GtkRadioMenuItem" id="3">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="navigatorpanel|STR_DRAGTYPE_EMBEDDED">Insert as Copy</property>
+        <property name="label" translatable="yes" context="navigatorpanel|STR_DRAGTYPE_EMBEDDED">作为副本插入</property>
         <property name="draw-as-radio">True</property>
         <property name="group">1</property>
       </object>
@@ -62,11 +62,11 @@
           <object class="GtkComboBoxText" id="documents">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="tooltip-text" translatable="yes" context="navigatorpanel|documents|tooltip_text">Open Documents</property>
+            <property name="tooltip-text" translatable="yes" context="navigatorpanel|documents|tooltip_text">打开的文档</property>
             <child internal-child="accessible">
               <object class="AtkObject" id="documents-atkobject">
-                <property name="AtkObject::accessible-name" translatable="yes" context="navigatorpanel|documents-atkobject">Active Window</property>
-                <property name="AtkObject::accessible-description" translatable="yes" context="navigatorpanel|extended_tip|documents">Lists currently open presentations or drawings.</property>
+                <property name="AtkObject::accessible-name" translatable="yes" context="navigatorpanel|documents-atkobject">活动窗口</property>
+                <property name="AtkObject::accessible-description" translatable="yes" context="navigatorpanel|extended_tip|documents">列出当前打开的演示文稿或绘图。</property>
               </object>
             </child>
           </object>
@@ -116,8 +116,8 @@
                 </child>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="tree-atkobject">
-                    <property name="AtkObject::accessible-name" translatable="yes" context="navigatorpanel|STR_OBJECTS_TREE">Page Tree</property>
-                    <property name="AtkObject::accessible-description" translatable="yes" context="navigatorpanel|extended_tip|tree">Lists available slides. Double-click a slide to make it the active slide.</property>
+                    <property name="AtkObject::accessible-name" translatable="yes" context="navigatorpanel|STR_OBJECTS_TREE">页面树</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="navigatorpanel|extended_tip|tree">列出可用幻灯片。双击幻灯片可将其设为当前幻灯片。</property>
                   </object>
                 </child>
               </object>
@@ -141,7 +141,7 @@
                 <property name="icon-name">sd/res/nv03.png</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="first-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="navigatorpanel|extended_tip|first">Jumps to the first page.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="navigatorpanel|extended_tip|first">跳转到第一页。</property>
                   </object>
                 </child>
               </object>
@@ -156,7 +156,7 @@
                 <property name="icon-name">sd/res/nv04.png</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="previous-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="navigatorpanel|extended_tip|previous">Moves back one page.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="navigatorpanel|extended_tip|previous">返回上一页。</property>
                   </object>
                 </child>
               </object>
@@ -171,7 +171,7 @@
                 <property name="icon-name">sd/res/nv05.png</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="next-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="navigatorpanel|extended_tip|next">Move forward one page.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="navigatorpanel|extended_tip|next">前进一页。</property>
                   </object>
                 </child>
               </object>
@@ -186,7 +186,7 @@
                 <property name="icon-name">sd/res/nv06.png</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="last-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="navigatorpanel|extended_tip|last">Jumps to the last page.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="navigatorpanel|extended_tip|last">跳转到最后一页。</property>
                   </object>
                 </child>
               </object>
@@ -210,11 +210,11 @@
             <child>
               <object class="GtkMenuToolButton" id="dragmode">
                 <property name="visible">True</property>
-                <property name="tooltip-text" translatable="yes" context="navigatorpanel|dragmode|tooltip_text">Drag Mode</property>
+                <property name="tooltip-text" translatable="yes" context="navigatorpanel|dragmode|tooltip_text">拖拽模式</property>
                 <property name="icon-name">sd/res/nv09.png</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="dragmode-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="navigatorpanel|extended_tip|dragmode">Drag and drop slides and named objects into the active slide.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="navigatorpanel|extended_tip|dragmode">将幻灯片和命名对象拖放到当前幻灯片中。</property>
                   </object>
                 </child>
               </object>
@@ -226,11 +226,11 @@
             <child>
               <object class="GtkMenuToolButton" id="shapes">
                 <property name="visible">True</property>
-                <property name="tooltip-text" translatable="yes" context="navigatorpanel|shapes|tooltip_text">Show Shapes</property>
+                <property name="tooltip-text" translatable="yes" context="navigatorpanel|shapes|tooltip_text">显示形状</property>
                 <property name="icon-name">sd/res/graphic.png</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="shapes-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="navigatorpanel|extended_tip|shapes">In the submenu you can choose to display a list of all shapes or only the named shapes. Use drag-and-drop in the list to reorder the shapes. When you set the focus to a slide and press the Tab key, the next shape in the defined order is selected.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="navigatorpanel|extended_tip|shapes">可在子菜单中选择显示全部形状列表或仅显示命名形状。可在列表中拖放形状以调整顺序。将焦点设到幻灯片后按 Tab 键，会按定义顺序选择下一个形状。</property>
                   </object>
                 </child>
               </object>
@@ -253,7 +253,7 @@
     </child>
     <child internal-child="accessible">
       <object class="AtkObject" id="NavigatorPanel-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="navigatorpanel|extended_tip|NavigatorPanel">Opens the Navigator, where you can quickly jump to other slides or move between open files.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="navigatorpanel|extended_tip|NavigatorPanel">打开导航器，可快速跳转到其他幻灯片，或在打开的文件之间切换。</property>
       </object>
     </child>
   </object>
@@ -264,7 +264,7 @@
       <object class="GtkRadioMenuItem" id="named">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="navigatorpanel|STR_NAVIGATOR_SHOW_NAMED_SHAPES">Named shapes</property>
+        <property name="label" translatable="yes" context="navigatorpanel|STR_NAVIGATOR_SHOW_NAMED_SHAPES">命名形状</property>
         <property name="use-underline">True</property>
         <property name="draw-as-radio">True</property>
         <property name="group">all</property>
@@ -274,7 +274,7 @@
       <object class="GtkRadioMenuItem" id="all">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="navigatorpanel|STR_NAVIGATOR_SHOW_ALL_SHAPES">All shapes</property>
+        <property name="label" translatable="yes" context="navigatorpanel|STR_NAVIGATOR_SHOW_ALL_SHAPES">全部形状</property>
         <property name="use-underline">True</property>
         <property name="draw-as-radio">True</property>
         <property name="group">named</property>
@@ -290,7 +290,7 @@
       <object class="GtkRadioMenuItem" id="fronttoback">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="navigatorpanel|STR_NAVIGATOR_FRONT_TO_BACK">Front to back</property>
+        <property name="label" translatable="yes" context="navigatorpanel|STR_NAVIGATOR_FRONT_TO_BACK">从前到后</property>
         <property name="use-underline">True</property>
         <property name="draw-as-radio">True</property>
         <property name="group">backtofront</property>
@@ -300,7 +300,7 @@
       <object class="GtkRadioMenuItem" id="backtofront">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="navigatorpanel|STR_NAVIGATOR_BACK_TO_FRONT">Back to front</property>
+        <property name="label" translatable="yes" context="navigatorpanel|STR_NAVIGATOR_BACK_TO_FRONT">从后到前</property>
         <property name="use-underline">True</property>
         <property name="draw-as-radio">True</property>
         <property name="group">fronttoback</property>

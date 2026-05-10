@@ -289,6 +289,13 @@
       </object>
     </child>
     <child>
+      <object class="GtkMenuItem" id="MenuFile-SendOutlineToStarImpressPrimary">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="action_name">.uno:SendOutlineToStarImpress</property>
+      </object>
+    </child>
+    <child>
       <object class="GtkSeparatorMenuItem" id="MenuFile-Separator6">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
@@ -337,12 +344,6 @@
       <object class="GtkMenuItem" id="MenuFile-NewHtmlDoc">
         <property name="can_focus">False</property>
         <property name="action_name">.uno:NewHtmlDoc</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="MenuFile-SendOutlineToStarImpress">
-        <property name="can_focus">False</property>
-        <property name="action_name">.uno:SendOutlineToStarImpress</property>
       </object>
     </child>
     <child>

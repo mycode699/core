@@ -9,7 +9,7 @@
       <object class="GtkMenuItem" id=".uno:ReplyToAnnotation">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="annotationtagmenu|reply">_Reply</property>
+        <property name="label" translatable="yes" context="annotationtagmenu|reply">回复(_R)</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -23,7 +23,7 @@
       <object class="GtkMenuItem" id=".uno:DeleteAnnotation">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="annotationtagmenu|delete">_Delete Comment</property>
+        <property name="label" translatable="yes" context="annotationtagmenu|delete">删除批注(_D)</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -31,7 +31,7 @@
       <object class="GtkMenuItem" id=".uno:DeleteAllAnnotationByAuthor">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="annotationtagmenu|deleteby">Delete All Comments b_y %1</property>
+        <property name="label" translatable="yes" context="annotationtagmenu|deleteby">删除 %1 的所有批注</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -39,7 +39,7 @@
       <object class="GtkMenuItem" id=".uno:DeleteAllAnnotation">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="annotationtagmenu|deleteall">Delete _All Comments</property>
+        <property name="label" translatable="yes" context="annotationtagmenu|deleteall">删除所有批注</property>
         <property name="use-underline">True</property>
       </object>
     </child>

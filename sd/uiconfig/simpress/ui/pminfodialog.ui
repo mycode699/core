@@ -26,7 +26,7 @@
         </child>
         <child>
           <object class="GtkCheckButton" id="ask">
-            <property name="label" translatable="yes" context="pminfodialog|ask">_Open newly created presentation</property>
+            <property name="label" translatable="yes" context="pminfodialog|ask">打开新创建的演示文稿(_O)</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">False</property>

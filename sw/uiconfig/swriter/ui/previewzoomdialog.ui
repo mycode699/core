@@ -19,7 +19,7 @@
   <object class="GtkDialog" id="PreviewZoomDialog">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
-    <property name="title" translatable="yes" context="previewzoomdialog|PreviewZoomDialog">Multiple Pages</property>
+    <property name="title" translatable="yes" context="previewzoomdialog|PreviewZoomDialog">多页</property>
     <property name="modal">True</property>
     <property name="default_width">0</property>
     <property name="default_height">0</property>
@@ -101,7 +101,7 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes" context="previewzoomdialog|label1">_Rows</property>
+                <property name="label" translatable="yes" context="previewzoomdialog|label1">行(_R)</property>
                 <property name="use_underline">True</property>
                 <property name="mnemonic_widget">rows</property>
                 <property name="xalign">0</property>
@@ -115,7 +115,7 @@
               <object class="GtkLabel" id="label2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes" context="previewzoomdialog|label2">_Columns</property>
+                <property name="label" translatable="yes" context="previewzoomdialog|label2">列(_C)</property>
                 <property name="use_underline">True</property>
                 <property name="mnemonic_widget">cols</property>
                 <property name="xalign">0</property>

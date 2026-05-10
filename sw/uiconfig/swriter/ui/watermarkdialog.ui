@@ -14,7 +14,7 @@
   <object class="GtkDialog" id="WatermarkDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="watermarkdialog|WatermarkDialog">Watermark</property>
+    <property name="title" translatable="yes" context="watermarkdialog|WatermarkDialog">水印</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
     <property name="default-height">0</property>
@@ -30,7 +30,7 @@
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助(_H)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -45,7 +45,7 @@
             </child>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="stock">_OK</property>
+                <property name="label" translatable="yes" context="stock">确定(_O)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
@@ -61,7 +61,7 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="stock">_Cancel</property>
+                <property name="label" translatable="yes" context="stock">取消(_C)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -99,7 +99,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="halign">end</property>
-                    <property name="label" translatable="yes" context="watermarkdialog|TextLabel">Text</property>
+                    <property name="label" translatable="yes" context="watermarkdialog|TextLabel">文字</property>
                   </object>
                   <packing>
                     <property name="left-attach">0</property>
@@ -115,7 +115,7 @@
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="TextInput-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="watermarkdialog|extended_tip|TextInput">Enter the watermark text to be displayed as image in the page background.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="watermarkdialog|extended_tip|TextInput">输入要作为图片显示在页面背景中的水印文字。</property>
                       </object>
                     </child>
                   </object>
@@ -129,7 +129,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="halign">end</property>
-                    <property name="label" translatable="yes" context="watermarkdialog|FontLabel">Font</property>
+                    <property name="label" translatable="yes" context="watermarkdialog|FontLabel">字体</property>
                   </object>
                   <packing>
                     <property name="left-attach">0</property>
@@ -141,7 +141,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="halign">end</property>
-                    <property name="label" translatable="yes" context="watermarkdialog|AngleLabel">Angle</property>
+                    <property name="label" translatable="yes" context="watermarkdialog|AngleLabel">角度</property>
                   </object>
                   <packing>
                     <property name="left-attach">0</property>
@@ -153,7 +153,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="halign">end</property>
-                    <property name="label" translatable="yes" context="watermarkdialog|TransparencyLabel">Transparency</property>
+                    <property name="label" translatable="yes" context="watermarkdialog|TransparencyLabel">透明度</property>
                   </object>
                   <packing>
                     <property name="left-attach">0</property>
@@ -165,7 +165,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="halign">end</property>
-                    <property name="label" translatable="yes" context="watermarkdialog|ColorLabel">Color</property>
+                    <property name="label" translatable="yes" context="watermarkdialog|ColorLabel">颜色</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">Color</property>
                   </object>
@@ -183,7 +183,7 @@
                     <property name="adjustment">angle_adj</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="Angle-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="watermarkdialog|extended_tip|Angle">Select the rotation angle for the watermark. The text will be rotated by this angle in counterclockwise direction.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="watermarkdialog|extended_tip|Angle">选择水印的旋转角度，文字会按该角度逆时针旋转。</property>
                       </object>
                     </child>
                   </object>
@@ -202,7 +202,7 @@
                     <property name="value">50</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="Transparency-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="watermarkdialog|extended_tip|Transparency">Select the transparency level for the watermark. A 0% value produces an opaque watermark and a value of 100% is totally transparent (invisible).</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="watermarkdialog|extended_tip|Transparency">选择水印透明度。0% 表示完全不透明，100% 表示完全透明（不可见）。</property>
                       </object>
                     </child>
                   </object>
@@ -224,7 +224,7 @@
                     </child>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="Color-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="watermarkdialog|extended_tip|Color">Select a color from the drop-down box.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="watermarkdialog|extended_tip|Color">从下拉框中选择水印颜色。</property>
                       </object>
                     </child>
                   </object>
@@ -247,7 +247,7 @@
                     </child>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="FontBox-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="watermarkdialog|extended_tip|FontBox">Select the font from the list.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="watermarkdialog|extended_tip|FontBox">从列表中选择水印字体。</property>
                       </object>
                     </child>
                   </object>
@@ -279,7 +279,7 @@
     </action-widgets>
     <child internal-child="accessible">
       <object class="AtkObject" id="WatermarkDialog-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="watermarkdialog|extended_tip|WatermarkDialog">Insert a watermark text in the current page style background.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="watermarkdialog|extended_tip|WatermarkDialog">在当前页面样式背景中插入文字水印。</property>
       </object>
     </child>
   </object>

@@ -894,8 +894,14 @@ void SwView::Execute(SfxRequest &rReq)
             }
             break;
         case FN_MAILMERGE_SENDMAIL_CHILDWINDOW:
-        case FN_REDLINE_ACCEPT:
             GetViewFrame().ToggleChildWindow(nSlot);
+        break;
+        case FN_REDLINE_ACCEPT:
+            GetViewFrame().ShowChildWindow(SID_SIDEBAR);
+            ::sfx2::sidebar::Sidebar::ShowPanel(
+                u"SwManageChangesPanel",
+                GetViewFrame().GetFrame().GetFrameInterface(),
+                true);
         break;
         case FN_REDLINE_ACCEPT_DIRECT:
         case FN_REDLINE_REJECT_DIRECT:

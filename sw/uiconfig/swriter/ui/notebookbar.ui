@@ -504,40 +504,6 @@
       </object>
     </child>
     <child>
-      <object class="GtkMenuItem" id="MenuHelp-Documentation">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="action-name">.uno:Documentation</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="MenuHelp-TipOfTheDay">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="action-name">.uno:TipOfTheDay</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkSeparatorMenuItem" id="MenuHelp-separator">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="MenuHelp-QuestionAnswers">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="action-name">.uno:QuestionAnswers</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="MenuHelp-SendFeedback">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="action-name">.uno:SendFeedback</property>
-      </object>
-    </child>
-    <child>
       <object class="GtkSeparatorMenuItem" id="MenuHelp-separator1">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
@@ -552,26 +518,6 @@
     </child>
     <child>
       <object class="GtkSeparatorMenuItem" id="MenuHelp-separator2">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="MenuHelp-GetInvolved">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="action-name">.uno:GetInvolved</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="MenuHelp-Donation">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="action-name">.uno:Donation</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkSeparatorMenuItem" id="MenuHelp-separator3">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
       </object>
@@ -2185,7 +2131,7 @@
       <object class="GtkMenuItem" id="MenuTools-AutoCorrect">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label">AutoCorrect</property>
+        <property name="label">自动更正</property>
         <child type="submenu">
           <object class="GtkMenu" id="MenuTools-Popup">
             <property name="visible">True</property>
@@ -2194,7 +2140,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="action-name">.uno:OnlineAutoFormat</property>
-                <property name="label">While Typing</property>
+                <property name="label">输入时</property>
               </object>
             </child>
             <child>
@@ -2202,7 +2148,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="action-name">.uno:AutoFormatApply</property>
-                <property name="label">Apply</property>
+                <property name="label">应用</property>
               </object>
             </child>
             <child>
@@ -2210,7 +2156,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="action-name">.uno:AutoFormatRedlineApply</property>
-                <property name="label">Apply and Edit Changes</property>
+                <property name="label">应用并编辑更改</property>
               </object>
             </child>
             <child>
@@ -2218,7 +2164,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="action-name">.uno:AutoCorrectDlg</property>
-                <property name="label">AutoCorrect Options...</property>
+                <property name="label">自动更正选项...</property>
               </object>
             </child>
           </object>
@@ -2464,7 +2410,7 @@
                                   <object class="GtkToolButton" id="File-NewDoc1">
                                     <property name="visible">True</property>
                                     <property name="action-name">.uno:NewDoc</property>
-                                    <property name="use-underline">True</property>
+                                    <property name="use-underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -2488,7 +2434,7 @@
                                   <object class="GtkToolButton" id="File-SaveAsTemplate1">
                                     <property name="visible">True</property>
                                     <property name="action-name">.uno:SaveAsTemplate</property>
-                                    <property name="use-underline">True</property>
+                                    <property name="use-underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -2553,7 +2499,7 @@
                               <object class="GtkToolButton" id="File-Open">
                                 <property name="visible">True</property>
                                 <property name="action-name">.uno:Open</property>
-                                <property name="use-underline">True</property>
+                                <property name="use-underline">False</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -2608,7 +2554,7 @@
                               <object class="GtkToolButton" id="File-Save">
                                 <property name="visible">True</property>
                                 <property name="action-name">.uno:Save</property>
-                                <property name="use-underline">True</property>
+                                <property name="use-underline">False</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -2663,7 +2609,7 @@
                               <object class="GtkToolButton" id="File-ExportTo">
                                 <property name="visible">True</property>
                                 <property name="action-name">.uno:ExportTo</property>
-                                <property name="use-underline">True</property>
+                                <property name="use-underline">False</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -2706,7 +2652,7 @@
                                   <object class="GtkToolButton" id="File-ExportDirectToPDF">
                                     <property name="visible">True</property>
                                     <property name="action-name">.uno:ExportDirectToPDF</property>
-                                    <property name="use-underline">True</property>
+                                    <property name="use-underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -2716,7 +2662,7 @@
                                 <child>
                                   <object class="GtkToolButton" id="File-ExportToPDF">
                                     <property name="action-name">.uno:ExportToPDF</property>
-                                    <property name="use-underline">True</property>
+                                    <property name="use-underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -2740,7 +2686,7 @@
                                   <object class="GtkToolButton" id="File-ExportDirectToEPUB">
                                     <property name="visible">True</property>
                                     <property name="action-name">.uno:ExportDirectToEPUB</property>
-                                    <property name="use-underline">True</property>
+                                    <property name="use-underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -2750,7 +2696,7 @@
                                 <child>
                                   <object class="GtkToolButton" id="File-ExportToEPUB">
                                     <property name="action-name">.uno:ExportToEPUB</property>
-                                    <property name="use-underline">True</property>
+                                    <property name="use-underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -2815,7 +2761,7 @@
                               <object class="GtkToolButton" id="File-Print">
                                 <property name="visible">True</property>
                                 <property name="action-name">.uno:Print</property>
-                                <property name="use-underline">True</property>
+                                <property name="use-underline">False</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -2858,7 +2804,7 @@
                                   <object class="GtkToolButton" id="File-PrintDefault1">
                                     <property name="visible">True</property>
                                     <property name="action-name">.uno:PrintDefault</property>
-                                    <property name="use-underline">True</property>
+                                    <property name="use-underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -2882,7 +2828,7 @@
                                   <object class="GtkToolButton" id="File-PrintPreview1">
                                     <property name="visible">True</property>
                                     <property name="action-name">.uno:PrintPreview</property>
-                                    <property name="use-underline">True</property>
+                                    <property name="use-underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -2947,7 +2893,7 @@
                               <object class="GtkToolButton" id="File-SetDocumentProperties">
                                 <property name="visible">True</property>
                                 <property name="action-name">.uno:SetDocumentProperties</property>
-                                <property name="use-underline">True</property>
+                                <property name="use-underline">False</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -2990,7 +2936,7 @@
                                   <object class="GtkToolButton" id="File-Signature1">
                                     <property name="visible">True</property>
                                     <property name="action-name">.uno:Signature</property>
-                                    <property name="use-underline">True</property>
+                                    <property name="use-underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -3014,7 +2960,7 @@
                                   <object class="GtkToolButton" id="File-SignPDF1">
                                     <property name="visible">True</property>
                                     <property name="action-name">.uno:SignPDF</property>
-                                    <property name="use-underline">True</property>
+                                    <property name="use-underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -3143,7 +3089,7 @@
                             <property name="valign">center</property>
                             <property name="vexpand">True</property>
                             <property name="relief">none</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -3162,7 +3108,7 @@
                             <property name="valign">center</property>
                             <property name="vexpand">True</property>
                             <property name="relief">none</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -3209,7 +3155,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes" context="WriterNotebookbar|FileLabel">~File</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="tab-fill">False</property>
@@ -4479,7 +4425,7 @@
                             <property name="valign">center</property>
                             <property name="vexpand">True</property>
                             <property name="relief">none</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -4558,7 +4504,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes" context="WriterNotebookbar|HomeLabel">~Home</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <style>
                   <class name="context-default"/>
                   <class name="context-any"/>
@@ -5682,7 +5628,7 @@
                             <property name="valign">center</property>
                             <property name="vexpand">True</property>
                             <property name="relief">none</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -5779,7 +5725,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes" context="WriterNotebookbar|InsertLabel">~Insert</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="position">2</property>
@@ -6892,7 +6838,7 @@
                             <property name="valign">center</property>
                             <property name="vexpand">True</property>
                             <property name="relief">none</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -6969,7 +6915,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes" context="WriterNotebookbar|LayoutLabel">~Layout</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="position">3</property>
@@ -7671,7 +7617,7 @@
                         <property name="orientation">vertical</property>
                         <child>
                           <object class="svtlo-ManagedMenuButton" id="References-ReferencesButton:Menu References">
-                            <property name="label" translatable="yes" context="WriterNotebookbar|ReferencesMenuButton">Reference_s</property>
+                            <property name="label" translatable="yes" context="WriterNotebookbar|ReferencesMenuButton">引用</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="focus-on-click">False</property>
@@ -7679,7 +7625,7 @@
                             <property name="halign">end</property>
                             <property name="valign">center</property>
                             <property name="relief">none</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -7755,8 +7701,8 @@
               <object class="GtkLabel" id="ReferencesLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="WriterNotebookbar|ReferencesLabel">Reference~s</property>
-                <property name="use-underline">True</property>
+                <property name="label" translatable="yes" context="WriterNotebookbar|ReferencesLabel">引用</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="position">4</property>
@@ -8679,7 +8625,7 @@
                             <property name="valign">center</property>
                             <property name="vexpand">True</property>
                             <property name="relief">none</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -8756,7 +8702,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes" context="WriterNotebookbar|ReviewLabel">~Review</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="position">5</property>
@@ -9669,7 +9615,7 @@
                             <property name="valign">center</property>
                             <property name="vexpand">True</property>
                             <property name="relief">none</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -9746,7 +9692,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes" context="WriterNotebookbar|ViewLabel">~View</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="position">6</property>
@@ -10896,7 +10842,7 @@
                             <property name="halign">end</property>
                             <property name="valign">center</property>
                             <property name="relief">none</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -10973,7 +10919,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes" context="WriterNotebookbar|TableLabel">~Table</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <style>
                   <class name="context-Table"/>
                 </style>
@@ -12198,7 +12144,7 @@
                         <property name="orientation">vertical</property>
                         <child>
                           <object class="svtlo-ManagedMenuButton" id="Image-GraphicButton:Menu Image">
-                            <property name="label" translatable="yes" context="WriterNotebookbar|ImageMenuButton">Ima_ge</property>
+                            <property name="label" translatable="yes" context="WriterNotebookbar|ImageMenuButton">图片</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="focus-on-click">False</property>
@@ -12206,7 +12152,7 @@
                             <property name="halign">end</property>
                             <property name="valign">center</property>
                             <property name="relief">none</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -12295,8 +12241,8 @@
               <object class="GtkLabel" id="ImageLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="WriterNotebookbar|ImageLabel">Ima~ge</property>
-                <property name="use-underline">True</property>
+                <property name="label" translatable="yes" context="WriterNotebookbar|ImageLabel">图片</property>
+                <property name="use-underline">False</property>
                 <style>
                   <class name="context-Graphic"/>
                 </style>
@@ -13623,7 +13569,7 @@
                             <property name="valign">center</property>
                             <property name="vexpand">True</property>
                             <property name="relief">none</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -13722,7 +13668,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes" context="WriterNotebookbar|DrawLabel">~Draw</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <style>
                   <class name="context-Draw"/>
                   <class name="context-DrawLine"/>
@@ -14597,7 +14543,7 @@
                             <property name="valign">center</property>
                             <property name="vexpand">True</property>
                             <property name="relief">none</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -14674,7 +14620,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes" context="WriterNotebookbar|ObjectLabel">~Object</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <style>
                   <class name="context-Frame"/>
                   <class name="context-OLE"/>
@@ -15459,7 +15405,7 @@
                             <property name="receives-default">False</property>
                             <property name="halign">end</property>
                             <property name="relief">none</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -15557,7 +15503,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes" context="WriterNotebookbar|MediaLabel">~Media</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <style>
                   <class name="context-Media"/>
                 </style>
@@ -15994,7 +15940,7 @@
                             <property name="receives-default">False</property>
                             <property name="halign">end</property>
                             <property name="relief">none</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -16070,7 +16016,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes" context="WriterNotebookbar|PrintLabel">~Print</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <style>
                   <class name="context-Printpreview"/>
                 </style>
@@ -16877,7 +16823,7 @@
                         <property name="orientation">vertical</property>
                         <child>
                           <object class="svtlo-ManagedMenuButton" id="Form-FormButton:Menu Form">
-                            <property name="label" translatable="yes" context="WriterNotebookbar|FormMenuButton">Fo_rm</property>
+                            <property name="label" translatable="yes" context="WriterNotebookbar|FormMenuButton">表单</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="focus-on-click">False</property>
@@ -16886,7 +16832,7 @@
                             <property name="valign">center</property>
                             <property name="vexpand">True</property>
                             <property name="relief">none</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -16961,8 +16907,8 @@
               <object class="GtkLabel" id="FormLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="WriterNotebookbar|FormLabel">Fo~rm</property>
-                <property name="use-underline">True</property>
+                <property name="label" translatable="yes" context="WriterNotebookbar|FormLabel">表单</property>
+                <property name="use-underline">False</property>
                 <style>
                   <class name="context-Form"/>
                 </style>
@@ -17018,7 +16964,7 @@
                         <property name="orientation">vertical</property>
                         <child>
                           <object class="svtlo-ManagedMenuButton" id="Extension-ExtensionButton:Menu Addons">
-                            <property name="label" translatable="yes" context="WriterNotebookbar|FormMenuButton">E_xtension</property>
+                            <property name="label" translatable="yes" context="WriterNotebookbar|FormMenuButton">扩展</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="focus-on-click">False</property>
@@ -17027,7 +16973,7 @@
                             <property name="valign">center</property>
                             <property name="vexpand">True</property>
                             <property name="relief">none</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -17092,8 +17038,8 @@
               <object class="GtkLabel" id="ExtensionLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="WriterNotebookbar|ExtensionLabel">E~xtension</property>
-                <property name="use-underline">True</property>
+                <property name="label" translatable="yes" context="WriterNotebookbar|ExtensionLabel">扩展</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="position">14</property>
@@ -18048,7 +17994,7 @@
                             <property name="valign">center</property>
                             <property name="vexpand">True</property>
                             <property name="relief">none</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -18124,7 +18070,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes" context="WriterNotebookbar|ToolsLabel">~Tools</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="position">15</property>

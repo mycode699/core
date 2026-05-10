@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="InsertCaptionDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="insertcaption|InsertCaptionDialog">Insert Caption</property>
+    <property name="title" translatable="yes" context="insertcaption|InsertCaptionDialog">插入题注</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
     <property name="default-height">0</property>
@@ -329,7 +329,7 @@
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="insertcaption|label2">Properties</property>
+                    <property name="label" translatable="yes" context="insertcaption|label2">属性</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>

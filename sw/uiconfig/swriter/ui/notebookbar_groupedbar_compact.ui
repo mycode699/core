@@ -2627,7 +2627,7 @@
       <object class="GtkMenuItem" id="MenuReview-AutoCorrect">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label">AutoCorrect</property>
+        <property name="label">自动更正</property>
         <child>
           <object class="GtkMenu" id="MenuReview-Popup">
             <property name="visible">True</property>
@@ -2635,7 +2635,7 @@
               <object class="GtkCheckMenuItem" id="MenuReview-OnlineAutoFormat">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label">While Typing</property>
+                <property name="label">输入时</property>
                 <property name="action_name">.uno:OnlineAutoFormat</property>
               </object>
             </child>
@@ -2643,7 +2643,7 @@
               <object class="GtkMenuItem" id="MenuReview-AutoFormatApply">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label">Apply</property>
+                <property name="label">应用</property>
                 <property name="action_name">.uno:AutoFormatApply</property>
               </object>
             </child>
@@ -2651,7 +2651,7 @@
               <object class="GtkMenuItem" id="MenuReview-AutoFormatRedlineApply">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label">Apply and Edit Changes</property>
+                <property name="label">应用并编辑更改</property>
                 <property name="action_name">.uno:AutoFormatRedlineApply</property>
               </object>
             </child>
@@ -2659,7 +2659,7 @@
               <object class="GtkMenuItem" id="MenuReview-AutoCorrectDlg">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label">AutoCorrect Options...</property>
+                <property name="label">自动更正选项...</property>
                 <property name="action_name">.uno:AutoCorrectDlg</property>
               </object>
             </child>
@@ -2883,7 +2883,7 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="action_name">.uno:Menubar</property>
-        <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|MenubarAction">Menubar</property>
+        <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|MenubarAction">菜单栏</property>
       </object>
     </child>
     <child>
@@ -3375,7 +3375,7 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="action_name">.uno:Menubar</property>
-        <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|MenubarView">Menubar</property>
+        <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|MenubarView">菜单栏</property>
       </object>
     </child>
     <child>
@@ -3725,7 +3725,7 @@
                             <property name="valign">center</property>
                             <property name="vexpand">True</property>
                             <property name="relief">none</property>
-                            <property name="use_underline">True</property>
+                            <property name="use_underline">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -3836,7 +3836,7 @@
                             <property name="valign">center</property>
                             <property name="vexpand">True</property>
                             <property name="relief">none</property>
-                            <property name="use_underline">True</property>
+                            <property name="use_underline">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -3927,14 +3927,14 @@
                                 <property name="can_focus">False</property>
                                 <child>
                                   <object class="svtlo-ManagedMenuButton" id="Default-Styles:Menu Style">
-                                    <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|StyleButton">St_yles</property>
+                                    <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|StyleButton">样式</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="halign">start</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -4114,14 +4114,14 @@
                                 <property name="can_focus">False</property>
                                 <child>
                                   <object class="svtlo-ManagedMenuButton" id="Default-Font:Menu Format">
-                                    <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|FormatButton">F_ont</property>
+                                    <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|FormatButton">字体</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="halign">start</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -4332,7 +4332,7 @@
                                     <property name="receives_default">False</property>
                                     <property name="halign">start</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -4570,7 +4570,7 @@
                                     <property name="receives_default">False</property>
                                     <property name="halign">start</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -4710,14 +4710,14 @@
                                 <property name="can_focus">False</property>
                                 <child>
                                   <object class="svtlo-ManagedMenuButton" id="Default-Reference:Menu Reference">
-                                    <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|ReferenceButton">Reference_s</property>
+                                    <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|ReferenceButton">引用</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="halign">start</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -4829,7 +4829,7 @@
                                     <property name="receives_default">False</property>
                                     <property name="halign">start</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -4940,7 +4940,7 @@
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -5042,14 +5042,14 @@
                             </child>
                             <child>
                               <object class="svtlo-ManagedMenuButton" id="Default-FormButton:Menu Form">
-                                <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|FormButton">Fo_rm</property>
+                                <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|FormButton">表单</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="focus_on_click">False</property>
                                 <property name="receives_default">False</property>
                                 <property name="halign">start</property>
                                 <property name="relief">none</property>
-                                <property name="use_underline">True</property>
+                                <property name="use_underline">False</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -5134,14 +5134,14 @@
                             </child>
                             <child>
                               <object class="svtlo-ManagedMenuButton" id="Extension-ExtensionButton:Menu Addons">
-                                <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|ExtensionMenuButton">E_xtension</property>
+                                <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|ExtensionMenuButton">扩展</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="focus_on_click">False</property>
                                 <property name="receives_default">False</property>
                                 <property name="halign">start</property>
                                 <property name="relief">none</property>
-                                <property name="use_underline">True</property>
+                                <property name="use_underline">False</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -5237,13 +5237,13 @@
                                 <property name="can_focus">False</property>
                                 <child>
                                   <object class="svtlo-ManagedMenuButton" id="Table-Styles:Menu Style">
-                                    <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|StyleButton">St_yles</property>
+                                    <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|StyleButton">样式</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -5422,13 +5422,13 @@
                                 <property name="can_focus">False</property>
                                 <child>
                                   <object class="svtlo-ManagedMenuButton" id="Table-Font:Menu Format">
-                                    <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|FormatButton">F_ont</property>
+                                    <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|FormatButton">字体</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -5671,7 +5671,7 @@
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -5845,7 +5845,7 @@
                                     <property name="receives_default">False</property>
                                     <property name="halign">start</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -5901,7 +5901,7 @@
                                       <object class="GtkToolButton" id="Table-EntireColumn1">
                                         <property name="visible">True</property>
                                         <property name="action_name">.uno:EntireColumn</property>
-                                        <property name="use_underline">True</property>
+                                        <property name="use_underline">False</property>
                                       </object>
                                       <packing>
                                         <property name="expand">True</property>
@@ -5968,7 +5968,7 @@
                                       <object class="GtkToolButton" id="Table-EntireRow1">
                                         <property name="visible">True</property>
                                         <property name="action_name">.uno:EntireRow</property>
-                                        <property name="use_underline">True</property>
+                                        <property name="use_underline">False</property>
                                       </object>
                                       <packing>
                                         <property name="expand">True</property>
@@ -6318,7 +6318,7 @@
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -6429,7 +6429,7 @@
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -6568,13 +6568,13 @@
                                 <property name="can_focus">False</property>
                                 <child>
                                   <object class="svtlo-ManagedMenuButton" id="Draw-Edit:Menu Edit Draw">
-                                    <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|editdrawb">D_raw</property>
+                                    <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|editdrawb">绘图</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -6948,7 +6948,7 @@
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -7363,7 +7363,7 @@
                                     <property name="receives_default">False</property>
                                     <property name="halign">start</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -7604,13 +7604,13 @@
                                 <property name="can_focus">False</property>
                                 <child>
                                   <object class="svtlo-ManagedMenuButton" id="Draw-Group:Menu Group">
-                                    <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|viewDrawb">Grou_p</property>
+                                    <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|viewDrawb">组合</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -7732,7 +7732,7 @@
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -7959,7 +7959,7 @@
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -8070,7 +8070,7 @@
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -8208,7 +8208,7 @@
                                     <property name="receives_default">False</property>
                                     <property name="halign">start</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -8557,7 +8557,7 @@
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -8908,14 +8908,14 @@
                                 <property name="can_focus">False</property>
                                 <child>
                                   <object class="svtlo-ManagedMenuButton" id="Image-Color:Menu Color">
-                                    <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|ColorButton">Fi_lter</property>
+                                    <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|ColorButton">筛选</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="halign">start</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -9184,7 +9184,7 @@
                                     <property name="receives_default">False</property>
                                     <property name="halign">start</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -9322,7 +9322,7 @@
                                     <property name="receives_default">False</property>
                                     <property name="halign">start</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -9654,7 +9654,7 @@
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -10053,13 +10053,13 @@
                                 <property name="can_focus">False</property>
                                 <child>
                                   <object class="svtlo-ManagedMenuButton" id="Media-Frame:Menu Frame">
-                                    <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|graphicB">F_rame</property>
+                                    <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|graphicB">框架</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -10172,7 +10172,7 @@
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -10283,7 +10283,7 @@
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -10419,7 +10419,7 @@
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -10648,7 +10648,7 @@
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -11049,7 +11049,7 @@
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -11441,7 +11441,7 @@
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -11586,7 +11586,7 @@
                                 <property name="receives_default">False</property>
                                 <property name="halign">start</property>
                                 <property name="relief">none</property>
-                                <property name="use_underline">True</property>
+                                <property name="use_underline">False</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -11709,7 +11709,7 @@
                                     <property name="receives_default">False</property>
                                     <property name="halign">start</property>
                                     <property name="relief">none</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -11841,7 +11841,7 @@
                                 <property name="receives_default">False</property>
                                 <property name="halign">start</property>
                                 <property name="relief">none</property>
-                                <property name="use_underline">True</property>
+                                <property name="use_underline">False</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -11937,14 +11937,14 @@
                             </child>
                             <child>
                               <object class="svtlo-ManagedMenuButton" id="Review-Compare:Menu Compare">
-                                <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|CompareButton">Com_pare</property>
+                                <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|CompareButton">比较</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="focus_on_click">False</property>
                                 <property name="receives_default">False</property>
                                 <property name="halign">start</property>
                                 <property name="relief">none</property>
-                                <property name="use_underline">True</property>
+                                <property name="use_underline">False</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -12024,7 +12024,7 @@
                                   <object class="GtkToolButton" id="Review-Zoom">
                                     <property name="visible">True</property>
                                     <property name="action_name">.uno:Zoom</property>
-                                    <property name="use_underline">True</property>
+                                    <property name="use_underline">False</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -12047,7 +12047,7 @@
                                 <property name="receives_default">False</property>
                                 <property name="halign">start</property>
                                 <property name="relief">none</property>
-                                <property name="use_underline">True</property>
+                                <property name="use_underline">False</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -12166,14 +12166,14 @@
                             </child>
                             <child>
                               <object class="svtlo-ManagedMenuButton" id="Form-FormButton:Menu Form">
-                                <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|FormButton">Fo_rm</property>
+                                <property name="label" translatable="yes" context="notebookbar_groupedbar_compact|FormButton">表单</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="focus_on_click">False</property>
                                 <property name="receives_default">False</property>
                                 <property name="halign">start</property>
                                 <property name="relief">none</property>
-                                <property name="use_underline">True</property>
+                                <property name="use_underline">False</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -12913,7 +12913,7 @@
                             <property name="halign">end</property>
                             <property name="hexpand">True</property>
                             <property name="relief">none</property>
-                            <property name="use_underline">True</property>
+                            <property name="use_underline">False</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>

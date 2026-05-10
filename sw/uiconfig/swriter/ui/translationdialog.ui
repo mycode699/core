@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="LanguageSelectDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="LanguageSelectDialog">Language Selection</property>
+    <property name="title" translatable="yes" context="LanguageSelectDialog">语言选择</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
@@ -81,7 +81,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="LanguageSelectDialog">Select the target language for translation</property>
+                <property name="label" translatable="yes" context="LanguageSelectDialog">选择翻译目标语言</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">combobox1</property>
               </object>

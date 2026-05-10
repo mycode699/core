@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="SnapObjectDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="dlgsnap|SnapObjectDialog">New Snap Guide</property>
+    <property name="title" translatable="yes" context="dlgsnap|SnapObjectDialog">新建吸附辅助线</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
     <property name="default-height">0</property>
@@ -180,7 +180,7 @@
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="dlgsnap|label1">Position</property>
+                    <property name="label" translatable="yes" context="dlgsnap|label1">位置</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -243,7 +243,7 @@
                     </child>
                     <child>
                       <object class="GtkRadioButton" id="point">
-                        <property name="label" translatable="yes" context="dlgsnap|point">_Point</property>
+                        <property name="label" translatable="yes" context="dlgsnap|point">点(_P)</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -263,7 +263,7 @@
                     </child>
                     <child>
                       <object class="GtkRadioButton" id="vert">
-                        <property name="label" translatable="yes" context="dlgsnap|vert">_Vertical</property>
+                        <property name="label" translatable="yes" context="dlgsnap|vert">垂直(_V)</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -283,7 +283,7 @@
                     </child>
                     <child>
                       <object class="GtkRadioButton" id="horz">
-                        <property name="label" translatable="yes" context="dlgsnap|horz">Hori_zontal</property>
+                        <property name="label" translatable="yes" context="dlgsnap|horz">水平(_Z)</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -307,7 +307,7 @@
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="dlgsnap|label2">Type</property>
+                    <property name="label" translatable="yes" context="dlgsnap|label2">类型</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>

@@ -15,7 +15,7 @@
   <object class="GtkDialog" id="SelectAddressDialog">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
-    <property name="title" translatable="yes" context="selectaddressdialog|SelectAddressDialog">Select Address List</property>
+    <property name="title" translatable="yes" context="selectaddressdialog|SelectAddressDialog">选择地址列表</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="type_hint">dialog</property>
@@ -93,7 +93,7 @@
               <object class="GtkLabel" id="desc">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes" context="selectaddressdialog|desc">Select an address list. Click '%1' to select recipients from a different list. If you do not have an address list you can create one by clicking '%2'.</property>
+                <property name="label" translatable="yes" context="selectaddressdialog|desc">请选择地址列表。点击“%1”可从其他列表中选择收件人。如果没有地址列表，可点击“%2”创建。</property>
                 <property name="wrap">True</property>
                 <property name="width_chars">52</property>
                 <property name="max_width_chars">52</property>
@@ -117,7 +117,7 @@
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes" context="selectaddressdialog|label2">Your recipients are currently selected from:</property>
+                    <property name="label" translatable="yes" context="selectaddressdialog|label2">当前收件人来自:</property>
                     <property name="xalign">0</property>
                   </object>
                   <packing>
@@ -134,7 +134,7 @@
                     <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkButton" id="add">
-                        <property name="label" translatable="yes" context="selectaddressdialog|add">_Add...</property>
+                        <property name="label" translatable="yes" context="selectaddressdialog|add">添加(_A)...</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
@@ -153,7 +153,7 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="remove">
-                        <property name="label" translatable="yes" context="selectaddressdialog|remove">_Remove</property>
+                        <property name="label" translatable="yes" context="selectaddressdialog|remove">移除(_R)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
@@ -167,7 +167,7 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="create">
-                        <property name="label" translatable="yes" context="selectaddressdialog|create">_Create...</property>
+                        <property name="label" translatable="yes" context="selectaddressdialog|create">创建(_C)...</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
@@ -186,7 +186,7 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="filter">
-                        <property name="label" translatable="yes" context="selectaddressdialog|filter">_Filter...</property>
+                        <property name="label" translatable="yes" context="selectaddressdialog|filter">筛选(_F)...</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
@@ -205,7 +205,7 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="edit">
-                        <property name="label" translatable="yes" context="selectaddressdialog|edit">_Edit...</property>
+                        <property name="label" translatable="yes" context="selectaddressdialog|edit">编辑(_E)...</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
@@ -224,7 +224,7 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="changetable">
-                        <property name="label" translatable="yes" context="selectaddressdialog|changetable">Change _Table...</property>
+                        <property name="label" translatable="yes" context="selectaddressdialog|changetable">更改表(_T)...</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
@@ -251,7 +251,7 @@
                   <object class="GtkLabel" id="connecting">
                     <property name="can_focus">False</property>
                     <property name="no_show_all">True</property>
-                    <property name="label" translatable="yes" context="selectaddressdialog|connecting">Connecting to data source...</property>
+                    <property name="label" translatable="yes" context="selectaddressdialog|connecting">正在连接到数据源...</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -282,7 +282,7 @@
                           <object class="GtkTreeViewColumn" id="treeviewcolumn1">
                             <property name="resizable">True</property>
                             <property name="spacing">6</property>
-                            <property name="title" translatable="yes" context="selectaddressdialog|name">Name</property>
+                            <property name="title" translatable="yes" context="selectaddressdialog|name">名称</property>
                             <child>
                               <object class="GtkCellRendererText" id="cellrenderer1"/>
                               <attributes>
@@ -295,7 +295,7 @@
                           <object class="GtkTreeViewColumn" id="treeviewcolumn2">
                             <property name="resizable">True</property>
                             <property name="spacing">6</property>
-                            <property name="title" translatable="yes" context="selectaddressdialog|table">Table</property>
+                            <property name="title" translatable="yes" context="selectaddressdialog|table">表</property>
                             <child>
                               <object class="GtkCellRendererText" id="cellrenderer2"/>
                               <attributes>

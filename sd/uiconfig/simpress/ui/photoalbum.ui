@@ -13,7 +13,7 @@
   <object class="GtkDialog" id="PhotoAlbumCreatorDialog">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
-    <property name="title" translatable="yes" context="photoalbum|PhotoAlbumCreatorDialog">Create Photo Album</property>
+    <property name="title" translatable="yes" context="photoalbum|PhotoAlbumCreatorDialog">创建相册</property>
     <property name="modal">True</property>
     <property name="window_position">center</property>
     <property name="default_width">0</property>
@@ -45,7 +45,7 @@
             </child>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="photoalbum|create_btn">Insert Slides</property>
+                <property name="label" translatable="yes" context="photoalbum|create_btn">插入幻灯片</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -161,7 +161,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="tooltip_text" translatable="yes" context="photoalbum|rem_btn|tooltip_text">Remove Image from List</property>
+                        <property name="tooltip_text" translatable="yes" context="photoalbum|rem_btn|tooltip_text">从列表中移除图像</property>
                         <property name="use-underline">True</property>
                       </object>
                       <packing>
@@ -172,11 +172,11 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="up_btn">
-                        <property name="label" translatable="yes" context="photoalbum|up_btn">_Up</property>
+                        <property name="label" translatable="yes" context="photoalbum|up_btn">上移(_U)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="tooltip_text" translatable="yes" context="photoalbum|up_btn|tooltip_text">Move Image Up</property>
+                        <property name="tooltip_text" translatable="yes" context="photoalbum|up_btn|tooltip_text">向上移动图像</property>
                         <property name="use_underline">True</property>
                       </object>
                       <packing>
@@ -187,11 +187,11 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="down_btn">
-                        <property name="label" translatable="yes" context="photoalbum|down_btn">Do_wn</property>
+                        <property name="label" translatable="yes" context="photoalbum|down_btn">下移(_W)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="tooltip_text" translatable="yes" context="photoalbum|down_btn|tooltip_text">Move Image Down</property>
+                        <property name="tooltip_text" translatable="yes" context="photoalbum|down_btn|tooltip_text">向下移动图像</property>
                         <property name="use_underline">True</property>
                       </object>
                       <packing>
@@ -258,7 +258,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="margin_bottom">6</property>
-                        <property name="label" translatable="yes" context="photoalbum|label2">Preview</property>
+                        <property name="label" translatable="yes" context="photoalbum|label2">预览</property>
                         <property name="xalign">0</property>
                         <attributes>
                           <attribute name="weight" value="bold"/>
@@ -287,7 +287,7 @@
                           <object class="GtkLabel" id="label7">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes" context="photoalbum|label7">Slide layout:</property>
+                            <property name="label" translatable="yes" context="photoalbum|label7">幻灯片版式:</property>
                             <property name="mnemonic_widget">opt_combo</property>
                           </object>
                           <packing>
@@ -303,9 +303,9 @@
                             <property name="can_focus">False</property>
                             <property name="active">0</property>
                             <items>
-                              <item translatable="yes" context="photoalbum|liststore2">1 Image</item>
-                              <item translatable="yes" context="photoalbum|liststore2">2 Images</item>
-                              <item translatable="yes" context="photoalbum|liststore2">4 Images</item>
+                              <item translatable="yes" context="photoalbum|liststore2">1 张图像</item>
+                              <item translatable="yes" context="photoalbum|liststore2">2 张图像</item>
+                              <item translatable="yes" context="photoalbum|liststore2">4 张图像</item>
                             </items>
                           </object>
                           <packing>
@@ -323,7 +323,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="cap_check">
-                        <property name="label" translatable="yes" context="photoalbum|cap_check">Add caption to each slide</property>
+                        <property name="label" translatable="yes" context="photoalbum|cap_check">为每张幻灯片添加题注</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -338,7 +338,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="asr_check">
-                        <property name="label" translatable="yes" context="photoalbum|asr_check">Keep aspect ratio</property>
+                        <property name="label" translatable="yes" context="photoalbum|asr_check">保持宽高比</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -354,7 +354,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="asr_check_crop">
-                        <property name="label" translatable="yes" context="photoalbum|asr_check_crop">Fill Screen</property>
+                        <property name="label" translatable="yes" context="photoalbum|asr_check_crop">填满屏幕</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -369,7 +369,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="insert_as_link_check">
-                        <property name="label" translatable="yes" context="photoalbum|insert_as_link_check">Link images</property>
+                        <property name="label" translatable="yes" context="photoalbum|insert_as_link_check">链接图像</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>

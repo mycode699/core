@@ -94,6 +94,7 @@
 #include <editeng/ulspitem.hxx>
 #include <svx/dialog/TableStylesDlg.hxx>
 #include <vcl/weld/Dialog.hxx>
+#include <tools/json_writer.hxx>
 
 using namespace ::com::sun::star;
 
@@ -1757,6 +1758,131 @@ sfx::AccessibilityIssueCollection SwDocShell::runAccessibilityCheck()
 #else
     return sfx::AccessibilityIssueCollection();
 #endif
+}
+
+namespace
+{
+std::string_view lcl_IntelligentDiagnosticSeverity(sfx::AccessibilityIssueLevel eLevel)
+{
+    if (eLevel == sfx::AccessibilityIssueLevel::ERRORLEV)
+        return "warning";
+    return "suggestion";
+}
+
+std::string_view lcl_IntelligentDiagnosticTitle(sfx::AccessibilityIssueID eIssueID)
+{
+    switch (eIssueID)
+    {
+        case sfx::AccessibilityIssueID::DIRECT_FORMATTING:
+            return "存在直接格式";
+        case sfx::AccessibilityIssueID::TABLE_FORMATTING:
+        case sfx::AccessibilityIssueID::TABLE_MERGE_SPLIT:
+            return "表格格式需要检查";
+        case sfx::AccessibilityIssueID::TEXT_NEW_LINES:
+        case sfx::AccessibilityIssueID::TEXT_SPACES:
+        case sfx::AccessibilityIssueID::TEXT_TABS:
+        case sfx::AccessibilityIssueID::TEXT_EMPTY_NUM_PARA:
+            return "段落排版需要检查";
+        case sfx::AccessibilityIssueID::MANUAL_NUMBERING:
+            return "列表编号需要检查";
+        case sfx::AccessibilityIssueID::HEADING_IN_TABLE:
+        case sfx::AccessibilityIssueID::HEADING_START:
+        case sfx::AccessibilityIssueID::HEADING_ORDER:
+        case sfx::AccessibilityIssueID::HEADINGS_NOT_IN_ORDER:
+            return "标题层级需要检查";
+        case sfx::AccessibilityIssueID::STYLE_LANGUAGE:
+            return "样式语言需要检查";
+        default:
+            return "文档质量需要检查";
+    }
+}
+
+std::string_view lcl_IntelligentDiagnosticAction(sfx::AccessibilityIssueID eIssueID)
+{
+    switch (eIssueID)
+    {
+        case sfx::AccessibilityIssueID::DIRECT_FORMATTING:
+            return "查看直接格式";
+        case sfx::AccessibilityIssueID::TABLE_FORMATTING:
+        case sfx::AccessibilityIssueID::TABLE_MERGE_SPLIT:
+            return "查看表格建议";
+        case sfx::AccessibilityIssueID::MANUAL_NUMBERING:
+            return "查看编号建议";
+        case sfx::AccessibilityIssueID::HEADING_IN_TABLE:
+        case sfx::AccessibilityIssueID::HEADING_START:
+        case sfx::AccessibilityIssueID::HEADING_ORDER:
+        case sfx::AccessibilityIssueID::HEADINGS_NOT_IN_ORDER:
+            return "查看标题建议";
+        default:
+            return "查看详情";
+    }
+}
+
+std::string_view lcl_IntelligentDiagnosticLocationKind(sfx::AccessibilityIssueID eIssueID)
+{
+    switch (eIssueID)
+    {
+        case sfx::AccessibilityIssueID::DOCUMENT_TITLE:
+        case sfx::AccessibilityIssueID::DOCUMENT_LANGUAGE:
+        case sfx::AccessibilityIssueID::DOCUMENT_BACKGROUND:
+        case sfx::AccessibilityIssueID::STYLE_LANGUAGE:
+            return "document";
+        case sfx::AccessibilityIssueID::TABLE_FORMATTING:
+        case sfx::AccessibilityIssueID::TABLE_MERGE_SPLIT:
+            return "object";
+        default:
+            return "paragraph";
+    }
+}
+
+OString lcl_IntelligentDiagnosticId(sfx::AccessibilityIssueID eIssueID, sal_Int32 nIndex)
+{
+    return "writer.accessibility." + OString::number(static_cast<sal_Int32>(eIssueID)) + "."
+           + OString::number(nIndex);
+}
+}
+
+OString SwDocShell::runIntelligentDiagnosticsPreview()
+{
+    sfx::AccessibilityIssueCollection aCollection = runAccessibilityCheck();
+    tools::JsonWriter aJson;
+    {
+        auto aDiagnostics = aJson.startArray("diagnostics");
+        sal_Int32 nIndex = 0;
+        for (std::shared_ptr<sfx::AccessibilityIssue> const& pIssue : aCollection.getIssues())
+        {
+            if (!pIssue || pIssue->getHidden())
+                continue;
+
+            auto aDiagnostic = aJson.startStruct();
+            aJson.put("id", lcl_IntelligentDiagnosticId(pIssue->m_eIssueID, nIndex));
+            aJson.put("module", "writer");
+            aJson.put("severity", lcl_IntelligentDiagnosticSeverity(pIssue->m_eIssueLvl));
+            aJson.put("title_zh", lcl_IntelligentDiagnosticTitle(pIssue->m_eIssueID));
+            aJson.put("message_zh", pIssue->m_aIssueText);
+            {
+                auto aLocation = aJson.startNode("location");
+                aJson.put("kind", lcl_IntelligentDiagnosticLocationKind(pIssue->m_eIssueID));
+                aJson.put("label_zh", "当前文档");
+            }
+            {
+                auto aActions = aJson.startArray("actions");
+                {
+                    auto aAction = aJson.startStruct();
+                    aJson.put("id", "details");
+                    aJson.put("label_zh", lcl_IntelligentDiagnosticAction(pIssue->m_eIssueID));
+                    aJson.put("mode", "details");
+                }
+            }
+            {
+                auto aEvidence = aJson.startNode("evidence");
+                aJson.put("source", "analyzer");
+                aJson.put("summary_zh", "基于 Writer 现有无障碍与格式检查生成，仅预览，不修改文档");
+            }
+            ++nIndex;
+        }
+    }
+    return aJson.finishAndGetAsOString();
 }
 
 std::set<Color> SwDocShell::GetDocColors()

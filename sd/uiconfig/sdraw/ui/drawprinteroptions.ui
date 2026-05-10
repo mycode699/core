@@ -25,7 +25,7 @@
             <property name="spacing">6</property>
             <child>
               <object class="GtkCheckButton" id="printname">
-                <property name="label" translatable="yes" context="drawprinteroptions|printname">Page name</property>
+                <property name="label" translatable="yes" context="drawprinteroptions|printname">页面名称</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -45,7 +45,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="printdatetime">
-                <property name="label" translatable="yes" context="drawprinteroptions|printdatetime">Date and time</property>
+                <property name="label" translatable="yes" context="drawprinteroptions|printdatetime">日期和时间</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -69,7 +69,7 @@
           <object class="GtkLabel" id="label4">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="drawprinteroptions|label4">Contents</property>
+            <property name="label" translatable="yes" context="drawprinteroptions|label4">内容</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -98,7 +98,7 @@
             <property name="spacing">6</property>
             <child>
               <object class="GtkRadioButton" id="originalcolors">
-                <property name="label" translatable="yes" context="drawprinteroptions|originalcolors">Original colors</property>
+                <property name="label" translatable="yes" context="drawprinteroptions|originalcolors">原始颜色</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -119,7 +119,7 @@
             </child>
             <child>
               <object class="GtkRadioButton" id="grayscale">
-                <property name="label" translatable="yes" context="drawprinteroptions|grayscale">Grayscale</property>
+                <property name="label" translatable="yes" context="drawprinteroptions|grayscale">灰度</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -140,7 +140,7 @@
             </child>
             <child>
               <object class="GtkRadioButton" id="blackandwhite">
-                <property name="label" translatable="yes" context="drawprinteroptions|blackandwhite">Black &amp; white</property>
+                <property name="label" translatable="yes" context="drawprinteroptions|blackandwhite">黑白</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -165,7 +165,7 @@
           <object class="GtkLabel" id="label5">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="drawprinteroptions|label5">Color</property>
+            <property name="label" translatable="yes" context="drawprinteroptions|label5">颜色</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -194,7 +194,7 @@
             <property name="spacing">6</property>
             <child>
               <object class="GtkRadioButton" id="originalsize">
-                <property name="label" translatable="yes" context="drawprinteroptions|originalsize">Original size</property>
+                <property name="label" translatable="yes" context="drawprinteroptions|originalsize">原始大小</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -215,7 +215,7 @@
             </child>
             <child>
               <object class="GtkRadioButton" id="fittoprintable">
-                <property name="label" translatable="yes" context="drawprinteroptions|fittoprintable">Fit to printable page</property>
+                <property name="label" translatable="yes" context="drawprinteroptions|fittoprintable">适合可打印页面</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -236,7 +236,7 @@
             </child>
             <child>
               <object class="GtkRadioButton" id="distributeonmultiple">
-                <property name="label" translatable="yes" context="drawprinteroptions|distributeonmultiple">Distribute on multiple sheets of paper</property>
+                <property name="label" translatable="yes" context="drawprinteroptions|distributeonmultiple">分布到多张纸上</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -257,7 +257,7 @@
             </child>
             <child>
               <object class="GtkRadioButton" id="tilesheet">
-                <property name="label" translatable="yes" context="drawprinteroptions|tilesheet">Tile sheet of paper with repeated pages</property>
+                <property name="label" translatable="yes" context="drawprinteroptions|tilesheet">在纸张上平铺重复页面</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -282,7 +282,7 @@
           <object class="GtkLabel" id="label6">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="drawprinteroptions|label6">Size</property>
+            <property name="label" translatable="yes" context="drawprinteroptions|label6">大小</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>

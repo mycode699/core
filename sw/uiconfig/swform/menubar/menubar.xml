@@ -59,6 +59,7 @@
           <menu:menuitem menu:id=".uno:ExportDirectToEPUB" menu:style="text"/>
         </menu:menupopup>
       </menu:menu>
+      <menu:menuitem menu:id=".uno:SendOutlineToStarImpress" menu:style="text"/>
       <menu:menu menu:id=".uno:SendToMenu" menu:style="text">
         <menu:menupopup>
           <menu:menuitem menu:id=".uno:SendMail" menu:style="text"/>
@@ -70,7 +71,6 @@
           <menu:menuitem menu:id=".uno:NewGlobalDoc" menu:style="text"/>
           <menu:menuitem menu:id=".uno:NewHtmlDoc" menu:style="text"/>
           <menu:menuseparator/>
-          <menu:menuitem menu:id=".uno:SendOutlineToStarImpress" menu:style="text"/>
           <menu:menuitem menu:id=".uno:SendOutlineToClipboard" menu:style="text"/>
           <menu:menuseparator/>
           <menu:menuitem menu:id=".uno:CreateAbstract" menu:style="text"/>
@@ -728,24 +728,15 @@
     <menu:menupopup>
       <menu:menuitem menu:id=".uno:NewWindow"/>
       <menu:menuitem menu:id=".uno:CloseWin"/>
-      <menu:menuseparator/>
     </menu:menupopup>
   </menu:menu>
   <menu:menu menu:id=".uno:HelpMenu">
     <menu:menupopup>
       <menu:menuitem menu:id=".uno:HelpIndex"/>
       <menu:menuitem menu:id=".uno:ExtendedHelp"/>
-      <menu:menuitem menu:id=".uno:Documentation" menu:style="text"/>
-      <menu:menuitem menu:id=".uno:TipOfTheDay" menu:style="text"/>
       <menu:menuitem menu:id=".uno:CommandPopup" menu:style="text"/>
       <menu:menuseparator/>
-      <menu:menuitem menu:id=".uno:QuestionAnswers"/>
-      <menu:menuitem menu:id=".uno:SendFeedback"/>
-      <menu:menuseparator/>
       <menu:menuitem menu:id=".uno:SafeMode" menu:style="text"/>
-      <menu:menuseparator/>
-      <menu:menuitem menu:id=".uno:GetInvolved" menu:style="text"/>
-      <menu:menuitem menu:id=".uno:Donation"/>
       <menu:menuseparator/>
       <menu:menuitem menu:id=".uno:ShowLicense" menu:style="text"/>
       <menu:menuitem menu:id=".uno:About"/>

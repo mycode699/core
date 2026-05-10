@@ -48,7 +48,9 @@
 #include <doc.hxx>
 #include <IDocumentRedlineAccess.hxx>
 #include <IDocumentFieldsAccess.hxx>
+#include <IDocumentState.hxx>
 #include <IDocumentStatistics.hxx>
+#include <IntelligentWriterAnalyzer.hxx>
 #include <cellfml.hxx>
 #include <docsh.hxx>
 #include <docstat.hxx>
@@ -236,9 +238,104 @@ CPPUNIT_TEST_FIXTURE(SwDocTest, testTdf171046_IncrementalDocStatComplete)
     CPPUNIT_ASSERT_EQUAL_MESSAGE("All characters must be counted", static_cast<sal_uInt32>(10000), rDocStat.nChar);
 }
 
+CPPUNIT_TEST_FIXTURE(SwDocTest, testIntelligentWriterAnalyzerPreviewOnly)
+{
+    auto fnAssertLongParagraphDiagnostic = [](const sw::intelligent::Diagnostic& rDiagnostic,
+                                             sal_uInt32 nParagraph)
+    {
+        const OUString sPath = u"paragraph/"_ustr + OUString::number(nParagraph);
+
+        CPPUNIT_ASSERT_EQUAL(u"writer.paragraph.long-preview"_ustr, rDiagnostic.maId);
+        CPPUNIT_ASSERT_EQUAL(u"writer"_ustr, rDiagnostic.maModule);
+        CPPUNIT_ASSERT_EQUAL(u"suggestion"_ustr, rDiagnostic.maSeverity);
+        CPPUNIT_ASSERT_EQUAL(u"段落较长"_ustr, rDiagnostic.maTitleZh);
+        CPPUNIT_ASSERT_EQUAL(u"该段落较长，建议预览拆分或提炼小标题以提升可读性。"_ustr,
+                             rDiagnostic.maMessageZh);
+        CPPUNIT_ASSERT_EQUAL(u"paragraph"_ustr, rDiagnostic.maLocation.maKind);
+        const OUString sLabel = u"第 "_ustr + OUString::number(nParagraph) + u" 段"_ustr;
+        CPPUNIT_ASSERT_EQUAL(sLabel, rDiagnostic.maLocation.maLabelZh);
+        CPPUNIT_ASSERT_EQUAL(sPath, rDiagnostic.maLocation.maPath);
+        CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), rDiagnostic.maActions.size());
+        CPPUNIT_ASSERT_EQUAL(u"preview-suggestion"_ustr, rDiagnostic.maActions.front().maId);
+        CPPUNIT_ASSERT_EQUAL(u"预览建议"_ustr, rDiagnostic.maActions.front().maLabelZh);
+        CPPUNIT_ASSERT_EQUAL(u"preview"_ustr, rDiagnostic.maActions.front().maMode);
+        CPPUNIT_ASSERT_EQUAL(u"analyzer"_ustr, rDiagnostic.maEvidence.maSource);
+        CPPUNIT_ASSERT_EQUAL(sPath, rDiagnostic.maEvidence.maPath);
+        CPPUNIT_ASSERT_EQUAL(u"仅基于文档模型读取段落长度，不修改文档。"_ustr,
+                             rDiagnostic.maEvidence.maSummaryZh);
+    };
+
+    auto fnAssertDiagnosticEqual = [](const sw::intelligent::Diagnostic& rExpected,
+                                     const sw::intelligent::Diagnostic& rActual)
+    {
+        CPPUNIT_ASSERT_EQUAL(rExpected.maId, rActual.maId);
+        CPPUNIT_ASSERT_EQUAL(rExpected.maModule, rActual.maModule);
+        CPPUNIT_ASSERT_EQUAL(rExpected.maSeverity, rActual.maSeverity);
+        CPPUNIT_ASSERT_EQUAL(rExpected.maTitleZh, rActual.maTitleZh);
+        CPPUNIT_ASSERT_EQUAL(rExpected.maMessageZh, rActual.maMessageZh);
+        CPPUNIT_ASSERT_EQUAL(rExpected.maLocation.maKind, rActual.maLocation.maKind);
+        CPPUNIT_ASSERT_EQUAL(rExpected.maLocation.maLabelZh, rActual.maLocation.maLabelZh);
+        CPPUNIT_ASSERT_EQUAL(rExpected.maLocation.maPath, rActual.maLocation.maPath);
+        CPPUNIT_ASSERT_EQUAL(rExpected.maActions.size(), rActual.maActions.size());
+        for (size_t nAction = 0; nAction < rExpected.maActions.size(); ++nAction)
+        {
+            CPPUNIT_ASSERT_EQUAL(rExpected.maActions[nAction].maId, rActual.maActions[nAction].maId);
+            CPPUNIT_ASSERT_EQUAL(rExpected.maActions[nAction].maLabelZh,
+                                 rActual.maActions[nAction].maLabelZh);
+            CPPUNIT_ASSERT_EQUAL(rExpected.maActions[nAction].maMode,
+                                 rActual.maActions[nAction].maMode);
+        }
+        CPPUNIT_ASSERT_EQUAL(rExpected.maEvidence.maSource, rActual.maEvidence.maSource);
+        CPPUNIT_ASSERT_EQUAL(rExpected.maEvidence.maPath, rActual.maEvidence.maPath);
+        CPPUNIT_ASSERT_EQUAL(rExpected.maEvidence.maSummaryZh, rActual.maEvidence.maSummaryZh);
+    };
+
+    auto fnAssertDiagnosticsStable = [&fnAssertDiagnosticEqual](const std::vector<sw::intelligent::Diagnostic>& rFirst,
+                                                               const std::vector<sw::intelligent::Diagnostic>& rSecond)
+    {
+        CPPUNIT_ASSERT_EQUAL(rFirst.size(), rSecond.size());
+        for (size_t nDiagnostic = 0; nDiagnostic < rFirst.size(); ++nDiagnostic)
+            fnAssertDiagnosticEqual(rFirst[nDiagnostic], rSecond[nDiagnostic]);
+    };
+
+    SwNodeIndex aIdx(m_pDoc->GetNodes().GetEndOfContent(), -1);
+    SwPaM aPaM(aIdx);
+
+    OUStringBuffer aLongParagraph;
+    for (sal_Int32 i = 0; i < 24; ++i)
+    {
+        aLongParagraph.append(u"这是一个用于预览诊断的长段落，分析器只能读取内容并返回建议，不能修改正文。"_ustr);
+    }
+    m_pDoc->getIDocumentContentOperations().InsertString(aPaM, aLongParagraph.makeStringAndClear());
+
+    m_pDoc->getIDocumentState().ResetModified();
+    CPPUNIT_ASSERT(!m_pDoc->getIDocumentState().IsModified());
+
+    const auto aFirstDiagnostics = sw::intelligent::AnalyzeWriterDocumentPreview(*m_pDoc);
+    const auto aSecondDiagnostics = sw::intelligent::AnalyzeWriterDocumentPreview(*m_pDoc);
+
+    CPPUNIT_ASSERT(!m_pDoc->getIDocumentState().IsModified());
+    CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), aFirstDiagnostics.size());
+    fnAssertLongParagraphDiagnostic(aFirstDiagnostics.front(), 1);
+    fnAssertDiagnosticsStable(aFirstDiagnostics, aSecondDiagnostics);
+
+    m_pDoc->getIDocumentContentOperations().AppendTextNode(*aPaM.GetPoint());
+    m_pDoc->getIDocumentContentOperations().InsertString(aPaM, u"短段落用于确认预览分析不会清除已修改状态。"_ustr);
+    CPPUNIT_ASSERT(m_pDoc->getIDocumentState().IsModified());
+
+    const auto aModifiedFirstDiagnostics = sw::intelligent::AnalyzeWriterDocumentPreview(*m_pDoc);
+    const auto aModifiedSecondDiagnostics = sw::intelligent::AnalyzeWriterDocumentPreview(*m_pDoc);
+
+    CPPUNIT_ASSERT(m_pDoc->getIDocumentState().IsModified());
+    CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), aModifiedFirstDiagnostics.size());
+    fnAssertLongParagraphDiagnostic(aModifiedFirstDiagnostics.front(), 1);
+    fnAssertDiagnosticsStable(aModifiedFirstDiagnostics, aModifiedSecondDiagnostics);
+}
+
 //For UI character counts we should follow UAX#29 and display the user
 //perceived characters, not the number of codepoints, nor the number of code
 //units http://unicode.org/reports/tr29/
+
 CPPUNIT_TEST_FIXTURE(SwDocTest, testUserPerceivedCharCount)
 {
     SwBreakIt *pBreakIter = SwBreakIt::Get();

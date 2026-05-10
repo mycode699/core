@@ -33,7 +33,7 @@
             <property name="row-spacing">6</property>
             <child>
               <object class="GtkCheckButton" id="STR_DELETE_MASTER_PAGES">
-                <property name="label" translatable="yes" context="pmslidespage|STR_DELETE_MASTER_PAGES">Delete unused _master slides</property>
+                <property name="label" translatable="yes" context="pmslidespage|STR_DELETE_MASTER_PAGES">删除未使用的母版幻灯片(_M)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -47,7 +47,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="STR_DELETE_HIDDEN_SLIDES">
-                <property name="label" translatable="yes" context="pmslidespage|STR_DELETE_HIDDEN_SLIDES">Delete hidden _slides</property>
+                <property name="label" translatable="yes" context="pmslidespage|STR_DELETE_HIDDEN_SLIDES">删除隐藏幻灯片(_S)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -61,7 +61,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="STR_CUSTOM_SHOW">
-                <property name="label" translatable="yes" context="pmslidespage|STR_CUSTOM_SHOW">Delete slides that are not used for the _custom slide show</property>
+                <property name="label" translatable="yes" context="pmslidespage|STR_CUSTOM_SHOW">删除未用于自定义放映的幻灯片(_C)</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can-focus">True</property>
@@ -94,7 +94,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="STR_DELETE_NOTES_PAGES">
-                <property name="label" translatable="yes" context="pmslidespage|STR_DELETE_NOTES_PAGES">_Clear notes</property>
+                <property name="label" translatable="yes" context="pmslidespage|STR_DELETE_NOTES_PAGES">清除备注(_N)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -112,7 +112,7 @@
           <object class="GtkLabel" id="STR_CHOOSE_SLIDES">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="pmslidespages|STR_CHOOSE_SLIDES">Choose which slides to delete</property>
+            <property name="label" translatable="yes" context="pmslidespages|STR_CHOOSE_SLIDES">选择要删除的幻灯片</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>

@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="InsertLayerDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="insertlayer|InsertLayerDialog">Insert Layer</property>
+    <property name="title" translatable="yes" context="insertlayer|InsertLayerDialog">插入图层</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
     <property name="default-height">0</property>
@@ -106,7 +106,7 @@
                   <object class="GtkLabel" id="label4">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="insertlayer|label4">_Name</property>
+                    <property name="label" translatable="yes" context="insertlayer|label4">名称(_N)</property>
                     <property name="use-underline">True</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
@@ -146,7 +146,7 @@
                   <object class="GtkLabel" id="label5">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="insertlayer|label5">_Title</property>
+                    <property name="label" translatable="yes" context="insertlayer|label5">标题(_T)</property>
                     <property name="use-underline">True</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
@@ -198,7 +198,7 @@
                   <object class="GtkLabel" id="description1">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="insertlayer|description">_Description</property>
+                    <property name="label" translatable="yes" context="insertlayer|description">描述(_D)</property>
                     <property name="use-underline">True</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
@@ -226,7 +226,7 @@
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkCheckButton" id="visible">
-                        <property name="label" translatable="yes" context="insertlayer|visible">_Visible</property>
+                        <property name="label" translatable="yes" context="insertlayer|visible">可见(_V)</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -246,7 +246,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="printable">
-                        <property name="label" translatable="yes" context="insertlayer|printable">_Printable</property>
+                        <property name="label" translatable="yes" context="insertlayer|printable">可打印(_P)</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -266,7 +266,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="locked">
-                        <property name="label" translatable="yes" context="insertlayer|locked">_Locked</property>
+                        <property name="label" translatable="yes" context="insertlayer|locked">锁定(_L)</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -290,7 +290,7 @@
                   <object class="GtkLabel" id="label6">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="insertlayer|properties">Properties</property>
+                    <property name="label" translatable="yes" context="insertlayer|properties">属性</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>

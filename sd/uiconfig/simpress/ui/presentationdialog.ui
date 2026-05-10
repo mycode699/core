@@ -10,7 +10,7 @@
   <object class="GtkDialog" id="PresentationDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="presentationdialog|PresentationDialog">Slide Show Settings</property>
+    <property name="title" translatable="yes" context="presentationdialog|PresentationDialog">幻灯片放映设置</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
     <property name="default-height">0</property>
@@ -28,7 +28,7 @@
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="stock">_OK</property>
+                <property name="label" translatable="yes" context="stock">确定(_O)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
@@ -44,7 +44,7 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="stock">_Cancel</property>
+                <property name="label" translatable="yes" context="stock">取消(_C)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -58,7 +58,7 @@
             </child>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助(_H)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -105,7 +105,7 @@
                     <property name="row-spacing">6</property>
                     <child>
                       <object class="GtkRadioButton" id="allslides">
-                        <property name="label" translatable="yes" context="presentationdialog|allslides">All _slides</property>
+                        <property name="label" translatable="yes" context="presentationdialog|allslides">全部幻灯片(_S)</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -114,7 +114,7 @@
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="allslides-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|allslides">Includes all of the slides in your slide show.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|allslides">放映文稿中的全部幻灯片。</property>
                           </object>
                         </child>
                       </object>
@@ -131,7 +131,7 @@
                         <property name="column-spacing">12</property>
                         <child>
                           <object class="GtkRadioButton" id="from">
-                            <property name="label" translatable="yes" context="presentationdialog|from">_From:</property>
+                            <property name="label" translatable="yes" context="presentationdialog|from">起始幻灯片(_F)：</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -143,7 +143,7 @@
                             </accessibility>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="from-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|from">Enter the number of the start slide.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|from">输入开始放映的幻灯片编号。</property>
                               </object>
                             </child>
                           </object>
@@ -162,8 +162,8 @@
                             </accessibility>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="from_cb-atkobject">
-                                <property name="AtkObject::accessible-name" translatable="yes" context="presentationdialog|from_cb-atkobject">Starting slide</property>
-                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|from_cb">Enter the number of the start slide.</property>
+                                <property name="AtkObject::accessible-name" translatable="yes" context="presentationdialog|from_cb-atkobject">起始幻灯片</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|from_cb">输入开始放映的幻灯片编号。</property>
                               </object>
                             </child>
                           </object>
@@ -186,7 +186,7 @@
                         <property name="column-spacing">12</property>
                         <child>
                           <object class="GtkRadioButton" id="customslideshow">
-                            <property name="label" translatable="yes" context="presentationdialog|customslideshow">_Custom slide show:</property>
+                            <property name="label" translatable="yes" context="presentationdialog|customslideshow">自定义放映(_C)：</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -198,7 +198,7 @@
                             </accessibility>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="customslideshow-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|customslideshow">Runs a custom slide show in the order that you defined in Slide Show - Custom Slide Show.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|customslideshow">按照“幻灯片放映 - 自定义放映”中定义的顺序播放。</property>
                               </object>
                             </child>
                           </object>
@@ -217,7 +217,7 @@
                             </accessibility>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="customslideshow_cb-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|customslideshow_cb">Runs a custom slide show in the order that you defined in Slide Show - Custom Slide Show.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|customslideshow_cb">按照“幻灯片放映 - 自定义放映”中定义的顺序播放。</property>
                               </object>
                             </child>
                           </object>
@@ -238,7 +238,7 @@
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="presentationdialog|label1">Range</property>
+                    <property name="label" translatable="yes" context="presentationdialog|label1">范围</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -276,7 +276,7 @@
                         <property name="row-spacing">6</property>
                         <child>
                           <object class="GtkRadioButton" id="default">
-                            <property name="label" translatable="yes" context="presentationdialog|default">F_ull screen</property>
+                            <property name="label" translatable="yes" context="presentationdialog|default">全屏放映(_U)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -285,7 +285,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="default-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|default">A full screen slide is shown.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|default">以全屏方式显示幻灯片。</property>
                               </object>
                             </child>
                           </object>
@@ -296,7 +296,7 @@
                         </child>
                         <child>
                           <object class="GtkRadioButton" id="window">
-                            <property name="label" translatable="yes" context="presentationdialog|window">In a _window</property>
+                            <property name="label" translatable="yes" context="presentationdialog|window">在窗口中放映(_W)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -305,7 +305,7 @@
                             <property name="group">default</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="window-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|window">Slide show runs in the Impress program window.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|window">在 Impress 程序窗口中运行放映。</property>
                               </object>
                             </child>
                           </object>
@@ -316,7 +316,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="auto">
-                            <property name="label" translatable="yes" context="presentationdialog|auto">_Loop and repeat after:</property>
+                            <property name="label" translatable="yes" context="presentationdialog|auto">循环播放，间隔(_L)：</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -327,7 +327,7 @@
                             </accessibility>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="auto-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|auto">Restarts the slide show after the pause interval you specify. A pause slide is displayed between the final slide and the start slide. Press the Esc key to stop the show.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|auto">在指定暂停时间后重新开始放映。最后一张和起始幻灯片之间会显示暂停页。按 Esc 键可停止放映。</property>
                               </object>
                             </child>
                           </object>
@@ -341,7 +341,7 @@
                             <property name="visible">True</property>
                             <property name="sensitive">False</property>
                             <property name="can-focus">True</property>
-                            <property name="tooltip-text" translatable="yes" context="presentationdialog|pauseduration|tooltip_text">Duration of pause</property>
+                            <property name="tooltip-text" translatable="yes" context="presentationdialog|pauseduration|tooltip_text">暂停时长</property>
                             <property name="margin-start">12</property>
                             <property name="activates-default">True</property>
                             <property name="truncate-multiline">True</property>
@@ -351,8 +351,8 @@
                             </accessibility>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="pauseduration-atkobject">
-                                <property name="AtkObject::accessible-name" translatable="yes" context="presentationdialog|pauseduration-atkobject">Pause Duration</property>
-                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|pauseduration">Enter the duration of the pause before the slide show is repeated. If you enter zero, the show restarts immediately without showing a pause slide.</property>
+                                <property name="AtkObject::accessible-name" translatable="yes" context="presentationdialog|pauseduration-atkobject">暂停时长</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|pauseduration">输入重新开始放映前的暂停时长。输入 0 时会立即重新开始，不显示暂停页。</property>
                               </object>
                             </child>
                           </object>
@@ -363,7 +363,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="showlogo">
-                            <property name="label" translatable="yes" context="presentationdialog|showlogo">Show _logo during pause</property>
+                            <property name="label" translatable="yes" context="presentationdialog|showlogo">暂停时显示应用标志(_G)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -372,7 +372,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="showlogo-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|showlogo">Displays the application logo on the pause slide.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|showlogo">在暂停页上显示应用标志。</property>
                               </object>
                             </child>
                           </object>
@@ -387,7 +387,7 @@
                       <object class="GtkLabel" id="label2">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="presentationdialog|label2">Presentation Mode</property>
+                        <property name="label" translatable="yes" context="presentationdialog|label2">放映模式</property>
                         <attributes>
                           <attribute name="weight" value="bold"/>
                         </attributes>
@@ -419,7 +419,7 @@
                         <property name="row-spacing">6</property>
                         <child>
                           <object class="GtkCheckButton" id="manualslides">
-                            <property name="label" translatable="yes" context="presentationdialog|manualslides">Disable auto_matic change of slides</property>
+                            <property name="label" translatable="yes" context="presentationdialog|manualslides">禁用自动切换幻灯片(_M)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -427,7 +427,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="manualslides-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|manualslides">Slides never change automatically when this box is selected.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|manualslides">选中后，幻灯片不会自动切换。</property>
                               </object>
                             </child>
                           </object>
@@ -438,7 +438,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="changeslidesbyclick">
-                            <property name="label" translatable="yes" context="presentationdialog|changeslidesbyclick">Change slides by clic_king on background</property>
+                            <property name="label" translatable="yes" context="presentationdialog|changeslidesbyclick">点击背景切换幻灯片(_K)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -446,7 +446,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="changeslidesbyclick-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|changeslidesbyclick">Advances to the next slide when you click on the background of a slide.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|changeslidesbyclick">点击幻灯片背景时前进到下一张幻灯片。</property>
                               </object>
                             </child>
                           </object>
@@ -457,7 +457,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="pointervisible">
-                            <property name="label" translatable="yes" context="presentationdialog|pointervisible">Mouse pointer _visible</property>
+                            <property name="label" translatable="yes" context="presentationdialog|pointervisible">显示鼠标指针(_V)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -465,7 +465,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="pointervisible-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|pointervisible">Shows the mouse pointer during a slide show.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|pointervisible">放映时显示鼠标指针。</property>
                               </object>
                             </child>
                           </object>
@@ -476,7 +476,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="pointeraspen">
-                            <property name="label" translatable="yes" context="presentationdialog|pointeraspen">Mouse pointer as _pen</property>
+                            <property name="label" translatable="yes" context="presentationdialog|pointeraspen">将鼠标指针作为画笔(_P)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -484,7 +484,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="pointeraspen-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|pointeraspen">Changes the mouse pointer to a pen which you can use to draw on slides during the presentation.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|pointeraspen">将鼠标指针变为画笔，可在放映时直接在幻灯片上绘制。</property>
                               </object>
                             </child>
                           </object>
@@ -495,7 +495,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="animationsallowed">
-                            <property name="label" translatable="yes" context="presentationdialog|animationsallowed">Enable _animated images</property>
+                            <property name="label" translatable="yes" context="presentationdialog|animationsallowed">播放动态图像(_A)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -503,7 +503,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="animationsallowed-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|animationsallowed">Displays all frames of animated GIF files during the slide show.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|animationsallowed">放映时播放动画 GIF 文件的全部帧。</property>
                               </object>
                             </child>
                           </object>
@@ -514,7 +514,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="alwaysontop">
-                            <property name="label" translatable="yes" context="presentationdialog|alwaysontop">Keep Presentation always _on top</property>
+                            <property name="label" translatable="yes" context="presentationdialog|alwaysontop">放映窗口始终置顶(_O)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -522,7 +522,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="alwaysontop-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|alwaysontop">The Impress window remains on top during the presentation. No other program will show its window in front of your presentation.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|alwaysontop">放映期间 Impress 窗口保持在最前，其他程序窗口不会覆盖放映内容。</property>
                               </object>
                             </child>
                           </object>
@@ -533,7 +533,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="enableinteractivemode">
-                            <property name="label" translatable="yes" context="presentationdialog|enableinteractivemode">Live-mode slideshow editing</property>
+                            <property name="label" translatable="yes" context="presentationdialog|enableinteractivemode">放映时保持可编辑(_E)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -541,7 +541,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="enableinteractivemode-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|enableinteractivemode">The Impress main document window remains active during the presentation. Users can continue editing slide content, which will be reflected in the running slideshow.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|enableinteractivemode">放映时 Impress 主文档窗口保持活动，用户可继续编辑幻灯片内容，修改会反映到正在运行的放映中。</property>
                               </object>
                             </child>
                           </object>
@@ -556,7 +556,7 @@
                       <object class="GtkLabel" id="label4">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="presentationdialog|label4">Presentation Options</property>
+                        <property name="label" translatable="yes" context="presentationdialog|label4">放映选项</property>
                         <attributes>
                           <attribute name="weight" value="bold"/>
                         </attributes>
@@ -607,7 +607,7 @@
                             <property name="hexpand">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="presdisplay_cb-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|presdisplay_cb">Select a display to use for full screen slide show mode.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|presdisplay_cb">选择全屏放映要使用的显示器。</property>
                               </object>
                             </child>
                           </object>
@@ -620,7 +620,7 @@
                           <object class="GtkLabel" id="presdisplay_label">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
-                            <property name="label" translatable="yes" context="presentationdialog|presdisplay_label">P_resentation display:</property>
+                            <property name="label" translatable="yes" context="presentationdialog|presdisplay_label">放映显示器(_R)：</property>
                             <property name="use-underline">True</property>
                             <property name="mnemonic-widget">presdisplay_cb</property>
                             <property name="xalign">0</property>
@@ -637,9 +637,9 @@
                             <property name="hexpand">True</property>
                             <property name="active">0</property>
                             <items>
-                              <item id="0" translatable="yes" context="presentationdialog|console_cb">Full screen</item>
-                              <item id="1" translatable="yes" context="presentationdialog|console_cb">Windowed</item>
-                              <item id="2" translatable="yes" context="presentationdialog|console_cb">Disabled</item>
+                              <item id="0" translatable="yes" context="presentationdialog|console_cb">全屏</item>
+                              <item id="1" translatable="yes" context="presentationdialog|console_cb">窗口</item>
+                              <item id="2" translatable="yes" context="presentationdialog|console_cb">禁用</item>
                             </items>
                           </object>
                           <packing>
@@ -651,7 +651,7 @@
                           <object class="GtkLabel" id="console_label">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
-                            <property name="label" translatable="yes" context="presentationdialog|console_label">Presenter console:</property>
+                            <property name="label" translatable="yes" context="presentationdialog|console_label">演讲者控制台(_N)：</property>
                             <property name="use-underline">True</property>
                             <property name="mnemonic-widget">console_cb</property>
                             <property name="xalign">0</property>
@@ -663,11 +663,11 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="shownavigationbutton">
-                            <property name="label" translatable="yes" context="presentationdialog|shownavigationbutton">Show navigation bar</property>
+                            <property name="label" translatable="yes" context="presentationdialog|shownavigationbutton">显示导航栏(_B)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
-                            <property name="tooltip-text" translatable="yes" context="presentationdialog|shownavigationbutton|tooltip_text">Show navigation bar at the bottom of the presentation</property>
+                            <property name="tooltip-text" translatable="yes" context="presentationdialog|shownavigationbutton|tooltip_text">在放映底部显示导航栏</property>
                             <property name="use-underline">True</property>
                             <property name="draw-indicator">True</property>
                           </object>
@@ -683,7 +683,10 @@
                             <property name="can-focus">False</property>
                             <property name="halign">start</property>
                             <property name="margin-start">24</property>
-                            <property name="label" translatable="yes" context="presentationdialog|navbar_btn_size_label">Buttons size:</property>
+                            <property name="label" translatable="yes" context="presentationdialog|navbar_btn_size_label">按钮大小：</property>
+                            <accessibility>
+                              <relation type="label-for" target="navigation_buttons_size_cb"/>
+                            </accessibility>
                           </object>
                           <packing>
                             <property name="left-attach">0</property>
@@ -696,16 +699,19 @@
                             <property name="can-focus">False</property>
                             <property name="hexpand">True</property>
                             <items>
-                              <item translatable="yes" context="presentationdialog|navigation_buttons_size_cb">Automatic</item>
-                              <item translatable="yes" context="presentationdialog|navigation_buttons_size_cb">Small</item>
-                              <item translatable="yes" context="presentationdialog|navigation_buttons_size_cb">Large</item>
-                              <item translatable="yes" context="presentationdialog|navigation_buttons_size_cb">Extra Large</item>
+                              <item translatable="yes" context="presentationdialog|navigation_buttons_size_cb">自动</item>
+                              <item translatable="yes" context="presentationdialog|navigation_buttons_size_cb">小</item>
+                              <item translatable="yes" context="presentationdialog|navigation_buttons_size_cb">大</item>
+                              <item translatable="yes" context="presentationdialog|navigation_buttons_size_cb">特大</item>
                             </items>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="navigation_buttons_size_cb-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip | iconsize">Specifies the display size of navigation bar icons.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip | iconsize">指定导航栏图标的显示大小。</property>
                               </object>
                             </child>
+                            <accessibility>
+                              <relation type="labelled-by" target="navbar_btn_size_label"/>
+                            </accessibility>
                           </object>
                           <packing>
                             <property name="left-attach">1</property>
@@ -725,7 +731,7 @@
                         <child>
                           <object class="GtkLabel" id="externalmonitor_str">
                             <property name="can-focus">False</property>
-                            <property name="label" translatable="yes" context="presentationdialog|externalmonitor_str">Display %1 (external)</property>
+                            <property name="label" translatable="yes" context="presentationdialog|externalmonitor_str">显示器 %1（外接）</property>
                           </object>
                           <packing>
                             <property name="left-attach">0</property>
@@ -735,7 +741,7 @@
                         <child>
                           <object class="GtkLabel" id="monitor_str">
                             <property name="can-focus">False</property>
-                            <property name="label" translatable="yes" context="presentationdialog|monitor_str">Display %1</property>
+                            <property name="label" translatable="yes" context="presentationdialog|monitor_str">显示器 %1</property>
                           </object>
                           <packing>
                             <property name="left-attach">0</property>
@@ -745,7 +751,7 @@
                         <child>
                           <object class="GtkLabel" id="allmonitors_str">
                             <property name="can-focus">False</property>
-                            <property name="label" translatable="yes" context="presentationdialog|allmonitors_str">All displays</property>
+                            <property name="label" translatable="yes" context="presentationdialog|allmonitors_str">所有显示器</property>
                           </object>
                           <packing>
                             <property name="left-attach">0</property>
@@ -755,7 +761,7 @@
                         <child>
                           <object class="GtkLabel" id="external_str">
                             <property name="can-focus">False</property>
-                            <property name="label" translatable="yes" context="presentationdialog|external_str">Auto External (Display %1)</property>
+                            <property name="label" translatable="yes" context="presentationdialog|external_str">自动外接（显示器 %1）</property>
                           </object>
                           <packing>
                             <property name="left-attach">0</property>
@@ -774,7 +780,7 @@
                   <object class="GtkLabel" id="label3">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="presentationdialog|label3">Display</property>
+                    <property name="label" translatable="yes" context="presentationdialog|label3">显示</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -805,7 +811,7 @@
                     <property name="vexpand">True</property>
                     <child>
                       <object class="GtkCheckButton" id="enableremote">
-                        <property name="label" translatable="yes" context="presentationdialog|enableremote">Enable remote control</property>
+                        <property name="label" translatable="yes" context="presentationdialog|enableremote">启用遥控(_R)</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -819,15 +825,15 @@
                     </child>
                     <child>
                       <object class="GtkLinkButton" id="learnmore">
-                        <property name="label" translatable="yes" context="presentationdialog|learnmore">Download App ...</property>
-                        <property name="visible">True</property>
+                        <property name="label" translatable="yes" context="presentationdialog|learnmore">打开遥控应用页面…</property>
+                        <property name="visible">False</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="tooltip-text" translatable="yes" context="presentationdialog|learnmore|tooltip_text">Download LibreOffice Impress Remote to remotely control the presentation from your smartphone or smartwatch.</property>
+                        <property name="tooltip-text" translatable="yes" context="presentationdialog|learnmore|tooltip_text">在浏览器中打开演示遥控应用页面，可在手机或手表上远程控制放映。</property>
                         <property name="halign">end</property>
                         <property name="hexpand">True</property>
                         <property name="relief">none</property>
-                        <property name="uri">https://hub.libreoffice.org/impress-remote</property>
+                        <property name="uri"></property>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -836,11 +842,11 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="enableremoteinsecure">
-                        <property name="label" translatable="yes" context="presentationdialog|enableremoteinsecure">Enable insecure WiFi connections</property>
+                        <property name="label" translatable="yes" context="presentationdialog|enableremoteinsecure">启用不安全的 Wi-Fi 连接(_I)</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
-                        <property name="tooltip-text" translatable="yes" context="presentationdialog|enableremoteinsecure|tooltip_text">In addition to Bluetooth connections, enable insecure and unencrypted connections via IP on all network interfaces. Not recommended in public settings.</property>
+                        <property name="tooltip-text" translatable="yes" context="presentationdialog|enableremoteinsecure|tooltip_text">除蓝牙连接外，还允许通过 IP 在所有网络接口上建立未加密连接。公共网络环境下不建议启用。</property>
                         <property name="use-underline">True</property>
                         <property name="draw-indicator">True</property>
                       </object>
@@ -858,7 +864,7 @@
                   <object class="GtkLabel" id="label5">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="presentationdialog|label3">Remote control</property>
+                    <property name="label" translatable="yes" context="presentationdialog|label3">遥控</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -886,7 +892,7 @@
     </action-widgets>
     <child internal-child="accessible">
       <object class="AtkObject" id="PresentationDialog-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|PresentationDialog">Defines settings for your slide show, including which slide to start from, the way you advance the slides, the type of presentation, and pointer options.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="presentationdialog|extended_tip|PresentationDialog">定义幻灯片放映设置，包括起始幻灯片、切换方式、放映模式和指针选项。</property>
       </object>
     </child>
   </object>

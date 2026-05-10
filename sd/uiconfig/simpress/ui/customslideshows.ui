@@ -13,7 +13,7 @@
   <object class="GtkDialog" id="CustomSlideShows">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="customslideshows|CustomSlideShows">Custom Slide Shows</property>
+    <property name="title" translatable="yes" context="customslideshows|CustomSlideShows">自定义幻灯片放映</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
     <property name="default-height">0</property>
@@ -44,14 +44,14 @@
             </child>
             <child>
               <object class="GtkButton" id="startshow">
-                <property name="label" translatable="yes" context="customslideshows|startshow">_Start</property>
+                <property name="label" translatable="yes" context="customslideshows|startshow">开始(_S)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
                 <property name="use-underline">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="startshow-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="customslideshows|extended_tip|startshow">Runs the slide show. Ensure that a custom slide show is selected if you want to run a custom presentation.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="customslideshows|extended_tip|startshow">运行幻灯片放映。如果要运行自定义放映，请确保已选择一个自定义幻灯片放映。</property>
                   </object>
                 </child>
               </object>
@@ -70,7 +70,7 @@
                 <property name="use-underline">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="ok-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="customslideshows|extended_tip|ok">Saves all changes and closes dialog.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="customslideshows|extended_tip|ok">保存所有更改并关闭对话框。</property>
                   </object>
                 </child>
               </object>
@@ -134,7 +134,7 @@
                         </child>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="customshowlist-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="customslideshows|extended_tip|customshowlist">Lists the custom slide shows that are available.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="customslideshows|extended_tip|customshowlist">列出可用的自定义幻灯片放映。</property>
                           </object>
                         </child>
                       </object>
@@ -171,7 +171,7 @@
                     <property name="use-underline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="new-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="customslideshows|extended_tip|new">Add, remove or reorder slides as well as change the name of the selected custom slide show.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="customslideshows|extended_tip|new">可添加、移除或重新排序幻灯片，也可更改所选自定义幻灯片放映的名称。</property>
                       </object>
                     </child>
                   </object>
@@ -190,7 +190,7 @@
                     <property name="use-underline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="edit-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="customslideshows|extended_tip|edit">Add, remove or reorder slides as well as change the name of the selected custom slide show.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="customslideshows|extended_tip|edit">可添加、移除或重新排序幻灯片，也可更改所选自定义幻灯片放映的名称。</property>
                       </object>
                     </child>
                   </object>
@@ -202,14 +202,14 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="copy">
-                    <property name="label" translatable="yes" context="customslideshows|copy">Cop_y</property>
+                    <property name="label" translatable="yes" context="customslideshows|copy">复制(_Y)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
                     <property name="use-underline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="copy-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="customslideshows|extended_tip|copy">Creates a copy of the selected custom slide show. You can modify the name of the show by clicking Edit.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="customslideshows|extended_tip|copy">创建所选自定义幻灯片放映的副本。可点击“编辑”修改放映名称。</property>
                       </object>
                     </child>
                   </object>
@@ -228,7 +228,7 @@
                     <property name="use-underline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="delete-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="customslideshows|extended_tip|delete">Deletes the selected element or elements without requiring confirmation.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="customslideshows|extended_tip|delete">删除所选元素，且不会要求确认。</property>
                       </object>
                     </child>
                   </object>
@@ -261,7 +261,7 @@
     </action-widgets>
     <child internal-child="accessible">
       <object class="AtkObject" id="CustomSlideShows-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="customslideshows|extended_tip|CustomSlideShows">Defines a custom slide show using slides within the current presentation. You can then pick slides to meet the needs of your audience. You can create as many custom slide shows as you want.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="customslideshows|extended_tip|CustomSlideShows">使用当前演示文稿中的幻灯片定义自定义幻灯片放映。可按观众需要挑选幻灯片，并可创建任意数量的自定义放映。</property>
       </object>
     </child>
   </object>

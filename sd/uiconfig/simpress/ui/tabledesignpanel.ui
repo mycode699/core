@@ -21,7 +21,7 @@
         <property name="column-spacing">12</property>
         <child>
           <object class="GtkCheckButton" id="UseFirstRowStyle">
-            <property name="label" translatable="yes" context="tabledesignpanel|UseFirstRowStyle">_Header row</property>
+            <property name="label" translatable="yes" context="tabledesignpanel|UseFirstRowStyle">标题行(_H)</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">False</property>
@@ -35,7 +35,7 @@
         </child>
         <child>
           <object class="GtkCheckButton" id="UseLastRowStyle">
-            <property name="label" translatable="yes" context="tabledesignpanel|UseLastRowStyle">Tot_al row</property>
+            <property name="label" translatable="yes" context="tabledesignpanel|UseLastRowStyle">汇总行(_A)</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">False</property>
@@ -49,7 +49,7 @@
         </child>
         <child>
           <object class="GtkCheckButton" id="UseBandingRowStyle">
-            <property name="label" translatable="yes" context="tabledesignpanel|UseBandingRowStyle">_Banded rows</property>
+            <property name="label" translatable="yes" context="tabledesignpanel|UseBandingRowStyle">镶边行(_B)</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">False</property>
@@ -63,7 +63,7 @@
         </child>
         <child>
           <object class="GtkCheckButton" id="UseFirstColumnStyle">
-            <property name="label" translatable="yes" context="tabledesignpanel|UseFirstColumnStyle">Fi_rst column</property>
+            <property name="label" translatable="yes" context="tabledesignpanel|UseFirstColumnStyle">首列(_R)</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">False</property>
@@ -77,7 +77,7 @@
         </child>
         <child>
           <object class="GtkCheckButton" id="UseLastColumnStyle">
-            <property name="label" translatable="yes" context="tabledesignpanel|UseLastColumnStyle">_Last column</property>
+            <property name="label" translatable="yes" context="tabledesignpanel|UseLastColumnStyle">末列(_L)</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">False</property>
@@ -91,7 +91,7 @@
         </child>
         <child>
           <object class="GtkCheckButton" id="UseBandingColumnStyle">
-            <property name="label" translatable="yes" context="tabledesignpanel|UseBandingColumnStyle">Ba_nded columns</property>
+            <property name="label" translatable="yes" context="tabledesignpanel|UseBandingColumnStyle">镶边列(_N)</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">False</property>
@@ -149,7 +149,7 @@
       <object class="GtkMenuItem" id="new">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="tabledesignpanel|menunew">New</property>
+        <property name="label" translatable="yes" context="tabledesignpanel|menunew">新建</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -157,7 +157,7 @@
       <object class="GtkMenuItem" id="clone">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="tabledesignpanel|menuclone">Clone</property>
+        <property name="label" translatable="yes" context="tabledesignpanel|menuclone">克隆</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -165,7 +165,7 @@
       <object class="GtkMenuItem" id="delete">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="tabledesignpanel|menudelete">Delete</property>
+        <property name="label" translatable="yes" context="tabledesignpanel|menudelete">删除</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -173,7 +173,7 @@
       <object class="GtkMenuItem" id="reset">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="tabledesignpanel|menureset">Reset</property>
+        <property name="label" translatable="yes" context="tabledesignpanel|menureset">重置</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -181,7 +181,7 @@
       <object class="GtkMenuItem" id="format">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="tabledesignpanel|menuformat">Format</property>
+        <property name="label" translatable="yes" context="tabledesignpanel|menuformat">格式</property>
         <property name="use-underline">True</property>
         <child type="submenu">
           <object class="GtkMenu" id="menu1">
@@ -191,7 +191,7 @@
               <object class="GtkMenuItem" id="first-row">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="tabledesignpanel|menufirstrow">Header row...</property>
+                <property name="label" translatable="yes" context="tabledesignpanel|menufirstrow">标题行...</property>
                 <property name="use-underline">True</property>
               </object>
             </child>
@@ -199,7 +199,7 @@
               <object class="GtkMenuItem" id="last-row">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="tabledesignpanel|menulastrow">Total row...</property>
+                <property name="label" translatable="yes" context="tabledesignpanel|menulastrow">汇总行...</property>
                 <property name="use-underline">True</property>
               </object>
             </child>
@@ -207,7 +207,7 @@
               <object class="GtkMenuItem" id="odd-rows">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="tabledesignpanel|menuoddrows">Banded rows...</property>
+                <property name="label" translatable="yes" context="tabledesignpanel|menuoddrows">镶边行...</property>
                 <property name="use-underline">True</property>
               </object>
             </child>
@@ -221,7 +221,7 @@
               <object class="GtkMenuItem" id="first-column">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="tabledesignpanel|menufirstcolumn">First column...</property>
+                <property name="label" translatable="yes" context="tabledesignpanel|menufirstcolumn">首列...</property>
                 <property name="use-underline">True</property>
               </object>
             </child>
@@ -229,7 +229,7 @@
               <object class="GtkMenuItem" id="last-column">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="tabledesignpanel|menulastcolumn">Last column...</property>
+                <property name="label" translatable="yes" context="tabledesignpanel|menulastcolumn">末列...</property>
                 <property name="use-underline">True</property>
               </object>
             </child>
@@ -237,7 +237,7 @@
               <object class="GtkMenuItem" id="odd-columns">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="tabledesignpanel|menuoddcolumns">Banded columns...</property>
+                <property name="label" translatable="yes" context="tabledesignpanel|menuoddcolumns">镶边列...</property>
                 <property name="use-underline">True</property>
               </object>
             </child>
@@ -251,7 +251,7 @@
               <object class="GtkMenuItem" id="body">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="tabledesignpanel|menubody">Other cells...</property>
+                <property name="label" translatable="yes" context="tabledesignpanel|menubody">其他单元格...</property>
                 <property name="use-underline">True</property>
               </object>
             </child>

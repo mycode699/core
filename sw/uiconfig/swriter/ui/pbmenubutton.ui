@@ -14,7 +14,7 @@
       <object class="GtkMenuItem" id="edit">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes" context="pagebreakmenu|edit">Edit Page Break...</property>
+        <property name="label" translatable="yes" context="pagebreakmenu|edit">编辑分页符...</property>
         <property name="use_underline">True</property>
       </object>
     </child>
@@ -22,7 +22,7 @@
       <object class="GtkMenuItem" id="delete">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes" context="pagebreakmenu|delete">Delete Page Break</property>
+        <property name="label" translatable="yes" context="pagebreakmenu|delete">删除分页符</property>
         <property name="use_underline">True</property>
       </object>
     </child>

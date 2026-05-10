@@ -244,6 +244,7 @@ $(eval $(call gb_Library_add_exception_objects,sw,\
     sw/source/core/doc/ftnidx \
     sw/source/core/doc/gctable \
     sw/source/core/doc/htmltbl \
+    sw/source/core/doc/IntelligentWriterAnalyzer \
     sw/source/core/doc/lineinfo \
     sw/source/core/doc/list \
     sw/source/core/doc/notxtfrm \

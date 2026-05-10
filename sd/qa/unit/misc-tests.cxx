@@ -10,6 +10,7 @@
 #include <officecfg/Office/Common.hxx>
 
 #include "sdmodeltestbase.hxx"
+#include <PresentationOutline.hxx>
 
 #include <com/sun/star/uno/Reference.hxx>
 
@@ -51,6 +52,7 @@
 #include <vcl/event.hxx>
 #include <vcl/keycodes.hxx>
 #include <svx/svdoashp.hxx>
+#include <svx/svdotext.hxx>
 #include <tools/gen.hxx>
 #include <svx/view3d.hxx>
 #include <svx/scene3d.hxx>
@@ -61,6 +63,18 @@
 #include <unomodel.hxx>
 
 using namespace ::com::sun::star;
+
+namespace
+{
+OUString GetPresentationObjectText(SdPage& rPage, PresObjKind eKind, int nIndex = 1)
+{
+    SdrTextObj* pTextObject = DynCastSdrTextObj(rPage.GetPresObj(eKind, nIndex));
+    CPPUNIT_ASSERT(pTextObject);
+    const OutlinerParaObject* pOutlinerObject = pTextObject->GetOutlinerParaObject();
+    CPPUNIT_ASSERT(pOutlinerObject);
+    return pOutlinerObject->GetTextObject().GetText(LINEEND_LF);
+}
+}
 
 /// Impress miscellaneous tests.
 class SdMiscTest : public SdModelTestBase
@@ -98,6 +112,8 @@ public:
     void testPageBackgroundImages();
     void testCanvasSlideExportODP();
     void testDuplicateAndMove();
+    void testPresentationOutlineBuilder();
+    void testPresentationOutlineBuilderValidation();
 
     CPPUNIT_TEST_SUITE(SdMiscTest);
     CPPUNIT_TEST(testTdf99396_UndoCellVerticalAlignment);
@@ -127,6 +143,8 @@ public:
     CPPUNIT_TEST(testPageBackgroundImages);
     CPPUNIT_TEST(testCanvasSlideExportODP);
     CPPUNIT_TEST(testDuplicateAndMove);
+    CPPUNIT_TEST(testPresentationOutlineBuilder);
+    CPPUNIT_TEST(testPresentationOutlineBuilderValidation);
     CPPUNIT_TEST_SUITE_END();
 };
 
@@ -1284,6 +1302,113 @@ void SdMiscTest::testDuplicateAndMove()
     // - Expected: 25200x2630@(1400,628)
     // - Actual  : 19799x11137@(600,2257)
     CPPUNIT_ASSERT_EQUAL(pFirstPage->GetObj(0)->GetSnapRect(), pLastPage->GetObj(0)->GetSnapRect());
+}
+
+void SdMiscTest::testPresentationOutlineBuilder()
+{
+    createSdImpressDoc();
+    SdXImpressDocument* pXImpressDocument = dynamic_cast<SdXImpressDocument*>(mxComponent.get());
+    CPPUNIT_ASSERT(pXImpressDocument);
+    SdDrawDocument* pDocument = pXImpressDocument->GetDoc();
+    CPPUNIT_ASSERT(pDocument);
+
+    sd::intelligent::PresentationOutline aOutline;
+    sd::intelligent::PresentationOutlineSlide aTitleSlide;
+    aTitleSlide.maTitleZh = u"周报汇报草稿"_ustr;
+    aTitleSlide.meLayout = sd::intelligent::PresentationOutlineLayout::Title;
+    aTitleSlide.maPlaceholders.push_back({ sd::intelligent::PresentationOutlinePlaceholderIntent::Title,
+                                           true, OUString() });
+    aOutline.maSlides.push_back(aTitleSlide);
+
+    sd::intelligent::PresentationOutlineSlide aBodySlide;
+    aBodySlide.maTitleZh = u"本周进展"_ustr;
+    aBodySlide.meLayout = sd::intelligent::PresentationOutlineLayout::TitleBody;
+    aBodySlide.maBullets.push_back({ u"完成兼容性冒烟验证"_ustr, 1, OUString() });
+    aBodySlide.maBullets.push_back({ u"补充智能办公契约测试"_ustr, 2, OUString() });
+    aBodySlide.maPlaceholders.push_back({ sd::intelligent::PresentationOutlinePlaceholderIntent::Title,
+                                          true, OUString() });
+    aBodySlide.maPlaceholders.push_back({ sd::intelligent::PresentationOutlinePlaceholderIntent::Body,
+                                          true, OUString() });
+    aOutline.maSlides.push_back(aBodySlide);
+
+    sd::intelligent::PresentationOutlineBuildResult aResult
+        = sd::intelligent::BuildPresentationFromOutline(*pDocument, aOutline);
+
+    CPPUNIT_ASSERT(aResult.mbSuccess);
+    CPPUNIT_ASSERT_EQUAL(sal_uInt16(2), aResult.mnSlideCountCreated);
+    CPPUNIT_ASSERT(aResult.mbPlaceholdersMaterialized);
+    CPPUNIT_ASSERT(!aResult.mbSpeakerNotesMaterialized);
+    CPPUNIT_ASSERT_EQUAL(size_t(0), aResult.maDiagnostics.size());
+    CPPUNIT_ASSERT_EQUAL(sal_uInt16(2), pDocument->GetSdPageCount(PageKind::Standard));
+
+    SdPage* pFirstPage = pDocument->GetSdPage(0, PageKind::Standard);
+    CPPUNIT_ASSERT(pFirstPage);
+    CPPUNIT_ASSERT_EQUAL(u"周报汇报草稿"_ustr,
+                         GetPresentationObjectText(*pFirstPage, PresObjKind::Title));
+
+    SdPage* pSecondPage = pDocument->GetSdPage(1, PageKind::Standard);
+    CPPUNIT_ASSERT(pSecondPage);
+    CPPUNIT_ASSERT_EQUAL(u"本周进展"_ustr,
+                         GetPresentationObjectText(*pSecondPage, PresObjKind::Title));
+    CPPUNIT_ASSERT_EQUAL(u"完成兼容性冒烟验证\n  补充智能办公契约测试"_ustr,
+                         GetPresentationObjectText(*pSecondPage, PresObjKind::Outline));
+}
+
+void SdMiscTest::testPresentationOutlineBuilderValidation()
+{
+    createSdImpressDoc();
+    SdXImpressDocument* pXImpressDocument = dynamic_cast<SdXImpressDocument*>(mxComponent.get());
+    CPPUNIT_ASSERT(pXImpressDocument);
+    SdDrawDocument* pDocument = pXImpressDocument->GetDoc();
+    CPPUNIT_ASSERT(pDocument);
+
+    sd::intelligent::PresentationOutline aEmptyOutline;
+    sd::intelligent::PresentationOutlineBuildResult aEmptyResult
+        = sd::intelligent::BuildPresentationFromOutline(*pDocument, aEmptyOutline);
+    CPPUNIT_ASSERT(!aEmptyResult.mbSuccess);
+    CPPUNIT_ASSERT_EQUAL(size_t(1), aEmptyResult.maDiagnostics.size());
+    CPPUNIT_ASSERT_EQUAL(sd::intelligent::PresentationOutlineDiagnostic::ZeroSlides,
+                         aEmptyResult.maDiagnostics[0]);
+
+    sd::intelligent::PresentationOutline aInvalidOutline;
+    sd::intelligent::PresentationOutlineSlide aInvalidSlide;
+    aInvalidSlide.maTitleZh = u"缺少标题占位"_ustr;
+    aInvalidSlide.meLayout = sd::intelligent::PresentationOutlineLayout::TitleBody;
+    aInvalidSlide.maPlaceholders.push_back({ sd::intelligent::PresentationOutlinePlaceholderIntent::Body,
+                                             true, OUString() });
+    aInvalidOutline.maSlides.push_back(aInvalidSlide);
+
+    sd::intelligent::PresentationOutlineBuildResult aInvalidResult
+        = sd::intelligent::BuildPresentationFromOutline(*pDocument, aInvalidOutline);
+    CPPUNIT_ASSERT(!aInvalidResult.mbSuccess);
+    CPPUNIT_ASSERT_EQUAL(size_t(1), aInvalidResult.maDiagnostics.size());
+    CPPUNIT_ASSERT_EQUAL(sd::intelligent::PresentationOutlineDiagnostic::MissingTitlePlaceholder,
+                         aInvalidResult.maDiagnostics[0]);
+    CPPUNIT_ASSERT_EQUAL(u"missing-title-placeholder"_ustr,
+                         sd::intelligent::GetPresentationOutlineDiagnosticName(
+                             aInvalidResult.maDiagnostics[0]));
+
+    sd::intelligent::PresentationOutline aNotesOutline;
+    sd::intelligent::PresentationOutlineSlide aNotesSlide;
+    aNotesSlide.maTitleZh = u"含演讲备注"_ustr;
+    aNotesSlide.meLayout = sd::intelligent::PresentationOutlineLayout::TitleBody;
+    aNotesSlide.maNotesZh = u"备注暂不写入幻灯片"_ustr;
+    aNotesSlide.maPlaceholders.push_back({ sd::intelligent::PresentationOutlinePlaceholderIntent::Title,
+                                           true, OUString() });
+    aNotesSlide.maPlaceholders.push_back({ sd::intelligent::PresentationOutlinePlaceholderIntent::Body,
+                                           true, OUString() });
+    aNotesOutline.maSlides.push_back(aNotesSlide);
+
+    sd::intelligent::PresentationOutlineBuildResult aNotesResult
+        = sd::intelligent::BuildPresentationFromOutline(*pDocument, aNotesOutline);
+    CPPUNIT_ASSERT(aNotesResult.mbSuccess);
+    CPPUNIT_ASSERT(!aNotesResult.mbSpeakerNotesMaterialized);
+    CPPUNIT_ASSERT_EQUAL(size_t(1), aNotesResult.maDiagnostics.size());
+    CPPUNIT_ASSERT_EQUAL(sd::intelligent::PresentationOutlineDiagnostic::SpeakerNotesUnsupported,
+                         aNotesResult.maDiagnostics[0]);
+    CPPUNIT_ASSERT_EQUAL(u"speaker-notes-unsupported"_ustr,
+                         sd::intelligent::GetPresentationOutlineDiagnosticName(
+                             aNotesResult.maDiagnostics[0]));
 }
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SdMiscTest);

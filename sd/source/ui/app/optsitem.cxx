@@ -175,7 +175,7 @@ SdOptionsMisc::SdOptionsMisc( bool bImpress, bool bUseConfig ) :
                       OUString() ),
     nDefaultObjectSizeWidth(8000),
     nDefaultObjectSizeHeight(5000),
-    bStartWithTemplate( false ),
+    bStartWithTemplate( bImpress ),
     bMarkedHitMovesAlways( true ),
     bMoveOnlyDragging( false ),
     bCrookNoContortion( false ),

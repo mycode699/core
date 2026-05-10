@@ -37,9 +37,9 @@
                 <property name="can-focus">False</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
-                <property name="label" translatable="yes" context="pmintropage|STR_INTRODUCTION_T">The Presentation Minimizer is used to reduce the file size of the current presentation. Images will be compressed and data, that is no longer needed, will be removed.
+                <property name="label" translatable="yes" context="pmintropage|STR_INTRODUCTION_T">演示文稿精简器用于降低当前演示文件体积。它会压缩图片，并移除不再需要的数据。
 
-        At the last step of the wizard you can choose to apply the changes to the current presentation or to create an optimized new version of the presentation.</property>
+        在向导最后一步，你可以选择直接应用到当前演示文稿，或另存为优化后的新版本。</property>
                 <property name="wrap">True</property>
                 <property name="width-chars">58</property>
                 <property name="max-width-chars">58</property>
@@ -70,7 +70,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="STR_REMOVE">
-                    <property name="label" translatable="yes" context="pmintropage:STR_REMOVE">_Delete</property>
+                    <property name="label" translatable="yes" context="pmintropage:STR_REMOVE">删除(_D)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
@@ -92,7 +92,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="pmintropage|STR_CHOSE_SETTINGS">_Choose settings for Presentation Minimizer</property>
+                <property name="label" translatable="yes" context="pmintropage|STR_CHOSE_SETTINGS">选择演示文稿精简设置(_C)</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">LB_SETTINGS</property>
               </object>
@@ -117,7 +117,7 @@
           <object class="GtkLabel" id="STR_INTRODUCTION">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="pmintropage|STR_INTRODUCTION">Introduction</property>
+            <property name="label" translatable="yes" context="pmintropage|STR_INTRODUCTION">演示文稿精简</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>

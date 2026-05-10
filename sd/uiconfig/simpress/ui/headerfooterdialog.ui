@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="HeaderFooterDialog">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
-    <property name="title" translatable="yes" context="headerfooterdialog|HeaderFooterDialog">Header and Footer</property>
+    <property name="title" translatable="yes" context="headerfooterdialog|HeaderFooterDialog">页眉和页脚</property>
     <property name="modal">True</property>
     <property name="default_width">0</property>
     <property name="default_height">0</property>
@@ -21,7 +21,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="apply_all">
-                <property name="label" translatable="yes" context="headerfooterdialog|apply_all">Appl_y to All</property>
+                <property name="label" translatable="yes" context="headerfooterdialog|apply_all">应用到全部(_Y)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -142,7 +142,7 @@
               <object class="GtkLabel" id="slides">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes" context="headerfooterdialog|slides">Slides</property>
+                <property name="label" translatable="yes" context="headerfooterdialog|slides">幻灯片</property>
               </object>
               <packing>
                 <property name="tab_fill">False</property>
@@ -189,7 +189,7 @@
               <object class="GtkLabel" id="notes">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes" context="headerfooterdialog|notes">Notes and Handouts</property>
+                <property name="label" translatable="yes" context="headerfooterdialog|notes">备注和讲义</property>
               </object>
               <packing>
                 <property name="position">1</property>
