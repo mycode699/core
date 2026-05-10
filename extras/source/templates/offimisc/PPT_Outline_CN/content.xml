@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document-content xmlns:css3t="http://www.w3.org/TR/css3-text/" xmlns:grddl="http://www.w3.org/2003/g/data-view#" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:drawooo="http://openoffice.org/2010/draw" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2" xmlns:tableooo="http://openoffice.org/2009/table" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:rpt="http://openoffice.org/2005/report" xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:officeooo="http://openoffice.org/2009/office" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0" office:version="1.3">
+  <office:body>
+    <office:text>
+      <text:sequence-decls>
+        <text:sequence-decl text:display-outline-level="0" text:name="Illustration"/>
+        <text:sequence-decl text:display-outline-level="0" text:name="Table"/>
+        <text:sequence-decl text:display-outline-level="0" text:name="Text"/>
+        <text:sequence-decl text:display-outline-level="0" text:name="Drawing"/>
+        <text:sequence-decl text:display-outline-level="0" text:name="Figure"/>
+      </text:sequence-decls>
+      <text:p text:style-name="Title">PPT 提纲初稿</text:p>
+      <text:p text:style-name="Subtitle">适用于汇报、提案、复盘与教学演示文稿的快速起稿</text:p>
+      <text:p text:style-name="Text_20_body">使用说明：用“标题 1”填写每页标题，用“标题 2 / 标题 3”填写要点和子要点；完成后选择“文件 &gt; 根据标题生成 PPT 初稿”。</text:p>
+      <text:p text:style-name="First_20_line_20_indent">以下内容是常用演示结构示例，可直接改写、复制或删除，再一键生成演示文稿框架。</text:p>
+      <text:h text:style-name="Heading_20_1" text:outline-level="1">一、封面与主题</text:h>
+      <text:h text:style-name="Heading_20_2" text:outline-level="2">项目名称 / 方案名称</text:h>
+      <text:h text:style-name="Heading_20_2" text:outline-level="2">汇报人 / 部门 / 日期</text:h>
+      <text:h text:style-name="Heading_20_1" text:outline-level="1">二、现状与问题</text:h>
+      <text:h text:style-name="Heading_20_2" text:outline-level="2">业务背景与当前状态</text:h>
+      <text:h text:style-name="Heading_20_2" text:outline-level="2">关键痛点与影响</text:h>
+      <text:h text:style-name="Heading_20_2" text:outline-level="2">数据、案例或用户反馈</text:h>
+      <text:h text:style-name="Heading_20_1" text:outline-level="1">三、目标与方案</text:h>
+      <text:h text:style-name="Heading_20_2" text:outline-level="2">本次汇报的核心目标</text:h>
+      <text:h text:style-name="Heading_20_2" text:outline-level="2">解决思路与总体框架</text:h>
+      <text:h text:style-name="Heading_20_3" text:outline-level="3">关键模块 / 关键动作</text:h>
+      <text:h text:style-name="Heading_20_1" text:outline-level="1">四、计划与资源</text:h>
+      <text:h text:style-name="Heading_20_2" text:outline-level="2">时间安排与里程碑</text:h>
+      <text:h text:style-name="Heading_20_2" text:outline-level="2">人员分工与协作方式</text:h>
+      <text:h text:style-name="Heading_20_2" text:outline-level="2">风险点与应对措施</text:h>
+      <text:h text:style-name="Heading_20_1" text:outline-level="1">五、结论与行动</text:h>
+      <text:h text:style-name="Heading_20_2" text:outline-level="2">预期收益 / 关键结果</text:h>
+      <text:h text:style-name="Heading_20_2" text:outline-level="2">需要确认的决策事项</text:h>
+      <text:h text:style-name="Heading_20_2" text:outline-level="2">下一步行动计划</text:h>
+    </office:text>
+  </office:body>
+</office:document-content>
