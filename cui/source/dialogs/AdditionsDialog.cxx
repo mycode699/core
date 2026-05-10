@@ -17,6 +17,7 @@
 
 #include <AdditionsDialog.hxx>
 #include <dialmgr.hxx>
+#include <officecfg/Office/ExtensionManager.hxx>
 #include <strings.hrc>
 
 #include <o3tl/test_info.hxx>
@@ -72,6 +73,21 @@ using namespace ::com::sun::star::beans;
 
 namespace
 {
+OUString lclGetAdditionsCatalogURL(const OUString& rTag)
+{
+    OUString sCatalogBase
+        = officecfg::Office::ExtensionManager::ExtensionRepositories::CatalogURLBase::get();
+    if (sCatalogBase.isEmpty())
+        return {};
+
+    if (!sCatalogBase.endsWith("/"))
+        sCatalogBase += "/";
+
+    OUString sEncodedURLPart = INetURLObject::encode(rTag, INetURLObject::PART_PCHAR,
+                                                     INetURLObject::EncodeMechanism::All);
+    return sCatalogBase + sEncodedURLPart + ".json";
+}
+
 // Gets the content of the given URL and returns as a standard string
 std::string ucbGet(const OUString& rURL, const css::uno::Reference<css::awt::XWindow>& xParentWin)
 {
@@ -490,11 +506,7 @@ AdditionsDialog::AdditionsDialog(weld::Window* pParent, const OUString& sAdditio
         sTag = "allextensions"; // Means empty parameter
     }
 
-    OUString sEncodedURLPart = INetURLObject::encode(sTag, INetURLObject::PART_PCHAR,
-                                                     INetURLObject::EncodeMechanism::All);
-
-    //FIXME: Temporary URL - v0 is not using actual api
-    m_sURL = "https://extensions.libreoffice.org/api/v0/" + sEncodedURLPart + ".json";
+    m_sURL = lclGetAdditionsCatalogURL(sTag);
 
     m_xExtensionManager
         = deployment::ExtensionManager::get(::comphelper::getProcessComponentContext());
@@ -504,8 +516,11 @@ AdditionsDialog::AdditionsDialog(weld::Window* pParent, const OUString& sAdditio
     m_searchOptions.transliterateFlags |= TransliterationFlags::IGNORE_CASE;
     m_searchOptions.searchFlag |= (css::util::SearchFlags::REG_NOT_BEGINOFLINE
                                    | css::util::SearchFlags::REG_NOT_ENDOFLINE);
-    m_pSearchThread = new SearchAndParseThread(this, true);
-    m_pSearchThread->launch();
+    if (!m_sURL.isEmpty())
+    {
+        m_pSearchThread = new SearchAndParseThread(this, true);
+        m_pSearchThread->launch();
+    }
 }
 
 AdditionsDialog::~AdditionsDialog()
@@ -586,6 +601,8 @@ void AdditionsDialog::RefreshUI()
     ClearList();
     m_nCurrentListItemCount = 0;
     m_nMaxItemCount = MAX_ITEMS_PER_PAGE;
+    if (m_sURL.isEmpty())
+        return;
     m_pSearchThread = new SearchAndParseThread(this, false);
     m_pSearchThread->launch();
 }

@@ -18,7 +18,7 @@
         <property name="spacing">6</property>
         <child>
           <object class="GtkCheckButton" id="checkForbidList">
-            <property name="label" translatable="yes" context="asiantypography|checkForbidList">Apply list of forbidden characters to the beginning and end of lines</property>
+            <property name="label" translatable="yes" context="asiantypography|checkForbidList">启用行首行尾禁排规则</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">False</property>
@@ -34,7 +34,7 @@
         </child>
         <child>
           <object class="GtkCheckButton" id="checkHangPunct">
-            <property name="label" translatable="yes" context="asiantypography|checkHangPunct">Allow hanging punctuation</property>
+            <property name="label" translatable="yes" context="asiantypography|checkHangPunct">允许标点悬挂</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">False</property>
@@ -50,7 +50,7 @@
         </child>
         <child>
           <object class="GtkCheckButton" id="checkApplySpacing">
-            <property name="label" translatable="yes" context="asiantypography|checkApplySpacing">Apply spacing between Asian and non-Asian text</property>
+            <property name="label" translatable="yes" context="asiantypography|checkApplySpacing">自动调整中西文间距</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">False</property>
@@ -70,7 +70,7 @@
       <object class="GtkLabel" id="labelLineChange">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="asiantypography|labelLineChange">Line Change</property>
+        <property name="label" translatable="yes" context="asiantypography|labelLineChange">中文排版换行</property>
         <attributes>
           <attribute name="weight" value="bold"/>
         </attributes>

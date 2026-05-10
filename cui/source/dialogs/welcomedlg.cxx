@@ -9,7 +9,6 @@
 
 #include <welcomedlg.hxx>
 
-#include <whatsnewtabpage.hxx>
 #include <uitabpage.hxx>
 #include "../options/appearance.hxx"
 
@@ -20,17 +19,13 @@
 #include <vcl/weld/Builder.hxx>
 #include <vcl/weld/Notebook.hxx>
 
-#include <sfx2/bindings.hxx>
-#include <sfx2/dispatch.hxx>
-#include <sfx2/sfxsids.hrc>
 #include <sfx2/sfxresid.hxx>
 #include <sfx2/strings.hrc>
 #include <sfx2/viewfrm.hxx>
 #include <vcl/weld/Dialog.hxx>
 
-#include <com/sun/star/frame/XModel3.hpp>
+#include <com/sun/star/beans/PropertyValue.hpp>
 
-constexpr OUString sNewsTab = u"WhatsNewTabPage"_ustr;
 constexpr OUString sUITab = u"UITabPage"_ustr;
 constexpr OUString sAppearanceTab = u"AppearanceTabPage"_ustr;
 
@@ -43,10 +38,10 @@ WelcomeDialog::WelcomeDialog(weld::Window* pParent, const bool bIsFirstStart)
     , m_xResetBtn(m_xBuilder->weld_button(u"reset"_ustr)) // hidden
     , m_xCancelBtn(m_xBuilder->weld_button(u"cancel"_ustr)) // hidden
     , m_xShowAgain(m_xBuilder->weld_check_button(u"cbShowAgain"_ustr))
+    , m_xV2Intro(m_xBuilder->weld_label(u"v2_intro"_ustr))
 {
     m_xDialog->set_title(SfxResId(STR_WELCOME_LINE1));
 
-    AddTabPage(sNewsTab, WhatsNewTabPage::Create, nullptr);
     AddTabPage(sUITab, UITabPage::Create, nullptr);
     AddTabPage(sAppearanceTab, SvxAppearanceTabPage::Create, nullptr);
 
@@ -60,13 +55,13 @@ WelcomeDialog::WelcomeDialog(weld::Window* pParent, const bool bIsFirstStart)
 
     m_xShowAgain->set_visible(!m_bFirstStart);
 
-    m_xTabCtrl->set_current_page(sNewsTab);
-    OnActivatePage(sNewsTab);
+    m_xTabCtrl->set_current_page(sUITab);
+    OnActivatePage(sUITab);
 }
 
 void WelcomeDialog::ImplDestroy()
 {
-    m_xTabCtrl->set_current_page(sNewsTab); // ensure next start with the first page
+    m_xTabCtrl->set_current_page(sUITab); // ensure next start with the first page
     if (!m_xShowAgain->get_active())
     {
         std::shared_ptr<comphelper::ConfigurationChanges> xChanges(
@@ -80,11 +75,7 @@ WelcomeDialog::~WelcomeDialog() { suppress_fun_call_w_exception(ImplDestroy()); 
 
 void WelcomeDialog::PageCreated(const OUString& rId, SfxTabPage& rPage)
 {
-    if (rId == sNewsTab)
-    {
-        rPage.getAdditionalProperties().emplace(u"IsFirstRun"_ustr, css::uno::Any(m_bFirstStart));
-    }
-    else if (rId == sAppearanceTab)
+    if (rId == sAppearanceTab)
     {
         rPage.getAdditionalProperties().emplace(u"HideAdvancedControls"_ustr, css::uno::Any(true));
     }
@@ -92,10 +83,8 @@ void WelcomeDialog::PageCreated(const OUString& rId, SfxTabPage& rPage)
 
 IMPL_LINK(WelcomeDialog, OnActivatePage, const OUString&, rPage, void)
 {
-    if (rPage == sNewsTab)
-        m_xActionBtn->set_label(SfxResId(m_bFirstStart ? STR_CREDITS_BUTTON : STR_WHATSNEW_BUTTON));
-    else
-        m_xActionBtn->set_label(SfxResId(STR_WELCOME_APPLY));
+    m_xActionBtn->set_label(SfxResId(STR_WELCOME_APPLY));
+    m_xActionBtn->set_visible(true);
 
     if (rPage == sAppearanceTab)
         m_xNextBtn->set_label(SfxResId(STR_WELCOME_CLOSE));
@@ -106,8 +95,9 @@ IMPL_LINK(WelcomeDialog, OnActivatePage, const OUString&, rPage, void)
 IMPL_LINK_NOARG(WelcomeDialog, OnNextClick, weld::Button&, void)
 {
     const int nCurrentTabPage(m_xTabCtrl->get_current_page());
+    const int nLastTabPage = m_xTabCtrl->get_n_pages() - 1;
 
-    if (nCurrentTabPage < 2)
+    if (nCurrentTabPage < nLastTabPage)
     {
         m_xTabCtrl->set_current_page(nCurrentTabPage + 1);
         OnActivatePage(m_xTabCtrl->get_page_ident(nCurrentTabPage + 1));
@@ -121,14 +111,6 @@ IMPL_LINK_NOARG(WelcomeDialog, OnActionClick, weld::Button&, void)
     switch (m_xTabCtrl->get_current_page())
     {
         case 0:
-        {
-            SfxViewFrame* pViewFrame = SfxViewFrame::Current();
-            if (pViewFrame)
-                pViewFrame->GetBindings().GetDispatcher()->Execute(m_bFirstStart ? SID_CREDITS
-                                                                                 : SID_WHATSNEW);
-        }
-        break;
-        case 1:
         {
             UITabPage* pUITabPage = static_cast<UITabPage*>(GetCurTabPage());
             OUString sCmd = pUITabPage->GetSelectedMode();
@@ -161,7 +143,7 @@ IMPL_LINK_NOARG(WelcomeDialog, OnActionClick, weld::Button&, void)
             comphelper::dispatchCommand(".uno:ToolbarMode?Mode:string=" + sCmd, {});
         }
         break;
-        case 2:
+        case 1:
         {
             SvxAppearanceTabPage* pAppearanceTabPage
                 = static_cast<SvxAppearanceTabPage*>(GetCurTabPage());

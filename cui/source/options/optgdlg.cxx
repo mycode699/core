@@ -17,7 +17,6 @@
  *   the License at http://www.apache.org/licenses/LICENSE-2.0 .
  */
 
-#include <config_features.h>
 #include <o3tl/untaint.hxx>
 #include <svl/numformat.hxx>
 #include <svl/zforlist.hxx>
@@ -57,10 +56,6 @@
 #include <officecfg/Setup.hxx>
 #include <comphelper/configuration.hxx>
 #include <comphelper/diagnose_ex.hxx>
-#if HAVE_FEATURE_BREAKPAD
-#include <desktop/crashreport.hxx>
-#endif
-
 #include <com/sun/star/configuration/theDefaultProvider.hpp>
 #include <com/sun/star/container/XNameAccess.hpp>
 #include <com/sun/star/container/XHierarchicalNameAccess.hpp>
@@ -160,8 +155,6 @@ OfaMiscTabPage::OfaMiscTabPage(weld::Container* pPage, weld::DialogController* p
     , m_xExtHelpImg(m_xBuilder->weld_widget(u"lockexthelp"_ustr))
     , m_xPopUpNoHelpCB(m_xBuilder->weld_check_button(u"popupnohelp"_ustr))
     , m_xPopUpNoHelpImg(m_xBuilder->weld_widget(u"lockpopupnohelp"_ustr))
-    , m_xShowTipOfTheDay(m_xBuilder->weld_check_button(u"cbShowTipOfTheDay"_ustr))
-    , m_xShowTipOfTheDayImg(m_xBuilder->weld_widget(u"lockcbShowTipOfTheDay"_ustr))
     , m_xFileDlgROImage(m_xBuilder->weld_widget(u"lockimage"_ustr))
     , m_xFileDlgCB(m_xBuilder->weld_check_button(u"filedlg"_ustr))
     , m_xColorDlgROImage(m_xBuilder->weld_widget(u"locksystemcolordialogs"_ustr))
@@ -173,11 +166,6 @@ OfaMiscTabPage::OfaMiscTabPage(weld::Container* pPage, weld::DialogController* p
     , m_xYearValueField(m_xBuilder->weld_spin_button(u"year"_ustr))
     , m_xToYearFT(m_xBuilder->weld_label(u"toyear"_ustr))
     , m_xYearFrameImg(m_xBuilder->weld_widget(u"lockyears"_ustr))
-#if HAVE_FEATURE_BREAKPAD
-    , m_xPrivacyFrame(m_xBuilder->weld_widget("privacyframe"))
-    , m_xCrashReport(m_xBuilder->weld_check_button("crashreport"))
-    , m_xCrashReportImg(m_xBuilder->weld_widget("lockcrashreport"))
-#endif
 #if defined(_WIN32)
     , m_xQuickStarterFrame(m_xBuilder->weld_widget("quickstarter"))
     , m_xQuickLaunchCB(m_xBuilder->weld_check_button("quicklaunch"))
@@ -188,10 +176,6 @@ OfaMiscTabPage::OfaMiscTabPage(weld::Container* pPage, weld::DialogController* p
     , m_xPerformFileExtImg(m_xBuilder->weld_widget("lockcbPerformFileExtCheck"))
 #endif
 {
-#if HAVE_FEATURE_BREAKPAD
-    m_xPrivacyFrame->show();
-#endif
-
 #if defined(_WIN32)
     // Store-packaged apps (located under the protected Program Files\WindowsApps) can't use normal
     // shell shortcuts to their exe. TODO: show a button to open "Startup Apps" system applet?
@@ -230,8 +214,8 @@ OUString OfaMiscTabPage::GetAllStrings()
     }
 
     OUString checkButton[]
-        = { u"exthelp"_ustr,   u"popupnohelp"_ustr, u"cbShowTipOfTheDay"_ustr, u"filedlg"_ustr,
-            u"docstatus"_ustr, u"crashreport"_ustr, u"quicklaunch"_ustr,       u"cbPerformFileExtCheck"_ustr };
+        = { u"exthelp"_ustr, u"popupnohelp"_ustr, u"filedlg"_ustr, u"docstatus"_ustr,
+            u"quicklaunch"_ustr, u"cbPerformFileExtCheck"_ustr };
 
     for (const auto& check : checkButton)
     {
@@ -255,12 +239,6 @@ bool OfaMiscTabPage::FillItemSet( SfxItemSet* rSet )
 
     if ( m_xExtHelpCB->get_state_changed_from_saved() )
         officecfg::Office::Common::Help::ExtendedTip::set(m_xExtHelpCB->get_active(), batch);
-
-    if ( m_xShowTipOfTheDay->get_state_changed_from_saved() )
-    {
-        officecfg::Office::Common::Misc::ShowTipOfTheDay::set(m_xShowTipOfTheDay->get_active(), batch);
-        bModified = true;
-    }
 
     if (m_xColorDlgCB->get_state_changed_from_saved())
     {
@@ -287,14 +265,6 @@ bool OfaMiscTabPage::FillItemSet( SfxItemSet* rSet )
         bModified = true;
         rSet->Put( SfxUInt16Item( SID_ATTR_YEAR2000, nNum ) );
     }
-
-#if HAVE_FEATURE_BREAKPAD
-    if (m_xCrashReport->get_state_changed_from_saved())
-    {
-        officecfg::Office::Common::Misc::CrashReport::set(m_xCrashReport->get_active(), batch);
-        bModified = true;
-    }
-#endif
 
 #if defined(_WIN32)
     if (m_xPerformFileExtCheck->get_state_changed_from_saved())
@@ -331,12 +301,6 @@ void OfaMiscTabPage::Reset( const SfxItemSet* rSet )
     m_xPopUpNoHelpImg->set_visible(!bEnable);
     m_xPopUpNoHelpCB->save_state();
 
-    bEnable = !officecfg::Office::Common::Misc::ShowTipOfTheDay::isReadOnly();
-    m_xShowTipOfTheDay->set_active( officecfg::Office::Common::Misc::ShowTipOfTheDay::get() );
-    m_xShowTipOfTheDay->set_sensitive(bEnable);
-    m_xShowTipOfTheDayImg->set_visible(!bEnable);
-    m_xShowTipOfTheDay->save_state();
-
     const bool bHaveNativeCholorChooserDialog = Application::hasNativeColorChooserDialog();
     bool bReadOnly = officecfg::Office::Common::Misc::UseSystemColorDialog::isReadOnly();
     bEnable = !bReadOnly && bHaveNativeCholorChooserDialog;
@@ -372,13 +336,6 @@ void OfaMiscTabPage::Reset( const SfxItemSet* rSet )
     }
     else
         m_xYearFrame->set_sensitive(false);
-
-#if HAVE_FEATURE_BREAKPAD
-    m_xCrashReport->set_active(officecfg::Office::Common::Misc::CrashReport::get() && CrashReporter::IsDumpEnable());
-    m_xCrashReport->set_sensitive(!officecfg::Office::Common::Misc::CrashReport::isReadOnly() && CrashReporter::IsDumpEnable());
-    m_xCrashReportImg->set_visible(officecfg::Office::Common::Misc::CrashReport::isReadOnly() && CrashReporter::IsDumpEnable());
-    m_xCrashReport->save_state();
-#endif
 
 #if defined(_WIN32)
     if (const SfxBoolItem* pItem = rSet->GetItemIfSet( SID_ATTR_QUICKLAUNCHER, false ))

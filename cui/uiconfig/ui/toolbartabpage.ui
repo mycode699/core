@@ -32,22 +32,23 @@
   <object class="GtkBox" id="ToolbarTabPage">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="margin-start">6</property>
-    <property name="margin-end">6</property>
-    <property name="margin-top">6</property>
-    <property name="margin-bottom">6</property>
+    <property name="margin-start">10</property>
+    <property name="margin-end">10</property>
+    <property name="margin-top">10</property>
+    <property name="margin-bottom">10</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
     <property name="orientation">vertical</property>
+    <property name="spacing">8</property>
     <child>
-      <object class="GtkScrolledWindow">
+      <object class="GtkScrolledWindow" id="toolbar_scrolledwindow">
         <property name="width-request">40</property>
-        <property name="height-request">30</property>
+        <property name="height-request">180</property>
         <property name="visible">True</property>
         <property name="can-focus">True</property>
         <property name="hexpand">True</property>
         <property name="vexpand">True</property>
-        <property name="shadow-type">in</property>
+        <property name="shadow-type">none</property>
         <child>
           <object class="GtkTreeView" id="tvToolbarList">
             <property name="visible">True</property>
@@ -63,10 +64,11 @@
             </child>
             <child>
               <object class="GtkTreeViewColumn" id="column1">
-                <property name="title" translatable="yes" context="toolbartabpage|header|Name">Name</property>
+                <property name="title" translatable="yes" context="toolbartabpage|header|Name">工具栏</property>
                 <child>
                   <object class="GtkCellRendererText" id="lbName">
                     <property name="xpad">6</property>
+                    <property name="ypad">4</property>
                   </object>
                   <attributes>
                     <attribute name="text">0</attribute>
@@ -76,7 +78,7 @@
             </child>
             <child>
               <object class="GtkTreeViewColumn" id="column2">
-                <property name="title" translatable="yes" context="toolbartabpage|header|Visible">Visible</property>
+                <property name="title" translatable="yes" context="toolbartabpage|header|Visible">显示</property>
                 <child>
                   <object class="GtkCellRendererToggle" id="cbVisible">
                     <property name="xpad">6</property>
@@ -90,7 +92,7 @@
             </child>
             <child>
               <object class="GtkTreeViewColumn" id="column3">
-                <property name="title" translatable="yes" context="toolbartabpage|header|Locked">Locked</property>
+                <property name="title" translatable="yes" context="toolbartabpage|header|Locked">锁定</property>
                 <child>
                   <object class="GtkCellRendererToggle" id="cbLocked">
                     <property name="xpad">6</property>
@@ -104,7 +106,7 @@
             </child>
             <child>
               <object class="GtkTreeViewColumn" id="column4">
-                <property name="title" translatable="yes" context="toolbartabpage|header|Sensitive">Context-sensitive</property>
+                <property name="title" translatable="yes" context="toolbartabpage|header|Sensitive">随上下文</property>
                 <child>
                   <object class="GtkCellRendererToggle" id="cbSensitive">
                     <property name="xpad">6</property>
@@ -136,8 +138,8 @@
             <property name="can-focus">False</property>
             <property name="halign">end</property>
             <property name="margin-end">3</property>
-            <property name="label" translatable="yes" context="toolbartabpage|lbLockAll">_Lock all:</property>
-            <property name="use-underline">True</property>
+            <property name="label" translatable="yes" context="toolbartabpage|lbLockAll">全部锁定</property>
+            <property name="use-underline">False</property>
             <property name="mnemonic-widget">cbLockAll</property>
           </object>
           <packing>

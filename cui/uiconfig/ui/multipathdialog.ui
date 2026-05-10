@@ -19,7 +19,7 @@
   <object class="GtkDialog" id="MultiPathDialog">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
-    <property name="title" translatable="yes" context="multipathdialog|MultiPathDialog">Select Paths</property>
+    <property name="title" translatable="yes" context="multipathdialog|MultiPathDialog">选择路径</property>
     <property name="resizable">False</property>
     <property name="type_hint">normal</property>
     <child internal-child="vbox">
@@ -33,7 +33,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="stock">_OK</property>
+                <property name="label" translatable="yes" context="stock">确定(_O)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -42,7 +42,7 @@
                 <property name="use-underline">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="ok-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="multipathdialog|extended_tip|ok">Saves all changes and closes dialog.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="multipathdialog|extended_tip|ok">保存更改并关闭对话框。</property>
                   </object>
                 </child>
               </object>
@@ -54,14 +54,14 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="stock">_Cancel</property>
+                <property name="label" translatable="yes" context="stock">取消(_C)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use-underline">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="cancel-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="multipathdialog|extended_tip|cancel">Closes dialog and discards all changes.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="multipathdialog|extended_tip|cancel">关闭对话框并放弃更改。</property>
                   </object>
                 </child>
               </object>
@@ -73,7 +73,7 @@
             </child>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助(_H)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -122,14 +122,14 @@
                     <property name="layout_style">start</property>
                     <child>
                       <object class="GtkButton" id="add">
-                        <property name="label" translatable="yes" context="multipathdialog|add">_Add...</property>
+                        <property name="label" translatable="yes" context="multipathdialog|add">添加(_A)...</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="use_underline">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="add-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="cui/ui/multipathdialog/add">Opens the Select Path dialog to select another folder or the Open dialog to select another file.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="cui/ui/multipathdialog/add">打开路径选择或文件打开对话框，用于添加文件夹或文件。</property>
                           </object>
                         </child>
                       </object>
@@ -141,14 +141,14 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="delete">
-                        <property name="label" translatable="yes" context="stock">_Delete</property>
+                        <property name="label" translatable="yes" context="stock">删除(_D)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="use-underline">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="delete-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="multipathdialog|extended_tip|delete">Deletes the selected element or elements without requiring confirmation.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="multipathdialog|extended_tip|delete">删除选中的项目。</property>
                           </object>
                         </child>
                       </object>
@@ -194,7 +194,7 @@
                               <object class="GtkTreeViewColumn" id="treeviewcolumn4">
                                 <property name="resizable">True</property>
                                 <property name="spacing">6</property>
-                                <property name="title" translatable="yes" context="multipathdialog|pathlist">Path list</property>
+                                <property name="title" translatable="yes" context="multipathdialog|pathlist">路径列表</property>
                                 <child>
                                   <object class="GtkCellRendererToggle" id="cellrenderer5">
                                     <property name="radio">True</property>
@@ -214,7 +214,7 @@
                             </child>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="paths-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="cui/ui/multipathdialog/paths">Contains a list of the paths that have already been added. Mark the default path for new files.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="cui/ui/multipathdialog/paths">显示已添加的路径列表，可标记新文件默认使用的路径。</property>
                               </object>
                             </child>
                           </object>
@@ -237,7 +237,7 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes" context="multipathdialog|label1">Mark the Default Path for New Files</property>
+                <property name="label" translatable="yes" context="multipathdialog|label1">标记新文件默认路径</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>

@@ -112,7 +112,9 @@ $(eval $(call gb_Library_add_exception_objects,cui,\
     cui/source/dialogs/about \
     $(call gb_Helper_optional,EXTENSIONS, \
         cui/source/dialogs/AdditionsDialog) \
+    cui/source/dialogs/commandpalette/CommandIndex \
     cui/source/dialogs/commandpalette/CommandPalette \
+    cui/source/dialogs/commandpalette/RecentStore \
     cui/source/dialogs/cuifmsearch \
     cui/source/dialogs/cuigaldlg \
     cui/source/dialogs/cuigrfflt \

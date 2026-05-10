@@ -24,7 +24,7 @@
             <property name="spacing">3</property>
             <child>
               <object class="GtkRadioButton" id="rbButton1">
-                <property name="label" translatable="yes" context="UITabPage|radiobutton1">Standard Toolbar</property>
+                <property name="label" translatable="yes" context="UITabPage|radiobutton1">标准工具栏</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -41,7 +41,7 @@
             </child>
             <child>
               <object class="GtkRadioButton" id="rbButton2">
-                <property name="label" translatable="yes" context="UITabPage|radiobutton2">Tabbed</property>
+                <property name="label" translatable="yes" context="UITabPage|radiobutton2">标签式</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -69,7 +69,7 @@
             </child>
             <child>
               <object class="GtkRadioButton" id="rbButton3">
-                <property name="label" translatable="yes" context="UITabPage|radiobutton3">Single Toolbar</property>
+                <property name="label" translatable="yes" context="UITabPage|radiobutton3">单工具栏</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -86,7 +86,7 @@
             </child>
             <child>
               <object class="GtkRadioButton" id="rbButton4">
-                <property name="label" translatable="yes" context="UITabPage|radiobutton4">Sidebar</property>
+                <property name="label" translatable="yes" context="UITabPage|radiobutton4">侧边栏</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -103,7 +103,7 @@
             </child>
             <child>
               <object class="GtkRadioButton" id="rbButton5">
-                <property name="label" translatable="yes" context="UITabPage|radiobutton5">Tabbed Compact</property>
+                <property name="label" translatable="yes" context="UITabPage|radiobutton5">紧凑标签式</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -120,7 +120,7 @@
             </child>
             <child>
               <object class="GtkRadioButton" id="rbButton6">
-                <property name="label" translatable="yes" context="UITabPage|radiobutton6">Groupedbar</property>
+                <property name="label" translatable="yes" context="UITabPage|radiobutton6">分组工具栏</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -137,7 +137,7 @@
             </child>
             <child>
               <object class="GtkRadioButton" id="rbButton7">
-                <property name="label" translatable="yes" context="UITabPage|radiobutton7">Groupedbar Compact</property>
+                <property name="label" translatable="yes" context="UITabPage|radiobutton7">紧凑分组工具栏</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -154,7 +154,7 @@
             </child>
             <child>
               <object class="GtkRadioButton" id="rbButton8">
-                <property name="label" translatable="yes" context="UITabPage|radiobutton8">Contextual Single</property>
+                <property name="label" translatable="yes" context="UITabPage|radiobutton8">上下文单栏</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -171,7 +171,7 @@
             </child>
             <child>
               <object class="GtkRadioButton" id="rbButton9">
-                <property name="label" translatable="yes" context="UITabPage|radiobutton9">Contextual Groups</property>
+                <property name="label" translatable="yes" context="UITabPage|radiobutton9">上下文分组</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -192,7 +192,7 @@
           <object class="GtkLabel">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="UITabPage|leftframe">Options</property>
+            <property name="label" translatable="yes" context="UITabPage|leftframe">选项</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -255,7 +255,7 @@
                         <property name="can-focus">False</property>
                         <property name="valign">start</property>
                         <property name="vexpand">True</property>
-                        <property name="label">Information:</property>
+                        <property name="label">信息:</property>
                         <property name="wrap">True</property>
                         <property name="wrap-mode">word-char</property>
                         <property name="max-width-chars">50</property>
@@ -290,7 +290,7 @@
           <object class="GtkLabel">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="UITabPage|rightframe">Preview</property>
+            <property name="label" translatable="yes" context="UITabPage|rightframe">预览</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>

@@ -49,13 +49,13 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <items>
-                      <item translatable="yes" context="appearance|iconsdropdown">Automatic</item>
+                      <item translatable="yes" context="appearance|iconsdropdown">自动</item>
                       <item translatable="yes" context="appearance|iconsdropdown">Sifr</item>
                       <item translatable="yes" context="appearance|iconsdropdown">Breeze</item>
                     </items>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="iconsdropdown-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|iconsdropdown">Select an icon theme for the application.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|iconsdropdown">为应用程序选择图标主题。</property>
                       </object>
                     </child>
                   </object>
@@ -70,13 +70,13 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
-                    <property name="tooltip-text" translatable="yes" context="optappearancepage|moreicons">Add more icons.</property>
+                    <property name="tooltip-text" translatable="yes" context="optappearancepage|moreicons">添加更多图标。</property>
                     <property name="halign">start</property>
                     <property name="image">moreicons_image</property>
                     <property name="always-show-image">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="moreicons-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|moreicons">Click to select and download more icons from the extensions website.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|moreicons">点击后可从扩展网站选择并下载更多图标。</property>
                       </object>
                     </child>
                   </object>
@@ -107,7 +107,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="label" translatable="yes" context="appearance|toolbariconsizelbl">Toolbar</property>
+                    <property name="label" translatable="yes" context="appearance|toolbariconsizelbl">工具栏</property>
                     <accessibility>
                       <relation type="label-for" target="toolbariconsdropdown"/>
                     </accessibility>
@@ -122,7 +122,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="label" translatable="yes" context="appearance|sidebariconsizelbl">Sidebar</property>
+                    <property name="label" translatable="yes" context="appearance|sidebariconsizelbl">侧边栏</property>
                     <accessibility>
                       <relation type="label-for" target="sidebariconsdropdown"/>
                     </accessibility>
@@ -137,7 +137,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="label" translatable="yes" context="appearance|notebookbariconsizelbl">Notebookbar</property>
+                    <property name="label" translatable="yes" context="appearance|notebookbariconsizelbl">笔记本栏</property>
                     <accessibility>
                       <relation type="label-for" target="notebookbariconsdropdown"/>
                     </accessibility>
@@ -152,17 +152,17 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <items>
-                      <item translatable="yes" context="appearance|toolbariconsdropdown">Automatic</item>
-                      <item translatable="yes" context="appearance|toolbariconsdropdown">Small</item>
-                      <item translatable="yes" context="appearance|toolbariconsdropdown">Large</item>
-                      <item translatable="yes" context="appearance|toolbariconsdropdown">Extra Large</item>
+                      <item translatable="yes" context="appearance|toolbariconsdropdown">自动</item>
+                      <item translatable="yes" context="appearance|toolbariconsdropdown">小</item>
+                      <item translatable="yes" context="appearance|toolbariconsdropdown">大</item>
+                      <item translatable="yes" context="appearance|toolbariconsdropdown">特大</item>
                     </items>
                     <accessibility>
                       <relation type="labelled-by" target="lbToolbar"/>
                     </accessibility>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="toolbariconsdropdown-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|toolbariconsdropdown">Select the icon theme for the toolbar.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|toolbariconsdropdown">选择工具栏的图标大小。</property>
                       </object>
                     </child>
                   </object>
@@ -176,16 +176,16 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <items>
-                      <item translatable="yes" context="appearance|sidebariconsdropdown">Automatic</item>
-                      <item translatable="yes" context="appearance|sidebariconsdropdown">Small</item>
-                      <item translatable="yes" context="appearance|sidebariconsdropdown">Large</item>
+                      <item translatable="yes" context="appearance|sidebariconsdropdown">自动</item>
+                      <item translatable="yes" context="appearance|sidebariconsdropdown">小</item>
+                      <item translatable="yes" context="appearance|sidebariconsdropdown">大</item>
                     </items>
                     <accessibility>
                       <relation type="labelled-by" target="lbSidebar"/>
                     </accessibility>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="sidebariconsdropdown-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|sidebariconsdropdown">Select the icon theme for the sidebar.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|sidebariconsdropdown">选择侧边栏的图标大小。</property>
                       </object>
                     </child>
                   </object>
@@ -199,16 +199,16 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <items>
-                      <item translatable="yes" context="appearance|notebookbariconsdropdown">Automatic</item>
-                      <item translatable="yes" context="appearance|notebookbariconsdropdown">Small</item>
-                      <item translatable="yes" context="appearance|notebookbariconsdropdown">Large</item>
+                      <item translatable="yes" context="appearance|notebookbariconsdropdown">自动</item>
+                      <item translatable="yes" context="appearance|notebookbariconsdropdown">小</item>
+                      <item translatable="yes" context="appearance|notebookbariconsdropdown">大</item>
                     </items>
                     <accessibility>
                       <relation type="labelled-by" target="lbNotebookbar"/>
                     </accessibility>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="notebookbariconsdropdown-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|notebookbariconsdropdown">Select the icon theme for the notebookbar.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|notebookbariconsdropdown">选择笔记本栏的图标大小。</property>
                       </object>
                     </child>
                   </object>
@@ -230,13 +230,13 @@
           <object class="GtkLabel" id="iconslbl">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="appearance|iconslbl">Icons</property>
+            <property name="label" translatable="yes" context="appearance|iconslbl">图标</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
             <child internal-child="accessible">
               <object class="AtkObject" id="iconslbl-atkobject">
-                <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|iconslbl">Controls to change icon theme and sizes for various user interfaces.</property>
+                <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|iconslbl">用于更改各类用户界面的图标主题和大小。</property>
               </object>
             </child>
           </object>
@@ -276,7 +276,7 @@
                     <property name="can-focus">False</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="scheme-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|scheme">Select an available theme scheme in the list.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|scheme">在列表中选择可用的主题方案。</property>
                       </object>
                     </child>
                   </object>
@@ -291,12 +291,12 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
-                    <property name="tooltip-text" translatable="yes" context="optappearancepage|morethemes">Add more themes.</property>
+                    <property name="tooltip-text" translatable="yes" context="optappearancepage|morethemes">添加更多主题。</property>
                     <property name="image">morethemes_image</property>
                     <property name="always-show-image">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="morethemesbtn-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|morethemesbtn">Click to select and download more themes from the extensions website.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|morethemesbtn">点击后可从扩展网站选择并下载更多主题。</property>
                       </object>
                     </child>
                   </object>
@@ -315,14 +315,14 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="enableapptheming">
-                <property name="label" translatable="yes" context="appearance|enableapptheming">Enable application theming</property>
+                <property name="label" translatable="yes" context="appearance|enableapptheming">启用应用程序主题</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="enableapptheming-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|enableapptheming">Check to enable application theming with extension themes.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|enableapptheming">勾选后使用扩展主题启用应用程序主题。</property>
                   </object>
                 </child>
               </object>
@@ -334,14 +334,14 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="useonlywhitedocbackground">
-                <property name="label" translatable="yes" context="appearance|enableapptheming">Use white document background</property>
+                <property name="label" translatable="yes" context="appearance|enableapptheming">使用白色文档背景</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="useonlywhitedocbackground-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|useonlywhitedocbackground">Check to disable document color customizations and only use white document colors.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|useonlywhitedocbackground">勾选后禁用文档颜色自定义，仅使用白色文档颜色。</property>
                   </object>
                 </child>
               </object>
@@ -353,14 +353,14 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="usebmpforappback">
-                <property name="label" translatable="yes" context="appearance|enableapptheming">Use bitmap for application background</property>
+                <property name="label" translatable="yes" context="appearance|enableapptheming">使用位图作为应用程序背景</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="usebmpforappback-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|useonlywhitedocbackground">Check to disable document color customizations and only use white document colors.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|useonlywhitedocbackground">勾选后使用位图作为应用程序背景。</property>
                   </object>
                 </child>
               </object>
@@ -384,7 +384,7 @@
                     <property name="hexpand">False</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="bitmapdropdown-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|bitmapdropdown">Select bitmap for application background from the dropdown.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|bitmapdropdown">从下拉列表中选择应用程序背景位图。</property>
                       </object>
                     </child>
                   </object>
@@ -402,7 +402,7 @@
                     <property name="hexpand">False</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="bitmapdrawtypedropdown-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|bitmapdrawtypedropdown">Select application background bitmap draw type from the dropdown.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|bitmapdrawtypedropdown">从下拉列表中选择应用程序背景位图的绘制方式。</property>
                       </object>
                     </child>
                   </object>
@@ -425,7 +425,7 @@
           <object class="GtkLabel" id="libreofficethemeslb">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="appearancetabpage|libreofficethemeslb">%PRODUCTNAME Themes</property>
+            <property name="label" translatable="yes" context="appearancetabpage|libreofficethemeslb">%PRODUCTNAME 主题</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -460,8 +460,8 @@
                 <property name="halign">start</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="registrydropdown-atkobject">
-                    <property name="AtkObject::accessible-name" translatable="yes" context="appearancetabpage|registrycolorslist">Items</property>
-                    <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|registrydropdown">Select the item to color customize.</property>
+                    <property name="AtkObject::accessible-name" translatable="yes" context="appearancetabpage|registrycolorslist">项目</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|registrydropdown">选择要自定义颜色的项目。</property>
                   </object>
                 </child>
               </object>
@@ -484,8 +484,8 @@
                 </child>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="colorsdropdownbtn-atkobject">
-                    <property name="AtkObject::accessible-name" translatable="yes" context="appearancetabpage|colorsdropdownbtn">Color</property>
-                    <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|colorsdropdownbtn">Select the color for the selected item.</property>
+                    <property name="AtkObject::accessible-name" translatable="yes" context="appearancetabpage|colorsdropdownbtn">颜色</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|colorsdropdownbtn">为所选项目选择颜色。</property>
                   </object>
                 </child>
               </object>
@@ -496,7 +496,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="showindocumentchkbtn">
-                <property name="label" translatable="yes" context="appearancetabpage|showindocumentchkbtn">Show in Document</property>
+                <property name="label" translatable="yes" context="appearancetabpage|showindocumentchkbtn">在文档中显示</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -504,7 +504,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="showindocumentchkbtn-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|showindocumentchkbtn">Immediately display the color choice in the document.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="appearance|extended_tip|showindocumentchkbtn">立即在文档中显示所选颜色。</property>
                   </object>
                 </child>
               </object>
@@ -516,7 +516,7 @@
             </child>
             <child>
               <object class="GtkButton" id="resetallbtn">
-                <property name="label" translatable="yes" context="appearancetabpage|resetallbtn">Reset All</property>
+                <property name="label" translatable="yes" context="appearancetabpage|resetallbtn">全部重置</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -534,7 +534,7 @@
           <object class="GtkLabel" id="customizationslb">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="appearancetabpage|customizationslb">Customizations</property>
+            <property name="label" translatable="yes" context="appearancetabpage|customizationslb">自定义</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -562,7 +562,7 @@
             <property name="margin-top">6</property>
             <child>
               <object class="GtkRadioButton" id="rbVertical">
-                <property name="label" translatable="yes" context="appearance|rbVertical">Vertical at the side</property>
+                <property name="label" translatable="yes" context="appearance|rbVertical">侧边垂直</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -582,7 +582,7 @@
               <object class="GtkLabel" id="lbTabPosition">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="appearance|lbTabPosition">Tab position:</property>
+                <property name="label" translatable="yes" context="appearance|lbTabPosition">标签位置:</property>
                 <property name="xalign">0</property>
                 <accessibility>
                   <relation type="label-for" target="rbVertical"/>
@@ -595,7 +595,7 @@
             </child>
             <child>
               <object class="GtkRadioButton" id="rbHorizontal">
-                <property name="label" translatable="yes" context="appearance|rbHorizontal">Horizontal on top</property>
+                <property name="label" translatable="yes" context="appearance|rbHorizontal">顶部水平</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -614,7 +614,7 @@
           <object class="GtkLabel" id="lbDialogs">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="appearance|lbDialogs">Dialogs</property>
+            <property name="label" translatable="yes" context="appearance|lbDialogs">对话框</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>

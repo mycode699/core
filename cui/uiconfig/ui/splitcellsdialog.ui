@@ -12,7 +12,7 @@
   <object class="GtkDialog" id="SplitCellsDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="splitcellsdialog|SplitCellsDialog">Split Cells</property>
+    <property name="title" translatable="yes" context="splitcellsdialog|SplitCellsDialog">拆分单元格</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>

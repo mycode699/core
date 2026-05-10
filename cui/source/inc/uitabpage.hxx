@@ -20,6 +20,7 @@ private:
     std::unique_ptr<weld::RadioButton> m_pRadioButtons[std::size(UIMODES_ARRAY)];
     std::unique_ptr<weld::Label> m_pInfoLabel;
 
+    void ApplyMode(std::size_t nIndex);
     void UpdateImage(std::u16string_view sFileName);
     static OUString GetCurrentMode();
     int GetActiveRadioButton();

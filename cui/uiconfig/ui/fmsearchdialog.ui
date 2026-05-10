@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="RecordSearchDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="fmsearchdialog|RecordSearchDialog">Record Search</property>
+    <property name="title" translatable="yes" context="fmsearchdialog|RecordSearchDialog">记录搜索</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
     <property name="default-height">0</property>
@@ -21,7 +21,7 @@
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="pbSearchAgain">
-                <property name="label" translatable="yes" context="fmsearchdialog|pbSearchAgain">S_earch</property>
+                <property name="label" translatable="yes" context="fmsearchdialog|pbSearchAgain">搜索(_E)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
@@ -30,7 +30,7 @@
                 <property name="use-underline">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="pbSearchAgain-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|pbSearchAgain">Starts or cancels the search.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|pbSearchAgain">开始或取消搜索。</property>
                   </object>
                 </child>
               </object>
@@ -49,7 +49,7 @@
                 <property name="use-underline">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="close-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|close">Closes the dialog. The settings of the last search will be saved until you quit the office suite.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|close">关闭对话框。上次搜索的设置会保留到您退出办公套件为止。</property>
                   </object>
                 </child>
               </object>
@@ -141,7 +141,7 @@
                                     </child>
                                     <child internal-child="accessible">
                                       <object class="AtkObject" id="cmbSearchText-atkobject">
-                                        <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|cmbSearchText">Enter the search term in the box or select it from the list.</property>
+                                        <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|cmbSearchText">在框中输入搜索词，或从列表中选择。</property>
                                       </object>
                                     </child>
                                   </object>
@@ -152,7 +152,7 @@
                                 </child>
                                 <child>
                                   <object class="GtkRadioButton" id="rbSearchForText">
-                                    <property name="label" translatable="yes" context="fmsearchdialog|rbSearchForText">_Text:</property>
+                                    <property name="label" translatable="yes" context="fmsearchdialog|rbSearchForText">文本(_T):</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
                                     <property name="receives-default">False</property>
@@ -161,7 +161,7 @@
                                     <property name="draw-indicator">True</property>
                                     <child internal-child="accessible">
                                       <object class="AtkObject" id="rbSearchForText-atkobject">
-                                        <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|rbSearchForText">Enter the search term in the box or select it from the list.</property>
+                                        <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|rbSearchForText">在框中输入搜索词，或从列表中选择。</property>
                                       </object>
                                     </child>
                                   </object>
@@ -179,7 +179,7 @@
                             </child>
                             <child>
                               <object class="GtkRadioButton" id="rbSearchForNull">
-                                <property name="label" translatable="yes" context="fmsearchdialog|rbSearchForNull">Field content is _NULL</property>
+                                <property name="label" translatable="yes" context="fmsearchdialog|rbSearchForNull">字段内容为 NULL(_N)</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="receives-default">False</property>
@@ -188,7 +188,7 @@
                                 <property name="group">rbSearchForText</property>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="rbSearchForNull-atkobject">
-                                    <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|rbSearchForNull">Specifies that fields will be found that contain no data.</property>
+                                    <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|rbSearchForNull">指定查找不包含数据的字段。</property>
                                   </object>
                                 </child>
                               </object>
@@ -200,7 +200,7 @@
                             </child>
                             <child>
                               <object class="GtkRadioButton" id="rbSearchForNotNull">
-                                <property name="label" translatable="yes" context="fmsearchdialog|rbSearchForNotNull">Field content is not NU_LL</property>
+                                <property name="label" translatable="yes" context="fmsearchdialog|rbSearchForNotNull">字段内容不是 NULL(_L)</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="receives-default">False</property>
@@ -209,7 +209,7 @@
                                 <property name="group">rbSearchForText</property>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="rbSearchForNotNull-atkobject">
-                                    <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|rbSearchForNotNull">Specifies that fields will be found that contain data.</property>
+                                    <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|rbSearchForNotNull">指定查找包含数据的字段。</property>
                                   </object>
                                 </child>
                               </object>
@@ -231,7 +231,7 @@
                       <object class="GtkLabel" id="flSearchFor">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="fmsearchdialog|flSearchFor">_Search for</property>
+                        <property name="label" translatable="yes" context="fmsearchdialog|flSearchFor">搜索内容(_S)</property>
                         <property name="use-underline">True</property>
                         <attributes>
                           <attribute name="weight" value="bold"/>
@@ -285,7 +285,7 @@
                                     <property name="spacing">12</property>
                                     <child>
                                       <object class="GtkRadioButton" id="rbSingleField">
-                                        <property name="label" translatable="yes" context="fmsearchdialog|rbSingleField">_Single field:</property>
+                                        <property name="label" translatable="yes" context="fmsearchdialog|rbSingleField">单个字段(_S):</property>
                                         <property name="visible">True</property>
                                         <property name="can-focus">True</property>
                                         <property name="receives-default">False</property>
@@ -294,7 +294,7 @@
                                         <property name="draw-indicator">True</property>
                                         <child internal-child="accessible">
                                           <object class="AtkObject" id="rbSingleField-atkobject">
-                                            <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|rbSingleField">Searches through a specified data field.</property>
+                                            <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|rbSingleField">在指定数据字段中搜索。</property>
                                           </object>
                                         </child>
                                       </object>
@@ -312,7 +312,7 @@
                                         <property name="hexpand">True</property>
                                         <child internal-child="accessible">
                                           <object class="AtkObject" id="lbField-atkobject">
-                                            <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|lbField">Searches through a specified data field.</property>
+                                            <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|lbField">在指定数据字段中搜索。</property>
                                           </object>
                                         </child>
                                       </object>
@@ -330,7 +330,7 @@
                                 </child>
                                 <child>
                                   <object class="GtkRadioButton" id="rbAllFields">
-                                    <property name="label" translatable="yes" context="fmsearchdialog|rbAllFields">_All fields</property>
+                                    <property name="label" translatable="yes" context="fmsearchdialog|rbAllFields">所有字段(_A)</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
                                     <property name="receives-default">False</property>
@@ -339,7 +339,7 @@
                                     <property name="group">rbSingleField</property>
                                     <child internal-child="accessible">
                                       <object class="AtkObject" id="rbAllFields-atkobject">
-                                        <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|rbAllFields">Searches through all fields.</property>
+                                        <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|rbAllFields">在所有字段中搜索。</property>
                                       </object>
                                     </child>
                                   </object>
@@ -358,7 +358,7 @@
                                       <object class="GtkLabel" id="ftForm">
                                         <property name="visible">True</property>
                                         <property name="can-focus">False</property>
-                                        <property name="label" translatable="yes" context="fmsearchdialog|ftForm">Form:</property>
+                                        <property name="label" translatable="yes" context="fmsearchdialog|ftForm">窗体:</property>
                                         <property name="use-underline">True</property>
                                         <property name="mnemonic-widget">lbForm</property>
                                         <property name="xalign">0</property>
@@ -375,7 +375,7 @@
                                         <property name="halign">start</property>
                                         <child internal-child="accessible">
                                           <object class="AtkObject" id="lbForm-atkobject">
-                                            <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|lbForm">Specifies the logical form in which you want the search to take place.</property>
+                                            <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|lbForm">指定要执行搜索的逻辑窗体。</property>
                                           </object>
                                         </child>
                                       </object>
@@ -436,7 +436,7 @@
                       <object class="GtkLabel" id="label2">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="fmsearchdialog|label2">Where to Search</property>
+                        <property name="label" translatable="yes" context="fmsearchdialog|label2">搜索位置</property>
                         <property name="use-underline">True</property>
                         <attributes>
                           <attribute name="weight" value="bold"/>
@@ -483,7 +483,7 @@
                           <object class="GtkLabel" id="ftPosition">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
-                            <property name="label" translatable="yes" context="fmsearchdialog|ftPosition">_Position:</property>
+                            <property name="label" translatable="yes" context="fmsearchdialog|ftPosition">位置(_P):</property>
                             <property name="use-underline">True</property>
                             <property name="mnemonic-widget">lbPosition</property>
                             <property name="xalign">0</property>
@@ -501,7 +501,7 @@
                             <property name="hexpand">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="lbPosition-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|lbPosition">Specifies the relationship of the search term and the field contents.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|lbPosition">指定搜索词与字段内容之间的关系。</property>
                               </object>
                             </child>
                           </object>
@@ -526,7 +526,7 @@
                         <property name="column-spacing">12</property>
                         <child>
                           <object class="GtkCheckButton" id="HalfFullFormsCJK">
-                            <property name="label" translatable="yes" context="fmsearchdialog|HalfFullFormsCJK">Match character wi_dth</property>
+                            <property name="label" translatable="yes" context="fmsearchdialog|HalfFullFormsCJK">匹配字符宽度(_D)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -534,7 +534,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="HalfFullFormsCJK-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|HalfFullFormsCJK">Distinguishes between half-width and full-width character forms.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|HalfFullFormsCJK">区分半角和全角字符形式。</property>
                               </object>
                             </child>
                           </object>
@@ -551,7 +551,7 @@
                             <property name="column-spacing">12</property>
                             <child>
                               <object class="GtkCheckButton" id="SoundsLikeCJK">
-                                <property name="label" translatable="yes" context="fmsearchdialog|SoundsLikeCJK">Sounds like (_Japanese)</property>
+                                <property name="label" translatable="yes" context="fmsearchdialog|SoundsLikeCJK">发音类似（日语）(_J)</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="receives-default">False</property>
@@ -559,7 +559,7 @@
                                 <property name="draw-indicator">True</property>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="SoundsLikeCJK-atkobject">
-                                    <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|SoundsLikeCJK">Lets you specify the search options for similar notation used in Japanese text. Select this checkbox, and then click the Sounds button to specify the search options.</property>
+                                    <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|SoundsLikeCJK">用于指定日语文本中相似记法的搜索选项。选中此复选框，然后单击“相似性”按钮以指定搜索选项。</property>
                                   </object>
                                 </child>
                               </object>
@@ -570,7 +570,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="SoundsLikeCJKSettings">
-                                <property name="label" translatable="yes" context="fmsearchdialog|SoundsLikeCJKSettings">Similarities...</property>
+                                <property name="label" translatable="yes" context="fmsearchdialog|SoundsLikeCJKSettings">相似性...</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="receives-default">True</property>
@@ -578,7 +578,7 @@
                                 <property name="valign">center</property>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="SoundsLikeCJKSettings-atkobject">
-                                    <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|SoundsLikeCJKSettings">Sets the search options for similar notation used in Japanese text.</property>
+                                    <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|SoundsLikeCJKSettings">设置日语文本中相似记法的搜索选项。</property>
                                   </object>
                                 </child>
                               </object>
@@ -601,7 +601,7 @@
                             <property name="column-spacing">12</property>
                             <child>
                               <object class="GtkCheckButton" id="cbApprox">
-                                <property name="label" translatable="yes" context="fmsearchdialog|cbApprox">S_imilarity search</property>
+                                <property name="label" translatable="yes" context="fmsearchdialog|cbApprox">相似性搜索(_I)</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="receives-default">False</property>
@@ -609,7 +609,7 @@
                                 <property name="draw-indicator">True</property>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="cbApprox-atkobject">
-                                    <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|cbApprox">Find terms that are similar to the Find text. Select this checkbox, and then click the Similarities button to define the similarity options.</property>
+                                    <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|cbApprox">查找与查找文本相似的词。选中此复选框，然后单击“相似性”按钮以定义相似性选项。</property>
                                   </object>
                                 </child>
                               </object>
@@ -620,7 +620,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="pbApproxSettings">
-                                <property name="label" translatable="yes" context="fmsearchdialog|pbApproxSettings">Similarities...</property>
+                                <property name="label" translatable="yes" context="fmsearchdialog|pbApproxSettings">相似性...</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="receives-default">True</property>
@@ -628,7 +628,7 @@
                                 <property name="valign">center</property>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="pbApproxSettings-atkobject">
-                                    <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|pbApproxSettings">Find terms that are similar to the Find text. Select this checkbox, and then click the Similarities button to define the similarity options.</property>
+                                    <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|pbApproxSettings">查找与查找文本相似的词。选中此复选框，然后单击“相似性”按钮以定义相似性选项。</property>
                                   </object>
                                 </child>
                               </object>
@@ -645,7 +645,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="cbCase">
-                            <property name="label" translatable="yes" context="fmsearchdialog|cbCase">_Match case</property>
+                            <property name="label" translatable="yes" context="fmsearchdialog|cbCase">区分大小写(_M)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -653,7 +653,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="cbCase-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|cbCase">Specifies that upper and lower case are taken into consideration during the search.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|cbCase">指定搜索时区分大小写。</property>
                               </object>
                             </child>
                           </object>
@@ -664,7 +664,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="cbStartOver">
-                            <property name="label" translatable="yes" context="fmsearchdialog|cbStartOver">Fr_om top</property>
+                            <property name="label" translatable="yes" context="fmsearchdialog|cbStartOver">从顶部开始(_O)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -672,7 +672,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="cbStartOver-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|cbStartOver">Restarts the search. A forward search restarts with the first record. A backwards search restarts with the last record.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|cbStartOver">重新开始搜索。向前搜索会从第一条记录重新开始，向后搜索会从最后一条记录重新开始。</property>
                               </object>
                             </child>
                           </object>
@@ -683,7 +683,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="cbRegular">
-                            <property name="label" translatable="yes" context="fmsearchdialog|cbRegular">_Regular expression</property>
+                            <property name="label" translatable="yes" context="fmsearchdialog|cbRegular">正则表达式(_R)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -691,7 +691,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="cbRegular-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|cbRegular">Searches with regular expressions.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|cbRegular">使用正则表达式搜索。</property>
                               </object>
                             </child>
                           </object>
@@ -702,7 +702,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="cbUseFormat">
-                            <property name="label" translatable="yes" context="fmsearchdialog|cbUseFormat">Appl_y field format</property>
+                            <property name="label" translatable="yes" context="fmsearchdialog|cbUseFormat">应用字段格式(_Y)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -710,7 +710,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="cbUseFormat-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|cbUseFormat">Specifies that all field formats are considered when searching in the current document.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|cbUseFormat">指定在当前文档中搜索时考虑所有字段格式。</property>
                               </object>
                             </child>
                           </object>
@@ -721,7 +721,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="cbBackwards">
-                            <property name="label" translatable="yes" context="fmsearchdialog|cbBackwards">Search _backwards</property>
+                            <property name="label" translatable="yes" context="fmsearchdialog|cbBackwards">向后搜索(_B)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -729,7 +729,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="cbBackwards-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|cbBackwards">Specifies that the search process will run in reverse direction, from the last to the first record.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|cbBackwards">指定搜索过程按反向执行，从最后一条记录到第一条记录。</property>
                               </object>
                             </child>
                           </object>
@@ -740,7 +740,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="cbWildCard">
-                            <property name="label" translatable="yes" context="fmsearchdialog|cbWildCard">_Wildcard expression</property>
+                            <property name="label" translatable="yes" context="fmsearchdialog|cbWildCard">通配符表达式(_W)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
@@ -748,7 +748,7 @@
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="cbWildCard-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|cbWildCard">Allows a search with a * or ? wildcard.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|cbWildCard">允许使用 * 或 ? 通配符进行搜索。</property>
                               </object>
                             </child>
                           </object>
@@ -770,7 +770,7 @@
                   <object class="GtkLabel" id="flOptions">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="fmsearchdialog|flOptions">Settings</property>
+                    <property name="label" translatable="yes" context="fmsearchdialog|flOptions">设置</property>
                     <property name="use-underline">True</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
@@ -802,7 +802,7 @@
                       <object class="GtkLabel" id="ftRecordLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="fmsearchdialog|ftRecordLabel">Record:</property>
+                        <property name="label" translatable="yes" context="fmsearchdialog|ftRecordLabel">记录:</property>
                         <property name="xalign">0</property>
                       </object>
                       <packing>
@@ -814,7 +814,7 @@
                       <object class="GtkLabel" id="ftRecord">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="fmsearchdialog|ftRecord">record count</property>
+                        <property name="label" translatable="yes" context="fmsearchdialog|ftRecord">记录数</property>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -838,7 +838,7 @@
                   <object class="GtkLabel" id="flState">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="fmsearchdialog|flState">State</property>
+                    <property name="label" translatable="yes" context="fmsearchdialog|flState">状态</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -866,7 +866,7 @@
     </action-widgets>
     <child internal-child="accessible">
       <object class="AtkObject" id="RecordSearchDialog-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|RecordSearchDialog">Searches database tables and forms.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="fmsearchdialog|extended_tip|RecordSearchDialog">搜索数据库表和窗体。</property>
       </object>
     </child>
   </object>

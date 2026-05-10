@@ -22,7 +22,7 @@
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="btnNo">
-                <property name="label" translatable="yes" context="QueryDialog|Button_No">No</property>
+                <property name="label" translatable="yes" context="QueryDialog|Button_No">否</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -35,7 +35,7 @@
             </child>
             <child>
               <object class="GtkButton" id="btnYes">
-                <property name="label" translatable="yes" context="QueryDialog|Button_Yes">Yes</property>
+                <property name="label" translatable="yes" context="QueryDialog|Button_Yes">是</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -124,7 +124,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="cbDontShowAgain">
-                <property name="label" translatable="yes" context="QueryDialog|Checkbox">Do show again</property>
+                <property name="label" translatable="yes" context="QueryDialog|Checkbox">以后继续显示</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>

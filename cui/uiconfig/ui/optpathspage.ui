@@ -33,7 +33,7 @@
     <property name="can_focus">False</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
-    <property name="border_width">6</property>
+    <property name="border_width">12</property>
     <property name="orientation">vertical</property>
     <property name="spacing">12</property>
     <child>
@@ -49,15 +49,15 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
-            <property name="margin-start">12</property>
-            <property name="margin-top">6</property>
+            <property name="margin-start">14</property>
+            <property name="margin-top">8</property>
             <child>
               <object class="GtkScrolledWindow" id="pathscroll">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
-                <property name="shadow_type">in</property>
+                <property name="shadow_type">none</property>
                 <child>
                   <object class="GtkTreeView" id="paths">
                     <property name="visible">True</property>
@@ -75,7 +75,7 @@
                       <object class="GtkTreeViewColumn" id="treeviewcolumn5">
                         <property name="resizable">True</property>
                         <property name="spacing">6</property>
-                        <property name="title" translatable="yes" context="optpathspage|type">Type</property>
+                        <property name="title" translatable="yes" context="optpathspage|type">类型</property>
                         <property name="clickable">True</property>
                         <property name="sort-indicator">True</property>
                         <child>
@@ -85,7 +85,9 @@
                           </attributes>
                         </child>
                         <child>
-                          <object class="GtkCellRendererText" id="cellrenderer4"/>
+                          <object class="GtkCellRendererText" id="cellrenderer4">
+                            <property name="ypad">4</property>
+                          </object>
                           <attributes>
                             <attribute name="sensitive">8</attribute>
                             <attribute name="text">1</attribute>
@@ -97,9 +99,11 @@
                       <object class="GtkTreeViewColumn" id="treeviewcolumn9">
                         <property name="resizable">True</property>
                         <property name="spacing">6</property>
-                        <property name="title" translatable="yes" context="optpathspage|user_paths">User Paths</property>
+                        <property name="title" translatable="yes" context="optpathspage|user_paths">用户路径</property>
                         <child>
-                          <object class="GtkCellRendererText" id="cellrenderer9"/>
+                          <object class="GtkCellRendererText" id="cellrenderer9">
+                            <property name="ypad">4</property>
+                          </object>
                           <attributes>
                             <attribute name="sensitive">9</attribute>
                             <attribute name="text">2</attribute>
@@ -111,9 +115,11 @@
                       <object class="GtkTreeViewColumn" id="treeviewcolumn2">
                         <property name="resizable">True</property>
                         <property name="spacing">6</property>
-                        <property name="title" translatable="yes" context="optpathspage|internal_paths">Internal Paths</property>
+                        <property name="title" translatable="yes" context="optpathspage|internal_paths">内置路径</property>
                         <child>
-                          <object class="GtkCellRendererText" id="cellrenderer1"/>
+                          <object class="GtkCellRendererText" id="cellrenderer1">
+                            <property name="ypad">4</property>
+                          </object>
                           <attributes>
                             <attribute name="sensitive">10</attribute>
                             <attribute name="text">3</attribute>
@@ -123,7 +129,7 @@
                     </child>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="paths-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="paths">To modify an entry in this list, click the entry and click Edit. You can also double click the entry.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="paths">要修改列表中的路径，请先选择项目，再点击“编辑”；也可以双击该项目。</property>
                       </object>
                     </child>
                   </object>
@@ -141,7 +147,7 @@
           <object class="GtkLabel" id="label1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes" context="optpathspage|label1">Paths used by %PRODUCTNAME</property>
+            <property name="label" translatable="yes" context="optpathspage|label1">%PRODUCTNAME 使用的路径</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -162,14 +168,14 @@
         <property name="layout_style">end</property>
         <child>
           <object class="GtkButton" id="default">
-            <property name="label" translatable="yes" context="optpathspage|default">_Default</property>
+            <property name="label" translatable="yes" context="optpathspage|default">恢复默认</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="use_underline">True</property>
+            <property name="use_underline">False</property>
             <child internal-child="accessible">
               <object class="AtkObject" id="default-atkobject">
-                <property name="AtkObject::accessible-description" translatable="yes" context="default">The Default button resets the predefined paths for all selected entries.</property>
+                <property name="AtkObject::accessible-description" translatable="yes" context="default">将选中项目恢复为预设默认路径。</property>
               </object>
             </child>
           </object>
@@ -181,14 +187,14 @@
         </child>
         <child>
           <object class="GtkButton" id="edit">
-            <property name="label" translatable="yes" context="optpathspage|edit">_Edit...</property>
+            <property name="label" translatable="yes" context="optpathspage|edit">编辑</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="use_underline">True</property>
+            <property name="use_underline">False</property>
             <child internal-child="accessible">
               <object class="AtkObject" id="edit-atkobject">
-                <property name="AtkObject::accessible-description" translatable="yes" context="edit">Click to display the Select Path or Edit Paths dialog.</property>
+                <property name="AtkObject::accessible-description" translatable="yes" context="edit">打开“选择路径”或“编辑路径”对话框。</property>
               </object>
             </child>
           </object>
@@ -207,7 +213,7 @@
     </child>
     <child internal-child="accessible">
       <object class="AtkObject" id="OptPathsPage-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="OptPathsPage">This section contains the default paths to important folders of the office suite. These paths can be edited by the user.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="OptPathsPage">这里列出办公套件重要文件夹的默认路径，用户可以按需编辑。</property>
       </object>
     </child>
   </object>

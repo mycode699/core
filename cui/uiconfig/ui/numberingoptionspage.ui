@@ -39,7 +39,7 @@
       <object class="GtkMenuItem" id="fromfile">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="numberingoptionspage|fromfile">From file...</property>
+        <property name="label" translatable="yes" context="numberingoptionspage|fromfile">从文件...</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -47,7 +47,7 @@
       <object class="GtkMenuItem" id="gallery">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="numberingoptionspage|gallery">Gallery</property>
+        <property name="label" translatable="yes" context="numberingoptionspage|gallery">图库</property>
         <property name="use-underline">True</property>
         <child type="submenu">
           <object class="GtkMenu" id="gallerysubmenu">
@@ -109,7 +109,7 @@
                 </child>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="levellb-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|levellb">Select the level(s) that you want to define the formatting options for.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|levellb">选择要定义格式选项的级别。</property>
                   </object>
                 </child>
               </object>
@@ -120,7 +120,7 @@
           <object class="GtkLabel" id="label1">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="numberingoptionspage|label1">Level</property>
+            <property name="label" translatable="yes" context="numberingoptionspage|label1">级别</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -164,7 +164,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="hexpand">True</property>
-                        <property name="label" translatable="yes" context="numberingoptionspage|label4">Number:</property>
+                        <property name="label" translatable="yes" context="numberingoptionspage|label4">编号:</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">numfmtlb</property>
                         <property name="xalign">1</property>
@@ -180,7 +180,7 @@
                         <property name="can-focus">False</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="charstyle-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|charstyle">Select the Character Style that you want to use in the numbered list.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|charstyle">选择要在编号列表中使用的字符样式。</property>
                           </object>
                         </child>
                       </object>
@@ -199,7 +199,7 @@
                         <property name="adjustment">adjustment3</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="sublevels-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|sublevels">Enter the number of previous levels to include in the numbering scheme. For example, if you enter "2" and the previous level uses the "A, B, C..." numbering, the numbering scheme for the current level becomes: "A.1".</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|sublevels">输入编号方案中要包含的上级级别数。例如，如果输入“2”，且上一级使用“A, B, C...”编号，则当前级别的编号方案会变为“A.1”。</property>
                           </object>
                         </child>
                       </object>
@@ -210,7 +210,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="islegal">
-                        <property name="label" translatable="yes" context="numberingoptionspage|islegal">All sublevels Arabic</property>
+                        <property name="label" translatable="yes" context="numberingoptionspage|islegal">所有子级使用阿拉伯数字</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -218,7 +218,7 @@
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="islegal-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|islegal">Use Arabic numerals for all sublevels ("Legal" numbering).</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|islegal">所有子级均使用阿拉伯数字（“法律”编号）。</property>
                           </object>
                         </child>
                       </object>
@@ -236,7 +236,7 @@
                         <property name="adjustment">adjustment2</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="startat-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|startat">Enter a new starting number for the current level.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|startat">输入当前级别的新起始编号。</property>
                           </object>
                         </child>
                       </object>
@@ -249,7 +249,7 @@
                       <object class="GtkLabel" id="startatft">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="numberingoptionspage|startatft">Start at:</property>
+                        <property name="label" translatable="yes" context="numberingoptionspage|startatft">起始于:</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">startat</property>
                         <property name="xalign">1</property>
@@ -265,7 +265,7 @@
                         <property name="can-focus">False</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="numfmtlb-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|numfmtlb">Select a numbering scheme for the selected levels.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|numfmtlb">为所选级别选择编号方案。</property>
                           </object>
                         </child>
                         <style>
@@ -282,7 +282,7 @@
                       <object class="GtkLabel" id="bitmapft">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="numberingoptionspage|bitmapft">Graphics:</property>
+                        <property name="label" translatable="yes" context="numberingoptionspage|bitmapft">图形:</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">bitmap</property>
                         <property name="xalign">1</property>
@@ -296,7 +296,7 @@
                       <object class="GtkLabel" id="orientft">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="numberingoptionspage|orientft">Alignment:</property>
+                        <property name="label" translatable="yes" context="numberingoptionspage|orientft">对齐:</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">orientlb</property>
                         <property name="xalign">1</property>
@@ -312,19 +312,19 @@
                         <property name="can-focus">False</property>
                         <property name="active">0</property>
                         <items>
-                          <item translatable="yes" context="numberingoptionspage|orientlb">Top of baseline</item>
-                          <item translatable="yes" context="numberingoptionspage|orientlb">Center of baseline</item>
-                          <item translatable="yes" context="numberingoptionspage|orientlb">Bottom of baseline</item>
-                          <item translatable="yes" context="numberingoptionspage|orientlb">Top of character</item>
-                          <item translatable="yes" context="numberingoptionspage|orientlb">Center of character</item>
-                          <item translatable="yes" context="numberingoptionspage|orientlb">Bottom of character</item>
-                          <item translatable="yes" context="numberingoptionspage|orientlb">Top of line</item>
-                          <item translatable="yes" context="numberingoptionspage|orientlb">Center of line</item>
-                          <item translatable="yes" context="numberingoptionspage|orientlb">Bottom of line</item>
+                          <item translatable="yes" context="numberingoptionspage|orientlb">基线顶部</item>
+                          <item translatable="yes" context="numberingoptionspage|orientlb">基线居中</item>
+                          <item translatable="yes" context="numberingoptionspage|orientlb">基线底部</item>
+                          <item translatable="yes" context="numberingoptionspage|orientlb">字符顶部</item>
+                          <item translatable="yes" context="numberingoptionspage|orientlb">字符居中</item>
+                          <item translatable="yes" context="numberingoptionspage|orientlb">字符底部</item>
+                          <item translatable="yes" context="numberingoptionspage|orientlb">行顶部</item>
+                          <item translatable="yes" context="numberingoptionspage|orientlb">行居中</item>
+                          <item translatable="yes" context="numberingoptionspage|orientlb">行底部</item>
                         </items>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="orientlb-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|orientlb">Select the alignment option for the graphic.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|orientlb">选择图形的对齐选项。</property>
                           </object>
                         </child>
                       </object>
@@ -335,7 +335,7 @@
                     </child>
                     <child>
                       <object class="GtkMenuButton" id="bitmap">
-                        <property name="label" translatable="yes" context="numberingoptionspage|bitmap">Select...</property>
+                        <property name="label" translatable="yes" context="numberingoptionspage|bitmap">选择...</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
@@ -347,7 +347,7 @@
                         </child>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="bitmap-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|bitmap">Select the graphic, or locate the graphic file that you want to use as a bullet.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|bitmap">选择图形，或定位要用作项目符号的图形文件。</property>
                           </object>
                         </child>
                       </object>
@@ -369,7 +369,7 @@
                         </child>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="color-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|color">Select a color for the current numbering scheme.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|color">为当前编号方案选择颜色。</property>
                           </object>
                         </child>
                       </object>
@@ -387,7 +387,7 @@
                         <property name="adjustment">adjustment4</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="relsize-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|relsize">Enter the amount by which you want to resize the bullet character with respect to the font height of the current paragraph.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|relsize">输入项目符号字符相对于当前段落字体高度的缩放比例。</property>
                           </object>
                         </child>
                       </object>
@@ -398,13 +398,13 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="bullet">
-                        <property name="label" translatable="yes" context="numberingoptionspage|bullet">Select...</property>
+                        <property name="label" translatable="yes" context="numberingoptionspage|bullet">选择...</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="bullet-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|bullet">Select the graphic, or locate the graphic file that you want to use as a bullet.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|bullet">选择图形，或定位要用作项目符号的图形文件。</property>
                           </object>
                         </child>
                       </object>
@@ -418,7 +418,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="margin-start">20</property>
-                        <property name="label" translatable="yes" context="numberingoptionspage|prefixft">Before:</property>
+                        <property name="label" translatable="yes" context="numberingoptionspage|prefixft">之前:</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">prefix</property>
                         <property name="xalign">1</property>
@@ -433,7 +433,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="margin-start">20</property>
-                        <property name="label" translatable="yes" context="numberingoptionspage|separator">Separator</property>
+                        <property name="label" translatable="yes" context="numberingoptionspage|separator">分隔符</property>
                         <property name="xalign">1</property>
                       </object>
                       <packing>
@@ -449,7 +449,7 @@
                         <property name="truncate-multiline">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="suffix-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|suffix">Enter a character or the text to display behind the number in the list. To create the numbering scheme "1.)", enter ".)" in this box.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|suffix">输入要显示在列表编号之后的字符或文字。要创建“1.)”编号方案，请在此框中输入“.)”。</property>
                           </object>
                         </child>
                       </object>
@@ -466,7 +466,7 @@
                         <property name="truncate-multiline">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="prefix-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|prefix">Enter a character or the text to display in front of the number in the list.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|prefix">输入要显示在列表编号之前的字符或文字。</property>
                           </object>
                         </child>
                       </object>
@@ -479,7 +479,7 @@
                       <object class="GtkLabel" id="suffixft">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="numberingoptionspage|suffixft">After:</property>
+                        <property name="label" translatable="yes" context="numberingoptionspage|suffixft">之后:</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">suffix</property>
                         <property name="xalign">1</property>
@@ -493,7 +493,7 @@
                       <object class="GtkLabel" id="sublevelsft">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="numberingoptionspage|sublevelsft">Show sublevels:</property>
+                        <property name="label" translatable="yes" context="numberingoptionspage|sublevelsft">显示子级:</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">sublevels</property>
                         <property name="ellipsize">end</property>
@@ -508,7 +508,7 @@
                       <object class="GtkLabel" id="bulletft">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="numberingoptionspage|bulletft">Character:</property>
+                        <property name="label" translatable="yes" context="numberingoptionspage|bulletft">字符:</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">bullet</property>
                         <property name="xalign">1</property>
@@ -522,7 +522,7 @@
                       <object class="GtkLabel" id="relsizeft">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="numberingoptionspage|relsizeft">_Relative size:</property>
+                        <property name="label" translatable="yes" context="numberingoptionspage|relsizeft">相对大小(_R):</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">relsize</property>
                         <property name="xalign">1</property>
@@ -536,7 +536,7 @@
                       <object class="GtkLabel" id="colorft">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="numberingoptionspage|colorft">Color:</property>
+                        <property name="label" translatable="yes" context="numberingoptionspage|colorft">颜色:</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">color</property>
                         <property name="xalign">1</property>
@@ -550,7 +550,7 @@
                       <object class="GtkLabel" id="charstyleft">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="numberingoptionspage|charstyleft">Character style:</property>
+                        <property name="label" translatable="yes" context="numberingoptionspage|charstyleft">字符样式:</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">charstyle</property>
                         <property name="xalign">1</property>
@@ -570,7 +570,7 @@
                           <object class="GtkLabel" id="widthft">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
-                            <property name="label" translatable="yes" context="numberingoptionspage|widthft">Width:</property>
+                            <property name="label" translatable="yes" context="numberingoptionspage|widthft">宽度:</property>
                             <property name="use-underline">True</property>
                             <property name="mnemonic-widget">widthmf</property>
                             <property name="xalign">1</property>
@@ -585,7 +585,7 @@
                           <object class="GtkLabel" id="heightft">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
-                            <property name="label" translatable="yes" context="numberingoptionspage|heightft">Height:</property>
+                            <property name="label" translatable="yes" context="numberingoptionspage|heightft">高度:</property>
                             <property name="use-underline">True</property>
                             <property name="mnemonic-widget">heightmf</property>
                             <property name="ellipsize">end</property>
@@ -619,7 +619,7 @@
                             <property name="digits">2</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="widthmf-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|widthmf">Enter a width for the graphic.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|widthmf">输入图形的宽度。</property>
                               </object>
                             </child>
                           </object>
@@ -638,7 +638,7 @@
                             <property name="digits">2</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="heightmf-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|heightmf">Enter a height for the graphic.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|heightmf">输入图形的高度。</property>
                               </object>
                             </child>
                           </object>
@@ -660,13 +660,13 @@
                                 <property name="can-focus">True</property>
                                 <property name="focus-on-click">False</property>
                                 <property name="receives-default">False</property>
-                                <property name="tooltip-text" translatable="yes" context="numberingoptionspage|ratio_tip">Keep ratio</property>
+                                <property name="tooltip-text" translatable="yes" context="numberingoptionspage|ratio_tip">保持比例</property>
                                 <property name="valign">center</property>
                                 <property name="draw-indicator">True</property>
                                 <child internal-child="accessible">
                                   <object class="AtkObject" id="keepratio-atkobject">
-                                    <property name="AtkObject::accessible-name" translatable="yes" context="numberingoptionspage|accessible_name|keepratio">Keep Ratio</property>
-                                    <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|keepratio">Maintains proportions when you resize the selected object.</property>
+                                    <property name="AtkObject::accessible-name" translatable="yes" context="numberingoptionspage|accessible_name|keepratio">保持比例</property>
+                                    <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|keepratio">调整所选对象大小时保持比例。</property>
                                   </object>
                                 </child>
                               </object>
@@ -754,7 +754,7 @@
               <object class="GtkLabel" id="label2">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="numberingoptionspage|label2">Numbering</property>
+                <property name="label" translatable="yes" context="numberingoptionspage|label2">编号</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -775,7 +775,7 @@
             <property name="shadow-type">none</property>
             <child>
               <object class="GtkCheckButton" id="allsame">
-                <property name="label" translatable="yes" context="numberingoptionspage|allsame">_Consecutive numbering</property>
+                <property name="label" translatable="yes" context="numberingoptionspage|allsame">连续编号(_C)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -785,7 +785,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="allsame-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|allsame">Increases the numbering by one as you go down each level in the list hierarchy.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="numberingoptionspage|extended_tip|allsame">在列表层级中每向下一级，编号递增一。</property>
                   </object>
                 </child>
               </object>
@@ -794,7 +794,7 @@
               <object class="GtkLabel" id="label3">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="numberingoptionspage|label3">All Levels</property>
+                <property name="label" translatable="yes" context="numberingoptionspage|label3">所有级别</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -841,7 +841,7 @@
                     <property name="can-focus">False</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="preview-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="numberingoptionspage|preview-atkobject">Preview</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="numberingoptionspage|preview-atkobject">预览</property>
                       </object>
                     </child>
                   </object>
@@ -854,7 +854,7 @@
           <object class="GtkLabel" id="previewlabel">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="numberingoptionspage|previewlabel">Preview</property>
+            <property name="label" translatable="yes" context="numberingoptionspage|previewlabel">预览</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>

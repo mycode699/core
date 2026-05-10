@@ -76,7 +76,7 @@
                 <property name="valign">start</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="drawingareaWN_EXAMPLE-atkobject">
-                    <property name="AtkObject::accessible-name" translatable="yes" context="paragalignpage|drawingareaWN_EXAMPLE-atkobject">Example</property>
+                    <property name="AtkObject::accessible-name" translatable="yes" context="paragalignpage|drawingareaWN_EXAMPLE-atkobject">示例</property>
                   </object>
                 </child>
               </object>
@@ -115,7 +115,7 @@
                 <property name="row-spacing">3</property>
                 <child>
                   <object class="GtkRadioButton" id="radioBTN_LEFTALIGN">
-                    <property name="label" translatable="yes" context="paragalignpage|radioBTN_LEFTALIGN">Force _Left</property>
+                    <property name="label" translatable="yes" context="paragalignpage|radioBTN_LEFTALIGN">强制左对齐(_L)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -124,7 +124,7 @@
                     <property name="draw-indicator">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="radioBTN_LEFTALIGN-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|radioBTN_LEFTALIGN">Aligns the paragraph to the left page margin.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|radioBTN_LEFTALIGN">将段落与页面左边距对齐。</property>
                       </object>
                     </child>
                   </object>
@@ -135,7 +135,7 @@
                 </child>
                 <child>
                   <object class="GtkRadioButton" id="radioBTN_RIGHTALIGN">
-                    <property name="label" translatable="yes" context="paragalignpage|radioBTN_RIGHTALIGN">Force R_ight</property>
+                    <property name="label" translatable="yes" context="paragalignpage|radioBTN_RIGHTALIGN">强制右对齐(_I)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -144,7 +144,7 @@
                     <property name="group">radioBTN_LEFTALIGN</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="radioBTN_RIGHTALIGN-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|radioBTN_RIGHTALIGN">Aligns the paragraph to the right page margin.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|radioBTN_RIGHTALIGN">将段落与页面右边距对齐。</property>
                       </object>
                     </child>
                   </object>
@@ -155,7 +155,7 @@
                 </child>
                 <child>
                   <object class="GtkRadioButton" id="radioBTN_CENTERALIGN">
-                    <property name="label" translatable="yes" context="paragalignpage|radioBTN_CENTERALIGN">_Center</property>
+                    <property name="label" translatable="yes" context="paragalignpage|radioBTN_CENTERALIGN">居中(_C)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -164,7 +164,7 @@
                     <property name="group">radioBTN_LEFTALIGN</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="radioBTN_CENTERALIGN-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|radioBTN_CENTERALIGN">Centers the contents of the paragraph on the page.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|radioBTN_CENTERALIGN">将段落内容在页面上居中。</property>
                       </object>
                     </child>
                   </object>
@@ -175,7 +175,7 @@
                 </child>
                 <child>
                   <object class="GtkRadioButton" id="radioBTN_JUSTIFYALIGN">
-                    <property name="label" translatable="yes" context="paragalignpage|radioBTN_JUSTIFYALIGN">_Justified</property>
+                    <property name="label" translatable="yes" context="paragalignpage|radioBTN_JUSTIFYALIGN">两端对齐(_J)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -184,7 +184,7 @@
                     <property name="group">radioBTN_LEFTALIGN</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="radioBTN_JUSTIFYALIGN-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|radioBTN_JUSTIFYALIGN">Aligns the paragraph to the left and to the right page margins.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|radioBTN_JUSTIFYALIGN">将段落同时与页面左右边距对齐。</property>
                       </object>
                     </child>
                   </object>
@@ -195,7 +195,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="checkCB_EXPAND">
-                    <property name="label" translatable="yes" context="paragalignpage|checkCB_EXPAND">_Expand single word</property>
+                    <property name="label" translatable="yes" context="paragalignpage|checkCB_EXPAND">扩展单个单词(_E)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -204,7 +204,7 @@
                     <property name="draw-indicator">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="checkCB_EXPAND-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|checkCB_EXPAND">If a justified paragraph ends with a single word, that word stretches to fill the line width.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|checkCB_EXPAND">如果两端对齐的段落以单个单词结尾，该单词会被拉伸以填满整行宽度。</property>
                       </object>
                     </child>
                   </object>
@@ -215,7 +215,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="checkCB_SNAP">
-                    <property name="label" translatable="yes" context="paragalignpage|checkCB_SNAP">_Snap to text grid (if active)</property>
+                    <property name="label" translatable="yes" context="paragalignpage|checkCB_SNAP">吸附到文字网格（若启用）(_S)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -224,7 +224,7 @@
                     <property name="draw-indicator">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="checkCB_SNAP-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|checkCB_SNAP">Aligns the paragraph to a text grid.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|checkCB_SNAP">将段落与文字网格对齐。</property>
                       </object>
                     </child>
                   </object>
@@ -241,7 +241,7 @@
                     <child>
                       <object class="GtkLabel" id="labelST_RIGHTALIGN_ASIAN">
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="paragalignpage|labelST_RIGHTALIGN_ASIAN">Force R_ight/Bottom</property>
+                        <property name="label" translatable="yes" context="paragalignpage|labelST_RIGHTALIGN_ASIAN">强制右/下对齐(_I)</property>
                         <property name="use-underline">True</property>
                       </object>
                       <packing>
@@ -253,7 +253,7 @@
                     <child>
                       <object class="GtkLabel" id="labelST_LEFTALIGN_ASIAN">
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="paragalignpage|labelST_LEFTALIGN_ASIAN">Force _Left/Top</property>
+                        <property name="label" translatable="yes" context="paragalignpage|labelST_LEFTALIGN_ASIAN">强制左/上对齐(_L)</property>
                         <property name="use-underline">True</property>
                       </object>
                       <packing>
@@ -265,7 +265,12 @@
                     <child>
                       <object class="GtkLabel" id="labelST_VERTALIGN_SDR">
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="paragalignpage|labelST_VERTALIGN_SDR">Vertical</property>
+                        <property name="label" translatable="yes" context="paragalignpage|labelST_VERTALIGN_SDR">垂直</property>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="labelST_VERTALIGN_SDR-atkobject">
+                            <property name="AtkObject::accessible-role" translatable="no">static</property>
+                          </object>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -289,7 +294,7 @@
                       <object class="GtkLabel" id="labelLB_LASTLINE">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="paragalignpage|labelLB_LASTLINE">_Last line:</property>
+                        <property name="label" translatable="yes" context="paragalignpage|labelLB_LASTLINE">最后一行(_L):</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">comboLB_LASTLINE</property>
                         <property name="xalign">0</property>
@@ -306,14 +311,14 @@
                         <property name="can-focus">False</property>
                         <property name="active">0</property>
                         <items>
-                          <item id="0" translatable="yes" context="paragalignpage|liststoreLB_LASTLINE">Start</item>
-                          <item id="1" translatable="yes" context="paragalignpage|liststoreLB_LASTLINE">Start</item>
-                          <item id="2" translatable="yes" context="paragalignpage|liststoreLB_LASTLINE">Centered</item>
-                          <item id="3" translatable="yes" context="paragalignpage|liststoreLB_LASTLINE">Justified</item>
+                          <item id="0" translatable="yes" context="paragalignpage|liststoreLB_LASTLINE">起始</item>
+                          <item id="1" translatable="yes" context="paragalignpage|liststoreLB_LASTLINE">起始</item>
+                          <item id="2" translatable="yes" context="paragalignpage|liststoreLB_LASTLINE">居中</item>
+                          <item id="3" translatable="yes" context="paragalignpage|liststoreLB_LASTLINE">两端对齐</item>
                         </items>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="comboLB_LASTLINE-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|comboLB_LASTLINE">Specify the alignment for the last line in the paragraph.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|comboLB_LASTLINE">指定段落最后一行的对齐方式。</property>
                           </object>
                         </child>
                       </object>
@@ -331,7 +336,7 @@
                 </child>
                 <child>
                   <object class="GtkRadioButton" id="radioBTN_ENDALIGN">
-                    <property name="label" translatable="yes" context="paragalignpage|radioBTN_ENDALIGN">E_nd</property>
+                    <property name="label" translatable="yes" context="paragalignpage|radioBTN_ENDALIGN">结束(_N)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -340,7 +345,7 @@
                     <property name="group">radioBTN_LEFTALIGN</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="radioBTN_ENDALIGN-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|radioBTN_ENDALIGN">Aligns the paragraph to the end of the line in the reading direction.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|radioBTN_ENDALIGN">将段落与阅读方向上的行尾对齐。</property>
                       </object>
                     </child>
                   </object>
@@ -351,7 +356,7 @@
                 </child>
                 <child>
                   <object class="GtkRadioButton" id="radioBTN_STARTALIGN">
-                    <property name="label" translatable="yes" context="paragalignpage|radioBTN_STARTALIGN">Sta_rt</property>
+                    <property name="label" translatable="yes" context="paragalignpage|radioBTN_STARTALIGN">开始(_R)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -360,7 +365,7 @@
                     <property name="group">radioBTN_LEFTALIGN</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="radioBTN_STARTALIGN-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|radioBTN_STARTALIGN">Aligns the paragraph to the beginning of the line in the reading direction.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|radioBTN_STARTALIGN">将段落与阅读方向上的行首对齐。</property>
                       </object>
                     </child>
                   </object>
@@ -375,7 +380,7 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="paragalignpage|label1">Options</property>
+                <property name="label" translatable="yes" context="paragalignpage|label1">选项</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -404,7 +409,7 @@
                   <object class="GtkLabel" id="labelFT_VERTALIGN">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="paragalignpage|labelFT_VERTALIGN">_Alignment:</property>
+                    <property name="label" translatable="yes" context="paragalignpage|labelFT_VERTALIGN">对齐(_A):</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">comboLB_VERTALIGN</property>
                     <property name="xalign">0</property>
@@ -421,15 +426,15 @@
                     <property name="can-focus">False</property>
                     <property name="active">0</property>
                     <items>
-                      <item id="0" translatable="yes" context="paragalignpage|liststoreLB_VERTALIGN">Automatic</item>
-                      <item id="1" translatable="yes" context="paragalignpage|liststoreLB_VERTALIGN">Base line</item>
-                      <item id="2" translatable="yes" context="paragalignpage|liststoreLB_VERTALIGN">Top</item>
-                      <item id="3" translatable="yes" context="paragalignpage|liststoreLB_VERTALIGN">Middle</item>
-                      <item id="4" translatable="yes" context="paragalignpage|liststoreLB_VERTALIGN">Bottom</item>
+                      <item id="0" translatable="yes" context="paragalignpage|liststoreLB_VERTALIGN">自动</item>
+                      <item id="1" translatable="yes" context="paragalignpage|liststoreLB_VERTALIGN">基线</item>
+                      <item id="2" translatable="yes" context="paragalignpage|liststoreLB_VERTALIGN">顶部</item>
+                      <item id="3" translatable="yes" context="paragalignpage|liststoreLB_VERTALIGN">中部</item>
+                      <item id="4" translatable="yes" context="paragalignpage|liststoreLB_VERTALIGN">底部</item>
                     </items>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="comboLB_VERTALIGN-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|comboLB_VERTALIGN">Select alignment for oversized/undersized characters in the paragraph.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|comboLB_VERTALIGN">选择段落中过大或过小字符的对齐方式。</property>
                       </object>
                     </child>
                   </object>
@@ -445,7 +450,7 @@
               <object class="GtkLabel" id="labelFL_VERTALIGN">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="paragalignpage|labelFL_VERTALIGN">Text-to-text</property>
+                <property name="label" translatable="yes" context="paragalignpage|labelFL_VERTALIGN">文本间对齐</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -479,7 +484,7 @@
                       <object class="GtkLabel" id="label2">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="paragalignpage|label2">_Text direction:</property>
+                        <property name="label" translatable="yes" context="paragalignpage|label2">文字方向(_T):</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">comboLB_TEXTDIRECTION</property>
                         <property name="xalign">0</property>
@@ -496,7 +501,7 @@
                         <property name="can-focus">False</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="comboLB_TEXTDIRECTION-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|comboLB_TEXTDIRECTION">Specify the text direction for a paragraph that uses complex text layout (CTL).</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|comboLB_TEXTDIRECTION">指定使用复杂文字布局 (CTL) 的段落文字方向。</property>
                           </object>
                         </child>
                       </object>
@@ -514,7 +519,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="checkCB_AUTOTEXTDIRECTION">
-                    <property name="label" translatable="yes" context="paragalignpage|checkCB_AUTOTEXTDIRECTION">Automatically set direction</property>
+                    <property name="label" translatable="yes" context="paragalignpage|checkCB_AUTOTEXTDIRECTION">自动设置方向</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -523,7 +528,7 @@
                     <property name="draw-indicator">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="checkCB_AUTOTEXTDIRECTION-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|checkCB_AUTOTEXTDIRECTION">Automatically adjust the writing direction of the paragraph based on its content.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="paragalignpage| extended_tip|checkCB_AUTOTEXTDIRECTION">根据段落内容自动调整书写方向。</property>
                       </object>
                     </child>
                   </object>
@@ -538,7 +543,7 @@
               <object class="GtkLabel" id="labelFL_PROPERTIES">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="paragalignpage|labelFL_PROPERTIES">Properties</property>
+                <property name="label" translatable="yes" context="paragalignpage|labelFL_PROPERTIES">属性</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -569,9 +574,14 @@
                   <object class="GtkLabel" id="labelMinimum">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="paragalignpage|labelMinimum">Minimum</property>
+                    <property name="label" translatable="yes" context="paragalignpage|labelMinimum">最小值</property>
                     <property name="use-underline">True</property>
                     <property name="xalign">0</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="labelMinimum-atkobject">
+                        <property name="AtkObject::accessible-role" translatable="no">static</property>
+                      </object>
+                    </child>
                   </object>
                   <packing>
                     <property name="left-attach">1</property>
@@ -582,9 +592,14 @@
                   <object class="GtkLabel" id="labelDesired">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="paragalignpage|labelDesired">Desired</property>
+                    <property name="label" translatable="yes" context="paragalignpage|labelDesired">期望值</property>
                     <property name="use-underline">True</property>
                     <property name="xalign">0</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="labelDesired-atkobject">
+                        <property name="AtkObject::accessible-role" translatable="no">static</property>
+                      </object>
+                    </child>
                   </object>
                   <packing>
                     <property name="left-attach">2</property>
@@ -595,9 +610,14 @@
                   <object class="GtkLabel" id="labelMaximum">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="paragalignpage|labelMaximum">Maximum</property>
+                    <property name="label" translatable="yes" context="paragalignpage|labelMaximum">最大值</property>
                     <property name="use-underline">True</property>
                     <property name="xalign">0</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="labelMaximum-atkobject">
+                        <property name="AtkObject::accessible-role" translatable="no">static</property>
+                      </object>
+                    </child>
                   </object>
                   <packing>
                     <property name="left-attach">3</property>
@@ -608,9 +628,14 @@
                   <object class="GtkLabel" id="labelWordSpacing">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="paragalignpage|labelWordSpacing">_Word spacing:</property>
+                    <property name="label" translatable="yes" context="paragalignpage|labelWordSpacing">单词间距(_W):</property>
                     <property name="use-underline">True</property>
                     <property name="xalign">0</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="labelWordSpacing-atkobject">
+                        <property name="AtkObject::accessible-role" translatable="no">static</property>
+                      </object>
+                    </child>
                   </object>
                   <packing>
                     <property name="left-attach">0</property>
@@ -626,7 +651,7 @@
                     <property name="adjustment">adjustmentPercent</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="spin_WORD_SPACING_MIN-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="paralignpage|extended_tip|JUSTIFICATION-MIN">Adjusts the minimum word spacing. Enter a number between 0% (no word spacing) and 250% (two and a half times the width of the space character).</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="paralignpage|extended_tip|JUSTIFICATION-MIN">调整最小单词间距。输入 0%（无单词间距）到 250%（空格字符宽度的两倍半）之间的数值。</property>
                       </object>
                     </child>
                   </object>
@@ -644,7 +669,7 @@
                     <property name="adjustment">adjustmentPercent2</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="spin_WORD_SPACING-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="paralignpage|extended_tip|JUSTIFICATION">Adjusts the desired word spacing. Enter a number between 0% (no word spacing) and 250% (two and a half times the width of the space character).</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="paralignpage|extended_tip|JUSTIFICATION">调整期望单词间距。输入 0%（无单词间距）到 250%（空格字符宽度的两倍半）之间的数值。</property>
                       </object>
                     </child>
                   </object>
@@ -662,7 +687,7 @@
                     <property name="adjustment">adjustmentPercent3</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="spin_WORD_SPACING_MAX-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="paralignpage|extended_tip|JUSTIFICATION-MAX">Adjusts the maximum word spacing. Enter a number between 0% (no word spacing) and 250% (two and a half times the width of the space character).</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="paralignpage|extended_tip|JUSTIFICATION-MAX">调整最大单词间距。输入 0%（无单词间距）到 250%（空格字符宽度的两倍半）之间的数值。</property>
                       </object>
                     </child>
                   </object>
@@ -675,9 +700,14 @@
                   <object class="GtkLabel" id="labelLetterSpacing">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="paragalignpage|labelLetterSpacing">_Letter spacing:</property>
+                    <property name="label" translatable="yes" context="paragalignpage|labelLetterSpacing">字母间距(_L):</property>
                     <property name="use-underline">True</property>
                     <property name="xalign">0</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="labelLetterSpacing-atkobject">
+                        <property name="AtkObject::accessible-role" translatable="no">static</property>
+                      </object>
+                    </child>
                   </object>
                   <packing>
                     <property name="left-attach">0</property>
@@ -693,7 +723,7 @@
                     <property name="adjustment">adjustmentPercent4</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="spin_LETTER_SPACING_MIN-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="paralignpage|extended_tip|LETTER-JUSTIFICATION-MIN">Adjusts the minimum letter spacing. Enter a number between -100% and 0% (original letter spacing).</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="paralignpage|extended_tip|LETTER-JUSTIFICATION-MIN">调整最小字母间距。输入 -100% 到 0%（原始字母间距）之间的数值。</property>
                       </object>
                     </child>
                   </object>
@@ -711,7 +741,7 @@
                     <property name="adjustment">adjustmentPercent5</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="spin_LETTER_SPACING_MAX-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="paralignpage|extended_tip|LETTER-JUSTIFICATION-MAX">Adjusts the maximum letter spacing. Enter a number between 0% (original letter spacing) and 500% (letter spacing is five times the width of the space character).</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="paralignpage|extended_tip|LETTER-JUSTIFICATION-MAX">调整最大字母间距。输入 0%（原始字母间距）到 500%（字母间距为空格字符宽度的五倍）之间的数值。</property>
                       </object>
                     </child>
                   </object>
@@ -724,9 +754,14 @@
                   <object class="GtkLabel" id="labelGlyphScaling">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="paragalignpage|labelGlyphScaling">_Glyph scaling:</property>
+                    <property name="label" translatable="yes" context="paragalignpage|labelGlyphScaling">字形缩放(_G):</property>
                     <property name="use-underline">True</property>
                     <property name="xalign">0</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="labelGlyphScaling-atkobject">
+                        <property name="AtkObject::accessible-role" translatable="no">static</property>
+                      </object>
+                    </child>
                   </object>
                   <packing>
                     <property name="left-attach">0</property>
@@ -742,7 +777,7 @@
                     <property name="adjustment">adjustmentPercent6</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="spin_GLYPH_SCALING_MIN-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="paralignpage|extended_tip|GLYPH-SCALING-MIN">Adjusts the minimum glyph scaling. Enter a number between 50% (ultra-condensed) and 100% (regular).</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="paralignpage|extended_tip|GLYPH-SCALING-MIN">调整最小字形缩放。输入 50%（超窄）到 100%（常规）之间的数值。</property>
                       </object>
                     </child>
                   </object>
@@ -760,7 +795,7 @@
                     <property name="adjustment">adjustmentPercent7</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="spin_GLYPH_SCALING_MAX-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="paralignpage|extended_tip|GLYPH-SCALING-MMAX">Adjusts the maximum glyph scaling. Enter a number between 100% (regular) and 200% (ultra-expanded).</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="paralignpage|extended_tip|GLYPH-SCALING-MMAX">调整最大字形缩放。输入 100%（常规）到 200%（超宽）之间的数值。</property>
                       </object>
                     </child>
                   </object>
@@ -784,7 +819,7 @@
               <object class="GtkLabel" id="labelFL_JUSTIFICATION">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="paragalignpage|labelFL_JUSTIFICATION">Justification</property>
+                <property name="label" translatable="yes" context="paragalignpage|labelFL_JUSTIFICATION">两端对齐</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>

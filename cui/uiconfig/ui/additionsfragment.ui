@@ -26,7 +26,7 @@
             <property name="halign">start</property>
             <property name="valign">start</property>
             <property name="margin-bottom">3</property>
-            <property name="label">description</property>
+            <property name="label">说明</property>
             <property name="wrap">True</property>
             <property name="wrap-mode">word-char</property>
             <property name="width-chars">40</property>
@@ -47,7 +47,7 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">start</property>
-            <property name="label" translatable="yes" context="additionsEntry|ratingLabel">Rating:</property>
+            <property name="label" translatable="yes" context="additionsEntry|ratingLabel">评分：</property>
             <property name="xalign">0</property>
             <accessibility>
               <relation type="label-for" target="imageRating1"/>
@@ -67,7 +67,7 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">start</property>
-            <property name="label" translatable="yes" context="additionsEntry|labelLicense">License:</property>
+            <property name="label" translatable="yes" context="additionsEntry|labelLicense">许可协议：</property>
             <property name="xalign">0</property>
             <child internal-child="accessible">
               <object class="AtkObject" id="labelLicense-atkobject">
@@ -85,7 +85,7 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">start</property>
-            <property name="label" translatable="yes" context="additionsEntry|labelVersion">Required version:</property>
+            <property name="label" translatable="yes" context="additionsEntry|labelVersion">所需版本：</property>
             <property name="xalign">0</property>
             <child internal-child="accessible">
               <object class="AtkObject" id="labelVersion-atkobject">
@@ -103,7 +103,7 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">start</property>
-            <property name="label" translatable="yes" context="additionsEntry|labelComments">Comments:</property>
+            <property name="label" translatable="yes" context="additionsEntry|labelComments">评论：</property>
             <property name="xalign">0</property>
             <child internal-child="accessible">
               <object class="AtkObject" id="labelComments-atkobject">
@@ -121,7 +121,7 @@
             <property name="visible">False</property>
             <property name="can-focus">False</property>
             <property name="halign">start</property>
-            <property name="label" translatable="yes" context="additionsEntry|labelComments">Downloads:</property>
+            <property name="label" translatable="yes" context="additionsEntry|labelComments">下载量：</property>
             <property name="xalign">0</property>
             <child internal-child="accessible">
               <object class="AtkObject" id="labelComments1-atkobject">
@@ -139,7 +139,7 @@
             <property name="visible">False</property>
             <property name="can-focus">False</property>
             <property name="halign">start</property>
-            <property name="label">label</property>
+            <property name="label">信息</property>
             <property name="xalign">0</property>
             <child internal-child="accessible">
               <object class="AtkObject" id="labelDownloadNumber-atkobject">
@@ -154,7 +154,7 @@
         </child>
         <child>
           <object class="GtkLinkButton" id="linkButtonComments">
-            <property name="label">button</property>
+            <property name="label">查看</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
@@ -173,7 +173,7 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">start</property>
-            <property name="label">label</property>
+            <property name="label">版本信息</property>
             <property name="xalign">0</property>
             <child internal-child="accessible">
               <object class="AtkObject" id="lbVersionText-atkobject">
@@ -191,7 +191,7 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">start</property>
-            <property name="label">label</property>
+            <property name="label">许可信息</property>
             <property name="xalign">0</property>
             <child internal-child="accessible">
               <object class="AtkObject" id="lbLicenseText-atkobject">
@@ -335,7 +335,7 @@
             <property name="homogeneous">True</property>
             <child>
               <object class="GtkButton" id="buttonInstall">
-                <property name="label" translatable="yes" context="additionsEntry|buttonInstall">Install</property>
+                <property name="label" translatable="yes" context="additionsEntry|buttonInstall">安装</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -349,7 +349,7 @@
             </child>
             <child>
               <object class="GtkLinkButton" id="btnWebsite">
-                <property name="label" translatable="yes" context="additionsEntry|buttonWebsite">Website</property>
+                <property name="label" translatable="yes" context="additionsEntry|buttonWebsite">官网</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -374,7 +374,7 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="margin-bottom">6</property>
-            <property name="label">Name</property>
+            <property name="label">名称</property>
             <property name="xalign">0</property>
             <attributes>
               <attribute name="weight" value="bold"/>

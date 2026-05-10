@@ -244,7 +244,7 @@
           <object class="GtkLabel" id="label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes" context="shadowtabpage|label">Properties</property>
+            <property name="label" translatable="yes" context="shadowtabpage|label">属性</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>

@@ -115,7 +115,7 @@
               <object class="GtkLabel" id="lbWestLanguage">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="charnamepage|westlangft-cjk">Language:</property>
+                <property name="label" translatable="yes" context="charnamepage|westlangft-cjk">语言:</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">cbWestLanguage</property>
                 <property name="xalign">0</property>
@@ -148,7 +148,7 @@
                 </child>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="cbWestLanguage-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|westlanglb-cjk">Sets the language that the spellchecker uses for the selected text or the text that you type. Available language modules have a check mark in front of them.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|westlanglb-cjk">设置拼写检查器用于所选文本或正在输入文本的语言。可用的语言模块前会显示勾选标记。</property>
                   </object>
                 </child>
               </object>
@@ -184,7 +184,7 @@
                 </child>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="cbWestStyle-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|weststylelb-cjk">Select the formatting that you want to apply.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|weststylelb-cjk">选择要应用的格式。</property>
                   </object>
                 </child>
               </object>
@@ -198,7 +198,7 @@
               <object class="GtkLabel" id="lbWestSize">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="charnamepage|westsizeft-cjk">Size:</property>
+                <property name="label" translatable="yes" context="charnamepage|westsizeft-cjk">大小:</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">cbWestSize</property>
                 <property name="xalign">0</property>
@@ -221,7 +221,7 @@
                 </child>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="cbWestSize-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|westsizelb-cjk">Enter or select the font size that you want to apply. For scalable fonts, you can also enter decimal values.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|westsizelb-cjk">输入或选择要应用的字号。对于可缩放字体，也可以输入小数值。</property>
                   </object>
                 </child>
               </object>
@@ -233,7 +233,7 @@
             </child>
             <child>
               <object class="GtkButton" id="btnWestFeatures">
-                <property name="label" translatable="yes" context="charnamepage|west_features_button-cjk">Features...</property>
+                <property name="label" translatable="yes" context="charnamepage|west_features_button-cjk">特性...</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -277,7 +277,7 @@
                     </child>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="trWestFontName-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|westfontnamelb-nocjk">Select the font that you want to apply.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|westfontnamelb-nocjk">选择要应用的字体。</property>
                       </object>
                     </child>
                   </object>
@@ -334,7 +334,7 @@
           <object class="GtkLabel" id="lbWestern">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="charnamepage|Tab_Western">Western</property>
+            <property name="label" translatable="yes" context="charnamepage|Tab_Western">西文</property>
           </object>
           <packing>
             <property name="tab-fill">False</property>
@@ -368,7 +368,7 @@
               <object class="GtkLabel" id="lbCJKSize">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="charnamepage|eastsizeft">Size:</property>
+                <property name="label" translatable="yes" context="charnamepage|eastsizeft">大小:</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">cbCJKSize</property>
                 <property name="xalign">0</property>
@@ -382,7 +382,7 @@
               <object class="GtkLabel" id="lbCJKLanguage">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="charnamepage|eastlangft">Language:</property>
+                <property name="label" translatable="yes" context="charnamepage|eastlangft">语言:</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">cbCJKLanguage</property>
                 <property name="xalign">0</property>
@@ -405,7 +405,7 @@
                 </child>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="cbCJKStyle-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|eaststylelb">Select the formatting that you want to apply.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|eaststylelb">选择要应用的格式。</property>
                   </object>
                 </child>
               </object>
@@ -428,7 +428,7 @@
                 </child>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="cbCJKSize-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|eastsizelb">Enter or select the font size that you want to apply. For scalable fonts, you can also enter decimal values.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|eastsizelb">输入或选择要应用的字号。对于可缩放字体，也可以输入小数值。</property>
                   </object>
                 </child>
               </object>
@@ -454,7 +454,7 @@
             </child>
             <child>
               <object class="GtkButton" id="btnCJKFeatures">
-                <property name="label" translatable="yes" context="charnamepage|east_features_button">Features...</property>
+                <property name="label" translatable="yes" context="charnamepage|east_features_button">特性...</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -512,7 +512,7 @@
                     </child>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="trCJKFontName-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|trCJKFontName">Select the font that you want to apply.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|trCJKFontName">选择要应用的字体。</property>
                       </object>
                     </child>
                   </object>
@@ -561,7 +561,7 @@
                 </child>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="cbCJKLanguage-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|eastlanglb">Sets the language that the spellchecker uses for the selected text or the text that you type. Available language modules have a check mark in front of them.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|eastlanglb">设置拼写检查器用于所选文本或正在输入文本的语言。可用的语言模块前会显示勾选标记。</property>
                   </object>
                 </child>
               </object>
@@ -601,7 +601,7 @@
           <object class="GtkLabel" id="nbCJK">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="charnamepage|Tab_Asian">Asian</property>
+            <property name="label" translatable="yes" context="charnamepage|Tab_Asian">亚洲文字</property>
           </object>
           <packing>
             <property name="tab-fill">False</property>
@@ -651,7 +651,7 @@
               <object class="GtkLabel" id="lbCTLSize">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="charnamepage|ctlsizeft">Size:</property>
+                <property name="label" translatable="yes" context="charnamepage|ctlsizeft">大小:</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">cbCTLSize</property>
                 <property name="xalign">0</property>
@@ -674,7 +674,7 @@
                 </child>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="cbCTLStyle-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|ctlstylelb">Select the formatting that you want to apply.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|ctlstylelb">选择要应用的格式。</property>
                   </object>
                 </child>
               </object>
@@ -697,7 +697,7 @@
                 </child>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="cbCTLSize-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|ctlsizelb">Enter or select the font size that you want to apply. For scalable fonts, you can also enter decimal values.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|ctlsizelb">输入或选择要应用的字号。对于可缩放字体，也可以输入小数值。</property>
                   </object>
                 </child>
               </object>
@@ -711,7 +711,7 @@
               <object class="GtkLabel" id="lbCTLLanguage">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="charnamepage|ctllangft">Language:</property>
+                <property name="label" translatable="yes" context="charnamepage|ctllangft">语言:</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">cbCTLLanguage</property>
                 <property name="xalign">0</property>
@@ -723,7 +723,7 @@
             </child>
             <child>
               <object class="GtkButton" id="btnCTLFeatures">
-                <property name="label" translatable="yes" context="charnamepage|ctl_features_button">Features...</property>
+                <property name="label" translatable="yes" context="charnamepage|ctl_features_button">特性...</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -757,7 +757,7 @@
                 </child>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="cbCTLLanguage-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|ctllanglb">Sets the language that the spellchecker uses for the selected text or the text that you type. Available language modules have a check mark in front of them.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|ctllanglb">设置拼写检查器用于所选文本或正在输入文本的语言。可用的语言模块前会显示勾选标记。</property>
                   </object>
                 </child>
               </object>
@@ -799,7 +799,7 @@
                     </child>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="trCTLFontName-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|trCTLFontName">Select the font that you want to apply.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="charnamepage|extended_tip|trCTLFontName">选择要应用的字体。</property>
                       </object>
                     </child>
                   </object>
@@ -858,7 +858,7 @@
           <object class="GtkLabel" id="nbCTL">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="charnamepage|Tab_Complex">Complex</property>
+            <property name="label" translatable="yes" context="charnamepage|Tab_Complex">复杂文字</property>
           </object>
           <packing>
             <property name="position">1</property>
@@ -893,7 +893,7 @@
                 <property name="can-focus">False</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="preview-atkobject">
-                    <property name="AtkObject::accessible-name" translatable="yes" context="charnamepage|preview-atkobject">Preview</property>
+                    <property name="AtkObject::accessible-name" translatable="yes" context="charnamepage|preview-atkobject">预览</property>
                   </object>
                 </child>
               </object>

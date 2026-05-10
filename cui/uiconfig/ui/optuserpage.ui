@@ -15,9 +15,9 @@
   <object class="GtkBox" id="OptUserPage">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="border-width">6</property>
+    <property name="border-width">10</property>
     <property name="orientation">vertical</property>
-    <property name="spacing">12</property>
+    <property name="spacing">10</property>
     <child>
       <object class="GtkFrame" id="identification">
         <property name="visible">True</property>
@@ -29,10 +29,10 @@
           <object class="GtkGrid" id="grid1">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-start">12</property>
-            <property name="margin-top">6</property>
+            <property name="margin-start">14</property>
+            <property name="margin-top">8</property>
             <property name="row-spacing">6</property>
-            <property name="column-spacing">6</property>
+            <property name="column-spacing">8</property>
             <child>
               <object class="GtkImage" id="locknameft">
                 <property name="can-focus">False</property>
@@ -51,7 +51,7 @@
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="optuserpage|nameft">First/last _name/initials:</property>
+                <property name="label" translatable="yes" context="optuserpage|nameft">名/姓/缩写(_N):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">firstname</property>
                 <property name="xalign">0</property>
@@ -66,19 +66,20 @@
               <object class="GtkGrid" id="grid2">
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
-                <property name="column-spacing">6</property>
+                <property name="column-spacing">8</property>
                 <child>
                   <object class="GtkEntry" id="firstname">
                     <property name="can-focus">True</property>
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">120</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="firstname-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="optuserpage|firstname-atkobject">First name</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | firstname">Type your first name.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="optuserpage|firstname-atkobject">名</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | firstname">输入您的名字。</property>
                       </object>
                     </child>
                   </object>
@@ -93,12 +94,13 @@
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">120</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="lastname-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="lastname-atkobject">Last name</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | lastname">Type your last name.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="lastname-atkobject">姓</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | lastname">输入您的姓氏。</property>
                       </object>
                     </child>
                   </object>
@@ -113,12 +115,12 @@
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="activates-default">True</property>
-                    <property name="width-chars">7</property>
+                    <property name="width-chars">8</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="shortname-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="shortname-atkobject">Initials</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | shortname">Type your initials.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="shortname-atkobject">缩写</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | shortname">输入您的姓名缩写。</property>
                       </object>
                     </child>
                   </object>
@@ -151,7 +153,7 @@
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="optuserpage|rusnameft">Last/first/father’s _name/initials:</property>
+                <property name="label" translatable="yes" context="optuserpage|rusnameft">姓/名/父名/缩写(_N):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">ruslastname</property>
                 <property name="xalign">0</property>
@@ -166,19 +168,20 @@
               <object class="GtkGrid" id="grid3">
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
-                <property name="column-spacing">6</property>
+                <property name="column-spacing">8</property>
                 <child>
                   <object class="GtkEntry" id="ruslastname">
                     <property name="can-focus">True</property>
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">120</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="ruslastname-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="ruslastname-atkobject">Last name</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | ruslastname">Type your last name.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="ruslastname-atkobject">姓</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | ruslastname">输入您的姓氏。</property>
                       </object>
                     </child>
                   </object>
@@ -193,12 +196,13 @@
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">120</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="rusfathersname-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="rusfathersname-atkobject">Father's name</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tips | rusfathersname">Type your father's name</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="rusfathersname-atkobject">父名</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tips | rusfathersname">输入您的父名</property>
                       </object>
                     </child>
                   </object>
@@ -213,12 +217,12 @@
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="activates-default">True</property>
-                    <property name="width-chars">7</property>
+                    <property name="width-chars">8</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="russhortname-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="russhortname-atkobject">Initials</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | russhortname">Type your initials.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="russhortname-atkobject">缩写</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | russhortname">输入您的姓名缩写。</property>
                       </object>
                     </child>
                   </object>
@@ -233,12 +237,13 @@
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">120</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="rusfirstname-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="rusfirstname-atkobject">First name</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | rusfirstname">Type your first name.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="rusfirstname-atkobject">名</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | rusfirstname">输入您的名字。</property>
                       </object>
                     </child>
                   </object>
@@ -271,7 +276,7 @@
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="optuserpage|eastnameft">Last/first _name/initials:</property>
+                <property name="label" translatable="yes" context="optuserpage|eastnameft">姓/名/缩写(_N):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">eastlastname</property>
                 <property name="xalign">0</property>
@@ -286,19 +291,20 @@
               <object class="GtkGrid" id="grid4">
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
-                <property name="column-spacing">6</property>
+                <property name="column-spacing">8</property>
                 <child>
                   <object class="GtkEntry" id="eastlastname">
                     <property name="can-focus">True</property>
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">120</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="eastlastname-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="eastlastname-atkobject">Last name</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | eastlastname">Type your last name.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="eastlastname-atkobject">姓</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | eastlastname">输入您的姓氏。</property>
                       </object>
                     </child>
                   </object>
@@ -313,12 +319,13 @@
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">120</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="eastfirstname-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="eastfirstname-atkobject">First name</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | eastfirstname">Type your first name.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="eastfirstname-atkobject">名</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | eastfirstname">输入您的名字。</property>
                       </object>
                     </child>
                   </object>
@@ -333,12 +340,12 @@
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="activates-default">True</property>
-                    <property name="width-chars">7</property>
+                    <property name="width-chars">8</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="eastshortname-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="eastshortname-atkobject">Initials</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | eastshortname">Type your initials.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="eastshortname-atkobject">缩写</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | eastshortname">输入您的姓名缩写。</property>
                       </object>
                     </child>
                   </object>
@@ -371,7 +378,7 @@
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="optuserpage|titleft">_Title/position:</property>
+                <property name="label" translatable="yes" context="optuserpage|titleft">头衔/职位(_T):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">title</property>
                 <property name="xalign">0</property>
@@ -387,19 +394,20 @@
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
                 <property name="hexpand">True</property>
-                <property name="column-spacing">6</property>
+                <property name="column-spacing">8</property>
                 <child>
                   <object class="GtkEntry" id="title">
                     <property name="can-focus">True</property>
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">120</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="title-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="title-atkobject">Title</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | title">Type your title in this field.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="title-atkobject">头衔</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | title">在此字段中输入您的头衔。</property>
                       </object>
                     </child>
                   </object>
@@ -414,12 +422,13 @@
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">120</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="position-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="position-atkobject">Position</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | position">Type your position in the company in this field.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="position-atkobject">职位</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | position">在此字段中输入您在公司的职位。</property>
                       </object>
                     </child>
                   </object>
@@ -452,7 +461,7 @@
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="optuserpage|companyft">Co_mpany:</property>
+                <property name="label" translatable="yes" context="optuserpage|companyft">公司(_M):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">company</property>
                 <property name="xalign">0</property>
@@ -474,11 +483,12 @@
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">180</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="company-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | company">Type the name of your company in this field.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | company">在此字段中输入您的公司名称。</property>
                       </object>
                     </child>
                   </object>
@@ -499,7 +509,7 @@
           <object class="GtkLabel" id="identificationlabel">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="optuserpage|identificationlabel">Identification</property>
+            <property name="label" translatable="yes" context="optuserpage|identificationlabel">身份信息</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -523,10 +533,10 @@
           <object class="GtkGrid" id="grid7">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-start">12</property>
-            <property name="margin-top">6</property>
+            <property name="margin-start">14</property>
+            <property name="margin-top">8</property>
             <property name="row-spacing">6</property>
-            <property name="column-spacing">6</property>
+            <property name="column-spacing">8</property>
             <child>
               <object class="GtkImage" id="lockstreetft">
                 <property name="can-focus">False</property>
@@ -545,7 +555,7 @@
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="optuserpage|streetft">_Street:</property>
+                <property name="label" translatable="yes" context="optuserpage|streetft">街道(_S):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">street</property>
                 <property name="xalign">0</property>
@@ -567,11 +577,12 @@
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">180</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="street-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | street">Type the name of your street in this field.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | street">在此字段中输入您的街道名称。</property>
                       </object>
                     </child>
                   </object>
@@ -604,7 +615,7 @@
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="optuserpage|russtreetft">_Street/apartment number:</property>
+                <property name="label" translatable="yes" context="optuserpage|russtreetft">街道/公寓号(_S):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">russtreet</property>
                 <property name="xalign">0</property>
@@ -619,19 +630,20 @@
               <object class="GtkGrid" id="grid9">
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
-                <property name="column-spacing">6</property>
+                <property name="column-spacing">8</property>
                 <child>
                   <object class="GtkEntry" id="russtreet">
                     <property name="can-focus">True</property>
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">180</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="russtreet-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="russtreet-atkobject">Street</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tips | russrteet">Type the name of your street in this field.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="russtreet-atkobject">街道</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tips | russrteet">在此字段中输入您的街道名称。</property>
                       </object>
                     </child>
                   </object>
@@ -650,8 +662,8 @@
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="apartnum-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="ruslastname-atkobject">Apartment number</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tips | apartnum">Type your apartment number</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="ruslastname-atkobject">公寓号</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tips | apartnum">输入您的公寓号</property>
                       </object>
                     </child>
                   </object>
@@ -684,7 +696,7 @@
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="optuserpage|icityft">_Zip/city:</property>
+                <property name="label" translatable="yes" context="optuserpage|icityft">邮编/城市(_Z):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">izip</property>
                 <property name="xalign">0</property>
@@ -699,19 +711,20 @@
               <object class="GtkGrid" id="grid10">
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
-                <property name="column-spacing">6</property>
+                <property name="column-spacing">8</property>
                 <child>
                   <object class="GtkEntry" id="icity">
                     <property name="can-focus">True</property>
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">140</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="icity-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="icity-atkobject">City</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | icity">Type the city where you live.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="icity-atkobject">城市</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | icity">输入您居住的城市。</property>
                       </object>
                     </child>
                   </object>
@@ -730,8 +743,8 @@
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="izip-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="izip-atkobject">Zip code</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | izip">Type your ZIP in this field.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="izip-atkobject">邮政编码</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | izip">在此字段中输入您的邮政编码。</property>
                       </object>
                     </child>
                   </object>
@@ -764,7 +777,7 @@
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="optuserpage|cityft">City/state/_zip:</property>
+                <property name="label" translatable="yes" context="optuserpage|cityft">城市/州/邮编(_Z):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">city</property>
                 <property name="xalign">0</property>
@@ -779,19 +792,20 @@
               <object class="GtkGrid" id="grid11">
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
-                <property name="column-spacing">6</property>
+                <property name="column-spacing">8</property>
                 <child>
                   <object class="GtkEntry" id="city">
                     <property name="can-focus">True</property>
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">140</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="city-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="city-atkobject">City</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | city">Type the city where you live.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="city-atkobject">城市</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | city">输入您居住的城市。</property>
                       </object>
                     </child>
                   </object>
@@ -806,12 +820,13 @@
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">120</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="state-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="state-atkobject">State</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | state">Type your state.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="state-atkobject">州/省</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | state">输入您的州或省。</property>
                       </object>
                     </child>
                   </object>
@@ -830,8 +845,8 @@
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="zip-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="zip-atkobject">Zip code</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | zip">Type your ZIP in this field.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="zip-atkobject">邮政编码</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | zip">在此字段中输入您的邮政编码。</property>
                       </object>
                     </child>
                   </object>
@@ -864,7 +879,7 @@
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="optuserpage|countryft">Country/re_gion:</property>
+                <property name="label" translatable="yes" context="optuserpage|countryft">国家/地区(_G):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">country</property>
                 <property name="xalign">0</property>
@@ -886,11 +901,12 @@
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">180</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="country-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tips | country">Type your country and region</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tips | country">输入您的国家和地区</property>
                       </object>
                     </child>
                   </object>
@@ -923,13 +939,13 @@
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="optuserpage|phoneft">Telephone (home/_work):</property>
+                <property name="label" translatable="yes" context="optuserpage|phoneft">电话（家庭/工作）(_W):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">home</property>
                 <property name="xalign">0</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="phoneft-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="phoneft-atkobject">Home telephone number</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="phoneft-atkobject">家庭电话号码</property>
                   </object>
                 </child>
               </object>
@@ -943,19 +959,20 @@
               <object class="GtkGrid" id="grid13">
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
-                <property name="column-spacing">6</property>
+                <property name="column-spacing">8</property>
                 <child>
                   <object class="GtkEntry" id="home">
                     <property name="can-focus">True</property>
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">140</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="home-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="home-atkobject">Home telephone number</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | home">Type your private telephone number in this field.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="home-atkobject">家庭电话号码</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | home">在此字段中输入您的私人电话号码。</property>
                       </object>
                     </child>
                   </object>
@@ -970,12 +987,13 @@
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">140</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="work-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="work-atkobject">Work telephone number</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | work">Type your work number in this field.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="work-atkobject">工作电话号码</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | work">在此字段中输入您的工作电话号码。</property>
                       </object>
                     </child>
                   </object>
@@ -1008,7 +1026,7 @@
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="optuserpage|faxft">Fa_x/email:</property>
+                <property name="label" translatable="yes" context="optuserpage|faxft">传真/电子邮件(_X):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">fax</property>
                 <property name="xalign">0</property>
@@ -1024,19 +1042,20 @@
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
                 <property name="hexpand">True</property>
-                <property name="column-spacing">6</property>
+                <property name="column-spacing">8</property>
                 <child>
                   <object class="GtkEntry" id="fax">
                     <property name="can-focus">True</property>
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">140</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="fax-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="fax-atkobject">Fax number</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | fax">Type your fax number in this field.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="fax-atkobject">传真号码</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | fax">在此字段中输入您的传真号码。</property>
                       </object>
                     </child>
                   </object>
@@ -1051,12 +1070,13 @@
                     <property name="no-show-all">True</property>
                     <property name="valign">center</property>
                     <property name="hexpand">True</property>
+                    <property name="width-request">180</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="email-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="email-atkobject">email address</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | email">Type your email address.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="email-atkobject">电子邮件地址</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | email">输入您的电子邮件地址。</property>
                       </object>
                     </child>
                   </object>
@@ -1086,7 +1106,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="usefordocprop">
-                <property name="label" translatable="yes" context="optuserpage|usefordocprop">_Use data for document properties</property>
+                <property name="label" translatable="yes" context="optuserpage|usefordocprop">用于文档属性(_U)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -1094,7 +1114,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="usefordocprop-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended tips | usefordoprop">Mark to use the data in document properties</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended tips | usefordoprop">勾选后将这些数据用于文档属性</property>
                   </object>
                 </child>
               </object>
@@ -1110,7 +1130,7 @@
           <object class="GtkLabel" id="contact_informationlabel">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="optuserpage|contact_informationlabel">Contact Information</property>
+            <property name="label" translatable="yes" context="optuserpage|contact_informationlabel">联系信息</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -1134,10 +1154,10 @@
           <object class="GtkGrid" id="grid15">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-start">12</property>
-            <property name="margin-top">6</property>
+            <property name="margin-start">14</property>
+            <property name="margin-top">8</property>
             <property name="row-spacing">6</property>
-            <property name="column-spacing">6</property>
+            <property name="column-spacing">8</property>
             <child>
               <object class="GtkImage" id="locksigningkey">
                 <property name="can-focus">False</property>
@@ -1155,7 +1175,7 @@
               <object class="GtkLabel" id="signingkeylabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="optuserpage|signingkeylabel">_Signing key:</property>
+                <property name="label" translatable="yes" context="optuserpage|signingkeylabel">签名密钥(_S):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">signingkey</property>
                 <property name="xalign">0</property>
@@ -1170,9 +1190,10 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="hexpand">True</property>
+                <property name="width-request">220</property>
                 <property name="editable">False</property>
                 <property name="truncate-multiline">True</property>
-                <property name="placeholder-text" translatable="yes" context="optuserpage|signingkey">No key</property>
+                <property name="placeholder-text" translatable="yes" context="optuserpage|signingkey">无密钥</property>
               </object>
               <packing>
                 <property name="left-attach">2</property>
@@ -1184,7 +1205,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text" translatable="yes" context="optuserpage|removesigningkey">Clear Signing Key</property>
+                <property name="tooltip-text" translatable="yes" context="optuserpage|removesigningkey">清除签名密钥</property>
                 <property name="image">image1</property>
                 <property name="always-show-image">True</property>
               </object>
@@ -1195,7 +1216,7 @@
             </child>
             <child>
               <object class="GtkButton" id="picksigningkey">
-                <property name="label" translatable="yes" context="optuserpage|picksigningkey">Select...</property>
+                <property name="label" translatable="yes" context="optuserpage|picksigningkey">选择...</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -1222,7 +1243,7 @@
               <object class="GtkLabel" id="encryptionkeylabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="optuserpage|encryptionkeylabel">OpenPGP encryption _key:</property>
+                <property name="label" translatable="yes" context="optuserpage|encryptionkeylabel">OpenPGP 加密密钥(_K):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">encryptionkey</property>
                 <property name="xalign">0</property>
@@ -1237,9 +1258,10 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="hexpand">True</property>
+                <property name="width-request">220</property>
                 <property name="editable">False</property>
                 <property name="truncate-multiline">True</property>
-                <property name="placeholder-text" translatable="yes" context="optuserpage|encryptionkey">No key</property>
+                <property name="placeholder-text" translatable="yes" context="optuserpage|encryptionkey">无密钥</property>
               </object>
               <packing>
                 <property name="left-attach">2</property>
@@ -1251,7 +1273,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text" translatable="yes" context="optuserpage|removeencryptionkey">Clear Encryption Key</property>
+                <property name="tooltip-text" translatable="yes" context="optuserpage|removeencryptionkey">清除加密密钥</property>
                 <property name="image">image2</property>
                 <property name="always-show-image">True</property>
               </object>
@@ -1262,7 +1284,7 @@
             </child>
             <child>
               <object class="GtkButton" id="pickencryptionkey">
-                <property name="label" translatable="yes" context="optuserpage|pickencryptionkey">Select...</property>
+                <property name="label" translatable="yes" context="optuserpage|pickencryptionkey">选择...</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -1287,7 +1309,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="encrypttoself">
-                <property name="label" translatable="yes" context="optuserpage|encrypttoself">When _encrypting documents, always encrypt to self</property>
+                <property name="label" translatable="yes" context="optuserpage|encrypttoself">加密文档时，始终同时加密给自己(_E)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -1295,7 +1317,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="encrypttoself-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | encrypttoself">Mark this checkbox to also encrypt the file with your public key, so you can open the document with your private key.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | encrypttoself">勾选此复选框后，也会使用您的公钥加密文件，以便您可用自己的私钥打开该文档。</property>
                   </object>
                 </child>
               </object>
@@ -1314,7 +1336,7 @@
           <object class="GtkLabel" id="cryptographylabel">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="optuserpage|cryptographylabel">ODF Cryptography</property>
+            <property name="label" translatable="yes" context="optuserpage|cryptographylabel">ODF 加密</property>
             <property name="use-underline">True</property>
             <attributes>
               <attribute name="weight" value="bold"/>
@@ -1330,7 +1352,7 @@
     </child>
     <child internal-child="accessible">
       <object class="AtkObject" id="OptUserPage-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | OptUserPage">Use this tab page to enter or edit user data.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="extended tip | OptUserPage">使用此标签页输入或编辑用户数据。</property>
       </object>
     </child>
   </object>

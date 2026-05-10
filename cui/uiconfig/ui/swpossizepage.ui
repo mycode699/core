@@ -71,13 +71,13 @@
                         <property name="can-focus">True</property>
                         <property name="focus-on-click">False</property>
                         <property name="receives-default">False</property>
-                        <property name="tooltip-text" translatable="yes" context="swpossizepage|ratio_tip">Keep ratio</property>
+                        <property name="tooltip-text" translatable="yes" context="swpossizepage|ratio_tip">保持比例</property>
                         <property name="valign">center</property>
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="ratio-atkobject">
-                            <property name="AtkObject::accessible-name" translatable="yes" context="swpossizepage|accessible_name|ratio">Keep Ratio</property>
-                            <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|ratio">Maintains proportions when you resize the selected object.</property>
+                            <property name="AtkObject::accessible-name" translatable="yes" context="swpossizepage|accessible_name|ratio">保持比例</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|ratio">调整所选对象大小时保持比例。</property>
                           </object>
                         </child>
                       </object>
@@ -144,7 +144,7 @@
                     <property name="digits">2</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="width-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|width">Enter the width that you want for the selected object.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|width">输入所选对象所需的宽度。</property>
                       </object>
                     </child>
                   </object>
@@ -157,7 +157,7 @@
                   <object class="GtkLabel" id="widthft">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="swpossizepage|widthft">_Width:</property>
+                    <property name="label" translatable="yes" context="swpossizepage|widthft">宽度(_W):</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">width</property>
                     <property name="xalign">0</property>
@@ -177,7 +177,7 @@
                     <property name="digits">2</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="height-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|height">Enter the height that you want for the selected object.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|height">输入所选对象所需的高度。</property>
                       </object>
                     </child>
                   </object>
@@ -190,7 +190,7 @@
                   <object class="GtkLabel" id="heightft">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="swpossizepage|heightft">H_eight:</property>
+                    <property name="label" translatable="yes" context="swpossizepage|heightft">高度(_E):</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">height</property>
                     <property name="xalign">0</property>
@@ -206,7 +206,7 @@
               <object class="GtkLabel" id="label2">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="swpossizepage|label2">Size</property>
+                <property name="label" translatable="yes" context="swpossizepage|label2">大小</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -236,7 +236,7 @@
                 <property name="row-spacing">6</property>
                 <child>
                   <object class="GtkRadioButton" id="topage">
-                    <property name="label" translatable="yes" context="swpossizepage|topage">To _page</property>
+                    <property name="label" translatable="yes" context="swpossizepage|topage">到页面(_P)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -245,7 +245,7 @@
                     <property name="draw-indicator">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="topage-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|topage">Anchors the selection to the current page.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|topage">将所选内容锚定到当前页面。</property>
                       </object>
                     </child>
                   </object>
@@ -256,7 +256,7 @@
                 </child>
                 <child>
                   <object class="GtkRadioButton" id="topara">
-                    <property name="label" translatable="yes" context="swpossizepage|topara">To paragrap_h</property>
+                    <property name="label" translatable="yes" context="swpossizepage|topara">到段落(_H)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -265,7 +265,7 @@
                     <property name="group">topage</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="topara-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|topara">Anchors the selection to the current paragraph.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|topara">将所选内容锚定到当前段落。</property>
                       </object>
                     </child>
                   </object>
@@ -276,7 +276,7 @@
                 </child>
                 <child>
                   <object class="GtkRadioButton" id="tochar">
-                    <property name="label" translatable="yes" context="swpossizepage|tochar">To cha_racter</property>
+                    <property name="label" translatable="yes" context="swpossizepage|tochar">到字符(_R)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -285,7 +285,7 @@
                     <property name="group">topage</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="tochar-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|tochar">Anchors the selection to a character.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|tochar">将所选内容锚定到字符。</property>
                       </object>
                     </child>
                   </object>
@@ -296,7 +296,7 @@
                 </child>
                 <child>
                   <object class="GtkRadioButton" id="aschar">
-                    <property name="label" translatable="yes" context="swpossizepage|aschar">_As character</property>
+                    <property name="label" translatable="yes" context="swpossizepage|aschar">作为字符(_A)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -305,7 +305,7 @@
                     <property name="group">topage</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="aschar-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|aschar">Anchors the selection as character. The height of the current line is resized to match the height of the selection.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|aschar">将所选内容作为字符锚定。当前行的高度会调整为匹配所选内容的高度。</property>
                       </object>
                     </child>
                   </object>
@@ -316,7 +316,7 @@
                 </child>
                 <child>
                   <object class="GtkRadioButton" id="toframe">
-                    <property name="label" translatable="yes" context="swpossizepage|toframe">To _frame</property>
+                    <property name="label" translatable="yes" context="swpossizepage|toframe">到框架(_F)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -335,7 +335,7 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="swpossizepage|label1">Anchor</property>
+                <property name="label" translatable="yes" context="swpossizepage|label1">锚定</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -364,7 +364,7 @@
                 <property name="column-spacing">18</property>
                 <child>
                   <object class="GtkCheckButton" id="pos">
-                    <property name="label" translatable="yes" context="swpossizepage|pos">Positio_n</property>
+                    <property name="label" translatable="yes" context="swpossizepage|pos">位置(_N)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -379,7 +379,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="size">
-                    <property name="label" translatable="yes" context="swpossizepage|size">_Size</property>
+                    <property name="label" translatable="yes" context="swpossizepage|size">大小(_S)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -398,7 +398,7 @@
               <object class="GtkLabel" id="label3">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="swpossizepage|label3">Protect</property>
+                <property name="label" translatable="yes" context="swpossizepage|label3">保护</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -411,14 +411,14 @@
           </packing>
         </child>
         <child>
-          <object class="GtkFrame" id="frmPreview">
+          <object class="GtkFrame" id="frm预览">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">end</property>
             <property name="label-xalign">0</property>
             <property name="shadow-type">none</property>
             <child>
-              <object class="GtkBox" id="bxPreview">
+              <object class="GtkBox" id="bx预览">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="orientation">vertical</property>
@@ -430,7 +430,7 @@
                     <property name="margin-top">6</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="preview-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="swpossizepage|preview-atkobject">Preview</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="swpossizepage|preview-atkobject">预览</property>
                       </object>
                     </child>
                   </object>
@@ -443,10 +443,10 @@
               </object>
             </child>
             <child type="label">
-              <object class="GtkLabel" id="lbPreview">
+              <object class="GtkLabel" id="lb预览">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="swpossizepage|previewframe">Preview</property>
+                <property name="label" translatable="yes" context="swpossizepage|previewframe">预览</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -484,7 +484,7 @@
               <object class="GtkLabel" id="horiposft">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="swpossizepage|horiposft">Hori_zontal:</property>
+                <property name="label" translatable="yes" context="swpossizepage|horiposft">水平(_Z):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">horipos</property>
                 <property name="xalign">0</property>
@@ -498,7 +498,7 @@
               <object class="GtkLabel" id="horibyft">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="swpossizepage|horibyft">b_y:</property>
+                <property name="label" translatable="yes" context="swpossizepage|horibyft">按(_Y):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">byhori</property>
                 <property name="xalign">0</property>
@@ -512,7 +512,7 @@
               <object class="GtkLabel" id="vertbyft">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="swpossizepage|vertbyft">_by:</property>
+                <property name="label" translatable="yes" context="swpossizepage|vertbyft">按(_B):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">byvert</property>
                 <property name="xalign">0</property>
@@ -526,7 +526,7 @@
               <object class="GtkLabel" id="horitoft">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="swpossizepage|horitoft">_to:</property>
+                <property name="label" translatable="yes" context="swpossizepage|horitoft">到(_T):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">horianchor</property>
                 <property name="xalign">0</property>
@@ -546,7 +546,7 @@
                 <property name="digits">2</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="byhori-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|byhori">Enter the amount of space to leave between the left edge of the selected object and the reference point that you select in the To box.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|byhori">输入所选对象左边缘与“到”框中所选参考点之间要保留的间距。</property>
                   </object>
                 </child>
               </object>
@@ -561,7 +561,7 @@
                 <property name="can-focus">False</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="horianchor-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|horianchor">Select the reference point for the selected horizontal alignment option.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|horianchor">选择所选水平对齐选项的参考点。</property>
                   </object>
                 </child>
               </object>
@@ -576,7 +576,7 @@
                 <property name="can-focus">False</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="horipos-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|horipos">Select the horizontal alignment option for the object.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|horipos">选择对象的水平对齐选项。</property>
                   </object>
                 </child>
               </object>
@@ -589,7 +589,7 @@
               <object class="GtkLabel" id="vertposft">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="swpossizepage|vertposft">_Vertical:</property>
+                <property name="label" translatable="yes" context="swpossizepage|vertposft">垂直(_V):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">vertpos</property>
                 <property name="xalign">0</property>
@@ -605,7 +605,7 @@
                 <property name="can-focus">False</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="vertpos-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|vertpos">Select the vertical alignment option for the object.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|vertpos">选择对象的垂直对齐选项。</property>
                   </object>
                 </child>
               </object>
@@ -624,7 +624,7 @@
                 <property name="digits">2</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="byvert-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|byvert">Enter the amount of space to leave between the top edge of the selected object and the reference point that you select in the To box.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|byvert">输入所选对象上边缘与“到”框中所选参考点之间要保留的间距。</property>
                   </object>
                 </child>
               </object>
@@ -637,7 +637,7 @@
               <object class="GtkLabel" id="verttoft">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="swpossizepage|verttoft">t_o:</property>
+                <property name="label" translatable="yes" context="swpossizepage|verttoft">到(_O):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">vertanchor</property>
                 <property name="xalign">0</property>
@@ -653,7 +653,7 @@
                 <property name="can-focus">False</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="vertanchor-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|vertanchor">Select the reference point for the selected vertical alignment option.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|vertanchor">选择所选垂直对齐选项的参考点。</property>
                   </object>
                 </child>
               </object>
@@ -664,7 +664,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="mirror">
-                <property name="label" translatable="yes" context="swpossizepage|mirror">_Mirror on even pages</property>
+                <property name="label" translatable="yes" context="swpossizepage|mirror">在偶数页镜像(_M)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -673,7 +673,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="mirror-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|mirror">Reverses the current horizontal alignment settings on even pages.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|mirror">在偶数页反转当前水平对齐设置。</property>
                   </object>
                 </child>
               </object>
@@ -685,7 +685,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="followtextflow">
-                <property name="label" translatable="yes" context="swpossizepage|followtextflow">Keep inside te_xt boundaries</property>
+                <property name="label" translatable="yes" context="swpossizepage|followtextflow">保持在文字边界内(_X)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -694,7 +694,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="followtextflow-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|followtextflow">Keeps the selected object within the layout boundaries of the text that the object is anchored to. To place the selected object anywhere in your document, do not select this option.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|followtextflow">使所选对象保持在其锚定文字的布局边界内。若要将所选对象放置在文档中的任意位置，请不要选择此选项。</property>
                   </object>
                 </child>
               </object>
@@ -710,7 +710,7 @@
           <object class="GtkLabel" id="label11">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="swpossizepage|label11">Position</property>
+            <property name="label" translatable="yes" context="swpossizepage|label11">位置</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -724,7 +724,7 @@
     </child>
     <child internal-child="accessible">
       <object class="AtkObject" id="SwPosSizePage-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|SwPosSizePage">Specifies the size and the position of the selected object or frame on a page.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="swpossizepage|extended_tip|SwPosSizePage">指定所选对象或框架在页面上的大小和位置。</property>
       </object>
     </child>
   </object>

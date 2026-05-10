@@ -1718,10 +1718,8 @@ void OfaTreeOptionsDialog::generalOptions(const std::vector<sal_uInt16>& vPageId
             if ( lcl_isOptionHidden( nPageId, aOptionsDlgOpt ) )
                 continue;
 
-            // Disable Online Update page if neither mode is available
-            if( RID_SVXPAGE_ONLINEUPDATE == nPageId
-                && !(SvxOnlineUpdateTabPage::isTraditionalOnlineUpdateAvailable()
-                     || SvxOnlineUpdateTabPage::isMarOnlineUpdateAvailable()) )
+            // Downstream packaging does not expose online update controls.
+            if (RID_SVXPAGE_ONLINEUPDATE == nPageId)
             {
                 continue;
             }

@@ -21,7 +21,7 @@
   <object class="GtkDialog" id="CertDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="certdialog|CertDialog">Certificate Path</property>
+    <property name="title" translatable="yes" context="certdialog|CertDialog">证书路径</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
     <property name="type-hint">normal</property>
@@ -36,7 +36,7 @@
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="add">
-                <property name="label" translatable="yes" context="certdialog|add">_Select NSS path...</property>
+                <property name="label" translatable="yes" context="certdialog|add">选择 NSS 路径(_S)...</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
@@ -44,7 +44,7 @@
                 <property name="use-underline">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="add-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="certdialog|extended_tip|add">Opens the Select Path dialog to add a new Network Security Services Certificate directory to the list.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="certdialog|extended_tip|add">打开“选择路径”对话框，以向列表添加新的网络安全服务 (NSS) 证书目录。</property>
                   </object>
                 </child>
               </object>
@@ -129,7 +129,7 @@
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="certdialog|label2">Select or add the correct Network Security Services Certificate directory to use for digital signatures:</property>
+                    <property name="label" translatable="yes" context="certdialog|label2">选择或添加用于数字签名的正确网络安全服务 (NSS) 证书目录:</property>
                     <property name="use-underline">True</property>
                     <property name="wrap">True</property>
                     <property name="mnemonic-widget">paths</property>
@@ -154,7 +154,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="hexpand">True</property>
-                        <property name="label" translatable="yes" context="certdialog|manual">manual</property>
+                        <property name="label" translatable="yes" context="certdialog|manual">手动</property>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -165,7 +165,7 @@
                       <object class="GtkLabel" id="certdir">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="certdialog|certdir">Select a Certificate directory</property>
+                        <property name="label" translatable="yes" context="certdialog|certdir">选择证书目录</property>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -203,7 +203,7 @@
                           <object class="GtkTreeViewColumn" id="treeviewcolumn4">
                             <property name="resizable">True</property>
                             <property name="spacing">6</property>
-                            <property name="title" translatable="yes" context="certdialog|profile">Profile</property>
+                            <property name="title" translatable="yes" context="certdialog|profile">配置文件</property>
                             <child>
                               <object class="GtkCellRendererToggle" id="cellrenderer5">
                                 <property name="radio">True</property>
@@ -225,7 +225,7 @@
                           <object class="GtkTreeViewColumn" id="treeviewcolumn1">
                             <property name="resizable">True</property>
                             <property name="spacing">6</property>
-                            <property name="title" translatable="yes" context="certdialog|dir">Directory</property>
+                            <property name="title" translatable="yes" context="certdialog|dir">目录</property>
                             <child>
                               <object class="GtkCellRendererText" id="cellrenderer1"/>
                               <attributes>
@@ -249,7 +249,7 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="certdialog|label1">Certificate Path</property>
+                <property name="label" translatable="yes" context="certdialog|label1">证书路径</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -272,7 +272,7 @@
     </action-widgets>
     <child internal-child="accessible">
       <object class="AtkObject" id="CertDialog-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="certdialog|extended_tip|CertDialog">Select or add the correct Network Security Services Certificate directory to use for digital signatures.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="certdialog|extended_tip|CertDialog">选择或添加用于数字签名的正确网络安全服务 (NSS) 证书目录。</property>
       </object>
     </child>
   </object>

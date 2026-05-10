@@ -14,8 +14,8 @@
     <property name="can-focus">False</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
-    <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="optionsdialog|OptionsDialog">Options</property>
+    <property name="border-width">12</property>
+    <property name="title" translatable="yes" context="optionsdialog|OptionsDialog">选项</property>
     <property name="modal">True</property>
     <property name="type-hint">dialog</property>
     <child internal-child="vbox">
@@ -29,13 +29,14 @@
           <object class="GtkButtonBox" id="dialog-action_area1">
             <property name="can-focus">False</property>
             <property name="layout-style">end</property>
+            <property name="homogeneous">False</property>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -46,12 +47,12 @@
             </child>
             <child>
               <object class="GtkButton" id="revert">
-                <property name="label" translatable="yes" context="stock">_Reset</property>
+                <property name="label" translatable="yes" context="stock">重置</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text" translatable="yes" context="optionsdialog|revert">Unsaved modifications to this tab are reverted.</property>
-                <property name="use-underline">True</property>
+                <property name="tooltip-text" translatable="yes" context="optionsdialog|revert">撤销当前页面尚未应用的更改。</property>
+                <property name="use-underline">False</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="revert-atkobject">
                     <property name="AtkObject::accessible-description" translatable="yes" context="optionsdialog|extended_tip|revert">Resets changes made to the current tab to those applicable when this dialog was opened.</property>
@@ -66,12 +67,12 @@
             </child>
             <child>
               <object class="GtkButton" id="apply">
-                <property name="label" translatable="yes" context="stock">_Apply</property>
+                <property name="label" translatable="yes" context="stock">应用</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text" translatable="yes" context="optionsdialog|apply">Save all modifications without closing dialog. Cannot be reverted with Reset.</property>
-                <property name="use-underline">True</property>
+                <property name="tooltip-text" translatable="yes" context="optionsdialog|apply">保存更改但不关闭窗口。</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -81,14 +82,17 @@
             </child>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="stock">_OK</property>
+                <property name="label" translatable="yes" context="stock">确定</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
                 <property name="has-default">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text" translatable="yes" context="optionsdialog|ok">Save all changes and close dialog.</property>
-                <property name="use-underline">True</property>
+                <property name="tooltip-text" translatable="yes" context="optionsdialog|ok">保存所有更改并关闭窗口。</property>
+                <property name="use-underline">False</property>
+                <style>
+                  <class name="suggested-action"/>
+                </style>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="ok-atkobject">
                     <property name="AtkObject::accessible-description" translatable="yes" context="optionsdialog|extended_tip|ok">Saves all changes and closes dialog.</property>
@@ -103,12 +107,12 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="stock">_Cancel</property>
+                <property name="label" translatable="yes" context="stock">取消</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text" translatable="yes" context="optionsdialog|cancel">Discard all unsaved changes and close dialog.</property>
-                <property name="use-underline">True</property>
+                <property name="tooltip-text" translatable="yes" context="optionsdialog|cancel">放弃未保存的更改并关闭窗口。</property>
+                <property name="use-underline">False</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="cancel-atkobject">
                     <property name="AtkObject::accessible-description" translatable="yes" context="optionsdialog|extended_tip|cancel">Closes dialog and discards all unsaved changes.</property>
@@ -135,21 +139,22 @@
             <property name="can-focus">False</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
-            <property name="spacing">6</property>
+            <property name="spacing">12</property>
             <child>
               <object class="GtkBox" id="box3">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="width-request">230</property>
                 <property name="vexpand">True</property>
                 <property name="orientation">vertical</property>
-                <property name="spacing">4</property>
+                <property name="spacing">8</property>
                 <child>
                   <object class="GtkEntry" id="searchEntry">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="valign">start</property>
                     <property name="truncate-multiline">True</property>
-                    <property name="placeholder-text" translatable="yes" context="optionsdialog|searchEntry">Type to search</property>
+                    <property name="placeholder-text" translatable="yes" context="optionsdialog|searchEntry">搜索设置</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="searchEntry-atkobject">
                         <property name="AtkObject::accessible-description" translatable="yes" context="optionsdialog|extended_tip|searchEntry">Type here to search in the list of options.</property>
@@ -163,16 +168,16 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkScrolledWindow">
+                  <object class="GtkScrolledWindow" id="pages_scrolledwindow">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="halign">baseline</property>
                     <property name="valign">baseline</property>
                     <property name="vexpand">True</property>
-                    <property name="shadow-type">in</property>
+                    <property name="shadow-type">none</property>
                     <child>
                       <object class="GtkTreeView" id="pages">
-                        <property name="width-request">-1</property>
+                        <property name="width-request">220</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
@@ -188,7 +193,9 @@
                           <object class="GtkTreeViewColumn" id="treeviewcolumn2">
                             <property name="spacing">6</property>
                             <child>
-                              <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                              <object class="GtkCellRendererText" id="cellrenderertext2">
+                                <property name="ypad">4</property>
+                              </object>
                               <attributes>
                                 <attribute name="text">0</attribute>
                               </attributes>
@@ -230,7 +237,7 @@
             </child>
           </object>
           <packing>
-            <property name="expand">False</property>
+            <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">0</property>
           </packing>

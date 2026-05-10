@@ -6,8 +6,8 @@
   <object class="GtkGrid" id="OptSecurityPage">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="border-width">6</property>
-    <property name="row-spacing">12</property>
+    <property name="border-width">12</property>
+    <property name="row-spacing">10</property>
     <child>
       <object class="GtkFrame" id="tsaurls">
         <property name="visible">True</property>
@@ -20,21 +20,21 @@
           <object class="GtkGrid" id="grid8">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-start">12</property>
-            <property name="margin-top">6</property>
+            <property name="margin-start">14</property>
+            <property name="margin-top">8</property>
             <property name="hexpand">True</property>
-            <property name="column-spacing">24</property>
+            <property name="column-spacing">18</property>
             <child>
               <object class="GtkButton" id="tsas">
-                <property name="label" translatable="yes" context="optsecuritypage|tsas">_TSAs...</property>
+                <property name="label" translatable="yes" context="optsecuritypage|tsas">时间戳机构</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
                 <property name="valign">center</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="tsas-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|tsas">Opens the Time Stamping Authority URLs dialog.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|tsas">打开时间戳颁发机构 URL 对话框。</property>
                   </object>
                 </child>
               </object>
@@ -55,10 +55,10 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="hexpand">True</property>
-                    <property name="label" translatable="yes" context="optsecuritypage|label9">Maintain a list of Time Stamping Authority (TSA) URLs to be used for digital signatures in PDF export.</property>
+                    <property name="label" translatable="yes" context="optsecuritypage|label9">维护 PDF 导出数字签名所用的时间戳颁发机构 (TSA) URL 列表。</property>
                     <property name="wrap">True</property>
-                    <property name="width-chars">56</property>
-                    <property name="max-width-chars">56</property>
+                    <property name="width-chars">52</property>
+                    <property name="max-width-chars">52</property>
                     <property name="xalign">0</property>
                   </object>
                   <packing>
@@ -91,7 +91,7 @@
           <object class="GtkLabel" id="label10">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="optsecuritypage|label10">TSAs</property>
+            <property name="label" translatable="yes" context="optsecuritypage|label10">TSA</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -115,21 +115,21 @@
           <object class="GtkGrid" id="grid7">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-start">12</property>
-            <property name="margin-top">6</property>
+            <property name="margin-start">14</property>
+            <property name="margin-top">8</property>
             <property name="hexpand">True</property>
-            <property name="column-spacing">24</property>
+            <property name="column-spacing">18</property>
             <child>
               <object class="GtkButton" id="cert">
-                <property name="label" translatable="yes" context="optsecuritypage|cert">_Certificate...</property>
+                <property name="label" translatable="yes" context="optsecuritypage|cert">证书路径</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
                 <property name="valign">center</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="cert-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|cert">Opens the Certificate Path dialog.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|cert">打开证书路径对话框。</property>
                   </object>
                 </child>
               </object>
@@ -150,10 +150,10 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="hexpand">True</property>
-                    <property name="label" translatable="yes" context="optsecuritypage|label7">Select the Network Security Services certificate directory to use for digital signatures.</property>
+                    <property name="label" translatable="yes" context="optsecuritypage|label7">选择用于数字签名的网络安全服务 (NSS) 证书目录。</property>
                     <property name="wrap">True</property>
-                    <property name="width-chars">56</property>
-                    <property name="max-width-chars">56</property>
+                    <property name="width-chars">52</property>
+                    <property name="max-width-chars">52</property>
                     <property name="xalign">0</property>
                   </object>
                   <packing>
@@ -186,7 +186,7 @@
           <object class="GtkLabel" id="label8">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="optsecuritypage|label8">Certificate Path</property>
+            <property name="label" translatable="yes" context="optsecuritypage|label8">证书路径</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -210,19 +210,19 @@
           <object class="GtkGrid" id="grid3">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-start">12</property>
-            <property name="margin-top">6</property>
+            <property name="margin-start">14</property>
+            <property name="margin-top">8</property>
             <property name="hexpand">True</property>
-            <property name="column-spacing">24</property>
+            <property name="column-spacing">18</property>
             <child>
               <object class="GtkLabel" id="label5">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="hexpand">True</property>
-                <property name="label" translatable="yes" context="optsecuritypage|label5">Adjust the security level for executing macros and specify trusted macro developers.</property>
+                <property name="label" translatable="yes" context="optsecuritypage|label5">调整执行宏的安全级别，并指定受信任的宏开发者。</property>
                 <property name="wrap">True</property>
-                <property name="width-chars">56</property>
-                <property name="max-width-chars">56</property>
+                <property name="width-chars">52</property>
+                <property name="max-width-chars">52</property>
                 <property name="xalign">0</property>
               </object>
               <packing>
@@ -232,15 +232,15 @@
             </child>
             <child>
               <object class="GtkButton" id="macro">
-                <property name="label" translatable="yes" context="optsecuritypage|macro">Macro Securit_y...</property>
+                <property name="label" translatable="yes" context="optsecuritypage|macro">宏安全</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
                 <property name="valign">center</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="macro-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|macro">Opens the Macro Security dialog.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|macro">打开宏安全对话框。</property>
                   </object>
                 </child>
               </object>
@@ -255,7 +255,7 @@
           <object class="GtkLabel" id="label3">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="optsecuritypage|label3">Macro Security</property>
+            <property name="label" translatable="yes" context="optsecuritypage|label3">宏安全</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -279,23 +279,23 @@
           <object class="GtkGrid" id="grid2">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-start">12</property>
-            <property name="margin-top">6</property>
+            <property name="margin-start">14</property>
+            <property name="margin-top">8</property>
             <property name="hexpand">True</property>
-            <property name="column-spacing">24</property>
+            <property name="column-spacing">18</property>
             <child>
               <!-- n-columns=1 n-rows=2 -->
               <object class="GtkGrid" id="grid4">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="hexpand">True</property>
-                <property name="row-spacing">12</property>
+                    <property name="row-spacing">10</property>
                 <child>
                   <!-- n-columns=1 n-rows=3 -->
                   <object class="GtkGrid" id="grid5">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="margin-start">12</property>
+                    <property name="margin-start">14</property>
                     <property name="hexpand">True</property>
                     <property name="row-spacing">6</property>
                     <child>
@@ -303,10 +303,10 @@
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="hexpand">True</property>
-                        <property name="label" translatable="yes" context="optsecuritypage|masterpasswordtext">Passwords are protected by a master password. You will be asked to enter it once per session, if %PRODUCTNAME retrieves a password from the protected password list.</property>
+                        <property name="label" translatable="yes" context="optsecuritypage|masterpasswordtext">密码受主密码保护。如果 %PRODUCTNAME 从受保护的密码列表中检索密码，每个会话会要求您输入一次主密码。</property>
                         <property name="wrap">True</property>
-                        <property name="width-chars">56</property>
-                        <property name="max-width-chars">56</property>
+                        <property name="width-chars">52</property>
+                        <property name="max-width-chars">52</property>
                         <property name="xalign">0</property>
                         <attributes>
                           <attribute name="scale" value="0.90000000000000002"/>
@@ -322,12 +322,12 @@
                         <property name="can-focus">False</property>
                         <property name="no-show-all">True</property>
                         <property name="hexpand">True</property>
-                        <property name="label" translatable="yes" context="optsecuritypage|nopasswordsave">Disabling the function to persistently store passwords deletes the list of passwords stored and resets the master password.
+                        <property name="label" translatable="yes" context="optsecuritypage|nopasswordsave">禁用永久保存密码功能会删除已保存的密码列表，并重置主密码。
 
-Do you want to delete password list and reset master password?</property>
+是否要删除密码列表并重置主密码?</property>
                         <property name="wrap">True</property>
-                        <property name="width-chars">56</property>
-                        <property name="max-width-chars">56</property>
+                        <property name="width-chars">52</property>
+                        <property name="max-width-chars">52</property>
                         <property name="xalign">0</property>
                       </object>
                       <packing>
@@ -344,11 +344,11 @@ Do you want to delete password list and reset master password?</property>
                         <property name="column-spacing">6</property>
                         <child>
                           <object class="GtkCheckButton" id="usemasterpassword">
-                            <property name="label" translatable="yes" context="optsecuritypage|usemasterpassword">Protected _by a master password (recommended)</property>
+                            <property name="label" translatable="yes" context="optsecuritypage|usemasterpassword">使用主密码保护（推荐）</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                             <property name="draw-indicator">True</property>
                           </object>
                           <packing>
@@ -390,15 +390,15 @@ Do you want to delete password list and reset master password?</property>
                     <property name="column-spacing">6</property>
                     <child>
                       <object class="GtkCheckButton" id="savepassword">
-                        <property name="label" translatable="yes" context="optsecuritypage|savepassword">Persistently _save passwords for web connections</property>
+                        <property name="label" translatable="yes" context="optsecuritypage|savepassword">永久保存 Web 连接密码</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
-                        <property name="use-underline">True</property>
+                        <property name="use-underline">False</property>
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="savepassword-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|savepassword">If enabled, all passwords that you use to access files from web servers will be securely stored. You can retrieve the passwords from the list after you enter the master password.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|savepassword">启用后，您用于访问 Web 服务器文件的所有密码都会被安全保存。输入主密码后，可以从列表中取回这些密码。</property>
                           </object>
                         </child>
                       </object>
@@ -437,7 +437,7 @@ Do you want to delete password list and reset master password?</property>
               <object class="GtkGrid" id="grid6">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="row-homogeneous">True</property>
+                <property name="row-homogeneous">False</property>
                 <child>
                   <!-- n-columns=1 n-rows=1 -->
                   <object class="GtkGrid" id="grid9">
@@ -445,15 +445,15 @@ Do you want to delete password list and reset master password?</property>
                     <property name="can-focus">False</property>
                     <child>
                       <object class="GtkButton" id="connections">
-                        <property name="label" translatable="yes" context="optsecuritypage|connections">Connect_ions...</property>
+                        <property name="label" translatable="yes" context="optsecuritypage|connections">连接管理</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
                         <property name="valign">center</property>
-                        <property name="use-underline">True</property>
+                        <property name="use-underline">False</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="connections-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|connections">Asks for the master password. If master password is correct, shows the Stored Web Connection Information dialog.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|connections">要求输入主密码。主密码正确时，显示已保存的 Web 连接信息对话框。</property>
                           </object>
                         </child>
                       </object>
@@ -475,15 +475,15 @@ Do you want to delete password list and reset master password?</property>
                     <property name="can-focus">False</property>
                     <child>
                       <object class="GtkButton" id="masterpassword">
-                        <property name="label" translatable="yes" context="optsecuritypage|masterpassword">_Master Password...</property>
+                        <property name="label" translatable="yes" context="optsecuritypage|masterpassword">主密码</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
                         <property name="valign">center</property>
-                        <property name="use-underline">True</property>
+                        <property name="use-underline">False</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="masterpassword-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|masterpassword">Opens the Enter Master Password dialog.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|masterpassword">打开输入主密码对话框。</property>
                           </object>
                         </child>
                       </object>
@@ -510,7 +510,7 @@ Do you want to delete password list and reset master password?</property>
           <object class="GtkLabel" id="label2">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="optsecuritypage|label2">Passwords for Web Connections</property>
+            <property name="label" translatable="yes" context="optsecuritypage|label2">Web 连接密码</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -534,19 +534,19 @@ Do you want to delete password list and reset master password?</property>
           <object class="GtkGrid" id="grid1">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-start">12</property>
-            <property name="margin-top">6</property>
+            <property name="margin-start">14</property>
+            <property name="margin-top">8</property>
             <property name="hexpand">True</property>
-            <property name="column-spacing">24</property>
+            <property name="column-spacing">18</property>
             <child>
               <object class="GtkLabel" id="label4">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="hexpand">True</property>
-                <property name="label" translatable="yes" context="optsecuritypage|label4">Adjust security related options and define warnings for hidden information in documents.  </property>
+                <property name="label" translatable="yes" context="optsecuritypage|label4">设置安全选项，并管理文档隐藏信息警告。</property>
                 <property name="wrap">True</property>
-                <property name="width-chars">56</property>
-                <property name="max-width-chars">56</property>
+                <property name="width-chars">52</property>
+                <property name="max-width-chars">52</property>
                 <property name="xalign">0</property>
               </object>
               <packing>
@@ -556,15 +556,15 @@ Do you want to delete password list and reset master password?</property>
             </child>
             <child>
               <object class="GtkButton" id="options">
-                <property name="label" translatable="yes" context="optsecuritypage|options">O_ptions...</property>
+                <property name="label" translatable="yes" context="optsecuritypage|options">安全选项</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
                 <property name="valign">center</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="options-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|options">Opens the "Security Options and Warnings" dialog.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|options">打开“安全选项和警告”对话框。</property>
                   </object>
                 </child>
               </object>
@@ -579,7 +579,7 @@ Do you want to delete password list and reset master password?</property>
           <object class="GtkLabel" id="label1">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="optsecuritypage|label1">Security Options and Warnings</property>
+            <property name="label" translatable="yes" context="optsecuritypage|label1">安全选项和警告</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -603,18 +603,18 @@ Do you want to delete password list and reset master password?</property>
           <object class="GtkGrid">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-start">12</property>
-            <property name="margin-top">6</property>
+            <property name="margin-start">14</property>
+            <property name="margin-top">8</property>
             <property name="row-spacing">8</property>
-            <property name="column-spacing">24</property>
+            <property name="column-spacing">18</property>
             <child>
               <object class="GtkButton" id="browse">
-                <property name="label" translatable="yes" context="optsecuritypage|browse">_Browse...</property>
+                <property name="label" translatable="yes" context="optsecuritypage|browse">浏览</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="left-attach">1</property>
@@ -628,9 +628,12 @@ Do you want to delete password list and reset master password?</property>
                 <property name="hexpand">True</property>
                 <property name="activates-default">True</property>
                 <property name="truncate-multiline">True</property>
+                <accessibility>
+                  <relation type="labelled-by" target="label11"/>
+                </accessibility>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="parameterfield-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|parameterfield">Enter the executable of the certificate manager path.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|parameterfield">输入证书管理器可执行文件路径。</property>
                   </object>
                 </child>
               </object>
@@ -651,11 +654,14 @@ Do you want to delete password list and reset master password?</property>
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="hexpand">True</property>
-                    <property name="label" translatable="yes" context="optsecuritypage|label11">Select custom certificate manager executable. Note that %PRODUCTNAME tries to locate installed ones automatically.</property>
+                    <property name="label" translatable="yes" context="optsecuritypage|label11">选择自定义证书管理器可执行文件。请注意，%PRODUCTNAME 会尝试自动定位已安装的证书管理器。</property>
                     <property name="wrap">True</property>
-                    <property name="width-chars">56</property>
-                    <property name="max-width-chars">56</property>
+                    <property name="width-chars">52</property>
+                    <property name="max-width-chars">52</property>
                     <property name="xalign">0</property>
+                    <accessibility>
+                      <relation type="label-for" target="parameterfield"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left-attach">1</property>
@@ -695,7 +701,7 @@ Do you want to delete password list and reset master password?</property>
           <object class="GtkLabel" id="label12">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="optsecuritypage|label10">GPG Certificate Manager</property>
+            <property name="label" translatable="yes" context="optsecuritypage|label10">GPG 证书管理器</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>

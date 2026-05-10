@@ -24,7 +24,6 @@
 class AboutDialog : public weld::GenericDialogController
 {
 private:
-    std::unique_ptr<weld::LinkButton> m_pCreditsButton;
     std::unique_ptr<weld::LinkButton> m_pWebsiteButton;
     std::unique_ptr<weld::LinkButton> m_pReleaseNotesButton;
     std::unique_ptr<weld::Button> m_pCloseButton;
@@ -34,7 +33,7 @@ private:
     std::unique_ptr<weld::Image> m_pAboutImage;
     std::unique_ptr<weld::Label> m_pVersionLabel;
     std::unique_ptr<weld::Label> m_pBuildCaption;
-    std::unique_ptr<weld::LinkButton> m_pBuildLabel;
+    std::unique_ptr<weld::Label> m_pBuildLabel;
     std::unique_ptr<weld::Label> m_pEnvLabel;
     std::unique_ptr<weld::Label> m_pUILabel;
     std::unique_ptr<weld::Label> m_pLocaleLabel;
@@ -47,7 +46,6 @@ private:
     static OUString GetMiscString();
 
     static OUString GetCopyrightString();
-    static bool IsStringValidGitHash(std::u16string_view hash);
 
     DECL_LINK(HandleClick, weld::Button&, void);
 

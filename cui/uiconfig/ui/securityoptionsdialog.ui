@@ -4,8 +4,8 @@
   <requires lib="gtk+" version="3.24"/>
   <object class="GtkDialog" id="SecurityOptionsDialog">
     <property name="can-focus">False</property>
-    <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="securityoptionsdialog|SecurityOptionsDialog">Security Options and Warnings</property>
+    <property name="border-width">12</property>
+    <property name="title" translatable="yes" context="securityoptionsdialog|SecurityOptionsDialog">安全选项和警告</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
@@ -15,20 +15,24 @@
       <object class="GtkBox" id="dialog-vbox1">
         <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">12</property>
+        <property name="spacing">10</property>
         <child internal-child="action_area">
           <object class="GtkButtonBox" id="dialog-action_area1">
             <property name="can-focus">False</property>
             <property name="layout-style">end</property>
+            <property name="homogeneous">False</property>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="stock">_OK</property>
+                <property name="label" translatable="yes" context="stock">确定</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
                 <property name="has-default">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
+                <style>
+                  <class name="suggested-action"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -38,11 +42,11 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="stock">_Cancel</property>
+                <property name="label" translatable="yes" context="stock">取消</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -52,11 +56,11 @@
             </child>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -91,8 +95,8 @@
                   <object class="GtkGrid" id="grid1">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="margin-start">12</property>
-                    <property name="margin-top">6</property>
+                    <property name="margin-start">14</property>
+                    <property name="margin-top">8</property>
                     <property name="row-spacing">6</property>
                     <child>
                       <!-- n-columns=4 n-rows=2 -->
@@ -103,15 +107,15 @@
                         <property name="column-spacing">12</property>
                         <child>
                           <object class="GtkCheckButton" id="savesenddocs">
-                            <property name="label" translatable="yes" context="securityoptionsdialog|savesenddocs">_When saving or sending</property>
+                            <property name="label" translatable="yes" context="securityoptionsdialog|savesenddocs">保存或发送时(_W)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="savesenddocs-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|savesenddocs">Select to see a warning dialog when you try to save or send a document that contains recorded changes, versions, or comments.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|savesenddocs">选择后，当您尝试保存或发送包含已记录更改、版本或批注的文档时，会显示警告对话框。</property>
                               </object>
                             </child>
                           </object>
@@ -122,15 +126,15 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="whensigning">
-                            <property name="label" translatable="yes" context="securityoptionsdialog|whensigning">When _signing</property>
+                            <property name="label" translatable="yes" context="securityoptionsdialog|whensigning">签名时(_S)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="whensigning-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|whensigning">Select to see a warning dialog when you try to sign a document that contains recorded changes, versions, fields, references to other sources (for example linked sections or linked pictures), or comments.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|whensigning">选择后，当您尝试签署包含已记录更改、版本、字段、外部来源引用（例如链接的章节或图片）或批注的文档时，会显示警告对话框。</property>
                               </object>
                             </child>
                           </object>
@@ -141,15 +145,15 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="whenprinting">
-                            <property name="label" translatable="yes" context="securityoptionsdialog|whenprinting">When _printing</property>
+                            <property name="label" translatable="yes" context="securityoptionsdialog|whenprinting">打印时(_P)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="whenprinting-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|whenprinting">Select to see a warning dialog when you try to print a document that contains recorded changes or comments.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|whenprinting">选择后，当您尝试打印包含已记录更改或批注的文档时，会显示警告对话框。</property>
                               </object>
                             </child>
                           </object>
@@ -160,15 +164,15 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="whenpdf">
-                            <property name="label" translatable="yes" context="securityoptionsdialog|whenpdf">When creating PDF _files</property>
+                            <property name="label" translatable="yes" context="securityoptionsdialog|whenpdf">创建 PDF 文件时(_F)</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">False</property>
-                            <property name="use-underline">True</property>
+                            <property name="use-underline">False</property>
                             <property name="draw-indicator">True</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="whenpdf-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|whenpdf">Select to see a warning dialog when you try to export a document to PDF format that displays recorded changes in Writer, or that displays comments.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|whenpdf">选择后，当您尝试将文档导出为 PDF 格式且其中显示 Writer 已记录更改或批注时，会显示警告对话框。</property>
                               </object>
                             </child>
                           </object>
@@ -240,7 +244,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="hexpand">True</property>
-                        <property name="label" translatable="yes" context="securityoptionsdialog|label3">Warn if document contains recorded changes, versions or notes:</property>
+                        <property name="label" translatable="yes" context="securityoptionsdialog|label3">文档含修订、版本或批注时警告：</property>
                         <property name="xalign">0</property>
                       </object>
                       <packing>
@@ -254,7 +258,7 @@
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="securityoptionsdialog|label1">Security Warnings</property>
+                    <property name="label" translatable="yes" context="securityoptionsdialog|label1">安全警告</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -279,8 +283,8 @@
                   <object class="GtkGrid" id="grid3">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="margin-start">12</property>
-                    <property name="margin-top">6</property>
+                    <property name="margin-start">14</property>
+                    <property name="margin-top">8</property>
                     <property name="row-spacing">6</property>
                     <property name="column-spacing">12</property>
                     <child>
@@ -298,16 +302,16 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="removepersonal">
-                        <property name="label" translatable="yes" context="securityoptionsdialog|removepersonal">_Remove personal information on saving</property>
+                        <property name="label" translatable="yes" context="securityoptionsdialog|removepersonal">保存时移除个人信息(_R)</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
                         <property name="hexpand">True</property>
-                        <property name="use-underline">True</property>
+                        <property name="use-underline">False</property>
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="removepersonal-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|removepersonal">Select to remove user data from file properties, comments and tracked changes when saving.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|removepersonal">选择后，保存时会从文件属性、批注和跟踪更改中移除用户数据。</property>
                           </object>
                         </child>
                       </object>
@@ -332,13 +336,13 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="redlineinfo">
-                        <property name="label" translatable="yes" context="securityoptionsdialog|redlineinfo">Keep track changes information</property>
+                        <property name="label" translatable="yes" context="securityoptionsdialog|redlineinfo">保留跟踪更改信息</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
                         <property name="margin-start">20</property>
                         <property name="hexpand">True</property>
-                        <property name="use-underline">True</property>
+                        <property name="use-underline">False</property>
                         <property name="draw-indicator">True</property>
                       </object>
                       <packing>
@@ -362,13 +366,13 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="docproperties">
-                        <property name="label" translatable="yes" context="securityoptionsdialog|docproperties">Keep document user information</property>
+                        <property name="label" translatable="yes" context="securityoptionsdialog|docproperties">保留文档用户信息</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
                         <property name="margin-start">20</property>
                         <property name="hexpand">True</property>
-                        <property name="use-underline">True</property>
+                        <property name="use-underline">False</property>
                         <property name="draw-indicator">True</property>
                       </object>
                       <packing>
@@ -392,13 +396,13 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="noteauthor">
-                        <property name="label" translatable="yes" context="securityoptionsdialog|noteauthor">Keep author name and date of notes</property>
+                        <property name="label" translatable="yes" context="securityoptionsdialog|noteauthor">保留批注的作者姓名和日期</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
                         <property name="margin-start">20</property>
                         <property name="hexpand">True</property>
-                        <property name="use-underline">True</property>
+                        <property name="use-underline">False</property>
                         <property name="draw-indicator">True</property>
                       </object>
                       <packing>
@@ -422,13 +426,13 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="documentversion">
-                        <property name="label" translatable="yes" context="securityoptionsdialog|documentversion">Keep document version information</property>
+                        <property name="label" translatable="yes" context="securityoptionsdialog|documentversion">保留文档版本信息</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
                         <property name="margin-start">20</property>
                         <property name="hexpand">True</property>
-                        <property name="use-underline">True</property>
+                        <property name="use-underline">False</property>
                         <property name="draw-indicator">True</property>
                       </object>
                       <packing>
@@ -450,13 +454,13 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="printersettings">
-                        <property name="label" translatable="yes" context="securityoptionsdialog|printersettings">Keep printer settings</property>
+                        <property name="label" translatable="yes" context="securityoptionsdialog|printersettings">保留打印机设置</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
                         <property name="margin-start">20</property>
                         <property name="hexpand">True</property>
-                        <property name="use-underline">True</property>
+                        <property name="use-underline">False</property>
                         <property name="draw-indicator">True</property>
                       </object>
                       <packing>
@@ -478,16 +482,16 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="password">
-                        <property name="label" translatable="yes" context="securityoptionsdialog|password">Recommend password protection on sa_ving</property>
+                        <property name="label" translatable="yes" context="securityoptionsdialog|password">保存时建议使用密码保护(_V)</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
                         <property name="hexpand">True</property>
-                        <property name="use-underline">True</property>
+                        <property name="use-underline">False</property>
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="password-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|password">Select to always enable the Save with password option in the file save dialogs. Deselect the option to save files by default without password.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|password">选择后，在文件保存对话框中始终启用“使用密码保存”选项。取消选择后，默认不使用密码保存文件。</property>
                           </object>
                         </child>
                       </object>
@@ -510,16 +514,16 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="ctrlclick">
-                        <property name="label" translatable="yes" context="securityoptionsdialog|ctrlclick">Ctrl-click required _to open hyperlinks</property>
+                        <property name="label" translatable="yes" context="securityoptionsdialog|ctrlclick">打开超链接需要 Ctrl+单击(_T)</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
                         <property name="hexpand">True</property>
-                        <property name="use-underline">True</property>
+                        <property name="use-underline">False</property>
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="ctrlclick-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|ctrlclick">If enabled, you must hold down the Ctrl key while clicking a hyperlink to follow that link. If not enabled, a click opens the hyperlink.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|ctrlclick">如果启用，必须按住 Ctrl 键并单击超链接才能打开该链接。如果未启用，单击即可打开超链接。</property>
                           </object>
                         </child>
                       </object>
@@ -542,16 +546,16 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="blockuntrusted">
-                        <property name="label" translatable="yes" context="securityoptionsdialog|blockuntrusted">Block any links from documents not among the trusted locations (see Macro Security)</property>
+                        <property name="label" translatable="yes" context="securityoptionsdialog|blockuntrusted">阻止来自非受信任位置中文档的任何链接（参见“宏安全”）</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
                         <property name="hexpand">True</property>
-                        <property name="use-underline">True</property>
+                        <property name="use-underline">False</property>
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="blockuntrusted-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|blockuntrusted">Blocks the use of linked images by documents not in the trusted locations defined on the Trusted Sources tab of the Macro Security dialog.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|blockuntrusted">对于不在“宏安全”对话框“受信任的来源”选项卡中定义的受信任位置内的文档，阻止其使用链接图像。</property>
                           </object>
                         </child>
                       </object>
@@ -574,16 +578,16 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="disableactivecontent">
-                        <property name="label" translatable="yes" context="securityoptionsdialog|blockuntrusted">Disable active contents for OLE Objects, DDE and OLE Automation.</property>
+                        <property name="label" translatable="yes" context="securityoptionsdialog|blockuntrusted">禁用 OLE 对象、DDE 和 OLE Automation 的活动内容。</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
                         <property name="hexpand">True</property>
-                        <property name="use-underline">True</property>
+                        <property name="use-underline">False</property>
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="disableactivecontent-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|blockuntrusted">Blocks active state of OLE Objects, disables active DDE content links, and OLE Automation interface.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|blockuntrusted">阻止 OLE 对象的活动状态，禁用活动 DDE 内容链接和 OLE Automation 接口。</property>
                           </object>
                         </child>
                       </object>
@@ -598,7 +602,7 @@
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="securityoptionsdialog|label2">Security Options</property>
+                    <property name="label" translatable="yes" context="securityoptionsdialog|label2">安全选项</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -630,7 +634,7 @@
     </action-widgets>
     <child internal-child="accessible">
       <object class="AtkObject" id="SecurityOptionsDialog-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|SecurityOptionsDialog">Set security related options and warnings about hidden information in documents.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|SecurityOptionsDialog">设置安全相关选项，以及关于文档中隐藏信息的警告。</property>
       </object>
     </child>
   </object>

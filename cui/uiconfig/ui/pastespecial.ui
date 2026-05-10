@@ -13,7 +13,7 @@
   <object class="GtkDialog" id="PasteSpecialDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="pastespecial|PasteSpecialDialog">Paste Special</property>
+    <property name="title" translatable="yes" context="pastespecial|PasteSpecialDialog">选择性粘贴</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
     <property name="default-height">0</property>

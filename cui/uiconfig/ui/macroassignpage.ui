@@ -20,8 +20,9 @@
     <property name="can-focus">False</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
+    <property name="border-width">10</property>
     <property name="row-spacing">12</property>
-    <property name="column-spacing">12</property>
+    <property name="column-spacing">14</property>
     <child>
       <object class="GtkFrame" id="frame1">
         <property name="visible">True</property>
@@ -31,14 +32,14 @@
         <property name="label-xalign">0</property>
         <property name="shadow-type">none</property>
         <child>
-          <object class="GtkScrolledWindow">
+          <object class="GtkScrolledWindow" id="macro_assignments_scrolledwindow">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="margin-start">12</property>
             <property name="margin-top">6</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
-            <property name="shadow-type">in</property>
+            <property name="shadow-type">none</property>
             <child>
               <object class="GtkTreeView" id="assignments">
                 <property name="visible">True</property>
@@ -56,9 +57,11 @@
                   <object class="GtkTreeViewColumn" id="treeviewcolumn3">
                     <property name="resizable">True</property>
                     <property name="spacing">6</property>
-                    <property name="title" translatable="yes" context="macroassignpage|eventft">Event</property>
+                    <property name="title" translatable="yes" context="macroassignpage|eventft">事件</property>
                     <child>
-                      <object class="GtkCellRendererText" id="cellrenderer1"/>
+                      <object class="GtkCellRendererText" id="cellrenderer1">
+                        <property name="ypad">4</property>
+                      </object>
                       <attributes>
                         <attribute name="text">0</attribute>
                       </attributes>
@@ -80,9 +83,11 @@
                   <object class="GtkTreeViewColumn" id="treeviewcolumn4">
                     <property name="resizable">True</property>
                     <property name="spacing">6</property>
-                    <property name="title" translatable="yes" context="macroassignpage|assignft">Assigned Action</property>
+                    <property name="title" translatable="yes" context="macroassignpage|assignft">已分配动作</property>
                     <child>
-                      <object class="GtkCellRendererText" id="cellrenderer2"/>
+                      <object class="GtkCellRendererText" id="cellrenderer2">
+                        <property name="ypad">4</property>
+                      </object>
                       <attributes>
                         <attribute name="text">2</attribute>
                       </attributes>
@@ -102,7 +107,7 @@
           <object class="GtkLabel" id="libraryft1">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="macroassignpage|libraryft1">Assignments</property>
+            <property name="label" translatable="yes" context="macroassignpage|libraryft1">事件分配</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -127,15 +132,18 @@
             <property name="margin-start">12</property>
             <property name="margin-top">6</property>
             <property name="orientation">vertical</property>
-            <property name="spacing">6</property>
+            <property name="spacing">8</property>
             <property name="layout-style">start</property>
             <child>
               <object class="GtkButton" id="assign">
-                <property name="label" translatable="yes" context="macroassignpage|assign">M_acro...</property>
+                <property name="label" translatable="yes" context="macroassignpage|assign">选择宏</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
+                <style>
+                  <class name="suggested-action"/>
+                </style>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="assign-atkobject">
                     <property name="AtkObject::accessible-description" translatable="yes" context="macroassignpage|extended_tip|assign">Opens the Macro Selector dialog to assign a macro to the selected event.</property>
@@ -150,11 +158,11 @@
             </child>
             <child>
               <object class="GtkButton" id="component">
-                <property name="label" translatable="yes" context="macroassignpage|component">Com_ponent...</property>
+                <property name="label" translatable="yes" context="macroassignpage|component">选择组件</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -164,11 +172,11 @@
             </child>
             <child>
               <object class="GtkButton" id="delete">
-                <property name="label" translatable="yes" context="macroassignpage|delete">Remove</property>
+                <property name="label" translatable="yes" context="macroassignpage|delete">移除</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="delete-atkobject">
                     <property name="AtkObject::accessible-description" translatable="yes" context="macroassignpage|extended_tip|delete">Deletes the macro or component assignment for the selected event.</property>
@@ -183,11 +191,11 @@
             </child>
             <child>
               <object class="GtkButton" id="deleteall">
-                <property name="label" translatable="yes" context="macroassignpage|deleteall">Remove _All</property>
+                <property name="label" translatable="yes" context="macroassignpage|deleteall">全部移除</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -201,7 +209,7 @@
           <object class="GtkLabel" id="label1">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="macroassignpage|label1">Assign</property>
+            <property name="label" translatable="yes" context="macroassignpage|label1">分配</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>

@@ -22,6 +22,7 @@ private:
     std::unique_ptr<weld::Button> m_xResetBtn; // hidden
     std::unique_ptr<weld::Button> m_xCancelBtn; // hidden
     std::unique_ptr<weld::CheckButton> m_xShowAgain;
+    std::unique_ptr<weld::Label> m_xV2Intro;
 
     virtual void PageCreated(const OUString& rId, SfxTabPage& rPage) override;
 

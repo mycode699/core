@@ -39,7 +39,7 @@
                 <property name="can-focus">False</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="preview-atkobject">
-                    <property name="AtkObject::accessible-name" translatable="yes" context="effectspage|preview-atkobject">Preview</property>
+                    <property name="AtkObject::accessible-name" translatable="yes" context="effectspage|preview-atkobject">预览</property>
                   </object>
                 </child>
               </object>
@@ -72,7 +72,7 @@
               <object class="GtkLabel" id="effectsft">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="effectspage|effectsft">_Case:</property>
+                <property name="label" translatable="yes" context="effectspage|effectsft">大小写(_C):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">effectslb</property>
                 <property name="xalign">0</property>
@@ -86,7 +86,7 @@
               <object class="GtkLabel" id="reliefft">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="effectspage|reliefft">R_elief:</property>
+                <property name="label" translatable="yes" context="effectspage|reliefft">浮雕效果(_E):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">relieflb</property>
                 <property name="xalign">0</property>
@@ -101,15 +101,15 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <items>
-                  <item translatable="yes" context="effectspage|liststore1">(Without)</item>
-                  <item translatable="yes" context="effectspage|liststore1">UPPERCASE</item>
-                  <item translatable="yes" context="effectspage|liststore1">lowercase</item>
-                  <item translatable="yes" context="effectspage|liststore1">Capitalize Every Word</item>
-                  <item translatable="yes" context="effectspage|liststore1">Small capitals</item>
+                  <item translatable="yes" context="effectspage|liststore1">无</item>
+                  <item translatable="yes" context="effectspage|liststore1">全部大写</item>
+                  <item translatable="yes" context="effectspage|liststore1">全部小写</item>
+                  <item translatable="yes" context="effectspage|liststore1">每个单词首字母大写</item>
+                  <item translatable="yes" context="effectspage|liststore1">小型大写字母</item>
                 </items>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="effectslb-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|effectslb">Select the font effects that you want to apply.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|effectslb">选择要应用的字体效果。</property>
                   </object>
                 </child>
               </object>
@@ -123,13 +123,13 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <items>
-                  <item translatable="yes" context="effectspage|liststore2">(Without)</item>
-                  <item translatable="yes" context="effectspage|liststore2">Embossed</item>
-                  <item translatable="yes" context="effectspage|liststore2">Engraved</item>
+                  <item translatable="yes" context="effectspage|liststore2">无</item>
+                  <item translatable="yes" context="effectspage|liststore2">凸起</item>
+                  <item translatable="yes" context="effectspage|liststore2">凹陷</item>
                 </items>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="relieflb-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|relieflb">Select a relief effect to apply to the selected text. The embossed relief makes the characters appear as if they are raised above the page. The engraved relief makes the characters appear as if they are pressed into the page.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|relieflb">选择要应用到所选文本的浮雕效果。凸起效果会让字符看起来高于页面，凹陷效果会让字符看起来压入页面。</property>
                   </object>
                 </child>
               </object>
@@ -143,15 +143,15 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <items>
-                  <item translatable="yes" context="effectspage|liststore3">(Without)</item>
-                  <item translatable="yes" context="effectspage|liststore3">Dot</item>
-                  <item translatable="yes" context="effectspage|liststore3">Circle</item>
-                  <item translatable="yes" context="effectspage|liststore3">Disc</item>
-                  <item translatable="yes" context="effectspage|liststore3">Accent</item>
+                  <item translatable="yes" context="effectspage|liststore3">无</item>
+                  <item translatable="yes" context="effectspage|liststore3">点</item>
+                  <item translatable="yes" context="effectspage|liststore3">空心圆</item>
+                  <item translatable="yes" context="effectspage|liststore3">实心圆</item>
+                  <item translatable="yes" context="effectspage|liststore3">重音符</item>
                 </items>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="emphasislb-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|emphasislb">Select a character to display over or below the entire length of the selected text.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|emphasislb">选择要显示在所选文本整体上方或下方的字符。</property>
                   </object>
                 </child>
               </object>
@@ -165,12 +165,12 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <items>
-                  <item id="0" translatable="yes" context="effectspage|liststore4">Above text</item>
-                  <item id="1" translatable="yes" context="effectspage|liststore4">Below text</item>
+                  <item id="0" translatable="yes" context="effectspage|liststore4">文本上方</item>
+                  <item id="1" translatable="yes" context="effectspage|liststore4">文本下方</item>
                 </items>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="positionlb-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|positionlb">Specify where to display the emphasis marks.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|positionlb">指定强调标记的显示位置。</property>
                   </object>
                 </child>
               </object>
@@ -183,7 +183,7 @@
               <object class="GtkLabel" id="positionft">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="effectspage|positionft">_Position:</property>
+                <property name="label" translatable="yes" context="effectspage|positionft">位置(_P):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">positionlb</property>
                 <property name="xalign">0</property>
@@ -197,7 +197,7 @@
               <object class="GtkLabel" id="emphasisft">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="effectspage|emphasisft">Emphasis _mark:</property>
+                <property name="label" translatable="yes" context="effectspage|emphasisft">强调标记(_M):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">emphasislb</property>
                 <property name="xalign">0</property>
@@ -209,7 +209,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="outlinecb">
-                <property name="label" translatable="yes" context="effectspage|outlinecb">Outli_ne</property>
+                <property name="label" translatable="yes" context="effectspage|outlinecb">轮廓(_N)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -218,7 +218,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="outlinecb-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|outlinecb">Displays the outline of the selected characters. This effect does not work with every font.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|outlinecb">显示所选字符的轮廓。此效果并不适用于所有字体。</property>
                   </object>
                 </child>
               </object>
@@ -229,7 +229,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="shadowcb">
-                <property name="label" translatable="yes" context="effectspage|shadowcb">Shado_w</property>
+                <property name="label" translatable="yes" context="effectspage|shadowcb">阴影(_W)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -238,7 +238,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="shadowcb-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|shadowcb">Adds a shadow that casts below and to the right of the selected characters.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|shadowcb">为所选字符添加向右下方投射的阴影。</property>
                   </object>
                 </child>
               </object>
@@ -249,7 +249,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="hiddencb">
-                <property name="label" translatable="yes" context="effectspage|hiddencb">Hi_dden</property>
+                <property name="label" translatable="yes" context="effectspage|hiddencb">隐藏(_D)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -258,7 +258,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="hiddencb-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|hiddencb">Hides the selected characters.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|hiddencb">隐藏所选字符。</property>
                   </object>
                 </child>
               </object>
@@ -288,7 +288,7 @@
           <object class="GtkLabel" id="effectsft2">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="effectspage|effectsft2">Effects</property>
+            <property name="label" translatable="yes" context="effectspage|effectsft2">效果</property>
             <property name="xalign">0</property>
             <attributes>
               <attribute name="weight" value="bold"/>
@@ -321,7 +321,7 @@
               <object class="GtkLabel" id="label3">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="effectspage|label46">O_verlining:</property>
+                <property name="label" translatable="yes" context="effectspage|label46">上划线(_V):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">overlinelb</property>
                 <property name="xalign">0</property>
@@ -335,7 +335,7 @@
               <object class="GtkLabel" id="label4">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="effectspage|label47">Stri_kethrough:</property>
+                <property name="label" translatable="yes" context="effectspage|label47">删除线(_K):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">strikeoutlb</property>
                 <property name="xalign">0</property>
@@ -349,7 +349,7 @@
               <object class="GtkLabel" id="label5">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="effectspage|label48">_Underlining:</property>
+                <property name="label" translatable="yes" context="effectspage|label48">下划线(_U):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">underlinelb</property>
                 <property name="xalign">0</property>
@@ -364,27 +364,27 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <items>
-                  <item id="0" translatable="yes" context="effectspage|liststore6">(Without)</item>
-                  <item id="1" translatable="yes" context="effectspage|liststore6">Single</item>
-                  <item id="2" translatable="yes" context="effectspage|liststore6">Double</item>
-                  <item id="12" translatable="yes" context="effectspage|liststore6">Bold</item>
-                  <item id="3" translatable="yes" context="effectspage|liststore6">Dotted</item>
-                  <item id="13" translatable="yes" context="effectspage|liststore6">Dotted (Bold)</item>
-                  <item id="5" translatable="yes" context="effectspage|liststore6">Dash</item>
-                  <item id="14" translatable="yes" context="effectspage|liststore6">Dash (Bold)</item>
-                  <item id="6" translatable="yes" context="effectspage|liststore6">Long Dash</item>
-                  <item id="15" translatable="yes" context="effectspage|liststore6">Long Dash (Bold)</item>
-                  <item id="7" translatable="yes" context="effectspage|liststore6">Dot Dash</item>
-                  <item id="16" translatable="yes" context="effectspage|liststore6">Dot Dash (Bold)</item>
-                  <item id="8" translatable="yes" context="effectspage|liststore6">Dot Dot Dash</item>
-                  <item id="17" translatable="yes" context="effectspage|liststore6">Dot Dot Dash (Bold)</item>
-                  <item id="10" translatable="yes" context="effectspage|liststore6">Wave</item>
-                  <item id="18" translatable="yes" context="effectspage|liststore6">Wave (Bold)</item>
-                  <item id="11" translatable="yes" context="effectspage|liststore6">Double Wave</item>
+                  <item id="0" translatable="yes" context="effectspage|liststore6">无</item>
+                  <item id="1" translatable="yes" context="effectspage|liststore6">单线</item>
+                  <item id="2" translatable="yes" context="effectspage|liststore6">双线</item>
+                  <item id="12" translatable="yes" context="effectspage|liststore6">粗线</item>
+                  <item id="3" translatable="yes" context="effectspage|liststore6">点线</item>
+                  <item id="13" translatable="yes" context="effectspage|liststore6">点线（粗）</item>
+                  <item id="5" translatable="yes" context="effectspage|liststore6">短划线</item>
+                  <item id="14" translatable="yes" context="effectspage|liststore6">短划线（粗）</item>
+                  <item id="6" translatable="yes" context="effectspage|liststore6">长划线</item>
+                  <item id="15" translatable="yes" context="effectspage|liststore6">长划线（粗）</item>
+                  <item id="7" translatable="yes" context="effectspage|liststore6">点划线</item>
+                  <item id="16" translatable="yes" context="effectspage|liststore6">点划线（粗）</item>
+                  <item id="8" translatable="yes" context="effectspage|liststore6">双点划线</item>
+                  <item id="17" translatable="yes" context="effectspage|liststore6">双点划线（粗）</item>
+                  <item id="10" translatable="yes" context="effectspage|liststore6">波浪线</item>
+                  <item id="18" translatable="yes" context="effectspage|liststore6">波浪线（粗）</item>
+                  <item id="11" translatable="yes" context="effectspage|liststore6">双波浪线</item>
                 </items>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="overlinelb-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|overlinelb">Select the overlining style that you want to apply. To apply the overlining to words only, select the Individual Words box.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|overlinelb">选择要应用的上划线样式。若只想将上划线应用到单词，请选择“单个单词”复选框。</property>
                   </object>
                 </child>
               </object>
@@ -398,27 +398,27 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <items>
-                  <item id="0" translatable="yes" context="effectspage|liststore6">(Without)</item>
-                  <item id="1" translatable="yes" context="effectspage|liststore6">Single</item>
-                  <item id="2" translatable="yes" context="effectspage|liststore6">Double</item>
-                  <item id="12" translatable="yes" context="effectspage|liststore6">Bold</item>
-                  <item id="3" translatable="yes" context="effectspage|liststore6">Dotted</item>
-                  <item id="13" translatable="yes" context="effectspage|liststore6">Dotted (Bold)</item>
-                  <item id="5" translatable="yes" context="effectspage|liststore6">Dash</item>
-                  <item id="14" translatable="yes" context="effectspage|liststore6">Dash (Bold)</item>
-                  <item id="6" translatable="yes" context="effectspage|liststore6">Long Dash</item>
-                  <item id="15" translatable="yes" context="effectspage|liststore6">Long Dash (Bold)</item>
-                  <item id="7" translatable="yes" context="effectspage|liststore6">Dot Dash</item>
-                  <item id="16" translatable="yes" context="effectspage|liststore6">Dot Dash (Bold)</item>
-                  <item id="8" translatable="yes" context="effectspage|liststore6">Dot Dot Dash</item>
-                  <item id="17" translatable="yes" context="effectspage|liststore6">Dot Dot Dash (Bold)</item>
-                  <item id="10" translatable="yes" context="effectspage|liststore6">Wave</item>
-                  <item id="18" translatable="yes" context="effectspage|liststore6">Wave (Bold)</item>
-                  <item id="11" translatable="yes" context="effectspage|liststore6">Double Wave</item>
+                  <item id="0" translatable="yes" context="effectspage|liststore6">无</item>
+                  <item id="1" translatable="yes" context="effectspage|liststore6">单线</item>
+                  <item id="2" translatable="yes" context="effectspage|liststore6">双线</item>
+                  <item id="12" translatable="yes" context="effectspage|liststore6">粗线</item>
+                  <item id="3" translatable="yes" context="effectspage|liststore6">点线</item>
+                  <item id="13" translatable="yes" context="effectspage|liststore6">点线（粗）</item>
+                  <item id="5" translatable="yes" context="effectspage|liststore6">短划线</item>
+                  <item id="14" translatable="yes" context="effectspage|liststore6">短划线（粗）</item>
+                  <item id="6" translatable="yes" context="effectspage|liststore6">长划线</item>
+                  <item id="15" translatable="yes" context="effectspage|liststore6">长划线（粗）</item>
+                  <item id="7" translatable="yes" context="effectspage|liststore6">点划线</item>
+                  <item id="16" translatable="yes" context="effectspage|liststore6">点划线（粗）</item>
+                  <item id="8" translatable="yes" context="effectspage|liststore6">双点划线</item>
+                  <item id="17" translatable="yes" context="effectspage|liststore6">双点划线（粗）</item>
+                  <item id="10" translatable="yes" context="effectspage|liststore6">波浪线</item>
+                  <item id="18" translatable="yes" context="effectspage|liststore6">波浪线（粗）</item>
+                  <item id="11" translatable="yes" context="effectspage|liststore6">双波浪线</item>
                 </items>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="underlinelb-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|underlinelb">Select the underlining style that you want to apply. To apply the underlining to words only, select the Individual Words box.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|underlinelb">选择要应用的下划线样式。若只想将下划线应用到单词，请选择“单个单词”复选框。</property>
                   </object>
                 </child>
               </object>
@@ -432,16 +432,16 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <items>
-                  <item id="0" translatable="yes" context="effectspage|liststore5">(Without)</item>
-                  <item id="1" translatable="yes" context="effectspage|liststore5">Single</item>
-                  <item id="2" translatable="yes" context="effectspage|liststore5">Double</item>
-                  <item id="4" translatable="yes" context="effectspage|liststore5">Bold</item>
-                  <item id="5" translatable="yes" context="effectspage|liststore5">With /</item>
-                  <item id="6" translatable="yes" context="effectspage|liststore5">With X</item>
+                  <item id="0" translatable="yes" context="effectspage|liststore5">无</item>
+                  <item id="1" translatable="yes" context="effectspage|liststore5">单线</item>
+                  <item id="2" translatable="yes" context="effectspage|liststore5">双线</item>
+                  <item id="4" translatable="yes" context="effectspage|liststore5">粗线</item>
+                  <item id="5" translatable="yes" context="effectspage|liststore5">带 /</item>
+                  <item id="6" translatable="yes" context="effectspage|liststore5">带 X</item>
                 </items>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="strikeoutlb-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|strikeoutlb">Select a strikethrough style for the selected text.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|strikeoutlb">选择所选文本的删除线样式。</property>
                   </object>
                 </child>
               </object>
@@ -464,7 +464,7 @@
                 </child>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="underlinecolorlb-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|underlinecolorlb">Select the color for the underlining.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|underlinecolorlb">选择下划线颜色。</property>
                   </object>
                 </child>
               </object>
@@ -487,7 +487,7 @@
                 </child>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="overlinecolorlb-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|overlinecolorlb">Select the color for the overlining.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|overlinecolorlb">选择上划线颜色。</property>
                   </object>
                 </child>
               </object>
@@ -498,7 +498,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="individualwordscb">
-                <property name="label" translatable="yes" context="effectspage|individualwordscb">_Individual words</property>
+                <property name="label" translatable="yes" context="effectspage|individualwordscb">单个单词(_I)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -506,7 +506,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="individualwordscb-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|individualwordscb">Applies the selected effect only to words and ignores spaces.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|individualwordscb">仅将所选效果应用到单词，并忽略空格。</property>
                   </object>
                 </child>
               </object>
@@ -550,7 +550,7 @@
           <object class="GtkLabel" id="textdecoration">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="effectspage|textdecoration">Text Decoration</property>
+            <property name="label" translatable="yes" context="effectspage|textdecoration">文本装饰</property>
             <property name="xalign">0</property>
             <attributes>
               <attribute name="weight" value="bold"/>
@@ -582,7 +582,7 @@
               <object class="GtkLabel" id="fontcolorft">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="effectspage|fontcolorft">_Font color:</property>
+                <property name="label" translatable="yes" context="effectspage|fontcolorft">字体颜色(_F):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">fontcolorlb</property>
                 <property name="xalign">0</property>
@@ -605,7 +605,7 @@
                 </child>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="fontcolorlb-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|fontcolorlb">Sets the color for the selected text. If you select Automatic, the text color is set to black for light backgrounds and to white for dark backgrounds.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|fontcolorlb">设置所选文本的颜色。如果选择“自动”，浅色背景上的文本颜色会设为黑色，深色背景上的文本颜色会设为白色。</property>
                   </object>
                 </child>
               </object>
@@ -617,7 +617,7 @@
             <child>
               <object class="GtkLabel" id="a11ywarning">
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="effectspage|a11ywarning">Accessibility option "Use automatic font color for screen display" is active. Font color attributes are not currently used to display text.</property>
+                <property name="label" translatable="yes" context="effectspage|a11ywarning">辅助功能选项“屏幕显示使用自动字体颜色”已启用。当前不会使用字体颜色属性来显示文本。</property>
                 <property name="wrap">True</property>
                 <property name="max-width-chars">50</property>
                 <property name="xalign">0</property>
@@ -631,7 +631,7 @@
               <object class="GtkLabel" id="fonttransparencyft">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="effectspage|fonttransparencyft">_Transparency:</property>
+                <property name="label" translatable="yes" context="effectspage|fonttransparencyft">透明度(_T):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">fonttransparencymtr</property>
                 <property name="xalign">0</property>
@@ -669,7 +669,7 @@
           <object class="GtkLabel" id="fontcolorft3">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="effectspage|fontcolorft3">Font Color</property>
+            <property name="label" translatable="yes" context="effectspage|fontcolorft3">字体颜色</property>
             <property name="xalign">0</property>
             <attributes>
               <attribute name="weight" value="bold"/>
@@ -684,7 +684,7 @@
     </child>
     <child internal-child="accessible">
       <object class="AtkObject" id="EffectsPage-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|EffectsPage">Specify the font effects that you want to use.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="effectspage|extended_tip|EffectsPage">指定要使用的字体效果。</property>
       </object>
     </child>
   </object>

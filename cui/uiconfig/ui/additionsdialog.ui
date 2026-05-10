@@ -48,7 +48,7 @@
               <object class="GtkRadioMenuItem" id="gear_sort_comments">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="menuassignpage|gear_textOnly">Comments</property>
+                <property name="label" translatable="yes" context="menuassignpage|gear_textOnly">评论</property>
                 <property name="draw-as-radio">True</property>
                 <property name="group">gear_sort_rating</property>
               </object>

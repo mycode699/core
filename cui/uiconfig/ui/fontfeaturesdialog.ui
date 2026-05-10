@@ -139,6 +139,11 @@
                                 <property name="valign">start</property>
                                 <property name="margin-top">6</property>
                                 <property name="label" translatable="yes" context="fontfeaturesdialog">Stylistic Sets</property>
+                                <child internal-child="accessible">
+                                  <object class="AtkObject" id="stylisticSetsLabel-atkobject">
+                                    <property name="AtkObject::accessible-role" translatable="no">static</property>
+                                  </object>
+                                </child>
                                 <attributes>
                                   <attribute name="weight" value="bold"/>
                                 </attributes>
@@ -191,6 +196,11 @@
                                 <property name="valign">start</property>
                                 <property name="margin-top">6</property>
                                 <property name="label" translatable="yes" context="fontfeaturesdialog">Character Variants</property>
+                                <child internal-child="accessible">
+                                  <object class="AtkObject" id="characterVariantsLabel-atkobject">
+                                    <property name="AtkObject::accessible-role" translatable="no">static</property>
+                                  </object>
+                                </child>
                                 <attributes>
                                   <attribute name="weight" value="bold"/>
                                 </attributes>

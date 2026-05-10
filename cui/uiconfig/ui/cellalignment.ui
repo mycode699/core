@@ -46,7 +46,7 @@
                   <object class="GtkLabel" id="labelDegrees">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="cellalignment|labelDegrees">_Degrees:</property>
+                    <property name="label" translatable="yes" context="cellalignment|labelDegrees">角度(_D):</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">spinDegrees</property>
                     <property name="xalign">0</property>
@@ -60,7 +60,7 @@
                   <object class="GtkLabel" id="labelRefEdge">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="cellalignment|labelRefEdge">_Reference edge:</property>
+                    <property name="label" translatable="yes" context="cellalignment|labelRefEdge">参考边(_R):</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">references</property>
                     <property name="xalign">0</property>
@@ -80,7 +80,7 @@
                     <property name="wrap">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="spinDegrees-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|spinDegrees">Enter the rotation angle from 0 to 360 for the text in the selected cell(s).</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|spinDegrees">输入所选单元格中文字的旋转角度，范围为 0 到 360。</property>
                       </object>
                     </child>
                   </object>
@@ -97,7 +97,7 @@
                     <property name="halign">start</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="references-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|references">Specify the cell edge from which to write the rotated text.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|references">指定从哪个单元格边缘开始书写旋转后的文字。</property>
                       </object>
                     </child>
                   </object>
@@ -120,7 +120,7 @@
                 <property name="row-spacing">6</property>
                 <child>
                   <object class="GtkCheckButton" id="checkVertStack">
-                    <property name="label" translatable="yes" context="cellalignment|checkVertStack">Vertically s_tacked</property>
+                    <property name="label" translatable="yes" context="cellalignment|checkVertStack">垂直堆叠(_T)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -129,7 +129,7 @@
                     <property name="draw-indicator">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="checkVertStack-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|checkVertStack">Text direction vertically.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|checkVertStack">文字方向为垂直。</property>
                       </object>
                     </child>
                   </object>
@@ -140,7 +140,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="checkAsianMode">
-                    <property name="label" translatable="yes" context="cellalignment|checkAsianMode">Asian layout _mode</property>
+                    <property name="label" translatable="yes" context="cellalignment|checkAsianMode">亚洲文字布局模式(_M)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -150,7 +150,7 @@
                     <property name="draw-indicator">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="checkAsianMode-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|checkAsianMode">Aligns Asian characters one below the other in the selected cell(s). If the cell contains more than one line of text, the lines are converted to text columns that are arranged from right to left. Western characters in the converted text are rotated 90 degrees to the right. Asian characters are not rotated.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|checkAsianMode">在所选单元格中将亚洲文字逐字纵向排列。如果单元格包含多行文字，这些行会转换为从右到左排列的文字列。转换后文字中的西文字符会向右旋转 90 度，亚洲文字不会旋转。</property>
                       </object>
                     </child>
                   </object>
@@ -174,7 +174,7 @@
                 <property name="valign">center</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="dialcontrol-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|dialcontrol">Click in the dial to set the text orientation.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|dialcontrol">在刻度盘中单击以设置文字方向。</property>
                   </object>
                 </child>
               </object>
@@ -190,7 +190,7 @@
           <object class="GtkLabel" id="labelTextOrient">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="cellalignment|labelTextOrient">Text Orientation</property>
+            <property name="label" translatable="yes" context="cellalignment|labelTextOrient">文字方向</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -221,7 +221,7 @@
             <property name="column-spacing">12</property>
             <child>
               <object class="GtkCheckButton" id="checkWrapTextAuto">
-                <property name="label" translatable="yes" context="cellalignment|checkWrapTextAuto">_Wrap text automatically</property>
+                <property name="label" translatable="yes" context="cellalignment|checkWrapTextAuto">自动换行(_W)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -231,7 +231,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="checkWrapTextAuto-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|checkWrapTextAuto">Wraps text onto another line at the cell border. The number of lines depends on the width of the cell.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|checkWrapTextAuto">在单元格边界处将文字换到下一行。行数取决于单元格宽度。</property>
                   </object>
                 </child>
               </object>
@@ -242,7 +242,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="checkShrinkFitCellSize">
-                <property name="label" translatable="yes" context="cellalignment|checkShrinkFitCellSize">_Shrink to fit cell size</property>
+                <property name="label" translatable="yes" context="cellalignment|checkShrinkFitCellSize">缩小以适合单元格大小(_S)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -251,7 +251,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="checkShrinkFitCellSize-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|checkShrinkFitCellSize">Reduces the apparent size of the font so that the contents of the cell fit into the current cell width. You cannot apply this command to a cell that contains line breaks.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|checkShrinkFitCellSize">减小字体的显示大小，使单元格内容适合当前单元格宽度。不能将此命令应用于包含换行符的单元格。</property>
                   </object>
                 </child>
               </object>
@@ -262,7 +262,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="checkHyphActive">
-                <property name="label" translatable="yes" context="cellalignment|checkHyphActive">Hyphenation _active</property>
+                <property name="label" translatable="yes" context="cellalignment|checkHyphActive">启用断字(_A)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -273,7 +273,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="checkHyphActive-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|checkHyphActive">Enables word hyphenation for text wrapping to the next line.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|checkHyphActive">为换行到下一行的文字启用单词断字。</property>
                   </object>
                 </child>
               </object>
@@ -291,7 +291,7 @@
                   <object class="GtkLabel" id="LabelTxtDir">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="cellalignment|LabelTxtDir">Te_xt direction:</property>
+                    <property name="label" translatable="yes" context="cellalignment|LabelTxtDir">文字方向(_X):</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">comboTextDirBox</property>
                     <property name="xalign">0</property>
@@ -325,7 +325,7 @@
           <object class="GtkLabel" id="labelProperties">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="cellalignment|labelProperties">Properties</property>
+            <property name="label" translatable="yes" context="cellalignment|labelProperties">属性</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -361,7 +361,7 @@
                 <property name="adjustment">adjustmentIndent</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="spinIndentFrom-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|spinIndentFrom">Indents from the left edge of the cell by the amount that you enter.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|spinIndentFrom">按输入的数值从单元格左边缘缩进。</property>
                   </object>
                 </child>
               </object>
@@ -374,7 +374,7 @@
               <object class="GtkLabel" id="labelHorzAlign">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="cellalignment|labelHorzAlign">Hori_zontal:</property>
+                <property name="label" translatable="yes" context="cellalignment|labelHorzAlign">水平(_Z):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">comboboxHorzAlign</property>
                 <property name="xalign">0</property>
@@ -388,7 +388,7 @@
               <object class="GtkLabel" id="labelVertAlign">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="cellalignment|labelVertAlign">_Vertical:</property>
+                <property name="label" translatable="yes" context="cellalignment|labelVertAlign">垂直(_V):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">comboboxVertAlign</property>
                 <property name="xalign">0</property>
@@ -402,7 +402,7 @@
               <object class="GtkLabel" id="labelIndent">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="cellalignment|labelIndent">I_ndent:</property>
+                <property name="label" translatable="yes" context="cellalignment|labelIndent">缩进(_N):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">spinIndentFrom</property>
                 <property name="xalign">0</property>
@@ -417,17 +417,17 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <items>
-                  <item id="0" translatable="yes" context="cellalignment|liststoreHorzAlign">Default</item>
-                  <item id="1" translatable="yes" context="cellalignment|liststoreHorzAlign">Left</item>
-                  <item id="2" translatable="yes" context="cellalignment|liststoreHorzAlign">Center</item>
-                  <item id="3" translatable="yes" context="cellalignment|liststoreHorzAlign">Right</item>
-                  <item id="4" translatable="yes" context="cellalignment|liststoreHorzAlign">Justified</item>
-                  <item id="5" translatable="yes" context="cellalignment|liststoreHorzAlign">Filled</item>
-                  <item id="6" translatable="yes" context="cellalignment|liststoreHorzAlign">Distributed</item>
+                  <item id="0" translatable="yes" context="cellalignment|liststoreHorzAlign">默认</item>
+                  <item id="1" translatable="yes" context="cellalignment|liststoreHorzAlign">左</item>
+                  <item id="2" translatable="yes" context="cellalignment|liststoreHorzAlign">居中</item>
+                  <item id="3" translatable="yes" context="cellalignment|liststoreHorzAlign">右</item>
+                  <item id="4" translatable="yes" context="cellalignment|liststoreHorzAlign">两端对齐</item>
+                  <item id="5" translatable="yes" context="cellalignment|liststoreHorzAlign">填充</item>
+                  <item id="6" translatable="yes" context="cellalignment|liststoreHorzAlign">分散对齐</item>
                 </items>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="comboboxHorzAlign-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|comboboxHorzAlign">Select the horizontal alignment option that you want to apply to the cell contents.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|comboboxHorzAlign">选择要应用到单元格内容的水平对齐选项。</property>
                   </object>
                 </child>
               </object>
@@ -441,16 +441,16 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <items>
-                  <item id="0" translatable="yes" context="cellalignment|liststoreVertAlign">Default</item>
-                  <item id="1" translatable="yes" context="cellalignment|liststoreVertAlign">Top</item>
-                  <item id="2" translatable="yes" context="cellalignment|liststoreVertAlign">Middle</item>
-                  <item id="3" translatable="yes" context="cellalignment|liststoreVertAlign">Bottom</item>
-                  <item id="4" translatable="yes" context="cellalignment|liststoreVertAlign">Justified</item>
-                  <item id="5" translatable="yes" context="cellalignment|liststoreVertAlign">Distributed</item>
+                  <item id="0" translatable="yes" context="cellalignment|liststoreVertAlign">默认</item>
+                  <item id="1" translatable="yes" context="cellalignment|liststoreVertAlign">上</item>
+                  <item id="2" translatable="yes" context="cellalignment|liststoreVertAlign">中间</item>
+                  <item id="3" translatable="yes" context="cellalignment|liststoreVertAlign">下</item>
+                  <item id="4" translatable="yes" context="cellalignment|liststoreVertAlign">两端对齐</item>
+                  <item id="5" translatable="yes" context="cellalignment|liststoreVertAlign">分散对齐</item>
                 </items>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="comboboxVertAlign-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|comboboxVertAlign">Select the vertical alignment option that you want to apply to the cell contents.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|comboboxVertAlign">选择要应用到单元格内容的垂直对齐选项。</property>
                   </object>
                 </child>
               </object>
@@ -471,7 +471,7 @@
           <object class="GtkLabel" id="LabelTextAlig">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="cellalignment|LabelTextAlig">Text Alignment</property>
+            <property name="label" translatable="yes" context="cellalignment|LabelTextAlig">文字对齐</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -491,7 +491,7 @@
         <child>
           <object class="GtkLabel" id="labelSTR_BOTTOMLOCK">
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="cellalignment|labelSTR_BOTTOMLOCK">Text Extension From Lower Cell Border</property>
+            <property name="label" translatable="yes" context="cellalignment|labelSTR_BOTTOMLOCK">文字从单元格下边框延伸</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -502,7 +502,7 @@
         <child>
           <object class="GtkLabel" id="labelSTR_TOPLOCK">
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="cellalignment|labelSTR_TOPLOCK">Text Extension From Upper Cell Border</property>
+            <property name="label" translatable="yes" context="cellalignment|labelSTR_TOPLOCK">文字从单元格上边框延伸</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -513,7 +513,7 @@
         <child>
           <object class="GtkLabel" id="labelSTR_CELLLOCK">
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="cellalignment|labelSTR_CELLLOCK">Text Extension Inside Cell</property>
+            <property name="label" translatable="yes" context="cellalignment|labelSTR_CELLLOCK">文字在单元格内延伸</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -540,7 +540,7 @@
     </child>
     <child internal-child="accessible">
       <object class="AtkObject" id="CellAlignPage-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|CellAlignPage">Sets the alignment options for the contents of the current cell, or the selected cells.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="cellalignment|extended_tip|CellAlignPage">设置当前单元格或所选单元格内容的对齐选项。</property>
       </object>
     </child>
   </object>

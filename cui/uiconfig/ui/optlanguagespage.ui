@@ -36,8 +36,8 @@
   <object class="GtkGrid" id="OptLanguagesPage">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="border-width">6</property>
-    <property name="row-spacing">12</property>
+    <property name="border-width">10</property>
+    <property name="row-spacing">10</property>
     <child>
       <object class="GtkFrame" id="frame1">
         <property name="visible">True</property>
@@ -50,8 +50,8 @@
           <object class="GtkGrid" id="grid1">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-start">12</property>
-            <property name="margin-top">6</property>
+            <property name="margin-start">14</property>
+            <property name="margin-top">8</property>
             <property name="hexpand">True</property>
             <property name="row-spacing">6</property>
             <property name="column-spacing">12</property>
@@ -59,7 +59,7 @@
               <object class="GtkLabel" id="label4">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="optlanguagespage|label4">_User interface:</property>
+                <property name="label" translatable="yes" context="optlanguagespage|label4">界面语言(_U)：</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">userinterface</property>
                 <property name="xalign">0</property>
@@ -73,11 +73,12 @@
               <object class="GtkComboBoxText" id="userinterface">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="width-request">240</property>
                 <property name="halign">start</property>
                 <property name="hexpand">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="userinterface-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|userinterface">Select the language used for the user interface, for example menus, dialogs, help files. You must have installed at least one additional language pack.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|userinterface">选择菜单、对话框和帮助内容使用的界面语言。若要切换语言，需要已安装对应语言包。</property>
                   </object>
                 </child>
               </object>
@@ -92,7 +93,7 @@
           <object class="GtkLabel" id="label1">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="optlanguagespage|label1">Language Of</property>
+            <property name="label" translatable="yes" context="optlanguagespage|label1">界面显示语言</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -116,8 +117,8 @@
           <object class="GtkGrid" id="grid2">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-start">12</property>
-            <property name="margin-top">6</property>
+            <property name="margin-start">14</property>
+            <property name="margin-top">8</property>
             <property name="hexpand">True</property>
             <property name="row-spacing">6</property>
             <property name="column-spacing">12</property>
@@ -125,13 +126,16 @@
               <object class="GtkComboBox" id="westernlanguage">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="width-request">240</property>
                 <property name="halign">start</property>
                 <property name="hexpand">True</property>
                 <property name="model">liststore1</property>
                 <property name="entry-text-column">0</property>
                 <property name="id-column">1</property>
                 <child>
-                  <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                  <object class="GtkCellRendererText" id="cellrenderertext1">
+                    <property name="ypad">4</property>
+                  </object>
                   <attributes>
                     <attribute name="text">0</attribute>
                   </attributes>
@@ -144,7 +148,7 @@
                 </child>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="westernlanguage-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|westernlanguage">Specifies the language used for the spellcheck function in western alphabets.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|westernlanguage">设置西文内容使用的默认校对语言。</property>
                   </object>
                 </child>
               </object>
@@ -157,13 +161,16 @@
               <object class="GtkComboBox" id="asianlanguage">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="width-request">240</property>
                 <property name="halign">start</property>
                 <property name="hexpand">True</property>
                 <property name="model">liststore2</property>
                 <property name="entry-text-column">0</property>
                 <property name="id-column">1</property>
                 <child>
-                  <object class="GtkCellRendererText" id="cellrenderertext3"/>
+                  <object class="GtkCellRendererText" id="cellrenderertext3">
+                    <property name="ypad">4</property>
+                  </object>
                   <attributes>
                     <attribute name="text">0</attribute>
                   </attributes>
@@ -176,7 +183,7 @@
                 </child>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="asianlanguage-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|asianlanguage">Specifies the Asian language used for the spellcheck function.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|asianlanguage">设置中文、日文、韩文等亚洲文字使用的默认校对语言。</property>
                   </object>
                 </child>
               </object>
@@ -189,13 +196,16 @@
               <object class="GtkComboBox" id="complexlanguage">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="width-request">240</property>
                 <property name="halign">start</property>
                 <property name="hexpand">True</property>
                 <property name="model">liststore3</property>
                 <property name="entry-text-column">0</property>
                 <property name="id-column">1</property>
                 <child>
-                  <object class="GtkCellRendererText" id="cellrenderertext5"/>
+                  <object class="GtkCellRendererText" id="cellrenderertext5">
+                    <property name="ypad">4</property>
+                  </object>
                   <attributes>
                     <attribute name="text">0</attribute>
                   </attributes>
@@ -208,7 +218,7 @@
                 </child>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="complexlanguage-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|complexlanguage">Specifies the language for the complex text layout spellcheck.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|complexlanguage">设置复杂文字排版内容使用的默认校对语言。</property>
                   </object>
                 </child>
               </object>
@@ -219,16 +229,16 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="currentdoc">
-                <property name="label" translatable="yes" context="optlanguagespage|currentdoc">For the current document only</property>
+                <property name="label" translatable="yes" context="optlanguagespage|currentdoc">仅应用于当前文档</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
                 <property name="halign">start</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="currentdoc-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|currentdoc">Specifies that the settings for default languages are valid only for the current document.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|currentdoc">勾选后，这些默认语言设置只影响当前文档。</property>
                   </object>
                 </child>
               </object>
@@ -241,7 +251,7 @@
               <object class="GtkLabel" id="complex">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="optlanguagespage|complex">Complex text layout:</property>
+                <property name="label" translatable="yes" context="optlanguagespage|complex">复杂文字排版：</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">complexlanguage</property>
                 <property name="xalign">0</property>
@@ -255,7 +265,7 @@
               <object class="GtkLabel" id="asian">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="optlanguagespage|asian">Asian:</property>
+                <property name="label" translatable="yes" context="optlanguagespage|asian">亚洲文字：</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">asianlanguage</property>
                 <property name="xalign">0</property>
@@ -269,7 +279,7 @@
               <object class="GtkLabel" id="western">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="optlanguagespage|western">Western:</property>
+                <property name="label" translatable="yes" context="optlanguagespage|western">西文：</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">westernlanguage</property>
                 <property name="xalign">0</property>
@@ -330,7 +340,7 @@
           <object class="GtkLabel" id="label2">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="optlanguagespage|label2">Default Languages for Documents</property>
+            <property name="label" translatable="yes" context="optlanguagespage|label2">文档默认语言</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -353,20 +363,20 @@
           <object class="GtkGrid" id="grid3">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-start">12</property>
-            <property name="margin-top">6</property>
+            <property name="margin-start">14</property>
+            <property name="margin-top">8</property>
             <property name="row-spacing">6</property>
             <child>
               <object class="GtkCheckButton" id="ignorelanguagechange">
-                <property name="label" translatable="yes" context="optlanguagespage|ignorelanguagechange">Ignore s_ystem input language</property>
+                <property name="label" translatable="yes" context="optlanguagespage|ignorelanguagechange">忽略系统输入法语言</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="ignorelanguagechange-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|ignorelanguagechange">Indicates whether changes to the system input language/keyboard will be ignored. If ignored, when new text is typed that text will follow the language of the document or current paragraph, not the current system language.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|ignorelanguagechange">启用后，输入新文字时优先沿用文档或当前段落语言，不跟随系统输入法语言切换。</property>
                   </object>
                 </child>
               </object>
@@ -394,7 +404,7 @@
           <object class="GtkLabel" id="label3">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="optlanguagespage|label3">Enhanced Language Support</property>
+            <property name="label" translatable="yes" context="optlanguagespage|label3">增强语言支持</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -418,8 +428,8 @@
           <object class="GtkGrid" id="grid4">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-start">12</property>
-            <property name="margin-top">6</property>
+            <property name="margin-start">14</property>
+            <property name="margin-top">8</property>
             <property name="hexpand">True</property>
             <property name="row-spacing">6</property>
             <property name="column-spacing">12</property>
@@ -427,7 +437,7 @@
               <object class="GtkLabel" id="localesettingFT">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="optlanguagespage|localesettingFT">Locale setting:</property>
+                <property name="label" translatable="yes" context="optlanguagespage|localesettingFT">区域设置：</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">localesetting</property>
                 <property name="xalign">0</property>
@@ -441,7 +451,7 @@
               <object class="GtkLabel" id="label6">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="optlanguagespage|label6">Decimal key on the numpad:</property>
+                <property name="label" translatable="yes" context="optlanguagespage|label6">数字小键盘小数点：</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">decimalseparator</property>
                 <property name="xalign">0</property>
@@ -455,7 +465,7 @@
               <object class="GtkLabel" id="defaultcurrency">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="optlanguagespage|defaultcurrency">_Default currency:</property>
+                <property name="label" translatable="yes" context="optlanguagespage|defaultcurrency">默认货币(_D)：</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">currencylb</property>
                 <property name="xalign">0</property>
@@ -469,7 +479,7 @@
               <object class="GtkLabel" id="dataaccpatterns">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="optlanguagespage|dataaccpatterns">Date acceptance _patterns:</property>
+                <property name="label" translatable="yes" context="optlanguagespage|dataaccpatterns">日期识别格式(_P)：</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">datepatterns</property>
                 <property name="xalign">0</property>
@@ -483,11 +493,12 @@
               <object class="GtkComboBoxText" id="localesetting">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="width-request">240</property>
                 <property name="halign">start</property>
                 <property name="hexpand">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="localesetting-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|localesetting">Specifies the locale setting of the country setting. This influences settings for numbering, currency and units of measure.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|localesetting">设置国家或地区区域格式，影响数字、货币和度量单位显示。</property>
                   </object>
                 </child>
               </object>
@@ -500,11 +511,12 @@
               <object class="GtkComboBoxText" id="currencylb">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="width-request">240</property>
                 <property name="halign">start</property>
                 <property name="hexpand">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="currencylb-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|currencylb">Specifies the default currency that is used for the currency format and the currency fields.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|currencylb">设置货币格式和货币字段默认使用的币种。</property>
                   </object>
                 </child>
               </object>
@@ -520,10 +532,11 @@
                 <property name="halign">start</property>
                 <property name="valign">center</property>
                 <property name="hexpand">True</property>
+                <property name="width-request">240</property>
                 <property name="truncate-multiline">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="datepatterns-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|datepatterns">Specifies the date acceptance patterns for the current locale. Calc spreadsheet and Writer table cell input needs to match locale dependent date acceptance patterns before it is recognized as a valid date.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|datepatterns">设置当前区域可识别的日期输入格式。表格和文档表格单元格需要匹配这些格式后才会识别为日期。</property>
                   </object>
                 </child>
               </object>
@@ -534,15 +547,15 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="decimalseparator">
-                <property name="label" translatable="yes" context="optlanguagespage|decimalseparator">_Same as locale setting ( %1 )</property>
+                <property name="label" translatable="yes" context="optlanguagespage|decimalseparator">与区域设置一致（%1）</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="decimalseparator-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|decimalseparator">Specifies to use the numeric keypad decimal key that is set in your system when you press the respective key on the number pad.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|decimalseparator">使用当前区域设置定义的数字小键盘小数分隔符。</property>
                   </object>
                 </child>
               </object>
@@ -609,7 +622,7 @@
           <object class="GtkLabel" id="label7">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="optlanguagespage|label7">Formats</property>
+            <property name="label" translatable="yes" context="optlanguagespage|label7">区域格式</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -623,7 +636,7 @@
     </child>
     <child internal-child="accessible">
       <object class="AtkObject" id="OptLanguagesPage-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|OptLanguagesPage">Defines the default languages and some other locale settings for documents.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip|OptLanguagesPage">设置文档默认语言、区域格式和相关输入规则。</property>
       </object>
     </child>
   </object>

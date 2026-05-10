@@ -23,7 +23,7 @@
   <object class="GtkDialog" id="SimilaritySearchDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="similaritysearchdialog|SimilaritySearchDialog">Similarity Search</property>
+    <property name="title" translatable="yes" context="similaritysearchdialog|SimilaritySearchDialog">相似搜索</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
@@ -106,7 +106,7 @@
               <object class="GtkLabel" id="label2">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="similaritysearchdialog|label2">_Exchange characters:</property>
+                <property name="label" translatable="yes" context="similaritysearchdialog|label2">替换字符数(_E):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">otherfld</property>
                 <property name="xalign">1</property>
@@ -124,7 +124,7 @@
                 <property name="adjustment">adjustment1</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="otherfld-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="similaritysearchdialog|extended_tip|otherfld">Enter the number of characters in the search term that can be exchanged.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="similaritysearchdialog|extended_tip|otherfld">输入搜索词中允许替换的字符数。</property>
                   </object>
                 </child>
               </object>
@@ -137,7 +137,7 @@
               <object class="GtkLabel" id="label3">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="similaritysearchdialog|label3">_Add characters:</property>
+                <property name="label" translatable="yes" context="similaritysearchdialog|label3">添加字符数(_A):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">longerfld</property>
                 <property name="xalign">1</property>
@@ -155,7 +155,7 @@
                 <property name="adjustment">adjustment2</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="longerfld-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="similaritysearchdialog|extended_tip|longerfld">Enter the maximum number of characters by which a word can exceed the number of characters in the search term.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="similaritysearchdialog|extended_tip|longerfld">输入单词允许比搜索词多出的最大字符数。</property>
                   </object>
                 </child>
               </object>
@@ -168,7 +168,7 @@
               <object class="GtkLabel" id="label4">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="similaritysearchdialog|label4">_Remove characters:</property>
+                <property name="label" translatable="yes" context="similaritysearchdialog|label4">删除字符数(_R):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">shorterfld</property>
                 <property name="xalign">1</property>
@@ -186,7 +186,7 @@
                 <property name="adjustment">adjustment3</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="shorterfld-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="similaritysearchdialog|extended_tip|shorterfld">Enter the number of characters by which a word can be shorter than the search term.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="similaritysearchdialog|extended_tip|shorterfld">输入单词允许比搜索词少的字符数。</property>
                   </object>
                 </child>
               </object>
@@ -197,7 +197,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="relaxbox">
-                <property name="label" translatable="yes" context="similaritysearchdialog|relaxbox">_Combine</property>
+                <property name="label" translatable="yes" context="similaritysearchdialog|relaxbox">组合条件(_C)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -205,7 +205,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="relaxbox-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="similaritysearchdialog|extended_tip|relaxbox">Searches for a term that matches any combination of the similarity search settings.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="similaritysearchdialog|extended_tip|relaxbox">搜索符合任意相似搜索设置组合的词语。</property>
                   </object>
                 </child>
               </object>
@@ -231,7 +231,7 @@
     </action-widgets>
     <child internal-child="accessible">
       <object class="AtkObject" id="SimilaritySearchDialog-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="similaritysearchdialog|extended_tip|SimilaritySearchDialog">Find terms that are similar to the Find text. Select this checkbox, and then click the Similarities button to define the similarity options.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="similaritysearchdialog|extended_tip|SimilaritySearchDialog">查找与“查找”文本相似的词语。启用相似搜索后，可在此定义相似匹配选项。</property>
       </object>
     </child>
   </object>

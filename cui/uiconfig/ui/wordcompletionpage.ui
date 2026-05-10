@@ -57,7 +57,7 @@
                   <object class="GtkLabel" id="wordcompletion">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes" context="wordcompletionpage|wordcompletion">Word Completion</property>
+                    <property name="label" translatable="yes" context="wordcompletionpage|wordcompletion">单词补全</property>
                     <property name="xalign">0</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
@@ -70,7 +70,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="enablewordcomplete">
-                    <property name="label" translatable="yes" context="wordcompletionpage|enablewordcomplete">Enable word _completion</property>
+                    <property name="label" translatable="yes" context="wordcompletionpage|enablewordcomplete">启用单词补全(_C)</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
@@ -78,7 +78,7 @@
                     <property name="draw_indicator">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="enablewordcomplete-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="wordcompletionpage|extended_tip|enablewordcomplete">Stores frequently used words, and automatically completes a word after you type three letters that match the first three letters of a stored word.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="wordcompletionpage|extended_tip|enablewordcomplete">存储常用单词，并在输入前三个字母与已存单词匹配时自动补全该单词。</property>
                       </object>
                     </child>
                   </object>
@@ -96,7 +96,7 @@
                     <property name="margin-start">18</property>
                     <child>
                       <object class="GtkCheckButton" id="appendspace">
-                        <property name="label" translatable="yes" context="wordcompletionpage|appendspace">_Append space</property>
+                        <property name="label" translatable="yes" context="wordcompletionpage|appendspace">追加空格(_A)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -104,7 +104,7 @@
                         <property name="draw_indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="appendspace-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="wordcompletionpage|extended_tip|appendspace">If you do not add punctuation after the word then a space is added automatically.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="wordcompletionpage|extended_tip|appendspace">如果单词后没有输入标点，将自动添加一个空格。</property>
                           </object>
                         </child>
                       </object>
@@ -115,7 +115,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="showastip">
-                        <property name="label" translatable="yes" context="wordcompletionpage|showastip">_Show as tip</property>
+                        <property name="label" translatable="yes" context="wordcompletionpage|showastip">显示为提示(_S)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -123,7 +123,7 @@
                         <property name="draw_indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="showastip-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="wordcompletionpage|extended_tip|showastip">Displays the completed word as a Help Tip.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="wordcompletionpage|extended_tip|showastip">将补全的单词显示为帮助提示。</property>
                           </object>
                         </child>
                       </object>
@@ -157,7 +157,7 @@
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes" context="wordcompletionpage|label2">Mi_n. word length:</property>
+                    <property name="label" translatable="yes" context="wordcompletionpage|label2">最小单词长度(_N):</property>
                     <property name="use_underline">True</property>
                     <property name="mnemonic_widget">maxentries</property>
                     <property name="xalign">0</property>
@@ -177,7 +177,7 @@
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="minwordlen-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="wordcompletionpage|extended_tip|minwordlen">Enter the minimum word length for a word to become eligible for the word completion feature.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="wordcompletionpage|extended_tip|minwordlen">输入可进入单词补全功能的最小单词长度。</property>
                       </object>
                     </child>
                   </object>
@@ -190,7 +190,7 @@
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes" context="wordcompletionpage|label1">_Max. entries:</property>
+                    <property name="label" translatable="yes" context="wordcompletionpage|label1">最大条目数(_M):</property>
                     <property name="use_underline">True</property>
                     <property name="mnemonic_widget">maxentries</property>
                     <property name="xalign">0</property>
@@ -210,7 +210,7 @@
                     <property name="truncate-multiline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="maxentries-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="wordcompletionpage|extended_tip|maxentries">Enter the maximum number of words that you want to store in the Word Completion list.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="wordcompletionpage|extended_tip|maxentries">输入要在单词补全列表中存储的最大单词数。</property>
                       </object>
                     </child>
                   </object>
@@ -223,7 +223,7 @@
                   <object class="GtkLabel" id="label3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes" context="wordcompletionpage|label3">Acc_ept with:</property>
+                    <property name="label" translatable="yes" context="wordcompletionpage|label3">接受补全键(_E):</property>
                     <property name="use_underline">True</property>
                     <property name="mnemonic_widget">acceptwith</property>
                     <property name="xalign">0</property>
@@ -239,7 +239,7 @@
                     <property name="can_focus">False</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="acceptwith-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="wordcompletionpage|extended_tip|acceptwith">Select the key that you want to use to accept the automatic word completion.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="wordcompletionpage|extended_tip|acceptwith">选择用于接受自动单词补全的按键。</property>
                       </object>
                     </child>
                   </object>
@@ -273,7 +273,7 @@
               <object class="GtkLabel" id="collectedwords">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes" context="acorreplacepage|collectedwords">Collected Words</property>
+                <property name="label" translatable="yes" context="acorreplacepage|collectedwords">已收集单词</property>
                 <property name="xalign">0</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
@@ -319,7 +319,7 @@
                     </child>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="entries-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="wordcompletionpage|extended_tip|entries">Lists the collected words. The list is valid until you close the current document. To make the list available to other documents in the current session, disable "When closing a document, remove the words collected from it from the list".</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="wordcompletionpage|extended_tip|entries">列出已收集的单词。此列表在关闭当前文档前有效。若要让列表在当前会话中的其他文档也可用，请停用“关闭文档时，从列表中移除从该文档收集的单词”。</property>
                       </object>
                     </child>
                   </object>
@@ -332,7 +332,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="whenclosing">
-                <property name="label" translatable="yes" context="wordcompletionpage|whenclosing">_When closing a document, remove the words collected from it from the list</property>
+                <property name="label" translatable="yes" context="wordcompletionpage|whenclosing">关闭文档时，从列表中移除从该文档收集的单词(_W)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -340,7 +340,7 @@
                 <property name="draw_indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="whenclosing-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="wordcompletionpage|extended_tip|whenclosing">When enabled, the list gets cleared when closing the current document. When disabled, makes the current Word Completion list available to other documents after you close the current document. The list remains available until you exit office suite.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="wordcompletionpage|extended_tip|whenclosing">启用后，关闭当前文档时会清除此列表。停用后，关闭当前文档后，当前单词补全列表仍可供其他文档使用，直到退出办公套件。</property>
                   </object>
                 </child>
               </object>
@@ -355,7 +355,7 @@
                 <property name="can_focus">False</property>
                 <child>
                   <object class="GtkCheckButton" id="collectwords">
-                    <property name="label" translatable="yes" context="wordcompletionpage|collectwords">C_ollect words</property>
+                    <property name="label" translatable="yes" context="wordcompletionpage|collectwords">收集单词(_O)</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
@@ -363,7 +363,7 @@
                     <property name="draw_indicator">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="collectwords-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="wordcompletionpage|extended_tip|collectwords">Adds the frequently used words to a list. To remove a word from the Word Completion list, select the word, and then click Delete Entry.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="wordcompletionpage|extended_tip|collectwords">将常用单词添加到列表中。要从单词补全列表中移除单词，请选择该单词，然后点击“删除条目”。</property>
                       </object>
                     </child>
                   </object>
@@ -375,7 +375,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="delete">
-                    <property name="label" translatable="yes" context="wordcompletionpage|delete">_Delete</property>
+                    <property name="label" translatable="yes" context="wordcompletionpage|delete">删除(_D)</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -384,7 +384,7 @@
                     <property name="use_underline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="delete-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="wordcompletionpage|extended_tip|delete">Removes the selected word or words from the Word Completion list.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="wordcompletionpage|extended_tip|delete">从单词补全列表中移除所选单词。</property>
                       </object>
                     </child>
                   </object>
@@ -415,7 +415,7 @@
     </child>
     <child internal-child="accessible">
       <object class="AtkObject" id="WordCompletionPage-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="wordcompletionpage|extended_tip|WordCompletionPage">Stores frequently used words, and automatically completes a word after you type three letters that match the first three letters of a stored word.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="wordcompletionpage|extended_tip|WordCompletionPage">存储常用单词，并在输入前三个字母与已存单词匹配时自动补全该单词。</property>
       </object>
     </child>
   </object>

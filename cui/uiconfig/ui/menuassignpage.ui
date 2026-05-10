@@ -43,7 +43,7 @@
       <object class="GtkMenuItem" id="insertseparator">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="menuassignpage|insertseparator">Insert Separator</property>
+        <property name="label" translatable="yes" context="menuassignpage|insertseparator">插入分隔符</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -51,7 +51,7 @@
       <object class="GtkMenuItem" id="insertsubmenu">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="menuassignpage|insertsubmenu">Insert Submenu</property>
+        <property name="label" translatable="yes" context="menuassignpage|insertsubmenu">插入子菜单</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -101,7 +101,7 @@
       <object class="GtkMenuItem" id="menu_gear_add">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="menuassignpage|gear_add">_Add...</property>
+        <property name="label" translatable="yes" context="menuassignpage|gear_add">添加(_A)...</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -109,7 +109,7 @@
       <object class="GtkMenuItem" id="menu_gear_delete">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="menuassignpage|gear_delete">_Delete</property>
+        <property name="label" translatable="yes" context="menuassignpage|gear_delete">删除(_D)</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -117,7 +117,7 @@
       <object class="GtkMenuItem" id="menu_gear_rename">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="menuassignpage|gear_rename">_Rename...</property>
+        <property name="label" translatable="yes" context="menuassignpage|gear_rename">重命名(_R)...</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -125,7 +125,7 @@
       <object class="GtkMenuItem" id="menu_gear_move">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="menuassignpage|gear_move">_Move...</property>
+        <property name="label" translatable="yes" context="menuassignpage|gear_move">移动(_M)...</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -137,7 +137,7 @@
       <object class="GtkMenuItem" id="renameItem">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="menuassignpage|renameItem">Rename...</property>
+        <property name="label" translatable="yes" context="menuassignpage|renameItem">重命名...</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -145,7 +145,7 @@
       <object class="GtkMenuItem" id="changeIcon">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="menuassignpage|changeIcon">Change Icon...</property>
+        <property name="label" translatable="yes" context="menuassignpage|changeIcon">更改图标...</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -153,7 +153,7 @@
       <object class="GtkMenuItem" id="resetIcon">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="menuassignpage|resetIcon">Reset Icon</property>
+        <property name="label" translatable="yes" context="menuassignpage|resetIcon">重置图标</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -161,7 +161,7 @@
       <object class="GtkMenuItem" id="restoreItem">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="menuassignpage|restoreItem">Restore Default Command</property>
+        <property name="label" translatable="yes" context="menuassignpage|restoreItem">恢复默认命令</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -173,7 +173,7 @@
       <object class="GtkMenuItem" id="toolbar_gear_add">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="menuassignpage|gear_add">_Add...</property>
+        <property name="label" translatable="yes" context="menuassignpage|gear_add">添加(_A)...</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -181,7 +181,7 @@
       <object class="GtkMenuItem" id="toolbar_gear_delete">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="menuassignpage|gear_delete">_Delete</property>
+        <property name="label" translatable="yes" context="menuassignpage|gear_delete">删除(_D)</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -189,7 +189,7 @@
       <object class="GtkMenuItem" id="toolbar_gear_rename">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="menuassignpage|gear_rename">_Rename...</property>
+        <property name="label" translatable="yes" context="menuassignpage|gear_rename">重命名(_R)...</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -197,7 +197,7 @@
       <object class="GtkMenuItem" id="toolbar_gear_move">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="menuassignpage|gear_move">_Move...</property>
+        <property name="label" translatable="yes" context="menuassignpage|gear_move">移动(_M)...</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -211,7 +211,7 @@
       <object class="GtkRadioMenuItem" id="toolbar_gear_iconAndText">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="menuassignpage|gear_iconAndText">_Icon and text</property>
+        <property name="label" translatable="yes" context="menuassignpage|gear_iconAndText">图标和文字(_I)</property>
         <property name="use-underline">True</property>
         <property name="draw-as-radio">True</property>
         <property name="group">toolbar_gear_iconOnly</property>
@@ -221,7 +221,7 @@
       <object class="GtkRadioMenuItem" id="toolbar_gear_iconOnly">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="menuassignpage|gear_iconOnly">Icon _only</property>
+        <property name="label" translatable="yes" context="menuassignpage|gear_iconOnly">仅图标(_O)</property>
         <property name="use-underline">True</property>
         <property name="active">True</property>
         <property name="draw-as-radio">True</property>
@@ -231,7 +231,7 @@
       <object class="GtkRadioMenuItem" id="toolbar_gear_textOnly">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="menuassignpage|gear_textOnly">_Text only</property>
+        <property name="label" translatable="yes" context="menuassignpage|gear_textOnly">仅文字(_T)</property>
         <property name="use-underline">True</property>
         <property name="draw-as-radio">True</property>
         <property name="group">toolbar_gear_iconOnly</property>
@@ -243,26 +243,26 @@
     <property name="can-focus">False</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
-    <property name="border-width">6</property>
+    <property name="border-width">10</property>
     <property name="orientation">vertical</property>
-    <property name="spacing">6</property>
+    <property name="spacing">8</property>
     <child>
       <!-- n-columns=4 n-rows=8 -->
-      <object class="GtkGrid">
+      <object class="GtkGrid" id="menu_grid">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="hexpand">True</property>
         <property name="vexpand">True</property>
-        <property name="row-spacing">4</property>
-        <property name="column-spacing">4</property>
+        <property name="row-spacing">6</property>
+        <property name="column-spacing">8</property>
         <child>
           <object class="GtkLabel" id="searchlabel">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">start</property>
             <property name="valign">center</property>
-            <property name="label" translatable="yes" context="menuassignpage|contentslabel">_Search</property>
-            <property name="use-underline">True</property>
+            <property name="label" translatable="yes" context="menuassignpage|contentslabel">搜索</property>
+            <property name="use-underline">False</property>
           </object>
           <packing>
             <property name="left-attach">0</property>
@@ -273,19 +273,19 @@
           <object class="GtkScrolledWindow" id="scrolledwindow2">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
-            <property name="shadow-type">in</property>
+            <property name="shadow-type">none</property>
             <child>
               <object class="GtkTextView" id="desc">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
-                <property name="tooltip-text" translatable="yes" context="menuassignpage|desc">Description of the currently selected function.</property>
+                <property name="tooltip-text" translatable="yes" context="menuassignpage|desc">当前所选功能的说明。</property>
                 <property name="editable">False</property>
                 <property name="wrap-mode">word</property>
                 <property name="cursor-visible">False</property>
                 <property name="accepts-tab">False</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="desc-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|extended_tip|desc">The text box contains a short description of the selected command.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|extended_tip|desc">文本框包含所选命令的简短说明。</property>
                   </object>
                 </child>
               </object>
@@ -302,8 +302,8 @@
             <property name="can-focus">False</property>
             <property name="halign">start</property>
             <property name="valign">start</property>
-            <property name="label" translatable="yes" context="menuassignpage|label33">D_escription</property>
-            <property name="use-underline">True</property>
+            <property name="label" translatable="yes" context="menuassignpage|label33">说明</property>
+            <property name="use-underline">False</property>
             <property name="mnemonic-widget">desc</property>
           </object>
           <packing>
@@ -312,12 +312,12 @@
           </packing>
         </child>
         <child>
-          <object class="GtkScrolledWindow">
+          <object class="GtkScrolledWindow" id="functions_scrolledwindow">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
-            <property name="shadow-type">in</property>
+            <property name="shadow-type">none</property>
             <child>
               <object class="GtkTreeView" id="functions">
                 <property name="width-request">-1</property>
@@ -344,7 +344,9 @@
                       </attributes>
                     </child>
                     <child>
-                      <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                      <object class="GtkCellRendererText" id="cellrenderertext2">
+                        <property name="ypad">4</property>
+                      </object>
                       <attributes>
                         <attribute name="text">1</attribute>
                       </attributes>
@@ -353,7 +355,7 @@
                 </child>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="functions-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|extended_tip|functions">Displays the results of the combination of the search string and category of the desired function.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|extended_tip|functions">显示搜索字符串与所需功能类别组合后的结果。</property>
                   </object>
                 </child>
               </object>
@@ -370,8 +372,8 @@
             <property name="can-focus">False</property>
             <property name="halign">start</property>
             <property name="valign">start</property>
-            <property name="label" translatable="yes" context="menuassignpage|contentslabel">_Available Commands</property>
-            <property name="use-underline">True</property>
+            <property name="label" translatable="yes" context="menuassignpage|contentslabel">可用命令</property>
+            <property name="use-underline">False</property>
           </object>
           <packing>
             <property name="left-attach">0</property>
@@ -386,7 +388,7 @@
             <property name="hexpand">True</property>
             <child internal-child="accessible">
               <object class="AtkObject" id="commandcategorylist-atkobject">
-                <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|extended_tip|commandcategorylist">Select the menu command category in the drop-down list to restrict the search of commands or scroll the list below. Macros and styles commands are in the bottom of the list.</property>
+                <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|extended_tip|commandcategorylist">在下拉列表中选择菜单命令类别，以限制命令搜索范围；也可以滚动下方列表。宏和样式命令位于列表底部。</property>
               </object>
             </child>
           </object>
@@ -401,8 +403,8 @@
             <property name="can-focus">False</property>
             <property name="halign">start</property>
             <property name="valign">center</property>
-            <property name="label" translatable="yes" context="menuassignpage|contentslabel">Categor_y</property>
-            <property name="use-underline">True</property>
+            <property name="label" translatable="yes" context="menuassignpage|contentslabel">类别</property>
+            <property name="use-underline">False</property>
             <property name="mnemonic-widget">commandcategorylist</property>
           </object>
           <packing>
@@ -416,10 +418,10 @@
             <property name="can-focus">True</property>
             <property name="margin-bottom">4</property>
             <property name="truncate-multiline">True</property>
-            <property name="placeholder-text" translatable="yes" context="menuassignpage|searchEntry">Type to search</property>
+            <property name="placeholder-text" translatable="yes" context="menuassignpage|searchEntry">搜索命令</property>
             <child internal-child="accessible">
               <object class="AtkObject" id="searchEntry-atkobject">
-                <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|extended_tip|searchEntry">Enter a string in the text box to narrow the search of commands.</property>
+                <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|extended_tip|searchEntry">在文本框中输入字符串以缩小命令搜索范围。</property>
               </object>
             </child>
           </object>
@@ -443,7 +445,7 @@
                 <property name="hexpand">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="savein-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|extended_tip|savein">Select the location where the menu is to be attached. If attached to an office suite module, the menu is available for all files opened in that module. If attached to the file, the menu will be available only when that file is opened and active.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|extended_tip|savein">选择菜单要附加到的位置。如果附加到办公套件模块，该菜单可用于该模块中打开的所有文件。如果附加到文件，该菜单仅在该文件已打开且处于活动状态时可用。</property>
                   </object>
                 </child>
               </object>
@@ -454,11 +456,11 @@
             </child>
             <child>
               <object class="GtkButton" id="functionbtn">
-                <property name="label" translatable="yes" context="menuassignpage|functionbtn">_Function</property>
+                <property name="label" translatable="yes" context="menuassignpage|functionbtn">功能</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
                 <property name="hexpand">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <property name="image-position">right</property>
               </object>
               <packing>
@@ -486,7 +488,7 @@
                 <property name="hexpand">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="toplevellist-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|extended_tip|toplevellist">Select the menu where the customization is to be applied. The current set of functions is displayed in the box below.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|extended_tip|toplevellist">选择要应用自定义设置的菜单。当前功能集会显示在下方框中。</property>
                   </object>
                 </child>
               </object>
@@ -507,8 +509,8 @@
                 <property name="use-popover">False</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="menugearbtn-atkobject">
-                    <property name="AtkObject::accessible-name" translatable="yes" context="menuassignpage|menugearbtn">Gear Menu</property>
-                    <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|menugearbtn">Contains commands to modify or delete the selected top level menu, and the command to add new top level menus.</property>
+                    <property name="AtkObject::accessible-name" translatable="yes" context="menuassignpage|menugearbtn">齿轮菜单</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|menugearbtn">包含用于修改或删除所选顶级菜单的命令，以及用于添加新顶级菜单的命令。</property>
                   </object>
                 </child>
               </object>
@@ -529,8 +531,8 @@
                 <property name="use-popover">False</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="toolbargearbtn-atkobject">
-                    <property name="AtkObject::accessible-name" translatable="yes" context="menuassignpage|toolbargearbtn">Gear Menu</property>
-                    <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|toolbargearbtn">Contains commands to modify or delete the selected toolbar, and the command to add new toolbars.</property>
+                    <property name="AtkObject::accessible-name" translatable="yes" context="menuassignpage|toolbargearbtn">齿轮菜单</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|toolbargearbtn">包含用于修改或删除所选工具栏的命令，以及用于添加新工具栏的命令。</property>
                   </object>
                 </child>
               </object>
@@ -554,12 +556,12 @@
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
             <child>
-              <object class="GtkScrolledWindow">
+              <object class="GtkScrolledWindow" id="toolcontents_scrolledwindow">
                 <property name="can-focus">True</property>
                 <property name="no-show-all">True</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
-                <property name="shadow-type">in</property>
+                <property name="shadow-type">none</property>
                 <child>
                   <object class="GtkTreeView" id="toolcontents">
                     <property name="can-focus">True</property>
@@ -595,7 +597,9 @@
                           </attributes>
                         </child>
                         <child>
-                          <object class="GtkCellRendererText" id="cellrenderertext10"/>
+                          <object class="GtkCellRendererText" id="cellrenderertext10">
+                            <property name="ypad">4</property>
+                          </object>
                           <attributes>
                             <attribute name="text">2</attribute>
                           </attributes>
@@ -611,12 +615,12 @@
               </packing>
             </child>
             <child>
-              <object class="GtkScrolledWindow">
+              <object class="GtkScrolledWindow" id="menucontents_scrolledwindow">
                 <property name="can-focus">True</property>
                 <property name="no-show-all">True</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
-                <property name="shadow-type">in</property>
+                <property name="shadow-type">none</property>
                 <child>
                   <object class="GtkTreeView" id="menucontents">
                     <property name="can-focus">True</property>
@@ -643,7 +647,9 @@
                           </attributes>
                         </child>
                         <child>
-                          <object class="GtkCellRendererText" id="cellrenderertext22"/>
+                          <object class="GtkCellRendererText" id="cellrenderertext22">
+                            <property name="ypad">4</property>
+                          </object>
                           <attributes>
                             <attribute name="text">1</attribute>
                           </attributes>
@@ -686,7 +692,7 @@
             <property name="layout-style">start</property>
             <child>
               <object class="GtkMenuButton" id="insert">
-                <property name="label" translatable="yes" context="menuassignpage|insert">_Insert</property>
+                <property name="label" translatable="yes" context="menuassignpage|insert">插入</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -694,7 +700,7 @@
                 <property name="margin-end">5</property>
                 <property name="margin-top">5</property>
                 <property name="margin-bottom">5</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <property name="draw-indicator">True</property>
                 <property name="popup">insertmenu</property>
                 <property name="use-popover">False</property>
@@ -710,7 +716,7 @@
             </child>
             <child>
               <object class="GtkMenuButton" id="modify">
-                <property name="label" translatable="yes" context="menuassignpage|modify">_Modify</property>
+                <property name="label" translatable="yes" context="menuassignpage|modify">修改</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -718,7 +724,7 @@
                 <property name="margin-end">5</property>
                 <property name="margin-top">5</property>
                 <property name="margin-bottom">5</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <property name="draw-indicator">True</property>
                 <property name="popup">modifymenu</property>
                 <property name="use-popover">False</property>
@@ -734,7 +740,7 @@
             </child>
             <child>
               <object class="GtkButton" id="defaultsbtn">
-                <property name="label" translatable="yes" context="menuassignpage|defaultsbtn">_Defaults</property>
+                <property name="label" translatable="yes" context="menuassignpage|defaultsbtn">恢复默认</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -742,10 +748,10 @@
                 <property name="margin-end">5</property>
                 <property name="margin-top">5</property>
                 <property name="margin-bottom">5</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="defaultsbtn-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|defaultsbtn">Resets the selected toolbar, menu, or context menu to its default state.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|defaultsbtn">将所选工具栏、菜单或上下文菜单重置为默认状态。</property>
                   </object>
                 </child>
               </object>
@@ -775,7 +781,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text" translatable="yes" context="menuassignpage|add">Add item</property>
+                <property name="tooltip-text" translatable="yes" context="menuassignpage|add">添加项目</property>
                 <property name="halign">center</property>
                 <property name="valign">start</property>
                 <property name="margin-bottom">10</property>
@@ -783,7 +789,7 @@
                 <property name="always-show-image">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="add-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|extended_tip|add">Click on the right arrow button to select a function on the left display box and copy to the right display box. This will add the function to the selected menu.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|extended_tip|add">单击右箭头按钮，可从左侧显示框中选择功能并复制到右侧显示框。这会将该功能添加到所选菜单。</property>
                   </object>
                 </child>
               </object>
@@ -797,7 +803,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text" translatable="yes" context="menuassignpage|remove">Remove item</property>
+                <property name="tooltip-text" translatable="yes" context="menuassignpage|remove">移除项目</property>
                 <property name="halign">center</property>
                 <property name="valign">end</property>
                 <property name="margin-top">5</property>
@@ -806,7 +812,7 @@
                 <property name="always-show-image">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="remove-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|extended_tip|remove">Click on the left arrow button to remove the selected command from the current menu.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|extended_tip|remove">单击左箭头按钮，可从当前菜单中移除所选命令。</property>
                   </object>
                 </child>
               </object>
@@ -833,12 +839,12 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text" translatable="yes" context="menuassignpage|moveupbtn">Move up</property>
+                <property name="tooltip-text" translatable="yes" context="menuassignpage|moveupbtn">上移</property>
                 <property name="image">image1</property>
                 <property name="always-show-image">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="up-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|extended_tip|up">Click on the Up or Down arrows on the right to move the selected command upward or downward in the list of displayed menu commands.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|extended_tip|up">单击右侧的向上或向下箭头，可在显示的菜单命令列表中上移或下移所选命令。</property>
                   </object>
                 </child>
               </object>
@@ -852,12 +858,12 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text" translatable="yes" context="menuassignpage|movedownbtn">Move down</property>
+                <property name="tooltip-text" translatable="yes" context="menuassignpage|movedownbtn">下移</property>
                 <property name="image">image2</property>
                 <property name="always-show-image">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="down-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|extended_tip|down">Click on the Up or Down arrows on the right to move the selected command upward or downward in the list of displayed menu commands.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|extended_tip|down">单击右侧的向上或向下箭头，可在显示的菜单命令列表中上移或下移所选命令。</property>
                   </object>
                 </child>
               </object>
@@ -877,8 +883,8 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">start</property>
-            <property name="label" translatable="yes" context="menuassignpage|scopelabel">S_cope</property>
-            <property name="use-underline">True</property>
+            <property name="label" translatable="yes" context="menuassignpage|scopelabel">保存范围</property>
+            <property name="use-underline">False</property>
           </object>
           <packing>
             <property name="left-attach">2</property>
@@ -890,8 +896,8 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">start</property>
-            <property name="label" translatable="yes" context="menuassignpage|targetlabel">_Target</property>
-            <property name="use-underline">True</property>
+            <property name="label" translatable="yes" context="menuassignpage|targetlabel">目标</property>
+            <property name="use-underline">False</property>
           </object>
           <packing>
             <property name="left-attach">2</property>
@@ -903,8 +909,8 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">start</property>
-            <property name="label" translatable="yes" context="menuassignpage|functionlabel">Assi_gned Commands</property>
-            <property name="use-underline">True</property>
+            <property name="label" translatable="yes" context="menuassignpage|functionlabel">已分配命令</property>
+            <property name="use-underline">False</property>
           </object>
           <packing>
             <property name="left-attach">2</property>
@@ -916,8 +922,8 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">start</property>
-            <property name="label" translatable="yes" context="menuassignpage|customizelabel">_Customize</property>
-            <property name="use-underline">True</property>
+            <property name="label" translatable="yes" context="menuassignpage|customizelabel">自定义</property>
+            <property name="use-underline">False</property>
           </object>
           <packing>
             <property name="left-attach">2</property>
@@ -975,7 +981,7 @@
     </child>
     <child internal-child="accessible">
       <object class="AtkObject" id="MenuAssignPage-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|extended_tip|MenuAssignPage">Lets you customize the office suite menus for all modules.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="menuassignpage|extended_tip|MenuAssignPage">用于自定义办公套件所有模块的菜单。</property>
       </object>
     </child>
   </object>

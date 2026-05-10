@@ -13,8 +13,8 @@
   <object class="GtkGrid" id="OptSavePage">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="border-width">6</property>
-    <property name="row-spacing">12</property>
+    <property name="border-width">10</property>
+    <property name="row-spacing">10</property>
     <child>
       <object class="GtkFrame" id="frame1">
         <property name="visible">True</property>
@@ -26,21 +26,21 @@
           <object class="GtkGrid" id="grid1">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-start">12</property>
-            <property name="margin-top">6</property>
+            <property name="margin-start">14</property>
+            <property name="margin-top">8</property>
             <property name="hexpand">True</property>
             <property name="row-spacing">6</property>
             <child>
               <object class="GtkCheckButton" id="load_docprinter">
-                <property name="label" translatable="yes" context="optsavepage|load_docprinter">Load printer settings with the document</property>
+                <property name="label" translatable="yes" context="optsavepage|load_docprinter">随文档加载打印机设置</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="load_docprinter-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="load_docprinter">If enabled, the printer settings will be loaded with the document. This can cause a document to be printed on a distant printer, if you do not change the printer manually in the Print dialog. If disabled, your standard printer will be used to print this document. The current printer settings will be stored with the document whether or not this option is checked.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="load_docprinter">启用后会随文档加载原有打印机设置；如不在打印对话框中手动更改，可能会发送到远程打印机。关闭后使用当前默认打印机。无论是否勾选，当前打印机设置都会随文档保存。</property>
                   </object>
                 </child>
               </object>
@@ -51,15 +51,15 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="load_settings">
-                <property name="label" translatable="yes" context="optsavepage|load_settings">Load user-specific settings with the document</property>
+                <property name="label" translatable="yes" context="optsavepage|load_settings">随文档加载个人设置</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="load_settings-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="load_settings">Loads the user-specific settings saved in a document with the document.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="load_settings">打开文档时同时加载该文档中保存的个人设置。</property>
                   </object>
                 </child>
               </object>
@@ -70,15 +70,15 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="load_anyuser">
-                <property name="label" translatable="yes" context="optsavepage|load_anyuser">Load view position with the document even if it was saved by a different user</property>
+                <property name="label" translatable="yes" context="optsavepage|load_anyuser">即使由其他用户保存，也随文档加载视图位置</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="load_anyuser-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="load_anyuser">Loads the view position settings saved in a document with the document even if it was saved by a different user.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="load_anyuser">即使文档由其他用户保存，也会加载其中保存的视图位置设置。</property>
                   </object>
                 </child>
               </object>
@@ -132,7 +132,7 @@
           <object class="GtkLabel" id="label1">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="optsavepage|label1">Load</property>
+            <property name="label" translatable="yes" context="optsavepage|label1">加载</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -155,8 +155,8 @@
           <object class="GtkGrid" id="grid2">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-start">12</property>
-            <property name="margin-top">6</property>
+            <property name="margin-start">14</property>
+            <property name="margin-top">8</property>
             <property name="hexpand">True</property>
             <property name="row-spacing">6</property>
             <child>
@@ -164,18 +164,18 @@
               <object class="GtkGrid" id="grid7">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="column-spacing">6</property>
+                <property name="column-spacing">8</property>
                 <child>
                   <object class="GtkCheckButton" id="autosave">
-                    <property name="label" translatable="yes" context="optsavepage|autosave">Save _AutoRecovery information every:</property>
+                    <property name="label" translatable="yes" context="optsavepage|autosave">每隔以下时间保存自动恢复信息：</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
-                    <property name="use-underline">True</property>
+                    <property name="use-underline">False</property>
                     <property name="draw-indicator">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="autosave-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="autosave">Specifies that the office suite saves the information needed to restore all open documents in case of a crash. You can specify the saving time interval.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="autosave">定期保存恢复信息，程序异常退出后可用于恢复已打开文档。可设置保存间隔。</property>
                       </object>
                     </child>
                   </object>
@@ -188,12 +188,13 @@
                   <object class="GtkSpinButton" id="autosave_spin">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
+                    <property name="width-request">72</property>
                     <property name="activates-default">True</property>
                     <property name="truncate-multiline">True</property>
                     <property name="adjustment">adjustment1</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="autosave_spin-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="autosave_spin">Specifies the time interval in minutes for the automatic recovery option.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="autosave_spin">设置自动恢复信息的保存间隔，单位为分钟。</property>
                       </object>
                     </child>
                   </object>
@@ -206,7 +207,7 @@
                   <object class="GtkLabel" id="autosave_mins">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="optsavepage|autosave_mins">minutes</property>
+                    <property name="label" translatable="yes" context="optsavepage|autosave_mins">分钟</property>
                   </object>
                   <packing>
                     <property name="left-attach">2</property>
@@ -221,16 +222,16 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="userautosave">
-                <property name="label" translatable="yes" context="optsavepage|userautosave">Automatically save the document instead</property>
+                <property name="label" translatable="yes" context="optsavepage|userautosave">直接自动保存文档</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
                 <property name="margin-start">18</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="userautosave-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="userautosave">Specifies that the office suite saves the modified document itself, instead of creating a temporary AutoRecovery version. Uses the same time interval as AutoRecovery does.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="userautosave">按同一时间间隔直接保存已修改文档，而不是只创建临时自动恢复版本。</property>
                   </object>
                 </child>
               </object>
@@ -241,15 +242,15 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="relative_fsys">
-                <property name="label" translatable="yes" context="optsavepage|relative_fsys">Save URLs relative to file system</property>
+                <property name="label" translatable="yes" context="optsavepage|relative_fsys">按文件系统相对路径保存 URL</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="relative_fsys-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="relative_fsys">Select this box for relative saving of URLs in the file system.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="relative_fsys">勾选后，文件系统中的 URL 会以相对路径保存。</property>
                   </object>
                 </child>
               </object>
@@ -260,15 +261,15 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="docinfo">
-                <property name="label" translatable="yes" context="optsavepage|docinfo">_Edit document properties before saving</property>
+                <property name="label" translatable="yes" context="optsavepage|docinfo">保存前编辑文档属性</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="docinfo-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="docinfo">Specifies that the Properties dialog will appear every time you select the Save As command.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="docinfo">每次选择“另存为”时显示“属性”对话框。</property>
                   </object>
                 </child>
               </object>
@@ -279,15 +280,15 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="relative_inet">
-                <property name="label" translatable="yes" context="optsavepage|relative_inet">Save URLs relative to internet</property>
+                <property name="label" translatable="yes" context="optsavepage|relative_inet">按互联网相对路径保存 URL</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="relative_inet-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="relative_inet">Select this box for relative saving of URLs to the Internet.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="relative_inet">勾选后，互联网 URL 会以相对路径保存。</property>
                   </object>
                 </child>
               </object>
@@ -298,15 +299,15 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="backup">
-                <property name="label" translatable="yes" context="optsavepage|backup">Al_ways create backup copy</property>
+                <property name="label" translatable="yes" context="optsavepage|backup">始终创建备份副本</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="backup-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="backup">Saves the previous version of a document as a backup copy whenever you save a document. Every time the office suite creates a backup copy, the previous backup copy is replaced. The backup copy gets the extension .BAK.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="backup">每次保存文档时，将上一版本保存为备份副本；新的备份会替换旧备份，扩展名为 .BAK。</property>
                   </object>
                 </child>
               </object>
@@ -317,12 +318,12 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="backupintodocumentfolder">
-                <property name="label" translatable="yes" context="optsavepage|backupintodocumentfolder">Place backup in same folder as document</property>
+                <property name="label" translatable="yes" context="optsavepage|backupintodocumentfolder">将备份放在文档所在文件夹</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
                 <property name="margin-start">18</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <property name="draw-indicator">True</property>
               </object>
               <packing>
@@ -427,7 +428,7 @@
           <object class="GtkLabel" id="label2">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="optsavepage|label2">Save</property>
+            <property name="label" translatable="yes" context="optsavepage|label2">保存</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -450,22 +451,22 @@
           <object class="GtkGrid" id="grid3">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-start">12</property>
-            <property name="margin-top">6</property>
+            <property name="margin-start">14</property>
+            <property name="margin-top">8</property>
             <property name="hexpand">True</property>
             <property name="row-spacing">6</property>
             <property name="column-spacing">12</property>
             <child>
               <object class="GtkCheckButton" id="warnalienformat">
-                <property name="label" translatable="yes" context="optsavepage|warnalienformat">Warn when not saving in ODF or default format</property>
+                <property name="label" translatable="yes" context="optsavepage|warnalienformat">未保存为 ODF 或默认格式时提醒</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="warnalienformat-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="warnalienformat">You can choose to get a warning message when you save a document in a format that is not OpenDocument or which you did not set as default format in Load/Save - General in the Options dialog box.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="warnalienformat">保存为非 OpenDocument 格式，或非“选项 - 加载/保存 - 常规”中设定的默认格式时显示提醒。</property>
                   </object>
                 </child>
               </object>
@@ -486,7 +487,7 @@
                   <object class="GtkLabel" id="odfwarning_label">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="optsavepage|odfwarning_label" comments="EN-US, the term 'extended' must not be translated.">Not using ODF 1.4 Extended may cause information to be lost.</property>
+                    <property name="label" translatable="yes" context="optsavepage|odfwarning_label" comments="EN-US, the term 'extended' must not be translated.">未使用 ODF 1.4 Extended 可能导致信息丢失。</property>
                   </object>
                   <packing>
                     <property name="left-attach">1</property>
@@ -515,19 +516,20 @@
               <object class="GtkComboBoxText" id="odfversion">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="width-request">240</property>
                 <items>
                   <item translatable="yes" context="optsavepage|odfversion">1.0/1.1</item>
                   <item translatable="yes" context="optsavepage|odfversion">1.2</item>
-                  <item translatable="yes" context="optsavepage|odfversion">1.2 Extended (compatibility mode)</item>
+                  <item translatable="yes" context="optsavepage|odfversion">1.2 Extended（兼容模式）</item>
                   <item translatable="yes" context="optsavepage|odfversion">1.2 Extended</item>
                   <item translatable="yes" context="optsavepage|odfversion">1.3</item>
                   <item translatable="yes" context="optsavepage|odfversion">1.3 Extended</item>
                   <item translatable="yes" context="optsavepage|odfversion">1.4</item>
-                  <item translatable="yes" context="optsavepage|odfversion">1.4 Extended (recommended)</item>
+                  <item translatable="yes" context="optsavepage|odfversion">1.4 Extended（推荐）</item>
                 </items>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="odfversion-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="odfversion">Some companies or organizations may require ODF documents in the ODF 1.0/1.1/1.2 or ODF 1.3 format. You can select these format to save in the listbox. These older formats cannot store all new features, so the new format ODF 1.4 (Extended) is recommended where possible.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="odfversion">部分公司或组织可能要求使用 ODF 1.0/1.1/1.2 或 ODF 1.3 格式。可在列表中选择保存格式。旧格式无法保存全部新功能，建议尽量使用 ODF 1.4 Extended。</property>
                   </object>
                 </child>
               </object>
@@ -540,7 +542,7 @@
               <object class="GtkLabel" id="label5">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="optsavepage|label5">ODF format version:</property>
+                <property name="label" translatable="yes" context="optsavepage|label5">ODF 格式版本：</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">odfversion</property>
                 <property name="xalign">0</property>
@@ -554,7 +556,7 @@
               <object class="GtkLabel" id="saveas_label">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="optsavepage|saveas_label">Always sa_ve as:</property>
+                <property name="label" translatable="yes" context="optsavepage|saveas_label">始终保存为(_V)：</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">saveas</property>
                 <property name="xalign">0</property>
@@ -568,9 +570,10 @@
               <object class="GtkComboBoxText" id="doctype">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="width-request">240</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="doctype-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="doctype">Specifies the document type for which you want to define the default file format.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="doctype">选择要设置默认保存格式的文档类型。</property>
                   </object>
                 </child>
               </object>
@@ -583,9 +586,10 @@
               <object class="GtkComboBoxText" id="saveas">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="width-request">240</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="saveas-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="saveas">Specifies how documents of the type selected on the left will always be saved as this file type. You may select another file type for the current document in the Save as dialog.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="saveas">设置左侧文档类型默认保存的文件格式。当前文档仍可在“另存为”对话框中选择其他格式。</property>
                   </object>
                 </child>
               </object>
@@ -598,7 +602,7 @@
               <object class="GtkLabel" id="label6">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="optsavepage|label6">D_ocument type:</property>
+                <property name="label" translatable="yes" context="optsavepage|label6">文档类型(_O)：</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">doctype</property>
                 <property name="xalign">0</property>
@@ -649,7 +653,7 @@
           <object class="GtkLabel" id="label3">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="optsavepage|label3">Default File Format and ODF Settings</property>
+            <property name="label" translatable="yes" context="optsavepage|label3">默认文件格式与 ODF 设置</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -663,7 +667,7 @@
     </child>
     <child internal-child="accessible">
       <object class="AtkObject" id="OptSavePage-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="OptSavePage">In the General section, you can select default settings for saving documents, and can select default file formats.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="OptSavePage">在“常规”中设置文档保存默认行为和默认文件格式。</property>
       </object>
     </child>
   </object>

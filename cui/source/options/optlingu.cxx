@@ -27,6 +27,7 @@
 #include <i18nlangtag/languagetag.hxx>
 #include <i18nlangtag/mslangid.hxx>
 #include <o3tl/safeint.hxx>
+#include <officecfg/Office/ExtensionManager.hxx>
 #include <officecfg/Office/Security.hxx>
 #include <officecfg/Office/Linguistic.hxx>
 #include <unotools/lingucfg.hxx>
@@ -115,6 +116,12 @@ static bool KillFile_Impl( const OUString& rURL )
 #define TYPE_THES       sal_uInt8(4)
 
 namespace {
+
+bool hasOnlineDictionarySource()
+{
+    return !officecfg::Office::ExtensionManager::ExtensionRepositories::CatalogURLBase::get()
+                .isEmpty();
+}
 
 class ModuleUserData_Impl
 {
@@ -828,7 +835,8 @@ SvxLinguTabPage::SvxLinguTabPage(weld::Container* pPage, weld::DialogController*
     m_xLinguOptionsCLB->connect_row_activated(LINK(this, SvxLinguTabPage, BoxDoubleClickHdl_Impl));
 
     m_xMoreDictsLink->connect_activate_link(LINK(this, SvxLinguTabPage, OnLinkClick));
-    if (officecfg::Office::Security::Hyperlinks::Open::get() == SvtExtendedSecurityOptions::OPEN_NEVER)
+    if (officecfg::Office::Security::Hyperlinks::Open::get() == SvtExtendedSecurityOptions::OPEN_NEVER
+        || !hasOnlineDictionarySource())
         m_xMoreDictsBox->hide();
 
     if (comphelper::LibreOfficeKit::isActive())
@@ -1581,7 +1589,8 @@ SvxEditModulesDlg::SvxEditModulesDlg(weld::Window* pParent, SvxLinguData_Impl& r
     m_xPrioDownPB->set_sensitive( false );
 
     m_xMoreDictsLink->connect_activate_link(LINK(this, SvxEditModulesDlg, OnLinkClick));
-    if (officecfg::Office::Security::Hyperlinks::Open::get() == SvtExtendedSecurityOptions::OPEN_NEVER)
+    if (officecfg::Office::Security::Hyperlinks::Open::get() == SvtExtendedSecurityOptions::OPEN_NEVER
+        || !hasOnlineDictionarySource())
         m_xMoreDictsLink->hide();
 
     // set that we want the checkbox shown if spellchecking is available

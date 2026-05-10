@@ -112,7 +112,7 @@
             <property name="column-spacing">12</property>
             <child>
               <object class="GtkCheckButton" id="checkAuto">
-                <property name="label" translatable="yes" context="textflowpage|checkAuto">A_utomatically</property>
+                <property name="label" translatable="yes" context="textflowpage|checkAuto">自动断字(_U)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -121,7 +121,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="checkAuto-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkAuto">Automatically inserts hyphens where they are needed in a paragraph.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkAuto">在段落中需要的位置自动插入连字符。</property>
                   </object>
                 </child>
               </object>
@@ -142,7 +142,7 @@
                 <property name="adjustment">adjustment7</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="spinMinLen-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|spinMinLen">Enter the minimum word length in characters that can be hyphenated.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|spinMinLen">输入可断字单词的最小字符数。</property>
                   </object>
                 </child>
               </object>
@@ -162,7 +162,7 @@
                 <property name="adjustment">adjustment2</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="spinMaxNum-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|spinMaxNum">Enter the maximum number of consecutive lines that can be hyphenated.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|spinMaxNum">输入允许连续断字的最大行数。</property>
                   </object>
                 </child>
               </object>
@@ -182,7 +182,7 @@
                 <property name="truncate-multiline">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="spinCompoundLineEnd-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|spinCompoundLineEnd">Enter the minimum number of characters of a compound word constituent to leave at the end of the line before a hyphen is inserted.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|spinCompoundLineEnd">输入插入连字符前，复合词组成部分在行尾至少保留的字符数。</property>
                   </object>
                 </child>
               </object>
@@ -202,7 +202,7 @@
                 <property name="truncate-multiline">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="spinCompoundLineBegin-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|spinCompoundLineBegin">Enter the minimum number of characters of a compound word constituent that must appear at the beginning of the line after the hyphen.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|spinCompoundLineBegin">输入连字符后，复合词组成部分在下一行行首至少显示的字符数。</property>
                   </object>
                 </child>
               </object>
@@ -222,7 +222,7 @@
                 <property name="adjustment">adjustment4</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="spinLineBegin-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|spinLineBegin">Enter the minimum number of characters that must appear at the beginning of the line after the hyphen.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|spinLineBegin">输入连字符后，下一行行首至少显示的字符数。</property>
                   </object>
                 </child>
               </object>
@@ -242,7 +242,7 @@
                 <property name="adjustment">adjustment1</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="spinLineEnd-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|spinLineEnd">Enter the minimum number of characters to leave at the end of the line before a hyphen is inserted.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|spinLineEnd">输入插入连字符前，行尾至少保留的字符数。</property>
                   </object>
                 </child>
               </object>
@@ -256,7 +256,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="textflowpage|labelLineEnd">C_haracters at line end</property>
+                <property name="label" translatable="yes" context="textflowpage|labelLineEnd">行尾字符数(_H)</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">spinLineEnd</property>
               </object>
@@ -270,7 +270,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="textflowpage|labelLineBegin">Cha_racters at line begin</property>
+                <property name="label" translatable="yes" context="textflowpage|labelLineBegin">行首字符数(_R)</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">spinLineBegin</property>
               </object>
@@ -284,7 +284,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="textflowpage|labelCompoundLineEnd">C_ompound characters at line end</property>
+                <property name="label" translatable="yes" context="textflowpage|labelCompoundLineEnd">复合词行尾字符数(_O)</property>
                 <property name="use_underline">True</property>
                 <property name="mnemonic_widget">spinCompoundLineEnd</property>
               </object>
@@ -298,7 +298,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="textflowpage|labelCompoundLineBegin">C_ompound characters at line begin</property>
+                <property name="label" translatable="yes" context="textflowpage|labelCompoundLineBegin">复合词行首字符数(_O)</property>
                 <property name="use_underline">True</property>
                 <property name="mnemonic_widget">spinCompoundLineBegin</property>
               </object>
@@ -312,7 +312,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="textflowpage|labelMaxNum">_Maximum consecutive hyphenated lines</property>
+                <property name="label" translatable="yes" context="textflowpage|labelMaxNum">最大连续断字行数(_M)</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">spinMaxNum</property>
               </object>
@@ -326,7 +326,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="textflowpage|labelMinLen">_Minimum word length in characters</property>
+                <property name="label" translatable="yes" context="textflowpage|labelMinLen">最小单词长度（字符）(_M)</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">spinMinLen</property>
               </object>
@@ -361,7 +361,7 @@
                   <object class="GtkLabel" id="labelHyphenZone">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="textflowpage|labelHyphenZone">Hyphenation _zone:</property>
+                    <property name="label" translatable="yes" context="textflowpage|labelHyphenZone">断字区域(_Z):</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">spinHyphenZone</property>
                     <property name="xalign">0</property>
@@ -380,7 +380,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="checkNoCaps">
-                <property name="label" translatable="yes" context="textflowpage|checkNoCaps">Hyphenate words in _CAPS</property>
+                <property name="label" translatable="yes" context="textflowpage|checkNoCaps">对全大写单词断字(_C)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -395,7 +395,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="checkNoLastWord">
-                <property name="label" translatable="yes" context="textflowpage|checkNoLastWord">Hyphenate last word</property>
+                <property name="label" translatable="yes" context="textflowpage|checkNoLastWord">对最后一个单词断字</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -414,7 +414,7 @@
           <object class="GtkLabel" id="LabelHyphenation">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="textflowpage|LabelHyphenation">Hyphenation</property>
+            <property name="label" translatable="yes" context="textflowpage|LabelHyphenation">断字</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -446,7 +446,7 @@
             <property name="column-spacing">12</property>
             <child>
               <object class="GtkCheckButton" id="checkAcrossParagraph">
-                <property name="label" translatable="yes" context="textflowpage|checkAcrossParagraph">Last full line of paragraph</property>
+                <property name="label" translatable="yes" context="textflowpage|checkAcrossParagraph">段落最后完整行</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -455,7 +455,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="checkAcrossParagraph-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkAcrossParagraph">Deselect this check box, if you don't want to hyphenate across the last full line of paragraph, column, page and spread.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkAcrossParagraph">如果不希望跨段落最后完整行、栏、页面和跨页断字，请取消选择此复选框。</property>
                   </object>
                 </child>
               </object>
@@ -466,7 +466,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="checkAcrossColumn">
-                <property name="label" translatable="yes" context="textflowpage|checkAcrossColumn">Column</property>
+                <property name="label" translatable="yes" context="textflowpage|checkAcrossColumn">栏</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -475,7 +475,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="checkAcrossColumn-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkAcrossColumn">Deselect this check box, if you don't want to hyphenate across column, page and spread.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkAcrossColumn">如果不希望跨栏、页面和跨页断字，请取消选择此复选框。</property>
                   </object>
                 </child>
               </object>
@@ -486,7 +486,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="checkAcrossPage">
-                <property name="label" translatable="yes" context="textflowpage|checkAcrossPage">Page</property>
+                <property name="label" translatable="yes" context="textflowpage|checkAcrossPage">页面</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -495,7 +495,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="checkAcrossPage-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkAcrossPage">Deselect this check box, if you don't want to hyphenate across page and spread.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkAcrossPage">如果不希望跨页面和跨页断字，请取消选择此复选框。</property>
                   </object>
                 </child>
               </object>
@@ -506,7 +506,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="checkAcrossSpread">
-                <property name="label" translatable="yes" context="textflowpage|checkAcrossSpread">Spread</property>
+                <property name="label" translatable="yes" context="textflowpage|checkAcrossSpread">跨页</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -515,7 +515,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="checkAcrossSpread-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkAcrossSpread">Deselect this check box, if you don't want to hyphenate across spread.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkAcrossSpread">如果不希望跨页断字，请取消选择此复选框。</property>
                   </object>
                 </child>
               </object>
@@ -541,7 +541,7 @@
               <object class="GtkLabel" id="labelParagraphEndZone">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="textflowpage|labelParagraphEndZone">Paragraph end _zone:</property>
+                <property name="label" translatable="yes" context="textflowpage|labelParagraphEndZone">段落末尾区域(_Z):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">spinParagraphEndZone</property>
                 <property name="xalign">0</property>
@@ -568,7 +568,7 @@
               <object class="GtkLabel" id="labelColumnEndZone">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="textflowpage|labelColumnEndZone">Column end _zone:</property>
+                <property name="label" translatable="yes" context="textflowpage|labelColumnEndZone">栏末尾区域(_Z):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">spinColumnEndZone</property>
                 <property name="xalign">0</property>
@@ -595,7 +595,7 @@
               <object class="GtkLabel" id="labelPageEndZone">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="textflowpage|labelPageEndZone">Page end _zone:</property>
+                <property name="label" translatable="yes" context="textflowpage|labelPageEndZone">页面末尾区域(_Z):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">spinPageEndZone</property>
                 <property name="xalign">0</property>
@@ -622,7 +622,7 @@
               <object class="GtkLabel" id="labelSpreadEndZone">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="textflowpage|labelSpreadEndZone">Spread end _zone:</property>
+                <property name="label" translatable="yes" context="textflowpage|labelSpreadEndZone">跨页末尾区域(_Z):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">spinSpreadEndZone</property>
                 <property name="xalign">0</property>
@@ -634,7 +634,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="checkMoveLine">
-                <property name="label" translatable="yes" context="textflowpage|checkMoveLine">Move Line</property>
+                <property name="label" translatable="yes" context="textflowpage|checkMoveLine">移动整行</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -643,7 +643,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="checkMoveLine-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkMoveLine">Deselect this check box, if you don't want to move the entire hyphenated line to the next text block.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkMoveLine">如果不希望将整个断字行移动到下一个文本块，请取消选择此复选框。</property>
                   </object>
                 </child>
               </object>
@@ -658,7 +658,7 @@
           <object class="GtkLabel" id="labelHyphenAcross">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="textflowpage|labelHyphenAcross">Hyphenation across</property>
+            <property name="label" translatable="yes" context="textflowpage|labelHyphenAcross">跨区域断字</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -688,7 +688,7 @@
             <property name="column-spacing">6</property>
             <child>
               <object class="GtkCheckButton" id="checkInsert">
-                <property name="label" translatable="yes" context="textflowpage|checkInsert">_Insert</property>
+                <property name="label" translatable="yes" context="textflowpage|checkInsert">插入(_I)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -697,7 +697,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="checkInsert-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkInsert">Select this check box, and then select the break type that you want to use.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkInsert">选中此复选框，然后选择要使用的分隔符类型。</property>
                   </object>
                 </child>
               </object>
@@ -708,7 +708,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="checkPageStyle">
-                <property name="label" translatable="yes" context="textflowpage|checkPageStyle">With page st_yle:</property>
+                <property name="label" translatable="yes" context="textflowpage|checkPageStyle">使用页面样式(_Y):</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -720,7 +720,7 @@
                 </accessibility>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="checkPageStyle-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkPageStyle">Select this check box, and then select the page style that you want to use for the first page after the break.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkPageStyle">选中此复选框，然后选择分隔符后第一页要使用的页面样式。</property>
                   </object>
                 </child>
               </object>
@@ -733,7 +733,7 @@
               <object class="GtkLabel" id="labelType">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="textflowpage|labelType">_Type:</property>
+                <property name="label" translatable="yes" context="textflowpage|labelType">类型(_T):</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">comboBreakType</property>
                 <property name="xalign">1</property>
@@ -755,7 +755,7 @@
                 </accessibility>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="spinPageNumber-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|spinPageNumber">Enter the page number for the first page that follows the break. If you want to continue the current page numbering, leave the checkbox unchecked.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|spinPageNumber">输入分隔符后第一页的页码。如果要继续当前页码，请不要选中该复选框。</property>
                   </object>
                 </child>
               </object>
@@ -766,7 +766,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="labelPageNum">
-                <property name="label" translatable="yes" context="textflowpage|labelPageNum">Page _number:</property>
+                <property name="label" translatable="yes" context="textflowpage|labelPageNum">页码(_N):</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -778,7 +778,7 @@
                 </accessibility>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="pagenumcb-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="insertbreak|pagenumcb-atkobject">Assigns the page number that you specify to the page that follows the manual page break. This option is only available if you assign an arbitrary page style to the page that follows manual page break.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="insertbreak|pagenumcb-atkobject">将您指定的页码分配给手动分页符后的页面。仅当您为手动分页符后的页面指定任意页面样式时，此选项才可用。</property>
                   </object>
                 </child>
               </object>
@@ -791,7 +791,7 @@
               <object class="GtkLabel" id="labelPosition">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="textflowpage|labelPosition">Position:</property>
+                <property name="label" translatable="yes" context="textflowpage|labelPosition">位置:</property>
                 <property name="use-underline">True</property>
                 <property name="justify">right</property>
                 <property name="mnemonic-widget">comboBreakPosition</property>
@@ -811,8 +811,8 @@
                 </accessibility>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="comboPageStyle-atkobject">
-                    <property name="AtkObject::accessible-name" translatable="yes" context="textflowpage|comboPageStyle-atkobject">Page Style</property>
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|comboPageStyle">Select the formatting style to use for the first page after the break.</property>
+                    <property name="AtkObject::accessible-name" translatable="yes" context="textflowpage|comboPageStyle-atkobject">页面样式</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|comboPageStyle">选择分隔符后第一页要使用的格式样式。</property>
                   </object>
                 </child>
               </object>
@@ -826,12 +826,12 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <items>
-                  <item translatable="yes" context="textflowpage|comboBreakType">Page</item>
-                  <item translatable="yes" context="textflowpage|comboBreakType">Column</item>
+                  <item translatable="yes" context="textflowpage|comboBreakType">页面</item>
+                  <item translatable="yes" context="textflowpage|comboBreakType">栏</item>
                 </items>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="comboBreakType-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|comboBreakType">Select the break type that you want to insert.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|comboBreakType">选择要插入的分隔符类型。</property>
                   </object>
                 </child>
               </object>
@@ -845,12 +845,12 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <items>
-                  <item translatable="yes" context="textflowpage|comboBreakPosition">Before</item>
-                  <item translatable="yes" context="textflowpage|comboBreakPosition">After</item>
+                  <item translatable="yes" context="textflowpage|comboBreakPosition">之前</item>
+                  <item translatable="yes" context="textflowpage|comboBreakPosition">之后</item>
                 </items>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="comboBreakPosition-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|comboBreakPosition">Select where you want to insert the break.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|comboBreakPosition">选择要插入分隔符的位置。</property>
                   </object>
                 </child>
               </object>
@@ -868,7 +868,7 @@
           <object class="GtkLabel" id="label3">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="textflowpage|label3">Breaks</property>
+            <property name="label" translatable="yes" context="textflowpage|label3">分隔符</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -897,7 +897,7 @@
             <property name="column-spacing">12</property>
             <child>
               <object class="GtkCheckButton" id="checkSplitPara">
-                <property name="label" translatable="yes" context="textflowpage|checkSplitPara">_Allow to split paragraph</property>
+                <property name="label" translatable="yes" context="textflowpage|checkSplitPara">允许拆分段落(_A)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -906,7 +906,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="checkSplitPara-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkSplitPara">Shifts the entire paragraph to the next page or column after a break is inserted.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkSplitPara">插入分隔符后，将整个段落移动到下一页或下一栏。</property>
                   </object>
                 </child>
               </object>
@@ -918,7 +918,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="checkKeepPara">
-                <property name="label" translatable="yes" context="textflowpage|checkKeepPara">_Keep with next paragraph</property>
+                <property name="label" translatable="yes" context="textflowpage|checkKeepPara">与下段同页(_K)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -927,7 +927,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="checkKeepPara-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkKeepPara">Keeps the current paragraph and the following paragraph together when a break or column break is inserted.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkKeepPara">插入分页符或分栏符时，使当前段落与下一段落保持在一起。</property>
                   </object>
                 </child>
               </object>
@@ -939,11 +939,11 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="checkOrphan">
-                <property name="label" translatable="yes" context="textflowpage|checkOrphan">Don’t split at _beginning of paragraph</property>
+                <property name="label" translatable="yes" context="textflowpage|checkOrphan">段首不拆分(_B)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
-                <property name="tooltip-text" translatable="yes" context="textflowpage|checkOrphan">Minimum number of lines in a paragraph before a page break.</property>
+                <property name="tooltip-text" translatable="yes" context="textflowpage|checkOrphan">分页前段落中保留的最少行数。</property>
                 <property name="margin-start">12</property>
                 <property name="use-underline">True</property>
                 <property name="inconsistent">True</property>
@@ -953,7 +953,7 @@
                 </accessibility>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="checkOrphan-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkOrphan">Specifies the minimum number of lines in a paragraph before a page break. Select this check box, and then enter a number in the Lines box.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkOrphan">指定分页前段落中保留的最少行数。选中此复选框，然后在“行数”框中输入数字。</property>
                   </object>
                 </child>
               </object>
@@ -964,11 +964,11 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="checkWidow">
-                <property name="label" translatable="yes" context="textflowpage|checkWidow">Don’t split at _end of paragraph</property>
+                <property name="label" translatable="yes" context="textflowpage|checkWidow">段尾不拆分(_E)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
-                <property name="tooltip-text" translatable="yes" context="textflowpage|checkWidow">Minimum number of lines in a paragraph in the first page after the break.</property>
+                <property name="tooltip-text" translatable="yes" context="textflowpage|checkWidow">分隔符后第一页中段落保留的最少行数。</property>
                 <property name="margin-start">12</property>
                 <property name="use-underline">True</property>
                 <property name="inconsistent">True</property>
@@ -978,7 +978,7 @@
                 </accessibility>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="checkWidow-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkWidow">Specifies the minimum number of lines in a paragraph in the first page after the break. Select this check box, and then enter a number in the Lines box.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|checkWidow">指定分隔符后第一页中段落保留的最少行数。选中此复选框，然后在“行数”框中输入数字。</property>
                   </object>
                 </child>
               </object>
@@ -999,7 +999,7 @@
                 </accessibility>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="spinOrphan-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|spinOrphan">Specifies the minimum number of lines in a paragraph before a page break. Select this check box, and then enter a number in the Lines box.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|spinOrphan">指定分页前段落中保留的最少行数。选中此复选框，然后在“行数”框中输入数字。</property>
                   </object>
                 </child>
               </object>
@@ -1021,7 +1021,7 @@
                 </accessibility>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="spinWidow-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|spinWidow">Specifies the minimum number of lines in a paragraph in the first page after the break. Select this check box, and then enter a number in the Lines box.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|spinWidow">指定分隔符后第一页中段落保留的最少行数。选中此复选框，然后在“行数”框中输入数字。</property>
                   </object>
                 </child>
               </object>
@@ -1034,7 +1034,7 @@
               <object class="GtkLabel" id="labelOrphan">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="textflowpage|labelOrphan">lines</property>
+                <property name="label" translatable="yes" context="textflowpage|labelOrphan">行</property>
                 <property name="xalign">0</property>
               </object>
               <packing>
@@ -1046,7 +1046,7 @@
               <object class="GtkLabel" id="labelWidow">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="textflowpage|labelWidow">lines</property>
+                <property name="label" translatable="yes" context="textflowpage|labelWidow">行</property>
                 <property name="xalign">0</property>
               </object>
               <packing>
@@ -1060,7 +1060,7 @@
           <object class="GtkLabel" id="labelOptions">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="textflowpage|labelOptions">Split Options</property>
+            <property name="label" translatable="yes" context="textflowpage|labelOptions">拆分选项</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -1074,7 +1074,7 @@
     </child>
     <child internal-child="accessible">
       <object class="AtkObject" id="TextFlowPage-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|TextFlowPage">Specify hyphenation and pagination options.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="textflowpage|extended_tip|TextFlowPage">指定断字和分页选项。</property>
       </object>
     </child>
   </object>

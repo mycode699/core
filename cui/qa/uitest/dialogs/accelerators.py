@@ -70,14 +70,14 @@ class Test(UITestCase):
         with self.ui_test.create_doc_in_start_center("writer") as xComponent:
             # Set a shortcut on the global scope
             with self.ui_test.execute_dialog_through_command(".uno:ConfigureDialog") as xDialog:
-                self.assign_key(xDialog, "office", "F7", ".uno:Credits")
+                self.assign_key(xDialog, "office", "F7", ".uno:ShowLicense")
 
             # Check that the key made it into the global config
             xGlobalAccelCfg = self.xContext.ServiceManager.createInstance(
                 'com.sun.star.ui.GlobalAcceleratorConfiguration')
             xKeyEvent = KeyEvent()
             xKeyEvent.KeyCode = Key.F7
-            self.assertEqual(xGlobalAccelCfg.getCommandByKeyEvent(xKeyEvent), ".uno:Credits")
+            self.assertEqual(xGlobalAccelCfg.getCommandByKeyEvent(xKeyEvent), ".uno:ShowLicense")
 
             # Set a shortcut on the module scope
             with self.ui_test.execute_dialog_through_command(".uno:ConfigureDialog") as xDialog:
@@ -131,7 +131,7 @@ class Test(UITestCase):
         with self.ui_test.create_doc_in_start_center("writer") as xDoc1, \
              self.ui_test.load_empty_file("writer"), \
              self.ui_test.execute_dialog_through_command(".uno:ConfigureDialog") as xDialog:
-            self.assign_key(xDialog, "Untitled 1", "F7", ".uno:Credits")
+            self.assign_key(xDialog, "Untitled 1", "F7", ".uno:ShowLicense")
             xFrame1 = xDoc1.getCurrentController().getFrame()
             self.xUITest.executeCommandForProvider(".uno:CloseDoc", xFrame1)
 
@@ -143,7 +143,7 @@ class Test(UITestCase):
         with self.ui_test.create_doc_in_start_center("writer") as xComponent:
             with self.ui_test.execute_dialog_through_command(".uno:ConfigureDialog") as xDialog:
                 # Assign a key
-                self.assign_key(xDialog, "Untitled 1", "F7", ".uno:Credits")
+                self.assign_key(xDialog, "Untitled 1", "F7", ".uno:ShowLicense")
                 # … but then press reset before pressing OK
                 xReset = xDialog.getChild("AccelConfigPage").getChild("reset")
                 xReset.executeAction("CLICK", tuple())
@@ -190,7 +190,7 @@ class Test(UITestCase):
                 # Set a shortcut on the global scope
                 self.assign_key(xDialog, "office", "F7", ".uno:EditBookmark")
                 # Set a shortcut on the module scope
-                self.assign_key(xDialog, "module", "F7", ".uno:Credits")
+                self.assign_key(xDialog, "module", "F7", ".uno:ShowLicense")
                 # Set a shortcut in the first document
                 self.assign_key(xDialog, "Untitled 1", "F7", "Spelling")
                 # Set a shortcut in the second document
@@ -215,7 +215,7 @@ class Test(UITestCase):
             xModuleAccelCfg = self.xContext.ServiceManager.createInstanceWithArguments(
                 'com.sun.star.ui.ModuleAcceleratorConfiguration',
                 ('com.sun.star.text.TextDocument',))
-            self.assertEqual(xModuleAccelCfg.getCommandByKeyEvent(xKeyEvent), ".uno:Credits")
+            self.assertEqual(xModuleAccelCfg.getCommandByKeyEvent(xKeyEvent), ".uno:ShowLicense")
 
             xDocAccelCfg = xDoc1.getUIConfigurationManager().getShortCutManager()
             self.assertEqual(xDocAccelCfg.getCommandByKeyEvent(xKeyEvent),

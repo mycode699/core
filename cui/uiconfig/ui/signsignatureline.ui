@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="SignSignatureLineDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="signsignatureline|SignSignatureLineDialog">Sign Signature Line</property>
+    <property name="title" translatable="yes" context="signsignatureline|SignSignatureLineDialog">签署签名行</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
     <property name="default-height">0</property>
@@ -21,7 +21,7 @@
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助(_H)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -36,7 +36,7 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="stock">_Cancel</property>
+                <property name="label" translatable="yes" context="stock">取消(_C)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -50,7 +50,7 @@
             </child>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="signsignatureline|ok">Sign</property>
+                <property name="label" translatable="yes" context="signsignatureline|ok">签署</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
@@ -104,7 +104,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="halign">start</property>
-                        <property name="label" translatable="yes" context="signsignatureline|label_name" comments="Name of the signer">Your Name:</property>
+                        <property name="label" translatable="yes" context="signsignatureline|label_name" comments="Name of the signer">签署人姓名：</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">edit_name</property>
                       </object>
@@ -120,10 +120,10 @@
                         <property name="hexpand">True</property>
                         <property name="activates-default">True</property>
                         <property name="truncate-multiline">True</property>
-                        <property name="placeholder-text" translatable="yes" context="signsignatureline|edit_name">Type your name here</property>
+                        <property name="placeholder-text" translatable="yes" context="signsignatureline|edit_name">在此输入姓名</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="edit_name-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="signsignatureline|extended_tip|edit_name">Enter your name as signer of the document. Your name will be inserted above the signature horizontal line.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="signsignatureline|extended_tip|edit_name">输入文档签署人姓名，该姓名会显示在签名横线上方。</property>
                           </object>
                         </child>
                       </object>
@@ -137,7 +137,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="halign">start</property>
-                        <property name="label" translatable="yes" context="signsignatureline|label_name" comments="Name of the signer">or</property>
+                        <property name="label" translatable="yes" context="signsignatureline|label_name" comments="Name of the signer">或</property>
                       </object>
                       <packing>
                         <property name="left-attach">2</property>
@@ -146,7 +146,7 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="btn_load_image">
-                        <property name="label" translatable="yes" context="signsignatureline|btn_load_image">Use Signature Image</property>
+                        <property name="label" translatable="yes" context="signsignatureline|btn_load_image">使用签名图片</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
@@ -161,7 +161,7 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="btn_clear_image">
-                        <property name="label" translatable="yes" context="signsignatureline|btn_clear_image">Clear</property>
+                        <property name="label" translatable="yes" context="signsignatureline|btn_clear_image">清除</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
@@ -177,7 +177,7 @@
                         <property name="can-focus">False</property>
                         <property name="halign">start</property>
                         <property name="margin-bottom">6</property>
-                        <property name="label" translatable="yes" context="signsignatureline|label_image_dimensions">Best image size: 600 x 100 px</property>
+                        <property name="label" translatable="yes" context="signsignatureline|label_image_dimensions">建议图片尺寸：600 x 100 px</property>
                         <attributes>
                           <attribute name="style" value="italic"/>
                         </attributes>
@@ -196,7 +196,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="halign">start</property>
-                        <property name="label" translatable="yes" context="signsignatureline|label_certificate" comments="Certificate to be used for signing">Certificate:</property>
+                        <property name="label" translatable="yes" context="signsignatureline|label_certificate" comments="Certificate to be used for signing">证书：</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">btn_select_certificate</property>
                       </object>
@@ -207,13 +207,13 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="btn_select_certificate">
-                        <property name="label" translatable="yes" context="signsignatureline|btn_select_certificate">Select Certificate</property>
+                        <property name="label" translatable="yes" context="signsignatureline|btn_select_certificate">选择证书</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="btn_select_certificate-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="signsignatureline|extended_tip|btn_select_certificate">Click on the Select Certificate button to open the Select Certificate dialog box, where your certificates are listed. Select the certificate suitable for signing the document.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="signsignatureline|extended_tip|btn_select_certificate">打开证书选择对话框，从可用证书中选择用于签署文档的证书。</property>
                           </object>
                         </child>
                       </object>
@@ -238,7 +238,7 @@
                   <object class="GtkLabel" id="label_sign">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="signsignatureline|label_sign">Sign</property>
+                    <property name="label" translatable="yes" context="signsignatureline|label_sign">签署</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -272,7 +272,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="halign">start</property>
-                        <property name="label" translatable="yes" context="signsignatureline|label_hint">Instructions from the document creator:</property>
+                        <property name="label" translatable="yes" context="signsignatureline|label_hint">文档创建者的签署说明：</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">label_hint_text</property>
                       </object>
@@ -293,7 +293,7 @@
                         </attributes>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="label_hint_text-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="signsignatureline|extended_tip|label_hint_text">This area displays the instructions entered by the document creator when adding the signature line.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="signsignatureline|extended_tip|label_hint_text">此处显示文档创建者添加签名行时填写的说明。</property>
                           </object>
                         </child>
                       </object>
@@ -307,7 +307,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="halign">start</property>
-                        <property name="label" translatable="yes" context="signsignatureline|label_add_comment">Add comment:</property>
+                        <property name="label" translatable="yes" context="signsignatureline|label_add_comment">添加备注：</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">edit_comment</property>
                       </object>
@@ -333,7 +333,7 @@
                             <property name="accepts-tab">False</property>
                             <child internal-child="accessible">
                               <object class="AtkObject" id="edit_comment-atkobject">
-                                <property name="AtkObject::accessible-description" translatable="yes" context="signsignatureline|extended_tip|edit_comment">Enter comments about the signature. The comments are displayed in the Description field of the certificate.</property>
+                                <property name="AtkObject::accessible-description" translatable="yes" context="signsignatureline|extended_tip|edit_comment">输入签署备注，备注会显示在证书说明字段中。</property>
                               </object>
                             </child>
                           </object>
@@ -350,7 +350,7 @@
                   <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="signsignatureline|label_more">More</property>
+                    <property name="label" translatable="yes" context="signsignatureline|label_more">更多信息</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>

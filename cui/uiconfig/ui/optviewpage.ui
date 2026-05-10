@@ -15,14 +15,14 @@
     <property name="can-focus">False</property>
     <property name="halign">start</property>
     <property name="valign">start</property>
-    <property name="border-width">6</property>
-    <property name="column-spacing">24</property>
+    <property name="border-width">10</property>
+    <property name="column-spacing">18</property>
     <child>
       <!-- n-columns=1 n-rows=1 -->
       <object class="GtkGrid" id="grid2">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="row-spacing">12</property>
+        <property name="row-spacing">10</property>
         <child>
           <object class="GtkFrame" id="frame4">
             <property name="visible">True</property>
@@ -35,17 +35,17 @@
               <object class="GtkGrid" id="grid7">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="margin-start">12</property>
-                <property name="margin-top">6</property>
+                <property name="margin-start">14</property>
+                <property name="margin-top">8</property>
                 <property name="hexpand">True</property>
-                <property name="row-spacing">3</property>
+                <property name="row-spacing">6</property>
                 <property name="column-spacing">6</property>
                 <child>
                   <object class="GtkLabel" id="label12">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="optviewpage|label12">Middle _button:</property>
-                    <property name="use-underline">True</property>
+                    <property name="label" translatable="yes" context="optviewpage|label12">鼠标中键</property>
+                    <property name="use-underline">False</property>
                     <property name="mnemonic-widget">mousemiddle</property>
                     <property name="xalign">0</property>
                   </object>
@@ -56,17 +56,18 @@
                 </child>
                 <child>
                   <object class="GtkComboBoxText" id="mousemiddle">
+                    <property name="width-request">160</property>
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="hexpand">True</property>
                     <items>
-                      <item translatable="yes" context="optviewpage|mousemiddle">No function</item>
-                      <item translatable="yes" context="optviewpage|mousemiddle">Automatic scrolling</item>
-                      <item translatable="yes" context="optviewpage|mousemiddle">Paste clipboard</item>
+                      <item translatable="yes" context="optviewpage|mousemiddle">无操作</item>
+                      <item translatable="yes" context="optviewpage|mousemiddle">自动滚动</item>
+                      <item translatable="yes" context="optviewpage|mousemiddle">粘贴剪贴板内容</item>
                     </items>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="mousemiddle-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip | mousemiddle">Defines the function of the middle mouse button.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip | mousemiddle">设置鼠标中键执行的操作。</property>
                       </object>
                     </child>
                   </object>
@@ -94,7 +95,7 @@
               <object class="GtkLabel" id="label4">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="optviewpage|label4">Mouse</property>
+                <property name="label" translatable="yes" context="optviewpage|label4">鼠标</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -117,7 +118,7 @@
       <object class="GtkGrid" id="grid1">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="row-spacing">12</property>
+        <property name="row-spacing">10</property>
         <child>
           <object class="GtkFrame" id="frame2">
             <property name="visible">True</property>
@@ -129,22 +130,22 @@
               <object class="GtkGrid" id="grid3">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="margin-start">12</property>
-                <property name="margin-top">6</property>
-                <property name="row-spacing">3</property>
+                <property name="margin-start">14</property>
+                <property name="margin-top">8</property>
+                <property name="row-spacing">6</property>
                 <child>
                   <object class="GtkCheckButton" id="useaccel">
-                    <property name="label" translatable="yes" context="optviewpage|useaccel">Use hard_ware acceleration</property>
+                    <property name="label" translatable="yes" context="optviewpage|useaccel">使用硬件加速</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
-                    <property name="tooltip-text" translatable="yes" context="optviewpage|useaccel|tooltip_text">Requires restart</property>
+                    <property name="tooltip-text" translatable="yes" context="optviewpage|useaccel|tooltip_text">重启后生效</property>
                     <property name="halign">start</property>
-                    <property name="use-underline">True</property>
+                    <property name="use-underline">False</property>
                     <property name="draw-indicator">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="useaccel-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip | useaccel">Directly accesses hardware features of the graphical display adapter to improve the screen display.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip | useaccel">直接使用图形显示适配器的硬件能力，以改善屏幕显示效果。</property>
                       </object>
                     </child>
                   </object>
@@ -155,17 +156,17 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="useaa">
-                    <property name="label" translatable="yes" context="optviewpage|useaa">Use anti-a_liasing</property>
+                    <property name="label" translatable="yes" context="optviewpage|useaa">使用抗锯齿</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
-                    <property name="tooltip-text" translatable="yes" context="optviewpage|useaa|tooltip_text">Requires restart</property>
+                    <property name="tooltip-text" translatable="yes" context="optviewpage|useaa|tooltip_text">重启后生效</property>
                     <property name="halign">start</property>
-                    <property name="use-underline">True</property>
+                    <property name="use-underline">False</property>
                     <property name="draw-indicator">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="useaa-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip | useaa">When supported, you can enable and disable anti-aliasing of graphics. With anti-aliasing enabled, the display of most graphical objects looks smoother and with less artifacts.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip | useaa">在支持的环境中启用或关闭图形抗锯齿。启用后，多数图形对象显示更平滑、锯齿更少。</property>
                       </object>
                     </child>
                   </object>
@@ -176,16 +177,16 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="useskia">
-                    <property name="label" translatable="yes" context="optviewpage|useskia">Use Skia for all rendering</property>
+                    <property name="label" translatable="yes" context="optviewpage|useskia">使用 Skia 渲染所有界面</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
-                    <property name="tooltip-text" translatable="yes" context="optviewpage|useskia|tooltip_text">Requires restart</property>
-                    <property name="use-underline">True</property>
+                    <property name="tooltip-text" translatable="yes" context="optviewpage|useskia|tooltip_text">重启后生效</property>
+                    <property name="use-underline">False</property>
                     <property name="draw-indicator">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="useskia-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="optviewage|extended_tips|useskia">Use the high performance Skia graphics engine to render all visual elements of the application, including windows, menus, toolbars and icons.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="optviewage|extended_tips|useskia">使用高性能 Skia 图形引擎渲染窗口、菜单、工具栏、图标等所有界面元素。</property>
                       </object>
                     </child>
                   </object>
@@ -196,17 +197,17 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="forceskiaraster">
-                    <property name="label" translatable="yes" context="optviewpage|forceskiaraster">Force Skia software rendering</property>
+                    <property name="label" translatable="yes" context="optviewpage|forceskiaraster">强制 Skia 软件渲染</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
-                    <property name="tooltip-text" translatable="yes" context="optviewpage|forceskia|tooltip_text">Requires restart. Enabling this will prevent the use of graphics drivers.</property>
+                    <property name="tooltip-text" translatable="yes" context="optviewpage|forceskia|tooltip_text">重启后生效。启用后不使用图形驱动加速。</property>
                     <property name="margin-start">18</property>
-                    <property name="use-underline">True</property>
+                    <property name="use-underline">False</property>
                     <property name="draw-indicator">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="forceskiaraster-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="optviewpage|extended_tips|forceskiaraster">Disables Skia's use of the computer graphics device. This still uses Skia software but with calls for raster framing, reduced and simplified graphics processing unit load.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="optviewpage|extended_tips|forceskiaraster">禁止 Skia 使用电脑图形设备，改用 Skia 软件渲染，以降低并简化 GPU 负载。</property>
                       </object>
                     </child>
                   </object>
@@ -219,7 +220,7 @@
                   <object class="GtkLabel" id="skiaenabled">
                     <property name="can-focus">False</property>
                     <property name="margin-start">18</property>
-                    <property name="label" translatable="yes" context="optviewpage|skiaenabled">Skia is currently enabled.</property>
+                    <property name="label" translatable="yes" context="optviewpage|skiaenabled">Skia 当前已启用。</property>
                     <property name="xalign">0</property>
                     <attributes>
                       <attribute name="scale" value="0.90000000000000002"/>
@@ -234,7 +235,7 @@
                   <object class="GtkLabel" id="skiadisabled">
                     <property name="can-focus">False</property>
                     <property name="margin-start">18</property>
-                    <property name="label" translatable="yes" context="optviewpage|skiadisabled">Skia is currently disabled.</property>
+                    <property name="label" translatable="yes" context="optviewpage|skiadisabled">Skia 当前未启用。</property>
                     <property name="xalign">0</property>
                     <attributes>
                       <attribute name="scale" value="0.90000000000000002"/>
@@ -247,7 +248,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="btnSkialog">
-                    <property name="label" translatable="yes" context="optviewpage|btnSkialog">Copy skia.log</property>
+                    <property name="label" translatable="yes" context="optviewpage|btnSkialog">复制 Skia 日志</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
@@ -324,7 +325,7 @@
               <object class="GtkLabel" id="label2">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="optviewpage|label2">Graphics Output</property>
+                <property name="label" translatable="yes" context="optviewpage|label2">图形输出</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -347,21 +348,21 @@
               <object class="GtkGrid" id="grid9">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="margin-start">12</property>
-                <property name="margin-top">6</property>
-                <property name="row-spacing">3</property>
+                <property name="margin-start">14</property>
+                <property name="margin-top">8</property>
+                <property name="row-spacing">6</property>
                 <child>
                   <object class="GtkCheckButton" id="showfontpreview">
-                    <property name="label" translatable="yes" context="optviewpage|showfontpreview">Show p_review of fonts</property>
+                    <property name="label" translatable="yes" context="optviewpage|showfontpreview">显示字体预览(_R)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
                     <property name="halign">start</property>
-                    <property name="use-underline">True</property>
+                    <property name="use-underline">False</property>
                     <property name="draw-indicator">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="showfontpreview-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip | showfontpreview">Displays the names of selectable fonts in the corresponding font, for example, fonts in the Font box on the Formatting bar.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip | showfontpreview">在字体列表中用对应字体显示字体名称，例如格式工具栏中的字体框。</property>
                       </object>
                     </child>
                   </object>
@@ -372,16 +373,16 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="aafont">
-                    <property name="label" translatable="yes" context="optviewpage|aafont">Screen font antialiasin_g</property>
+                    <property name="label" translatable="yes" context="optviewpage|aafont">屏幕字体抗锯齿(_G)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
                     <property name="halign">start</property>
-                    <property name="use-underline">True</property>
+                    <property name="use-underline">False</property>
                     <property name="draw-indicator">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="aafont-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip | aafont">Select to smooth the screen appearance of text.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip | aafont">让屏幕文字显示更平滑。</property>
                       </object>
                     </child>
                   </object>
@@ -402,8 +403,8 @@
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="halign">start</property>
-                        <property name="label" translatable="yes" context="optviewpage|aafrom">fro_m:</property>
-                        <property name="use-underline">True</property>
+                        <property name="label" translatable="yes" context="optviewpage|aafrom">最小字号</property>
+                        <property name="use-underline">False</property>
                         <property name="mnemonic-widget">aanf</property>
                       </object>
                       <packing>
@@ -413,6 +414,7 @@
                     </child>
                     <child>
                       <object class="GtkSpinButton" id="aanf">
+                        <property name="width-request">72</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="activates-default">True</property>
@@ -420,7 +422,7 @@
                         <property name="adjustment">adjustment2</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="aanf-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip | aanf">Enter the smallest font size to apply antialiasing to.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="extended_tip | aanf">输入启用抗锯齿的最小字体大小。</property>
                           </object>
                         </child>
                       </object>
@@ -480,7 +482,7 @@
               <object class="GtkLabel" id="label5">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="optviewpage|label5">Font Lists</property>
+                <property name="label" translatable="yes" context="optviewpage|label5">字体列表</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -494,7 +496,7 @@
         </child>
         <child>
           <object class="GtkButton" id="btn_rungptest">
-            <property name="label" translatable="yes" context="optviewpage|btn_rungptest">Run Graphics Tests</property>
+            <property name="label" translatable="yes" context="optviewpage|btn_rungptest">运行图形诊断</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>

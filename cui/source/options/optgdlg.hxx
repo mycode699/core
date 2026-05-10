@@ -18,7 +18,6 @@
  */
 #pragma once
 #include <memory>
-#include <config_features.h>
 #include <sfx2/tabdlg.hxx>
 #include <svx/langbox.hxx>
 #include <vcl/weld/Entry.hxx>
@@ -36,8 +35,6 @@ private:
     std::unique_ptr<weld::Widget> m_xExtHelpImg;
     std::unique_ptr<weld::CheckButton> m_xPopUpNoHelpCB;
     std::unique_ptr<weld::Widget> m_xPopUpNoHelpImg;
-    std::unique_ptr<weld::CheckButton> m_xShowTipOfTheDay;
-    std::unique_ptr<weld::Widget> m_xShowTipOfTheDayImg;
     std::unique_ptr<weld::Widget> m_xFileDlgROImage;
     std::unique_ptr<weld::CheckButton> m_xFileDlgCB;
     std::unique_ptr<weld::Widget> m_xColorDlgROImage;
@@ -49,11 +46,6 @@ private:
     std::unique_ptr<weld::SpinButton> m_xYearValueField;
     std::unique_ptr<weld::Label> m_xToYearFT;
     std::unique_ptr<weld::Widget> m_xYearFrameImg;
-#if HAVE_FEATURE_BREAKPAD
-    std::unique_ptr<weld::Widget> m_xPrivacyFrame;
-    std::unique_ptr<weld::CheckButton> m_xCrashReport;
-    std::unique_ptr<weld::Widget> m_xCrashReportImg;
-#endif
 #if defined(_WIN32)
     std::unique_ptr<weld::Widget> m_xQuickStarterFrame;
     std::unique_ptr<weld::CheckButton> m_xQuickLaunchCB;

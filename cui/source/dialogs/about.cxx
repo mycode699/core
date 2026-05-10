@@ -55,9 +55,22 @@
 
 using namespace ::com::sun::star::uno;
 
+namespace
+{
+void lclSetLinkOrHide(weld::LinkButton* pButton, const OUString& rURL)
+{
+    if (rURL.isEmpty())
+    {
+        pButton->hide();
+        return;
+    }
+
+    pButton->set_uri(rURL);
+}
+}
+
 AboutDialog::AboutDialog(weld::Window* pParent)
     : GenericDialogController(pParent, u"cui/ui/aboutdialog.ui"_ustr, u"AboutDialog"_ustr)
-    , m_pCreditsButton(m_xBuilder->weld_link_button(u"btnCredits"_ustr))
     , m_pWebsiteButton(m_xBuilder->weld_link_button(u"btnWebsite"_ustr))
     , m_pReleaseNotesButton(m_xBuilder->weld_link_button(u"btnReleaseNotes"_ustr))
     , m_pCloseButton(m_xBuilder->weld_button(u"btnClose"_ustr))
@@ -66,7 +79,7 @@ AboutDialog::AboutDialog(weld::Window* pParent)
     , m_pAboutImage(m_xBuilder->weld_image(u"imAbout"_ustr))
     , m_pVersionLabel(m_xBuilder->weld_label(u"lbVersionString"_ustr))
     , m_pBuildCaption(m_xBuilder->weld_label(u"lbBuild"_ustr))
-    , m_pBuildLabel(m_xBuilder->weld_link_button(u"lbBuildString"_ustr))
+    , m_pBuildLabel(m_xBuilder->weld_label(u"lbBuildString"_ustr))
     , m_pEnvLabel(m_xBuilder->weld_label(u"lbEnvString"_ustr))
     , m_pUILabel(m_xBuilder->weld_label(u"lbUIString"_ustr))
     , m_pLocaleLabel(m_xBuilder->weld_label(u"lbLocaleString"_ustr))
@@ -77,10 +90,9 @@ AboutDialog::AboutDialog(weld::Window* pParent)
     m_pVersionLabel->set_label(GetVersionString());
 
     OUString sbuildId = GetBuildString();
-    if (IsStringValidGitHash(sbuildId))
+    if (!sbuildId.isEmpty())
     {
         const tools::Long nMaxChar = 25;
-        m_pBuildLabel->set_uri("https://git.libreoffice.org/core/commit/" + sbuildId);
         m_pBuildLabel->set_label(
             sbuildId.getLength() > nMaxChar
                 ? sbuildId.replaceAt(nMaxChar, sbuildId.getLength() - nMaxChar, u"...")
@@ -99,14 +111,15 @@ AboutDialog::AboutDialog(weld::Window* pParent)
     m_pCopyrightLabel->set_label(GetCopyrightString());
 
     // Images
-    const tools::Long nWidth(m_pCopyrightLabel->get_preferred_size().getWidth());
+    const tools::Long nBrandWidth(m_pCopyrightLabel->get_approximate_digit_width() * 32);
+    const tools::Long nAboutWidth(m_pCopyrightLabel->get_approximate_digit_width() * 22);
     Bitmap aBackgroundBitmap;
 
     if (SfxApplication::loadBrandSvg(
             Application::GetSettings().GetStyleSettings().GetDialogColor().IsDark()
                 ? u"shell/logo_inverted"
                 : u"shell/logo",
-            aBackgroundBitmap, nWidth * 0.8))
+            aBackgroundBitmap, nBrandWidth))
     {
         // Eliminate white background when Skia is disabled by not drawing the
         // background bitmap to a VirtualDevice. On most platforms, non-Skia
@@ -115,7 +128,7 @@ AboutDialog::AboutDialog(weld::Window* pParent)
         Graphic aGraphic(aBackgroundBitmap);
         m_pBrandImage->set_image(aGraphic.GetXGraphic());
     }
-    if (SfxApplication::loadBrandSvg(u"shell/about", aBackgroundBitmap, nWidth * 0.9))
+    if (SfxApplication::loadBrandSvg(u"shell/about", aBackgroundBitmap, nAboutWidth))
     {
         // Eliminate white background when Skia is disabled by not drawing the
         // background bitmap to a VirtualDevice. On most platforms, non-Skia
@@ -126,17 +139,19 @@ AboutDialog::AboutDialog(weld::Window* pParent)
     }
 
     // Links
-    m_pCreditsButton->set_uri(officecfg::Office::Common::Menus::CreditsURL::get());
-
     OUString sURL(officecfg::Office::Common::Help::StartCenter::InfoURL::get());
-    localizeWebserviceURI(sURL);
-    m_pWebsiteButton->set_uri(sURL);
+    if (!sURL.isEmpty())
+        localizeWebserviceURI(sURL);
+    lclSetLinkOrHide(m_pWebsiteButton.get(), sURL);
 
     // See also SID_WHATSNEW in sfx2/source/appl/appserv.cxx
-    sURL = officecfg::Office::Common::Menus::ReleaseNotesURL::get()
-           + "?LOvers=" + utl::ConfigManager::getProductVersion()
-           + "&LOlocale=" + LanguageTag(utl::ConfigManager::getUILocale()).getBcp47();
-    m_pReleaseNotesButton->set_uri(sURL);
+    sURL = officecfg::Office::Common::Menus::ReleaseNotesURL::get();
+    if (!sURL.isEmpty())
+    {
+        sURL += "?LOvers=" + utl::ConfigManager::getProductVersion()
+                + "&LOlocale=" + LanguageTag(utl::ConfigManager::getUILocale()).getBcp47();
+    }
+    lclSetLinkOrHide(m_pReleaseNotesButton.get(), sURL);
 
     // Handler
     m_pCopyButton->connect_clicked(LINK(this, AboutDialog, HandleClick));
@@ -144,12 +159,6 @@ AboutDialog::AboutDialog(weld::Window* pParent)
 }
 
 AboutDialog::~AboutDialog() {}
-
-bool AboutDialog::IsStringValidGitHash(std::u16string_view hash)
-{
-    return std::all_of(hash.begin(), hash.end(),
-                       [](auto& rSymbol) { return std::isxdigit(rSymbol); });
-}
 
 OUString AboutDialog::GetVersionString()
 {
@@ -222,7 +231,7 @@ OUString AboutDialog::GetMiscString()
 
 #if HAVE_FEATURE_OPENCL
     if (openclwrapper::GPUEnv::isOpenCLEnabled())
-        aCalcMode += " CL";
+        aCalcMode += "OpenCL";
 #endif
 
     static const bool bThreadingProhibited = std::getenv("SC_NO_THREADED_CALCULATION");
@@ -231,17 +240,21 @@ OUString AboutDialog::GetMiscString()
 
     if (!bThreadingProhibited && bThreadedCalc)
     {
-        aCalcMode += " threaded";
+        if (!aCalcMode.isEmpty())
+            aCalcMode += " / ";
+        aCalcMode += "多线程";
     }
 
     if (officecfg::Office::Calc::Defaults::Sheet::JumboSheets::get())
     {
-        aCalcMode += " Jumbo";
+        if (!aCalcMode.isEmpty())
+            aCalcMode += " / ";
+        aCalcMode += "大表格";
     }
 
     if (aCalcMode.isEmpty())
-        aCalcMode = " default";
-    sMisc += "Calc:" + aCalcMode;
+        aCalcMode = "默认";
+    sMisc += "表格引擎：" + aCalcMode;
 
     return sMisc;
 }
@@ -251,30 +264,20 @@ OUString AboutDialog::GetCopyrightString()
     OUString sVendorTextStr(CuiResId(RID_CUISTR_ABOUT_VENDOR));
     OUString aCopyrightString = sVendorTextStr + "\n" + CuiResId(RID_CUISTR_ABOUT_COPYRIGHT) + "\n";
 
-    if (utl::ConfigManager::getProductName() == "LibreOffice")
-        aCopyrightString += CuiResId(RID_CUISTR_ABOUT_BASED_ON);
-    else
-        aCopyrightString += CuiResId(RID_CUISTR_ABOUT_DERIVED);
+    aCopyrightString += CuiResId(RID_CUISTR_ABOUT_DERIVED);
 
     return aCopyrightString;
 }
 
-// special labels to comply with previous version info
-// untranslated English for QA
 IMPL_LINK_NOARG(AboutDialog, HandleClick, weld::Button&, void)
 {
     css::uno::Reference<css::datatransfer::clipboard::XClipboard> xClipboard
         = m_pVersionLabel->get_clipboard();
 
-    OUString sInfo = "Version: " + m_pVersionLabel->get_label()
-                     + "\n" // version
-                       "Build ID: "
-                     + GetBuildString() + "\n" + // build id
-                     Application::GetHWOSConfInfo(0, false)
-                     + "\n" // env+UI
-                       "Locale: "
-                     + GetLocaleString(false) + "\n" + // locale
-                     GetMiscString(); // misc
+    OUString sInfo = u"版本："_ustr + m_pVersionLabel->get_label()
+                     + u"\n构建 ID："_ustr + GetBuildString() + u"\n"_ustr
+                     + Application::GetHWOSConfInfo(0) + u"\n语言区域："_ustr
+                     + GetLocaleString() + u"\n"_ustr + GetMiscString();
 
     vcl::unohelper::TextDataObject::CopyStringTo(sInfo, xClipboard);
 }

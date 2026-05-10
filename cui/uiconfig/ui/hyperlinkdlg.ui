@@ -4,7 +4,7 @@
   <object class="GtkDialog" id="HyperlinkDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title">Hyperlink</property>
+    <property name="title">超链接</property>
     <property name="modal">False</property>
     <property name="type-hint">dialog</property>
     <child internal-child="vbox">
@@ -18,9 +18,9 @@
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="reset">
-                <property name="label">_Reset</property>
+                <property name="label">重置</property>
                 <property name="visible">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -30,9 +30,9 @@
             </child>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label">_OK</property>
+                <property name="label">确定</property>
                 <property name="visible">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
                 <property name="can-default">True</property>
                 <property name="has-default">True</property>
               </object>
@@ -42,9 +42,9 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label">_Cancel</property>
+                <property name="label">取消</property>
                 <property name="visible">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="position">2</property>
@@ -52,9 +52,9 @@
             </child>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label">_Help</property>
+                <property name="label">帮助</property>
                 <property name="visible">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="position">3</property>
@@ -63,9 +63,9 @@
             </child>
             <child>
               <object class="GtkButton" id="apply">
-                <property name="label">_Apply</property>
+                <property name="label">应用</property>
                 <property name="visible">True</property>
-                <property name="use-underline">True</property>
+                <property name="use-underline">False</property>
               </object>
               <packing>
                 <property name="position">4</property>

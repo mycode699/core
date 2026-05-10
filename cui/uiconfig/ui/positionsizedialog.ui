@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="PositionAndSizeDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="positionsizedialog|PositionAndSizeDialog">Position and Size</property>
+    <property name="title" translatable="yes" context="positionsizedialog|PositionAndSizeDialog">位置和大小</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>

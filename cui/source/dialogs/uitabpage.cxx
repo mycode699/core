@@ -50,15 +50,23 @@ UITabPage::UITabPage(weld::Container* pPage, weld::DialogController* pController
     Link<weld::Toggleable&, void> aLink = LINK(this, UITabPage, SelectUIMode);
 
     const OUString sCurrentMode = GetCurrentMode();
+    bool bMatchedCurrentMode = false;
     for (std::size_t i = 0; i < std::size(m_pRadioButtons); ++i)
     {
         m_pRadioButtons[i]->connect_toggled(aLink);
         if (sCurrentMode == std::get<1>(UIMODES_ARRAY[i]))
         {
             m_pRadioButtons[i]->set_active(true);
-            UpdateImage(std::get<2>(UIMODES_ARRAY[i]));
-            m_pInfoLabel->set_label(CuiResId(std::get<0>(UIMODES_ARRAY[i])));
+            ApplyMode(i);
+            bMatchedCurrentMode = true;
         }
+    }
+
+    if (!bMatchedCurrentMode)
+    {
+        const int nActiveRadioButton = GetActiveRadioButton();
+        if (nActiveRadioButton > -1)
+            ApplyMode(nActiveRadioButton);
     }
 
     if (!officecfg::Office::Common::Misc::ExperimentalMode::get())
@@ -142,6 +150,12 @@ static bool file_exists(const OUString& fileName)
     return aFile.open(osl_File_OpenFlag_Read) == osl::FileBase::E_None;
 }
 
+void UITabPage::ApplyMode(std::size_t nIndex)
+{
+    UpdateImage(std::get<2>(UIMODES_ARRAY[nIndex]));
+    m_pInfoLabel->set_label(CuiResId(std::get<0>(UIMODES_ARRAY[nIndex])));
+}
+
 void UITabPage::UpdateImage(std::u16string_view sFileName)
 {
     // load image
@@ -166,10 +180,7 @@ IMPL_LINK_NOARG(UITabPage, SelectUIMode, weld::Toggleable&, void)
 {
     const int i = GetActiveRadioButton();
     if (i > -1)
-    {
-        UpdateImage(std::get<2>(UIMODES_ARRAY[i]));
-        m_pInfoLabel->set_label(CuiResId(std::get<0>(UIMODES_ARRAY[i])));
-    }
+        ApplyMode(i);
 }
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab cinoptions=b1,g0,N-s cinkeys+=0=break: */
