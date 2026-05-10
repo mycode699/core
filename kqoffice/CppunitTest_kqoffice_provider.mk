@@ -14,23 +14,21 @@ $(eval $(call gb_CppunitTest_set_include,kqoffice_provider,\
     $$(INCLUDE) \
 ))
 
-# Day-0 test compiles Provider/ServiceModePolicy objects directly into the
-# test binary (same pattern as cui_commandpalette_fuzzy + FuzzyMatcher).
-# The library symbols are hidden by default on macOS, and Day-0 tests
-# never bring up UNO so the library is not loaded — no collision.
+# Day-1: link against Library_kqoffice_ai instead of duplicating the four
+# provider sources into the test binary (gbuild fdo#47246 forbids the
+# duplicate-object pattern even with hidden visibility on macOS).
 $(eval $(call gb_CppunitTest_add_exception_objects,kqoffice_provider, \
     kqoffice/qa/cppunit/test_provider \
-    kqoffice/source/ai/provider/Provider \
-    kqoffice/source/ai/provider/ServiceModePolicy \
 ))
 
-# Day-0: pure-logic tests only. No URE / VCL — those would set URE=true
+# Day-1: pure-logic tests only. No URE / VCL — those would set URE=true
 # and pull in unobootstrap/vclbootstrap protectors that require a
 # working services.rdb. See solenv/gbuild/CppunitTest.mk:114-129.
 # use_sdk_api just adds API include paths (no URE), needed for IDL headers.
 $(eval $(call gb_CppunitTest_use_libraries,kqoffice_provider, \
     cppu \
     cppuhelper \
+    kqoffice_ai \
     sal \
 ))
 

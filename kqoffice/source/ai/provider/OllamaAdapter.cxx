@@ -1,0 +1,405 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/*
+ * This file is part of the 可圈office project (V2 W1 Day-1: Ollama adapter).
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+#include "OllamaAdapter.hxx"
+
+#include <rtl/strbuf.hxx>
+#include <rtl/string.hxx>
+#include <rtl/ustring.hxx>
+
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <unistd.h>
+
+#include <algorithm>
+#include <cerrno>
+#include <cstdio>
+#include <cstring>
+#include <string>
+
+namespace kqoffice::ai
+{
+namespace
+{
+// 100ms cap. Plenty for a localhost listener; short enough that a missing
+// daemon never stalls the UI thread or a cppunit run on a dev laptop.
+constexpr int kProbeTimeoutMs = 100;
+
+// 30s cap for /api/generate. Long enough for a 7B local model to produce
+// a short answer on a laptop CPU; short enough that a wedged daemon is
+// not a UI hang.
+constexpr int kGenerateTimeoutMs = 30 * 1000;
+
+// 8KB ceiling on /api/tags response. Real-world response is well under
+// 4KB even for ~20 installed models. Bound everything so a hostile or
+// rogue listener cannot drag us into an unbounded read.
+constexpr std::size_t kMaxTagsResponseBytes = 8 * 1024;
+
+// 256KB ceiling on /api/generate response. A non-stream short answer is
+// typically well under 4KB; 256KB is generous headroom while still
+// preventing an unbounded read if the daemon misbehaves or streams.
+constexpr std::size_t kMaxGenerateResponseBytes = 256 * 1024;
+
+/// One-shot blocking connect to 127.0.0.1:kPort with SO_RCVTIMEO/SO_SNDTIMEO
+/// set to `timeoutMs`. Returns the connected fd on success, -1 otherwise.
+/// Caller owns the fd and must ::close() it.
+int openConnection(int timeoutMs)
+{
+    int fd = ::socket(AF_INET, SOCK_STREAM, 0);
+    if (fd < 0)
+        return -1;
+
+    struct timeval tv;
+    tv.tv_sec = timeoutMs / 1000;
+    tv.tv_usec = (timeoutMs % 1000) * 1000;
+    // setsockopt failure is non-fatal — we still attempt the connect, just
+    // without the timeout guard. Any later read/connect that hangs will
+    // be killed by cppunit's outer test timeout, not us.
+    ::setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+    ::setsockopt(fd, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv));
+
+    sockaddr_in addr{};
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(static_cast<uint16_t>(OllamaAdapter::kPort));
+    if (::inet_pton(AF_INET, OllamaAdapter::kHost, &addr.sin_addr) != 1)
+    {
+        ::close(fd);
+        return -1;
+    }
+
+    if (::connect(fd, reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) != 0)
+    {
+        ::close(fd);
+        return -1;
+    }
+    return fd;
+}
+
+/// Send a fixed buffer fully. Returns true if every byte left.
+bool sendAll(int fd, const char* buf, std::size_t len)
+{
+    std::size_t sent = 0;
+    while (sent < len)
+    {
+        ssize_t n = ::send(fd, buf + sent, len - sent, 0);
+        if (n <= 0)
+            return false;
+        sent += static_cast<std::size_t>(n);
+    }
+    return true;
+}
+
+/// Read up to `maxBytes`, then either EOF or cap. Bounded.
+std::string readAllBounded(int fd, std::size_t maxBytes)
+{
+    std::string out;
+    out.reserve(std::min<std::size_t>(maxBytes, std::size_t{2048}));
+    char buf[4096];
+    while (out.size() < maxBytes)
+    {
+        ssize_t n = ::recv(fd, buf, sizeof(buf), 0);
+        if (n == 0)
+            break; // EOF
+        if (n < 0)
+        {
+            // EAGAIN/EWOULDBLOCK from SO_RCVTIMEO — treat as soft EOF;
+            // anything we have so far is what we get.
+            if (errno == EAGAIN || errno == EWOULDBLOCK)
+                break;
+            return std::string();
+        }
+        out.append(buf, static_cast<std::size_t>(n));
+    }
+    return out;
+}
+
+/// Escape `"`, `\`, and control chars (<0x20) inside an OString so the
+/// result can be embedded inside a JSON string literal. Prompts are
+/// user-supplied — we cannot trust them to be JSON-clean.
+void appendJsonEscaped(OStringBuffer& out, const OString& s)
+{
+    const sal_Int32 n = s.getLength();
+    const char* p = s.getStr();
+    for (sal_Int32 i = 0; i < n; ++i)
+    {
+        const unsigned char c = static_cast<unsigned char>(p[i]);
+        switch (c)
+        {
+            case '"':  out.append("\\\""); break;
+            case '\\': out.append("\\\\"); break;
+            case '\b': out.append("\\b"); break;
+            case '\f': out.append("\\f"); break;
+            case '\n': out.append("\\n"); break;
+            case '\r': out.append("\\r"); break;
+            case '\t': out.append("\\t"); break;
+            default:
+                if (c < 0x20)
+                {
+                    char hex[8];
+                    ::snprintf(hex, sizeof(hex), "\\u%04x",
+                               static_cast<unsigned>(c));
+                    out.append(hex);
+                }
+                else
+                {
+                    out.append(static_cast<char>(c));
+                }
+                break;
+        }
+    }
+}
+
+} // namespace
+
+OUString OllamaAdapter::probe()
+{
+    int fd = openConnection(kProbeTimeoutMs);
+    if (fd < 0)
+        return u"unreachable"_ustr;
+    ::close(fd);
+    return u"reachable"_ustr;
+}
+
+std::vector<OUString> OllamaAdapter::listModels()
+{
+    int fd = openConnection(kProbeTimeoutMs);
+    if (fd < 0)
+        return {};
+
+    // HTTP/1.0 — connection: close is implicit, daemon will half-close
+    // after writing the body. No keepalive, no chunked complications.
+    const std::string req = std::string("GET ") + kTagsPath
+                          + " HTTP/1.0\r\nHost: " + kHost
+                          + "\r\nAccept: application/json\r\n\r\n";
+    if (!sendAll(fd, req.data(), req.size()))
+    {
+        ::close(fd);
+        return {};
+    }
+
+    std::string raw = readAllBounded(fd, kMaxTagsResponseBytes);
+    ::close(fd);
+    if (raw.empty())
+        return {};
+
+    // Split header / body on the first CRLFCRLF. Anything before is
+    // the status line + headers we do not need to inspect for Day-1
+    // (a non-200 daemon will return an empty/non-JSON body and the
+    // parse below will simply yield nothing).
+    const std::string sep = "\r\n\r\n";
+    auto pos = raw.find(sep);
+    if (pos == std::string::npos)
+        return {};
+    OString body(raw.data() + pos + sep.size(),
+                 static_cast<sal_Int32>(raw.size() - pos - sep.size()));
+    return parseModelsJson(body);
+}
+
+OUString OllamaAdapter::generate(const OUString& model, const OUString& prompt)
+{
+    // Build the JSON request body up front so we can supply an exact
+    // Content-Length and avoid chunked encoding on the request side.
+    OString modelUtf8 = OUStringToOString(model, RTL_TEXTENCODING_UTF8);
+    OString promptUtf8 = OUStringToOString(prompt, RTL_TEXTENCODING_UTF8);
+    OStringBuffer body(256 + promptUtf8.getLength());
+    body.append("{\"model\":\"");
+    appendJsonEscaped(body, modelUtf8);
+    body.append("\",\"prompt\":\"");
+    appendJsonEscaped(body, promptUtf8);
+    body.append("\",\"stream\":false}");
+    OString jsonBody = body.makeStringAndClear();
+
+    int fd = openConnection(kGenerateTimeoutMs);
+    if (fd < 0)
+        return OUString();
+
+    // HTTP/1.0 POST with explicit Content-Length. Connection close is
+    // implicit so the daemon half-closes after the body is delivered.
+    OStringBuffer hdr(256);
+    hdr.append("POST ");
+    hdr.append(kGeneratePath);
+    hdr.append(" HTTP/1.0\r\nHost: ");
+    hdr.append(kHost);
+    hdr.append("\r\nContent-Type: application/json\r\nAccept: application/json"
+               "\r\nContent-Length: ");
+    hdr.append(static_cast<sal_Int32>(jsonBody.getLength()));
+    hdr.append("\r\n\r\n");
+    OString hdrStr = hdr.makeStringAndClear();
+
+    if (!sendAll(fd, hdrStr.getStr(), static_cast<std::size_t>(hdrStr.getLength()))
+        || !sendAll(fd, jsonBody.getStr(),
+                    static_cast<std::size_t>(jsonBody.getLength())))
+    {
+        ::close(fd);
+        return OUString();
+    }
+
+    std::string raw = readAllBounded(fd, kMaxGenerateResponseBytes);
+    ::close(fd);
+    if (raw.empty())
+        return OUString();
+
+    // Reject non-2xx responses up front. Status line is "HTTP/1.x NNN ...".
+    // A malformed line falls through to the JSON parser which will yield
+    // an empty OUString.
+    if (raw.size() >= 12 && raw.compare(0, 5, "HTTP/") == 0)
+    {
+        const std::size_t spc = raw.find(' ');
+        if (spc != std::string::npos && spc + 4 <= raw.size())
+        {
+            const char d0 = raw[spc + 1];
+            if (d0 != '2')
+                return OUString();
+        }
+    }
+
+    const std::string sep = "\r\n\r\n";
+    auto pos = raw.find(sep);
+    if (pos == std::string::npos)
+        return OUString();
+    OString respBody(raw.data() + pos + sep.size(),
+                     static_cast<sal_Int32>(raw.size() - pos - sep.size()));
+    return parseGenerateJson(respBody);
+}
+
+std::vector<OUString> OllamaAdapter::parseModelsJson(const OString& body)
+{
+    std::vector<OUString> out;
+    const sal_Int32 n = body.getLength();
+    const char* s = body.getStr();
+
+    sal_Int32 i = 0;
+    while (i < n)
+    {
+        // Find the next `"name"` token.
+        sal_Int32 found = body.indexOf("\"name\"", i);
+        if (found < 0)
+            break;
+        i = found + 6; // past `"name"`
+
+        // Skip whitespace, then expect ':'.
+        while (i < n && (s[i] == ' ' || s[i] == '\t' || s[i] == '\r' || s[i] == '\n'))
+            ++i;
+        if (i >= n || s[i] != ':')
+            continue;
+        ++i; // past ':'
+        // Skip whitespace, then expect opening '"'.
+        while (i < n && (s[i] == ' ' || s[i] == '\t' || s[i] == '\r' || s[i] == '\n'))
+            ++i;
+        if (i >= n || s[i] != '"')
+            continue;
+        ++i; // past opening '"'
+
+        // Capture until closing '"', honoring `\"` and `\\` escapes.
+        OStringBuffer val;
+        while (i < n)
+        {
+            const char c = s[i];
+            if (c == '\\' && i + 1 < n)
+            {
+                const char esc = s[i + 1];
+                // Pass common JSON escapes through literally — model
+                // names from Ollama are ASCII tags like "qwen2.5:7b"
+                // so we never expect escapes, but parse defensively.
+                switch (esc)
+                {
+                    case '"': val.append('"'); break;
+                    case '\\': val.append('\\'); break;
+                    case '/': val.append('/'); break;
+                    case 'n': val.append('\n'); break;
+                    case 't': val.append('\t'); break;
+                    case 'r': val.append('\r'); break;
+                    default:  val.append(esc); break;
+                }
+                i += 2;
+                continue;
+            }
+            if (c == '"')
+                break;
+            val.append(c);
+            ++i;
+        }
+        if (i >= n)
+            break; // unterminated string — give up on this entry
+
+        out.push_back(OStringToOUString(val.makeStringAndClear(),
+                                        RTL_TEXTENCODING_UTF8));
+        ++i; // past closing '"'
+    }
+    return out;
+}
+
+OUString OllamaAdapter::parseGenerateJson(const OString& body)
+{
+    const sal_Int32 n = body.getLength();
+    const char* s = body.getStr();
+
+    // Linear scan for the first `"response"` key. Same defensive style
+    // as parseModelsJson — no full JSON parser, just enough to lift the
+    // single string field we care about.
+    sal_Int32 i = 0;
+    while (i < n)
+    {
+        sal_Int32 found = body.indexOf("\"response\"", i);
+        if (found < 0)
+            return OUString();
+        i = found + 10; // past `"response"`
+
+        while (i < n && (s[i] == ' ' || s[i] == '\t' || s[i] == '\r' || s[i] == '\n'))
+            ++i;
+        if (i >= n || s[i] != ':')
+            continue;
+        ++i; // past ':'
+        while (i < n && (s[i] == ' ' || s[i] == '\t' || s[i] == '\r' || s[i] == '\n'))
+            ++i;
+        if (i >= n || s[i] != '"')
+            continue;
+        ++i; // past opening '"'
+
+        OStringBuffer val;
+        while (i < n)
+        {
+            const char c = s[i];
+            if (c == '\\' && i + 1 < n)
+            {
+                const char esc = s[i + 1];
+                switch (esc)
+                {
+                    case '"':  val.append('"'); break;
+                    case '\\': val.append('\\'); break;
+                    case '/':  val.append('/'); break;
+                    case 'n':  val.append('\n'); break;
+                    case 't':  val.append('\t'); break;
+                    case 'r':  val.append('\r'); break;
+                    case 'b':  val.append('\b'); break;
+                    case 'f':  val.append('\f'); break;
+                    default:   val.append(esc); break;
+                }
+                i += 2;
+                continue;
+            }
+            if (c == '"')
+                break;
+            val.append(c);
+            ++i;
+        }
+        if (i >= n)
+            return OUString(); // unterminated string
+
+        return OStringToOUString(val.makeStringAndClear(),
+                                 RTL_TEXTENCODING_UTF8);
+    }
+    return OUString();
+}
+
+} // namespace kqoffice::ai
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

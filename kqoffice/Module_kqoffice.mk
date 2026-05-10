@@ -9,9 +9,14 @@
 
 $(eval $(call gb_Module_Module,kqoffice))
 
-# Day-0: no Library yet. Provider + ServiceModePolicy ride inside the
-# test binary (mirrors cui/CommandPalette FuzzyMatcher pattern, fdo#47246).
-# Day-1 will reintroduce Library_kqoffice_ai once UNO bootstrap is wired.
+# Day-1: Library_kqoffice_ai now ships Provider + OllamaAdapter as a real
+# UNO component (factory + .component descriptor). Pure-logic cppunit
+# continues to build the same TUs into the test binary — see
+# CppunitTest_kqoffice_provider.mk — and stays decoupled from the Library.
+
+$(eval $(call gb_Module_add_targets,kqoffice,\
+    Library_kqoffice_ai \
+))
 
 $(eval $(call gb_Module_add_check_targets,kqoffice,\
     CppunitTest_kqoffice_provider \

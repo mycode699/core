@@ -9,8 +9,13 @@
 
 #include "Provider.hxx"
 
+#include "OllamaAdapter.hxx"
+
 #include <com/sun/star/lang/IllegalArgumentException.hpp>
+#include <com/sun/star/uno/XComponentContext.hpp>
 #include <cppuhelper/supportsservice.hxx>
+
+#include <cstdlib>
 
 namespace kqoffice::ai
 {
@@ -45,11 +50,66 @@ Provider::call(const css::ai::ProviderRequest& req)
         return rsp;
     }
 
-    // Day-0 stub: no backend wired. Future W1 Day-1 will dispatch
-    // through ProviderRegistry → OllamaAdapter.
-    rsp.status = "provider-error";
-    rsp.content = "no provider backend registered (W1 Day-0 stub)";
-    rsp.evidenceId = OUString();
+    // Day-1: dispatch through OllamaAdapter unless cppunit has set
+    // KQOFFICE_AI_DISABLE_PROBE — pure-logic fixtures must not open
+    // sockets to 127.0.0.1:11434 in the build sandbox.
+    OUString providerLabel = u"stub"_ustr;
+    if (std::getenv("KQOFFICE_AI_DISABLE_PROBE") != nullptr)
+    {
+        rsp.status = "provider-error";
+        rsp.content = "no provider backend registered (W1 Day-0 stub)";
+    }
+    else
+    {
+        OllamaAdapter adapter;
+        OUString p = adapter.probe();
+        if (p == u"reachable"_ustr)
+        {
+            auto models = adapter.listModels();
+            OUString head = models.empty() ? u"?"_ustr : models.front();
+            providerLabel = u"ollama: " + head;
+            if (models.empty())
+            {
+                // Daemon up but no models pulled — nothing to route the
+                // prompt to. Evidence still records the attempt.
+                rsp.status = "provider-error";
+                rsp.content = "ollama reachable but no models installed";
+            }
+            else
+            {
+                OUString text = adapter.generate(head, req.prompt);
+                if (text.isEmpty())
+                {
+                    rsp.status = "provider-error";
+                    rsp.content = "ollama generate failed (timeout, "
+                                  "non-2xx, or empty response)";
+                }
+                else
+                {
+                    rsp.status = "ok";
+                    rsp.content = text;
+                }
+            }
+        }
+        else
+        {
+            rsp.status = "provider-error";
+            rsp.content = "ollama unreachable at 127.0.0.1:11434";
+        }
+    }
+
+    // Day-1: record evidence for any allowed call so operators can audit
+    // why a capability returned ok / provider-error. Only the
+    // policy-denied branch above keeps evidenceId empty.
+    EvidenceRecord rec;
+    rec.serviceMode = m_policy.modeName();
+    rec.provider = providerLabel;
+    rec.capability = req.capability;
+    rec.status = rsp.status;
+    rec.requestSizeBytes = req.prompt.getLength();
+    rec.responseSizeBytes = rsp.content.getLength();
+    rec.durationMs = rsp.durationMs;
+    rsp.evidenceId = m_evidence.record(rec);
     return rsp;
 }
 
@@ -80,5 +140,13 @@ css::uno::Sequence<OUString> SAL_CALL Provider::getSupportedServiceNames()
 }
 
 } // namespace kqoffice::ai
+
+extern "C" SAL_DLLPUBLIC_EXPORT css::uno::XInterface*
+com_kqoffice_ai_Provider_get_implementation(
+    css::uno::XComponentContext* /*context*/,
+    css::uno::Sequence<css::uno::Any> const& /*args*/)
+{
+    return ::cppu::acquire(new ::kqoffice::ai::Provider());
+}
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

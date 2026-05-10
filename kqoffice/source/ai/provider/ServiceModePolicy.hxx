@@ -14,6 +14,7 @@
 #define INCLUDED_KQOFFICE_SOURCE_AI_PROVIDER_SERVICEMODEPOLICY_HXX
 
 #include <rtl/ustring.hxx>
+#include <sal/types.h>
 
 namespace kqoffice::ai
 {
@@ -24,7 +25,7 @@ namespace kqoffice::ai
 ///
 /// Day-0 implementation: only "offline" mode is wired; "private"/"cloud"
 /// are recognized as values but no allow-list is yet enforced.
-class ServiceModePolicy
+class SAL_DLLPUBLIC_EXPORT ServiceModePolicy
 {
 public:
     enum class Mode

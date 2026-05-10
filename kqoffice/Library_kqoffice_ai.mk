@@ -22,7 +22,11 @@ $(eval $(call gb_Library_use_libraries,kqoffice_ai,\
     salhelper \
 ))
 
+$(eval $(call gb_Library_set_componentfile,kqoffice_ai,kqoffice/util/kqoffice_ai,services))
+
 $(eval $(call gb_Library_add_exception_objects,kqoffice_ai,\
+    kqoffice/source/ai/provider/EvidenceRecorder \
+    kqoffice/source/ai/provider/OllamaAdapter \
     kqoffice/source/ai/provider/Provider \
     kqoffice/source/ai/provider/ServiceModePolicy \
 ))

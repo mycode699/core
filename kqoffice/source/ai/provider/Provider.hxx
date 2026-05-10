@@ -16,7 +16,9 @@
 #include <com/sun/star/lang/XServiceInfo.hpp>
 #include <cppuhelper/implbase.hxx>
 #include <rtl/ustring.hxx>
+#include <sal/types.h>
 
+#include "EvidenceRecorder.hxx"
 #include "ServiceModePolicy.hxx"
 
 namespace kqoffice::ai
@@ -30,7 +32,7 @@ namespace kqoffice::ai
 ///      against a stable interface without needing Ollama installed.
 ///   3. listCapabilities() is empty until OllamaAdapter lands (W1 Day-1).
 ///   4. getServiceMode() returns whatever ServiceModePolicy reports.
-class Provider final
+class SAL_DLLPUBLIC_EXPORT Provider final
     : public ::cppu::WeakImplHelper<
           css::ai::XProvider,
           css::lang::XServiceInfo>
@@ -52,6 +54,7 @@ public:
 
 private:
     ServiceModePolicy m_policy;
+    EvidenceRecorder m_evidence;
 };
 
 } // namespace kqoffice::ai
