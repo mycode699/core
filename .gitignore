@@ -202,3 +202,7 @@ gdb.txt
 
 # xml unit tests sometimes leave these lying around
 **/secmod.db
+
+# Local agent / clavue / claude worktree metadata
+/.claude/
+/.clavue/
