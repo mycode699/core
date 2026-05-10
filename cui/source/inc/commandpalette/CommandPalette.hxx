@@ -27,21 +27,36 @@
 
 namespace cui::commandpalette
 {
-/// Minimal Day-0 controller — VCL widget glue lives in the .cxx so this
-/// header stays small enough to be reused by the unit test fixture.
+/// Minimal Day-0 controller — pure logic, header-only inline impl so the
+/// unit test can link against the same definitions without pulling in
+/// libcui (mirrors FuzzyMatcher's fdo#47246 layout). The .cxx
+/// translation unit is reserved for the popover glue that W2 Day-1b will
+/// add (sfx2 dispatch, Enter handler, dismiss-on-ESC) — none of which is
+/// pure-logic and none of which is exercised by this test class.
 class CommandPaletteController
 {
 public:
-    CommandPaletteController();
+    CommandPaletteController() = default;
 
     /// Replaces the corpus the matcher searches. Day-0 callers pass an
     /// in-memory list; W2 Day-1 will replace this with a CommandIndex
     /// derived from officecfg .xcu scans.
-    void setCorpus(std::vector<CommandEntry> corpus);
+    void setCorpus(std::vector<CommandEntry> corpus)
+    {
+        m_corpus = std::move(corpus);
+    }
 
     /// Re-runs FuzzyMatcher against the latest query and returns the
     /// top-N rows. The popover view in CommandPalette.cxx renders this list.
-    std::vector<ScoredEntry> queryToResults(const OUString& query) const;
+    std::vector<ScoredEntry> queryToResults(const OUString& query) const
+    {
+        return FuzzyMatcher::match(query, m_corpus);
+    }
+
+    /// Read-only access to the current corpus — exposed so tests and the
+    /// popover view can verify what setCorpus stored without round-tripping
+    /// through queryToResults.
+    const std::vector<CommandEntry>& corpus() const { return m_corpus; }
 
     /// True iff the controller would dispatch the entry at index `i`
     /// of the most recent results. Day-0 invariant: false-by-default;

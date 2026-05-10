@@ -16,6 +16,7 @@ $(eval $(call gb_Module_add_targets,cui,\
 ))
 
 $(eval $(call gb_Module_add_check_targets,cui,\
+    CppunitTest_cui_commandpalette_controller \
     CppunitTest_cui_commandpalette_fuzzy \
     CppunitTest_cui_commandpalette_index \
     CppunitTest_cui_commandpalette_recent \
