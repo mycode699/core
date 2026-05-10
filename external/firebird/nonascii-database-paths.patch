@@ -1,0 +1,76 @@
+--- builds/posix/Makefile.in
++++ builds/posix/Makefile.in
+@@ -350,9 +350,18 @@
+ $(GPRE):	$(GPRE_Objects) $(COMMON_LIB)
+ 	$(EXE_LINK) $(EXE_LINK_OPTIONS) $^ -o $@ $(FIREBIRD_LIBRARY_LINK) $(LINK_LIBS)
+ 
++ASCII_DB_ROOT = /private/tmp/firebird-bootstrap
++ASCII_INPUT_ROOT = $(ASCII_DB_ROOT)/inputs
+ HELP_FDB = $(FIREBIRD)/help/help.fdb
+ SECURITY_FDB = $(FIREBIRD)/security3.fdb
+-SECURITY_TMP = security.tmp
++METADATA_DB = $(ASCII_DB_ROOT)/metadata.fdb
++HELP_TMP = $(ASCII_DB_ROOT)/help.fdb
++HELP_GBAK_ASCII = $(ASCII_INPUT_ROOT)/help.gbak
++SECURITY_TMP = $(ASCII_DB_ROOT)/security.tmp
++SECURITY_SQL_ASCII = $(ASCII_INPUT_ROOT)/security.sql
++MSG_DB = $(ASCII_DB_ROOT)/msg.fdb
++MSG_ASCII_DIR = $(ASCII_INPUT_ROOT)/msgs
++MSG_FILES_ASCII = $(addprefix $(MSG_ASCII_DIR)/, $(MSG_SCRIPTS))
+ 
+ databases:		yachts.lnk msg.timestamp $(HELP_FDB) $(SECURITY_FDB)
+ 
+@@ -364,7 +373,10 @@
+ 
+ metadata.fdb:	$(RUN_ISQL) $(SRC_ROOT)/dbs/metadata.sql
+ 	-$(RM) $@
+-	$(LIBO_TUNNEL_LIBRARY_PATH) $(RUN_ISQL) -q -i $(SRC_ROOT)/dbs/metadata.sql
++	-$(RM) $(METADATA_DB)
++	mkdir -p $(ASCII_DB_ROOT)
++	sed "s#CREATE DATABASE 'metadata.fdb'#CREATE DATABASE '$(METADATA_DB)'#" $(SRC_ROOT)/dbs/metadata.sql | $(LIBO_TUNNEL_LIBRARY_PATH) $(RUN_ISQL) -q
++	$(CP) $(METADATA_DB) $@
+ 	$(LIBO_TUNNEL_LIBRARY_PATH) $(RUN_GFIX) -mode read_only $@
+ 	$(CHMOD) 0444 $@
+ 
+@@ -374,7 +386,11 @@
+ 	$(CHMOD) 0444 $@
+ 
+ help.fdb:	$(BLD_ROOT)/misc/help.gbak
+-	$(LIBO_TUNNEL_LIBRARY_PATH) $(RUN_GBAK) -MODE read_only -replace $< $@
++	-$(RM) $(HELP_TMP)
++	mkdir -p $(ASCII_DB_ROOT) $(ASCII_INPUT_ROOT)
++	$(CP) $< $(HELP_GBAK_ASCII)
++	$(LIBO_TUNNEL_LIBRARY_PATH) $(RUN_GBAK) -MODE read_only -replace $(HELP_GBAK_ASCII) $(HELP_TMP)
++	$(CP) $(HELP_TMP) $@
+ 	$(CHMOD) 0444 $@
+ 
+ $(SECURITY_FDB):	security.fdb
+@@ -384,18 +400,23 @@
+ security.fdb:	$(SRC_ROOT)/dbs/security.sql
+ 	-$(RM) $@
+ 	-$(RM) $(SECURITY_TMP)
++	mkdir -p $(ASCII_DB_ROOT) $(ASCII_INPUT_ROOT)
++	$(CP) $^ $(SECURITY_SQL_ASCII)
+ 	echo create database \'$(SECURITY_TMP)\'\; | $(LIBO_TUNNEL_LIBRARY_PATH) $(RUN_ISQL)
+ 	$(LIBO_TUNNEL_LIBRARY_PATH) $(RUN_GFIX) -write async $(SECURITY_TMP)
+-	$(LIBO_TUNNEL_LIBRARY_PATH) $(RUN_ISQL) -i $^ $(SECURITY_TMP)
++	$(LIBO_TUNNEL_LIBRARY_PATH) $(RUN_ISQL) -i $(SECURITY_SQL_ASCII) $(SECURITY_TMP)
+ 	$(CHMOD) a=rw $(SECURITY_TMP)
+ 	$(CP) $(SECURITY_TMP) $@
+ 	$(LIBO_TUNNEL_LIBRARY_PATH) $(RUN_GFIX) -write sync $@
+ 
+ msg.timestamp:	$(MSG_FILES)
+-	-$(RM) msg.fdb
+-	echo create database \'msg.fdb\'\; | $(LIBO_TUNNEL_LIBRARY_PATH) $(RUN_ISQL)
+-	$(LIBO_TUNNEL_LIBRARY_PATH) $(RUN_GFIX) -write async msg.fdb
+-	for sql in $(MSG_FILES); do (echo $$sql; $(LIBO_TUNNEL_LIBRARY_PATH) $(RUN_ISQL) -i $$sql msg.fdb) || exit; done
++	-$(RM) $(MSG_DB)
++	mkdir -p $(ASCII_DB_ROOT) $(MSG_ASCII_DIR)
++	for sql in $(MSG_FILES); do $(CP) $$sql $(MSG_ASCII_DIR); done
++	echo create database \'$(MSG_DB)\'\; | $(LIBO_TUNNEL_LIBRARY_PATH) $(RUN_ISQL)
++	$(LIBO_TUNNEL_LIBRARY_PATH) $(RUN_GFIX) -write async $(MSG_DB)
++	for sql in $(MSG_FILES_ASCII); do (echo $$sql; $(LIBO_TUNNEL_LIBRARY_PATH) $(RUN_ISQL) -i $$sql $(MSG_DB)) || exit; done
++	$(CP) $(MSG_DB) msg.fdb
+ 	$(TOUCH) $@
+ 
+ 

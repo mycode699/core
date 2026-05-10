@@ -20,7 +20,10 @@
     <prop oor:name="UIComponent"/>
     <prop oor:name="FilterService"><value>com.sun.star.comp.oox.ppt.PowerPointImport</value></prop>
     <prop oor:name="UserData"><value>OOXML</value></prop>
-    <prop oor:name="UIName"><value xml:lang="en-US">Office Open XML Presentation</value></prop>
+    <prop oor:name="UIName">
+        <value xml:lang="en-US">PowerPoint 2010–365 Presentation</value>
+        <value xml:lang="zh-CN">PowerPoint 演示文稿 2010–365</value>
+    </prop>
     <!-- ISO/IEC 29500:2008 -->
     <prop oor:name="FileFormatVersion"><value>1</value></prop>
     <prop oor:name="Type"><value>Office Open XML Presentation</value></prop>

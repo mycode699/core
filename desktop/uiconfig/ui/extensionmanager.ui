@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="ExtensionManagerDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="extensionmanager|ExtensionManagerDialog">Extensions</property>
+    <property name="title" translatable="yes" context="extensionmanager|ExtensionManagerDialog">扩展管理</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
     <property name="default-height">0</property>
@@ -21,7 +21,7 @@
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助(_H)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -36,7 +36,7 @@
             </child>
             <child>
               <object class="GtkButton" id="close">
-                <property name="label" translatable="yes" context="stock">_Close</property>
+                <property name="label" translatable="yes" context="stock">关闭(_C)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -78,7 +78,7 @@
                     <property name="column-spacing">12</property>
                     <child>
                       <object class="GtkCheckButton" id="shared">
-                        <property name="label" translatable="yes" context="extensionmanager|shared">Installed for all users</property>
+                        <property name="label" translatable="yes" context="extensionmanager|shared">为所有用户安装</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -87,7 +87,7 @@
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="shared-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="extensionmanager|extended_tip|shared">Filter extensions available for all users of this computer.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="extensionmanager|extended_tip|shared">筛选此电脑上所有用户可用的扩展。</property>
                           </object>
                         </child>
                       </object>
@@ -98,7 +98,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="user">
-                        <property name="label" translatable="yes" context="extensionmanager|user">Installed for current user</property>
+                        <property name="label" translatable="yes" context="extensionmanager|user">为当前用户安装</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -107,7 +107,7 @@
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="user-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="extensionmanager|extended_tip|user">Filter extensions only available for the currently logged in user.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="extensionmanager|extended_tip|user">筛选仅当前登录用户可用的扩展。</property>
                           </object>
                         </child>
                       </object>
@@ -118,7 +118,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="bundled">
-                        <property name="label" translatable="yes" context="extensionmanager|bundled">Bundled with %PRODUCTNAME</property>
+                        <property name="label" translatable="yes" context="extensionmanager|bundled">%PRODUCTNAME 内置</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -127,7 +127,7 @@
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="bundled-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="extensionmanager|extended_tip|bundled">Bundled extensions are installed by the system administrator using the operating system specific installer packages. These can not be installed, updated or removed here.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="extensionmanager|extended_tip|bundled">内置扩展由系统管理员通过操作系统安装包安装，不能在此处安装、更新或移除。</property>
                           </object>
                         </child>
                       </object>
@@ -142,7 +142,7 @@
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="extensionmanager|label1">Display Extensions</property>
+                    <property name="label" translatable="yes" context="extensionmanager|label1">显示扩展</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -160,7 +160,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="truncate-multiline">True</property>
-                <property name="placeholder-text" translatable="yes" context="extensionmanager|search">Search...</property>
+                <property name="placeholder-text" translatable="yes" context="extensionmanager|search">搜索...</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -189,7 +189,7 @@
                         <property name="vexpand">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="extensions-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="extensionmanager|extended_tip|extensions">Select the extension that you want to remove, enable, or disable. For some extensions, you can also open an Options dialog.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="extensionmanager|extended_tip|extensions">选择要移除、启用或禁用的扩展。部分扩展还可以打开选项对话框。</property>
                           </object>
                         </child>
                       </object>
@@ -211,14 +211,14 @@
                 <property name="layout-style">start</property>
                 <child>
                   <object class="GtkButton" id="optionsbtn">
-                    <property name="label" translatable="yes" context="extensionmanager|optionsbtn">_Options</property>
+                    <property name="label" translatable="yes" context="extensionmanager|optionsbtn">选项(_O)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
                     <property name="use-underline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="optionsbtn-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extensionmanager|extended_tip|optionsbtn">Select an installed extension, then click to open the Options dialog for the extension.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extensionmanager|extended_tip|optionsbtn">选择一个已安装扩展，然后点击以打开该扩展的选项对话框。</property>
                       </object>
                     </child>
                   </object>
@@ -230,14 +230,14 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="updatebtn">
-                    <property name="label" translatable="yes" context="extensionmanager|updatebtn">Check for _Updates</property>
+                    <property name="label" translatable="yes" context="extensionmanager|updatebtn">检查更新(_U)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
                     <property name="use-underline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="updatebtn-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extensionmanager|extended_tip|updatebtn">Click to check for online updates of all installed extensions. To check for updates of the selected extension only, choose the Update command from the context menu. The check for availability of updates starts immediately.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extensionmanager|extended_tip|updatebtn">点击后检查所有已安装扩展的在线更新。若只检查所选扩展，请在右键菜单中选择“更新”。检查会立即开始。</property>
                       </object>
                     </child>
                   </object>
@@ -250,7 +250,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="addbtn">
-                    <property name="label" translatable="yes" context="extensionmanager|addbtn">_Add</property>
+                    <property name="label" translatable="yes" context="extensionmanager|addbtn">添加(_A)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="can-default">True</property>
@@ -259,7 +259,7 @@
                     <property name="use-underline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="addbtn-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extensionmanager|extended_tip|addbtn">Click Add to add an extension.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extensionmanager|extended_tip|addbtn">点击“添加”以添加扩展。</property>
                       </object>
                     </child>
                   </object>
@@ -272,14 +272,14 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="removebtn">
-                    <property name="label" translatable="yes" context="extensionmanager|removebtn">_Remove</property>
+                    <property name="label" translatable="yes" context="extensionmanager|removebtn">移除(_R)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
                     <property name="use-underline">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="removebtn-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extensionmanager|extended_tip|removebtn">Select the extension that you want to remove, and then click Remove.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extensionmanager|extended_tip|removebtn">选择要移除的扩展，然后点击“移除”。</property>
                       </object>
                     </child>
                   </object>
@@ -292,7 +292,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="enablebtn">
-                    <property name="label" translatable="yes" context="extensionmanager|enablebtn">_Enable</property>
+                    <property name="label" translatable="yes" context="extensionmanager|enablebtn">启用(_E)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
@@ -322,7 +322,7 @@
                   <object class="GtkLabel" id="progressft">
                     <property name="can-focus">False</property>
                     <property name="no-show-all">True</property>
-                    <property name="label" translatable="yes" context="extensionmanager|progressft">Adding %EXTENSION_NAME</property>
+                    <property name="label" translatable="yes" context="extensionmanager|progressft">正在添加 %EXTENSION_NAME</property>
                     <property name="justify">right</property>
                   </object>
                   <packing>
@@ -332,7 +332,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="cancel">
-                    <property name="label" translatable="yes" context="stock">_Cancel</property>
+                    <property name="label" translatable="yes" context="stock">取消(_C)</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
                     <property name="no-show-all">True</property>
@@ -357,7 +357,7 @@
                 </child>
                 <child>
                   <object class="GtkLinkButton" id="getextensions">
-                    <property name="label" translatable="yes" context="extensionmanager|getextensions">Get more extensions online...</property>
+                    <property name="label" translatable="yes" context="extensionmanager|getextensions">在线获取更多扩展...</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
@@ -365,7 +365,7 @@
                     <property name="xalign">0</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="getextensions-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="extensionmanager|extended_tip|getextensions">You can find a collection of extensions on the Web.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="extensionmanager|extended_tip|getextensions">可以在网页上查找更多扩展。</property>
                       </object>
                     </child>
                   </object>
@@ -397,7 +397,7 @@
     </action-widgets>
     <child internal-child="accessible">
       <object class="AtkObject" id="ExtensionManagerDialog-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="extensionmanager|extended_tip|ExtensionManagerDialog">The Extension Manager adds, removes, disables, enables, and updates extensions.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="extensionmanager|extended_tip|ExtensionManagerDialog">扩展管理器用于添加、移除、禁用、启用和更新扩展。</property>
       </object>
     </child>
   </object>

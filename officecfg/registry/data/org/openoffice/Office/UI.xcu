@@ -24,25 +24,28 @@
         <node oor:name="com.sun.star.text.TextDocument" oor:op="replace">
           <prop oor:name="DisplayName">
             <value xml:lang="en-US">Text documents (Writer)</value>
+            <value xml:lang="zh-CN">文字文档（Writer）</value>
           </prop>
           <prop oor:name="Filters">
-            <value oor:separator=";">AportisDoc Palm DB;HTML (StarWriter);LotusWordPro;MS Word 2003 XML;MS Word 2007 XML;MS Word 2007 XML Template;MS Word 97;MS Word 97 Vorlage;MS_Works;Office Open XML Text;Office Open XML Text Template;OpenDocument Text Flat XML;PocketWord File;Rich Text Format;StarOffice XML (Writer);Markdown;Text;WordPerfect;writer_MIZI_Hwp_97;writer_StarOffice_XML_Writer_Template;writer8;writer8_template</value>
+            <value oor:separator=";">Office Open XML Text;Office Open XML Text Template;Office Open XML Text VBA;MS Word 2007 XML;MS Word 2007 XML Template;MS Word 2003 XML;writer8;writer8_template;OpenDocument Text Flat XML;Rich Text Format;StarOffice XML (Writer);writer_StarOffice_XML_Writer_Template;AportisDoc Palm DB;HTML (StarWriter);LotusWordPro;MS Word 97;MS Word 97 Vorlage;MS_Works;Markdown;PocketWord File;Text;WordPerfect;writer_MIZI_Hwp_97</value>
           </prop>
         </node>
         <node oor:name="com.sun.star.sheet.SpreadsheetDocument" oor:op="replace">
           <prop oor:name="DisplayName">
             <value xml:lang="en-US">Spreadsheets (Calc)</value>
+            <value xml:lang="zh-CN">电子表格（Calc）</value>
           </prop>
           <prop oor:name="Filters">
-            <value oor:separator=";">ADO Rowset XML;Calc MS Excel 2007 Binary;Calc MS Excel 2007 XML;Calc MS Excel 2007 XML Template;calc_StarOffice_XML_Calc_Template;calc8;calc8_template;chart8;DIF;Lotus;MiniCalc (Palm);MS Excel 2003 XML;MS Excel 97;MS Excel 97 Vorlage/Template;OpenDocument Spreadsheet Flat XML;Pocket Excel;Quattro Pro 6.0;StarOffice XML (Calc);StarOffice XML (Chart);Text - txt - csv (StarCalc)</value>
+            <value oor:separator=";">Calc Office Open XML;Calc Office Open XML Template;Calc Office Open XML VBA;Calc MS Excel 2007 Binary;Calc MS Excel 2007 XML;Calc MS Excel 2007 XML Template;calc8;calc8_template;OpenDocument Spreadsheet Flat XML;calc_StarOffice_XML_Calc_Template;StarOffice XML (Calc);ADO Rowset XML;chart8;DIF;Lotus;MiniCalc (Palm);MS Excel 2003 XML;MS Excel 97;MS Excel 97 Vorlage/Template;Pocket Excel;Quattro Pro 6.0;StarOffice XML (Chart);Text - txt - csv (StarCalc)</value>
           </prop>
         </node>
         <node oor:name="com.sun.star.presentation.PresentationDocument" oor:op="replace">
           <prop oor:name="DisplayName">
             <value xml:lang="en-US">Presentations (Impress)</value>
+            <value xml:lang="zh-CN">演示文稿（Impress）</value>
           </prop>
           <prop oor:name="Filters">
-            <value oor:separator=";">Impress MS PowerPoint 2007 XML;Impress MS PowerPoint 2007 XML AutoPlay;Impress MS PowerPoint 2007 XML Template;impress_StarOffice_XML_Draw;impress_StarOffice_XML_Impress_Template;impress8;impress8_template;MS PowerPoint 97;MS PowerPoint 97 AutoPlay;MS PowerPoint 97 Vorlage;OpenDocument Presentation Flat XML</value>
+            <value oor:separator=";">Impress Office Open XML;Impress Office Open XML AutoPlay;Impress Office Open XML Template;Impress MS PowerPoint 2007 XML;Impress MS PowerPoint 2007 XML AutoPlay;Impress MS PowerPoint 2007 XML Template;impress8;impress8_template;OpenDocument Presentation Flat XML;impress_StarOffice_XML_Draw;impress_StarOffice_XML_Impress_Template;MS PowerPoint 97;MS PowerPoint 97 AutoPlay;MS PowerPoint 97 Vorlage</value>
           </prop>
         </node>
         <node oor:name="com.sun.star.drawing.DrawingDocument" oor:op="replace">

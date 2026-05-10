@@ -41,7 +41,7 @@
   <object class="GtkDialog" id="FontSizeDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="fontsizedialog|FontSizeDialog">Font Sizes</property>
+    <property name="title" translatable="yes" context="fontsizedialog|FontSizeDialog">字体大小</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
@@ -58,14 +58,14 @@
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="default">
-                <property name="label" translatable="yes" context="fontsizedialog|default">_Default</property>
+                <property name="label" translatable="yes" context="fontsizedialog|default">默认(_D)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
                 <property name="use-underline">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="default-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="fontsizedialog|extended_tip|default">Click this button to save your changes as a default for all new formulas.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="fontsizedialog|extended_tip|default">点击此按钮可将更改保存为所有新公式的默认设置。</property>
                   </object>
                 </child>
               </object>
@@ -77,7 +77,7 @@
             </child>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="stock">_OK</property>
+                <property name="label" translatable="yes" context="stock">确定(_O)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
@@ -93,7 +93,7 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="stock">_Cancel</property>
+                <property name="label" translatable="yes" context="stock">取消(_C)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -107,7 +107,7 @@
             </child>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助(_H)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -146,7 +146,7 @@
                   <object class="GtkLabel" id="label4">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="fontsizedialog|label4">Base _size:</property>
+                    <property name="label" translatable="yes" context="fontsizedialog|label4">基准大小(_S)：</property>
                     <property name="use-underline">True</property>
                     <property name="mnemonic-widget">spinB_baseSize</property>
                     <property name="xalign">0</property>
@@ -167,7 +167,7 @@
                     <property name="adjustment">adjustmentBaseSize</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="spinB_baseSize-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="fontsizedialog|extended_tip|spinB_baseSize">All elements of a formula are proportionally scaled to the base size. To change the base size, select or type in the desired point (pt) size. You can also use other units of measure or other metrics, which are then automatically converted to points.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="fontsizedialog|extended_tip|spinB_baseSize">公式中的所有元素都会按基准大小等比例缩放。要更改基准大小，请选择或输入所需的磅值 (pt)。也可以使用其他度量单位，系统会自动转换为磅值。</property>
                       </object>
                     </child>
                   </object>
@@ -205,7 +205,7 @@
                       <object class="GtkLabel" id="label5">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="fontsizedialog|label5">_Text:</property>
+                        <property name="label" translatable="yes" context="fontsizedialog|label5">文本(_T)：</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">spinB_text</property>
                         <property name="xalign">0</property>
@@ -225,7 +225,7 @@
                         <property name="adjustment">adjustmentRelativeSizes4</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="spinB_text-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="fontsizedialog|extended_tip|spinB_text">Select the size for text in a formula relative to the base size.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="fontsizedialog|extended_tip|spinB_text">选择公式中文本相对于基准大小的大小。</property>
                           </object>
                         </child>
                       </object>
@@ -238,7 +238,7 @@
                       <object class="GtkLabel" id="label6">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="fontsizedialog|label6">_Indexes:</property>
+                        <property name="label" translatable="yes" context="fontsizedialog|label6">索引(_I)：</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">spinB_index</property>
                         <property name="xalign">0</property>
@@ -258,7 +258,7 @@
                         <property name="adjustment">adjustmentRelativeSizes5</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="spinB_index-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="fontsizedialog|extended_tip|spinB_index">Select the relative size for the indexes in a formula in proportion to the base size.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="fontsizedialog|extended_tip|spinB_index">选择公式中索引相对于基准大小的相对大小。</property>
                           </object>
                         </child>
                       </object>
@@ -271,7 +271,7 @@
                       <object class="GtkLabel" id="label7">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="fontsizedialog|label7">_Functions:</property>
+                        <property name="label" translatable="yes" context="fontsizedialog|label7">函数(_F)：</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">spinB_function</property>
                         <property name="xalign">0</property>
@@ -291,7 +291,7 @@
                         <property name="adjustment">adjustmentRelativeSizes1</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="spinB_function-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="fontsizedialog|extended_tip|spinB_function">Select the relative size for names and other function elements in a formula in proportion to the base size.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="fontsizedialog|extended_tip|spinB_function">选择公式中名称和其他函数元素相对于基准大小的相对大小。</property>
                           </object>
                         </child>
                       </object>
@@ -304,7 +304,7 @@
                       <object class="GtkLabel" id="label2">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="fontsizedialog|label2">_Operators:</property>
+                        <property name="label" translatable="yes" context="fontsizedialog|label2">运算符(_O)：</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">spinB_operator</property>
                         <property name="xalign">0</property>
@@ -324,7 +324,7 @@
                         <property name="adjustment">adjustmentRelativeSizes2</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="spinB_operator-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="fontsizedialog|extended_tip|spinB_operator">Select the relative size of the mathematical operators in a formula in proportion to the base size.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="fontsizedialog|extended_tip|spinB_operator">选择公式中数学运算符相对于基准大小的相对大小。</property>
                           </object>
                         </child>
                       </object>
@@ -337,7 +337,7 @@
                       <object class="GtkLabel" id="label3">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="fontsizedialog|label3">_Limits:</property>
+                        <property name="label" translatable="yes" context="fontsizedialog|label3">界限(_L)：</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">spinB_limit</property>
                         <property name="xalign">0</property>
@@ -357,7 +357,7 @@
                         <property name="adjustment">adjustmentRelativeSizes3</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="spinB_limit-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="fontsizedialog|extended_tip|spinB_limit">Select the relative size for the limits in a formula in proportion to the base size.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="fontsizedialog|extended_tip|spinB_limit">选择公式中界限相对于基准大小的相对大小。</property>
                           </object>
                         </child>
                       </object>
@@ -372,7 +372,7 @@
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="fontsizedialog|label1">Relative Sizes</property>
+                    <property name="label" translatable="yes" context="fontsizedialog|label1">相对大小</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -401,7 +401,7 @@
     </action-widgets>
     <child internal-child="accessible">
       <object class="AtkObject" id="FontSizeDialog-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="fontsizedialog|extended_tip|FontSizeDialog">Use this dialog to specify the font sizes for your formula. Select a base size and all elements of the formula will be scaled in relation to this base.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="fontsizedialog|extended_tip|FontSizeDialog">使用此对话框指定公式的字体大小。选择基准大小后，公式中的所有元素都会相对于该基准缩放。</property>
       </object>
     </child>
   </object>

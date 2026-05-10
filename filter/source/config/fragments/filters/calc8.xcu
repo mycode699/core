@@ -26,5 +26,6 @@
         <prop oor:name="DocumentService"><value>com.sun.star.sheet.SpreadsheetDocument</value></prop>
         <prop oor:name="UIName">
             <value xml:lang="en-US">ODF Spreadsheet</value>
-                    </prop>
+            <value xml:lang="zh-CN">ODF 电子表格</value>
+        </prop>
     </node>

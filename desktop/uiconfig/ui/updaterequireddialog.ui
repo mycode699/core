@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="UpdateRequiredDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
-    <property name="title" translatable="yes" context="updaterequireddialog|UpdateRequiredDialog">Extension Update Required</property>
+    <property name="title" translatable="yes" context="updaterequireddialog|UpdateRequiredDialog">需要更新扩展</property>
     <property name="modal">True</property>
     <property name="default_width">0</property>
     <property name="default_height">0</property>
@@ -24,7 +24,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="updaterequireddialog|check">Check for _Updates...</property>
+                <property name="label" translatable="yes" context="updaterequireddialog|check">检查更新(_U)...</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -40,7 +40,7 @@
             </child>
             <child>
               <object class="GtkButton" id="disable">
-                <property name="label" translatable="yes" context="updaterequireddialog|disable">Disable all</property>
+                <property name="label" translatable="yes" context="updaterequireddialog|disable">全部禁用</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -54,7 +54,7 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="stock">_Cancel</property>
+                <property name="label" translatable="yes" context="stock">取消(_C)</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="no_show_all">True</property>
@@ -68,7 +68,7 @@
             </child>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助(_H)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -99,7 +99,7 @@
               <object class="GtkLabel" id="updatelabel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes" context="updaterequireddialog|updatelabel">%PRODUCTNAME has been updated to a new version. Some installed %PRODUCTNAME extensions are not compatible with this version and need to be updated before they can be used.</property>
+                <property name="label" translatable="yes" context="updaterequireddialog|updatelabel">%PRODUCTNAME 已更新到新版本。部分已安装的 %PRODUCTNAME 扩展与此版本不兼容，需要先更新后才能使用。</property>
                 <property name="wrap">True</property>
                 <property name="width_chars">95</property>
                 <property name="max_width_chars">95</property>
@@ -150,7 +150,7 @@
                   <object class="GtkLabel" id="progresslabel">
                     <property name="can_focus">False</property>
                     <property name="no_show_all">True</property>
-                    <property name="label" translatable="yes" context="updaterequireddialog|progresslabel">Adding %EXTENSION_NAME</property>
+                    <property name="label" translatable="yes" context="updaterequireddialog|progresslabel">正在添加 %EXTENSION_NAME</property>
                     <property name="use_underline">True</property>
                     <property name="xalign">0</property>
                   </object>

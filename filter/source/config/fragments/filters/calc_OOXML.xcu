@@ -26,5 +26,6 @@
     <prop oor:name="DocumentService"><value>com.sun.star.sheet.SpreadsheetDocument</value></prop>
     <prop oor:name="UIName">
         <value xml:lang="en-US">Excel 2010–365 Spreadsheet</value>
+        <value xml:lang="zh-CN">Excel 表格 2010–365</value>
     </prop>
     </node>

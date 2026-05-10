@@ -29,9 +29,9 @@
 #include <com/sun/star/frame/XTitleChangeBroadcaster.hpp>
 
 #include <comphelper/sequenceashashmap.hxx>
-#include <unotools/configmgr.hxx>
 #include <utility>
 #include <vcl/window.hxx>
+#include <vcl/IconHelper.hxx>
 #include <toolkit/helper/vclunohelper.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/wrkwin.hxx>
@@ -122,6 +122,7 @@ void TitleBarUpdate::impl_updateApplicationID(const css::uno::Reference< css::fr
     OUString sApplicationID;
     try
     {
+#if defined(_WIN32)
         css::uno::Reference< css::frame::XModuleManager2 > xModuleManager =
             css::frame::ModuleManager::create( m_xContext );
 
@@ -141,11 +142,15 @@ void TitleBarUpdate::impl_updateApplicationID(const css::uno::Reference< css::fr
             sDesktopName = "Base";
         else
             sDesktopName = "Startcenter";
-#if defined(_WIN32)
-        // We use a hardcoded product name matching the registry keys so applications can be associated with file types
-        sApplicationID = "TheDocumentFoundation.LibreOffice." + sDesktopName;
+        // Match the Windows shell AppUserModelID used by our installer registrations.
+        sApplicationID = "KequanOffice." + sDesktopName;
 #else
-        sApplicationID = utl::ConfigManager::getProductName().toAsciiLowerCase() + "-" + sDesktopName.toAsciiLowerCase();
+        sal_uInt16 nIcon = DEFAULT_ICON_ID;
+        TModuleInfo aInfo;
+        if (implst_getModuleInfo(xFrame, aInfo) && aInfo.nIcon != INVALID_ICON_ID)
+            nIcon = static_cast<sal_uInt16>(aInfo.nIcon);
+
+        sApplicationID = IconHelper::GetAppIconName(nIcon);
 #endif
     }
     catch(const css::uno::Exception&)

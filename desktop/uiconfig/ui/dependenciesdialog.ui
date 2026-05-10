@@ -15,7 +15,7 @@
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
     <property name="border_width">6</property>
-    <property name="title" translatable="yes" context="dependenciesdialog|Dependencies">System dependencies check</property>
+    <property name="title" translatable="yes" context="dependenciesdialog|Dependencies">系统依赖检查</property>
     <property name="modal">True</property>
     <property name="default_width">0</property>
     <property name="default_height">0</property>
@@ -36,7 +36,7 @@
             <property name="layout_style">center</property>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="stock">_OK</property>
+                <property name="label" translatable="yes" context="stock">确定(_O)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -70,7 +70,7 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes" context="dependenciesdialog|label1">The extension cannot be installed as the following system dependencies are not fulfilled:</property>
+                <property name="label" translatable="yes" context="dependenciesdialog|label1">无法安装此扩展，因为以下系统依赖未满足：</property>
                 <property name="wrap">True</property>
                 <property name="width-chars">50</property>
                 <property name="max_width_chars">50</property>

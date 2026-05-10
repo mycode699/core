@@ -958,7 +958,7 @@
       </node>
       <node oor:name=".uno:PasteSpecial" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
-          <value xml:lang="en-US">Paste ~Special...</value>
+          <value xml:lang="en-US">选择性粘贴...</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>
@@ -1336,7 +1336,7 @@
       </node>
       <node oor:name=".uno:InsertCtrl" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
-          <value xml:lang="en-US">Insert</value>
+          <value xml:lang="en-US">插入</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>
@@ -1422,7 +1422,7 @@
       </node>
       <node oor:name=".uno:DeleteAllNotes" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
-          <value xml:lang="en-US">Delete All Comments</value>
+          <value xml:lang="en-US">删除所有批注</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>
@@ -1634,7 +1634,7 @@
       </node>
       <node oor:name=".uno:InsertContents" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
-          <value xml:lang="en-US">Paste Special</value>
+          <value xml:lang="en-US">选择性粘贴</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>

@@ -11,10 +11,8 @@ $(eval $(call gb_Package_Package,readlicense_oo_files,$(SRCDIR)/readlicense_oo/l
 
 ifneq ($(OS),MACOSX)
 $(eval $(call gb_Package_add_file,readlicense_oo_files,NOTICE,NOTICE))
-$(eval $(call gb_Package_add_file,readlicense_oo_files,CREDITS.fodt,CREDITS.fodt))
 else
 $(eval $(call gb_Package_add_file,readlicense_oo_files,Resources/NOTICE,NOTICE))
-$(eval $(call gb_Package_add_file,readlicense_oo_files,Resources/CREDITS.fodt,CREDITS.fodt))
 endif
 
 # vim: set noet sw=4 ts=4:

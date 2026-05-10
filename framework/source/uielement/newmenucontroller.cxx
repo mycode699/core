@@ -101,6 +101,12 @@ bool isSlotActive(const OUString& slot, const css::uno::Reference<css::frame::XF
 
     return false;
 }
+
+bool isV1NewMenuEntry(const OUString& rURL)
+{
+    return rURL == "private:factory/swriter" || rURL == "private:factory/scalc"
+           || rURL == ".uno:NewDoc";
+}
 }
 
 namespace framework
@@ -351,14 +357,24 @@ void NewMenuController::fillPopupMenu( Reference< css::awt::XPopupMenu > const &
         SvtDynamicMenuOptions::GetMenu( m_bNewMenu ? EDynamicMenuType::NewMenu : EDynamicMenuType::WizardMenu );
 
     sal_uInt16 nItemId = 1;
+    bool bLastInsertedSeparator = true;
 
     for ( const auto& aDynamicMenuEntry : aDynamicMenuEntries )
     {
         if ( aDynamicMenuEntry.sTitle.isEmpty() && aDynamicMenuEntry.sURL.isEmpty() )
             continue;
 
+        if (m_bNewMenu && !isV1NewMenuEntry(aDynamicMenuEntry.sURL))
+            continue;
+
         if ( aDynamicMenuEntry.sURL == "private:separator" )
-            rPopupMenu->insertSeparator(-1);
+        {
+            if (!bLastInsertedSeparator)
+            {
+                rPopupMenu->insertSeparator(-1);
+                bLastInsertedSeparator = true;
+            }
+        }
         else
         {
             rPopupMenu->insertItem(nItemId, aDynamicMenuEntry.sTitle, 0, -1);
@@ -368,6 +384,7 @@ void NewMenuController::fillPopupMenu( Reference< css::awt::XPopupMenu > const &
             pPopupMenu->setUserValue(nItemId, nAttributePtr, MenuAttributes::ReleaseAttribute);
 
             nItemId++;
+            bLastInsertedSeparator = false;
         }
     }
 

@@ -405,7 +405,7 @@ sub create_package
                 push( @installer::globals::logfileinfo, $infoline);
             }
         }
-        elsif ($volume_name_classic_app eq 'LibreOffice' || $volume_name_classic_app eq 'LibreOfficeDev')
+        elsif (! $installer::globals::languagepack && ! $installer::globals::helppack && $volume_name_classic_app ne 'LibreOffice SDK' && $volume_name_classic_app ne 'LibreOfficeDev SDK')
         {
             my $subdir = "$tempdir/$packagename/$volume_name_classic_app.app/Contents/Resources";
             if ( ! -d $subdir ) { installer::systemactions::create_directory($subdir); }

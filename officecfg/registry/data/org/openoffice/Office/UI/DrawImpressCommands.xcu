@@ -372,7 +372,7 @@
       </node>
       <node oor:name=".uno:InsertToolbox" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
-          <value xml:lang="en-US">Insert</value>
+          <value xml:lang="en-US">插入</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>
@@ -420,7 +420,7 @@
       </node>
       <node oor:name=".uno:CustomAnimation" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
-          <value xml:lang="en-US">Animation</value>
+          <value xml:lang="en-US">动画</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>
@@ -428,7 +428,7 @@
       </node>
       <node oor:name=".uno:SlideChangeWindow" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
-          <value xml:lang="en-US">Slide Transition</value>
+          <value xml:lang="en-US">幻灯片切换</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>
@@ -436,7 +436,7 @@
       </node>
       <node oor:name=".uno:MasterSlidesPanel" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
-          <value xml:lang="en-US">Master Slides</value>
+          <value xml:lang="en-US">母版幻灯片</value>
         </prop>
       </node>
       <node oor:name=".uno:ConnectorAttributes" oor:op="replace">
@@ -763,7 +763,7 @@
       </node>
       <node oor:name=".uno:PasteSpecial" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
-          <value xml:lang="en-US">Paste ~Special...</value>
+          <value xml:lang="en-US">选择性粘贴...</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>
@@ -1918,13 +1918,13 @@
       </node>
       <node oor:name=".uno:TableDialog" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
-          <value xml:lang="en-US">Ta~ble Properties...</value>
+          <value xml:lang="en-US">表格属性...</value>
         </prop>
         <prop oor:name="ContextLabel" oor:type="xs:string">
-          <value xml:lang="en-US">~Properties...</value>
+          <value xml:lang="en-US">属性...</value>
         </prop>
         <prop oor:name="PopupLabel" oor:type="xs:string">
-          <value xml:lang="en-US">Ta~ble Properties...</value>
+          <value xml:lang="en-US">表格属性...</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>

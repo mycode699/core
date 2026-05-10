@@ -57,6 +57,7 @@ $(readlicense_oo_DIR)/$(call gb_README,%) : \
 	$(call gb_Trace_StartRange,$(subst $(WORKDIR)/,,$@),XSL)
 	$(call gb_Helper_abbreviate_dirs, \
 		$(call gb_ExternalExecutable_get_command,xsltproc) --nonet --novalid -o $@.out \
+			--stringparam file $@.out \
 			--stringparam com1 $(COM) \
 			--stringparam cp1 $(CPUNAME) \
 			--stringparam lang1 $(word 2,$(subst _, ,$(basename $(notdir $@)))) \

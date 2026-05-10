@@ -26,5 +26,6 @@
         <prop oor:name="DocumentService"><value>com.sun.star.text.TextDocument</value></prop>
         <prop oor:name="UIName">
             <value xml:lang="en-US">ODF Text Document</value>
-                    </prop>
+            <value xml:lang="zh-CN">ODF 文字文档</value>
+        </prop>
     </node>

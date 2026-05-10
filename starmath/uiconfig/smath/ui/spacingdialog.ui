@@ -25,7 +25,7 @@
       <object class="GtkRadioMenuItem" id="menuitem1">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="spacingdialog|menuitem1">Spacing</property>
+        <property name="label" translatable="yes" context="spacingdialog|menuitem1">间距</property>
         <property name="use-underline">True</property>
         <property name="active">True</property>
         <property name="draw-as-radio">True</property>
@@ -35,7 +35,7 @@
       <object class="GtkRadioMenuItem" id="menuitem2">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="spacingdialog|menuitem2">Indexes</property>
+        <property name="label" translatable="yes" context="spacingdialog|menuitem2">索引</property>
         <property name="use-underline">True</property>
         <property name="draw-as-radio">True</property>
         <property name="group">menuitem1</property>
@@ -45,7 +45,7 @@
       <object class="GtkRadioMenuItem" id="menuitem3">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="spacingdialog|menuitem3">Fractions</property>
+        <property name="label" translatable="yes" context="spacingdialog|menuitem3">分数</property>
         <property name="use-underline">True</property>
         <property name="draw-as-radio">True</property>
         <property name="group">menuitem1</property>
@@ -55,7 +55,7 @@
       <object class="GtkRadioMenuItem" id="menuitem4">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="spacingdialog|menuitem4">Fraction Bars</property>
+        <property name="label" translatable="yes" context="spacingdialog|menuitem4">分数线</property>
         <property name="use-underline">True</property>
         <property name="draw-as-radio">True</property>
         <property name="group">menuitem1</property>
@@ -65,7 +65,7 @@
       <object class="GtkRadioMenuItem" id="menuitem5">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="spacingdialog|menuitem5">Limits</property>
+        <property name="label" translatable="yes" context="spacingdialog|menuitem5">界限</property>
         <property name="use-underline">True</property>
         <property name="draw-as-radio">True</property>
         <property name="group">menuitem1</property>
@@ -75,7 +75,7 @@
       <object class="GtkRadioMenuItem" id="menuitem6">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="spacingdialog|menuitem6">Brackets</property>
+        <property name="label" translatable="yes" context="spacingdialog|menuitem6">括号</property>
         <property name="use-underline">True</property>
         <property name="draw-as-radio">True</property>
         <property name="group">menuitem1</property>
@@ -85,7 +85,7 @@
       <object class="GtkRadioMenuItem" id="menuitem7">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="spacingdialog|menuitem7">Matrices</property>
+        <property name="label" translatable="yes" context="spacingdialog|menuitem7">矩阵</property>
         <property name="use-underline">True</property>
         <property name="draw-as-radio">True</property>
         <property name="group">menuitem1</property>
@@ -95,7 +95,7 @@
       <object class="GtkRadioMenuItem" id="menuitem8">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="spacingdialog|menuitem8">Symbols</property>
+        <property name="label" translatable="yes" context="spacingdialog|menuitem8">符号</property>
         <property name="use-underline">True</property>
         <property name="draw-as-radio">True</property>
         <property name="group">menuitem1</property>
@@ -105,7 +105,7 @@
       <object class="GtkRadioMenuItem" id="menuitem9">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="spacingdialog|menuitem9">Operators</property>
+        <property name="label" translatable="yes" context="spacingdialog|menuitem9">运算符</property>
         <property name="use-underline">True</property>
         <property name="draw-as-radio">True</property>
         <property name="group">menuitem1</property>
@@ -115,7 +115,7 @@
       <object class="GtkRadioMenuItem" id="menuitem10">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="spacingdialog|menuitem10">Borders</property>
+        <property name="label" translatable="yes" context="spacingdialog|menuitem10">边框</property>
         <property name="use-underline">True</property>
         <property name="draw-as-radio">True</property>
         <property name="group">menuitem1</property>
@@ -125,7 +125,7 @@
   <object class="GtkDialog" id="SpacingDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="spacingdialog|SpacingDialog">Spacing</property>
+    <property name="title" translatable="yes" context="spacingdialog|SpacingDialog">间距</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
@@ -142,7 +142,7 @@
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="default">
-                <property name="label" translatable="yes" context="spacingdialog|default">_Default</property>
+                <property name="label" translatable="yes" context="spacingdialog|default">默认(_D)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -156,7 +156,7 @@
             </child>
             <child>
               <object class="GtkMenuButton" id="category">
-                <property name="label" translatable="yes" context="spacingdialog|category">_Category</property>
+                <property name="label" translatable="yes" context="spacingdialog|category">类别(_C)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -176,7 +176,7 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="stock">_Cancel</property>
+                <property name="label" translatable="yes" context="stock">取消(_C)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -190,7 +190,7 @@
             </child>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="stock">_OK</property>
+                <property name="label" translatable="yes" context="stock">确定(_O)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
@@ -206,7 +206,7 @@
             </child>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助(_H)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -270,7 +270,7 @@
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
                                 <property name="no-show-all">True</property>
-                                <property name="label">String 1</property>
+                                <property name="label">字符串 1</property>
                                 <property name="use-underline">True</property>
                                 <property name="mnemonic-widget">spinbutton1</property>
                                 <property name="xalign">0</property>
@@ -300,7 +300,7 @@
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
                                 <property name="no-show-all">True</property>
-                                <property name="label">String 2</property>
+                                <property name="label">字符串 2</property>
                                 <property name="use-underline">True</property>
                                 <property name="mnemonic-widget">spinbutton2</property>
                                 <property name="xalign">0</property>
@@ -327,7 +327,7 @@
                             </child>
                             <child>
                               <object class="GtkCheckButton" id="checkbutton">
-                                <property name="label" translatable="yes" context="spacingdialog|checkbutton">Scale all brackets</property>
+                                <property name="label" translatable="yes" context="spacingdialog|checkbutton">缩放所有括号</property>
                                 <property name="can-focus">True</property>
                                 <property name="receives-default">False</property>
                                 <property name="no-show-all">True</property>
@@ -345,7 +345,7 @@
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
                                 <property name="no-show-all">True</property>
-                                <property name="label">String 3</property>
+                                <property name="label">字符串 3</property>
                                 <property name="use-underline">True</property>
                                 <property name="mnemonic-widget">spinbutton3</property>
                                 <property name="xalign">0</property>
@@ -375,7 +375,7 @@
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
                                 <property name="no-show-all">True</property>
-                                <property name="label">String 4</property>
+                                <property name="label">字符串 4</property>
                                 <property name="use-underline">True</property>
                                 <property name="mnemonic-widget">spinbutton4</property>
                                 <property name="xalign">0</property>
@@ -710,7 +710,7 @@
                   <object class="GtkLabel" id="title">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="spacingdialog|title">Title</property>
+                    <property name="label" translatable="yes" context="spacingdialog|title">标题</property>
                     <property name="use-underline">True</property>
                     <property name="xalign">0</property>
                     <attributes>
@@ -760,7 +760,7 @@
                               <object class="GtkLabel" id="1label1">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|1label1">_Spacing:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|1label1">间距(_S)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -773,7 +773,7 @@
                               <object class="GtkLabel" id="1label2">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|1label2">_Line spacing:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|1label2">行距(_L)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -786,7 +786,7 @@
                               <object class="GtkLabel" id="1label3">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|1label3">_Root spacing:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|1label3">根号间距(_R)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -815,7 +815,7 @@
                   <object class="GtkLabel" id="1title">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="spacingdialog|1title">Spacing</property>
+                    <property name="label" translatable="yes" context="spacingdialog|1title">间距</property>
                     <property name="use-underline">True</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
@@ -864,7 +864,7 @@
                               <object class="GtkLabel" id="2label1">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|2label1">_Superscript:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|2label1">上标(_S)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -877,7 +877,7 @@
                               <object class="GtkLabel" id="2label2">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|2label2">S_ubscript:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|2label2">下标(_U)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -906,7 +906,7 @@
                   <object class="GtkLabel" id="2title">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="spacingdialog|2title">Indexes</property>
+                    <property name="label" translatable="yes" context="spacingdialog|2title">索引</property>
                     <property name="use-underline">True</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
@@ -955,7 +955,7 @@
                               <object class="GtkLabel" id="3label1">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|3label1">_Numerator:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|3label1">分子(_N)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -968,7 +968,7 @@
                               <object class="GtkLabel" id="3label2">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|3label2">_Denominator:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|3label2">分母(_D)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -997,7 +997,7 @@
                   <object class="GtkLabel" id="3title">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="spacingdialog|3title">Fractions</property>
+                    <property name="label" translatable="yes" context="spacingdialog|3title">分数</property>
                     <property name="use-underline">True</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
@@ -1046,7 +1046,7 @@
                               <object class="GtkLabel" id="4label1">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|4label1">_Excess length:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|4label1">超出长度(_E)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -1059,7 +1059,7 @@
                               <object class="GtkLabel" id="4label2">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|4label2">_Weight:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|4label2">粗细(_W)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -1088,7 +1088,7 @@
                   <object class="GtkLabel" id="4title">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="spacingdialog|4title">Fraction Bar</property>
+                    <property name="label" translatable="yes" context="spacingdialog|4title">分数线</property>
                     <property name="use-underline">True</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
@@ -1137,7 +1137,7 @@
                               <object class="GtkLabel" id="5label1">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|5label1">_Upper limit:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|5label1">上界(_U)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -1150,7 +1150,7 @@
                               <object class="GtkLabel" id="5label2">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|5label2">_Lower limit:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|5label2">下界(_L)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -1179,7 +1179,7 @@
                   <object class="GtkLabel" id="5title">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="spacingdialog|5title">Limits</property>
+                    <property name="label" translatable="yes" context="spacingdialog|5title">界限</property>
                     <property name="use-underline">True</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
@@ -1228,7 +1228,7 @@
                               <object class="GtkLabel" id="6label1">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|6label1">_Excess size (left/right):</property>
+                                <property name="label" translatable="yes" context="spacingdialog|6label1">超出大小（左右）(_E)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -1241,7 +1241,7 @@
                               <object class="GtkLabel" id="6label2">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|6label2">_Spacing:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|6label2">间距(_S)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -1254,7 +1254,7 @@
                               <object class="GtkLabel" id="6label4">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|6label4">_Excess size:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|6label4">超出大小(_E)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -1283,7 +1283,7 @@
                   <object class="GtkLabel" id="6title">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="spacingdialog|6title">Brackets</property>
+                    <property name="label" translatable="yes" context="spacingdialog|6title">括号</property>
                     <property name="use-underline">True</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
@@ -1332,7 +1332,7 @@
                               <object class="GtkLabel" id="7label1">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|7label1">_Line spacing:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|7label1">行距(_L)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -1345,7 +1345,7 @@
                               <object class="GtkLabel" id="7label2">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|7label2">_Column spacing:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|7label2">列距(_C)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -1374,7 +1374,7 @@
                   <object class="GtkLabel" id="7title">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="spacingdialog|7title">Matrix</property>
+                    <property name="label" translatable="yes" context="spacingdialog|7title">矩阵</property>
                     <property name="use-underline">True</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
@@ -1423,7 +1423,7 @@
                               <object class="GtkLabel" id="8label1">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|8label1">_Primary height:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|8label1">主要高度(_P)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -1436,7 +1436,7 @@
                               <object class="GtkLabel" id="8label2">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|8label2">_Minimum spacing:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|8label2">最小间距(_M)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -1465,7 +1465,7 @@
                   <object class="GtkLabel" id="8title">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="spacingdialog|8title">Symbols</property>
+                    <property name="label" translatable="yes" context="spacingdialog|8title">符号</property>
                     <property name="use-underline">True</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
@@ -1514,7 +1514,7 @@
                               <object class="GtkLabel" id="9label1">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|9label1">_Excess size:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|9label1">超出大小(_E)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -1527,7 +1527,7 @@
                               <object class="GtkLabel" id="9label2">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|9label2">_Spacing:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|9label2">间距(_S)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -1556,7 +1556,7 @@
                   <object class="GtkLabel" id="9title">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="spacingdialog|9title">Operators</property>
+                    <property name="label" translatable="yes" context="spacingdialog|9title">运算符</property>
                     <property name="use-underline">True</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
@@ -1605,7 +1605,7 @@
                               <object class="GtkLabel" id="10label1">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|10label1">_Left:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|10label1">左侧(_L)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -1618,7 +1618,7 @@
                               <object class="GtkLabel" id="10label2">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|10label2">_Right:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|10label2">右侧(_R)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -1631,7 +1631,7 @@
                               <object class="GtkLabel" id="10label3">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|10label3">_Top:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|10label3">顶部(_T)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -1644,7 +1644,7 @@
                               <object class="GtkLabel" id="10label4">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes" context="spacingdialog|10label4">_Bottom:</property>
+                                <property name="label" translatable="yes" context="spacingdialog|10label4">底部(_B)：</property>
                                 <property name="use-underline">True</property>
                                 <property name="xalign">0</property>
                               </object>
@@ -1673,7 +1673,7 @@
                   <object class="GtkLabel" id="10title">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="spacingdialog|10title">Borders</property>
+                    <property name="label" translatable="yes" context="spacingdialog|10title">边框</property>
                     <property name="use-underline">True</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>

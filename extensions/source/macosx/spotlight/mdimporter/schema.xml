@@ -49,7 +49,7 @@
             </displayattrs>
         </type>
 
-        <type name="org.oasis.opendocument.text">
+        <type name="org.oasis-open.opendocument.text">
             <note>
         The custom metadata info.
             </note>
@@ -85,7 +85,7 @@
             </displayattrs>
         </type>
 
-        <type name="org.oasis.opendocument.spreadsheet">
+        <type name="org.oasis-open.opendocument.spreadsheet">
             <note>
         The custom metadata info.
             </note>
@@ -121,7 +121,7 @@
             </displayattrs>
         </type>
 
-        <type name="org.oasis.opendocument.presentation">
+        <type name="org.oasis-open.opendocument.presentation">
             <note>
         The custom metadata info.
             </note>
@@ -157,7 +157,7 @@
             </displayattrs>
         </type>
 
-        <type name="org.oasis.opendocument.graphics">
+        <type name="org.oasis-open.opendocument.graphics">
             <note>
         The custom metadata info.
             </note>
@@ -193,7 +193,7 @@
             </displayattrs>
         </type>
 
-        <type name="org.oasis.opendocument.text-master">
+        <type name="org.oasis-open.opendocument.text-master">
             <note>
         The custom metadata info.
             </note>
@@ -229,7 +229,7 @@
             </displayattrs>
         </type>
 
-        <type name="org.oasis.opendocument.formula">
+        <type name="org.oasis-open.opendocument.formula">
             <note>
         The custom metadata info.
             </note>
@@ -265,7 +265,7 @@
             </displayattrs>
         </type>
 
-        <type name="org.oasis.opendocument.text-template">
+        <type name="org.oasis-open.opendocument.text-template">
             <note>
         The custom metadata info.
             </note>
@@ -301,7 +301,7 @@
             </displayattrs>
         </type>
 
-        <type name="org.oasis.opendocument.spreadsheet-template">
+        <type name="org.oasis-open.opendocument.spreadsheet-template">
             <note>
         The custom metadata info.
             </note>
@@ -337,7 +337,7 @@
             </displayattrs>
         </type>
 
-        <type name="org.oasis.opendocument.presentation-template">
+        <type name="org.oasis-open.opendocument.presentation-template">
             <note>
         The custom metadata info.
             </note>
@@ -373,7 +373,7 @@
             </displayattrs>
         </type>
 
-        <type name="org.oasis.opendocument.graphics-template">
+        <type name="org.oasis-open.opendocument.graphics-template">
             <note>
         The custom metadata info.
             </note>
@@ -391,7 +391,7 @@
             </displayattrs>
         </type>
 
-        <type name="org.oasis.opendocument.chart">
+        <type name="org.oasis-open.opendocument.chart">
             <note>
         The custom metadata info.
             </note>
@@ -410,4 +410,3 @@
         </type>
     </types>
 </schema>
-

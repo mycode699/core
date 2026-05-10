@@ -32,7 +32,7 @@
             <property name="spacing">6</property>
             <child>
               <object class="GtkCheckButton" id="title">
-                <property name="label" translatable="yes" context="printeroptions|title">Title</property>
+                <property name="label" translatable="yes" context="printeroptions|title">标题</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -40,7 +40,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="title-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="printeroptions|extended_tip|title">Specifies whether you want the name of the document to be included in the printout.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="printeroptions|extended_tip|title">指定打印输出中是否包含文档名称。</property>
                   </object>
                 </child>
               </object>
@@ -52,7 +52,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="formulatext">
-                <property name="label" translatable="yes" context="printeroptions|formulatext">Formula text</property>
+                <property name="label" translatable="yes" context="printeroptions|formulatext">公式文本</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -60,7 +60,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="formulatext-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="printeroptions|extended_tip|formulatext">Specifies whether to include the contents of the Commands window at the bottom of the printout.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="printeroptions|extended_tip|formulatext">指定打印输出底部是否包含“命令”窗口中的内容。</property>
                   </object>
                 </child>
               </object>
@@ -72,7 +72,7 @@
             </child>
             <child>
               <object class="GtkCheckButton" id="borders">
-                <property name="label" translatable="yes" context="printeroptions|borders">Borders</property>
+                <property name="label" translatable="yes" context="printeroptions|borders">边框</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -80,7 +80,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="borders-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="printeroptions|extended_tip|borders">Applies a thin border to the formula area in the printout.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="printeroptions|extended_tip|borders">在打印输出中的公式区域应用细边框。</property>
                   </object>
                 </child>
               </object>
@@ -96,7 +96,7 @@
           <object class="GtkLabel" id="label4">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="printeroptions|label4">Contents</property>
+            <property name="label" translatable="yes" context="printeroptions|label4">内容</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -125,7 +125,7 @@
             <property name="spacing">6</property>
             <child>
               <object class="GtkRadioButton" id="originalsize">
-                <property name="label" translatable="yes" context="printeroptions|originalsize">Original size</property>
+                <property name="label" translatable="yes" context="printeroptions|originalsize">原始大小</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -134,7 +134,7 @@
                 <property name="draw-indicator">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="originalsize-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="printeroptions|extended_tip|originalsize">Prints the formula without adjusting the current font size.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="printeroptions|extended_tip|originalsize">不调整当前字体大小，按原样打印公式。</property>
                   </object>
                 </child>
               </object>
@@ -146,7 +146,7 @@
             </child>
             <child>
               <object class="GtkRadioButton" id="fittopage">
-                <property name="label" translatable="yes" context="printeroptions|fittopage">Fit to page</property>
+                <property name="label" translatable="yes" context="printeroptions|fittopage">适合页面</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -155,7 +155,7 @@
                 <property name="group">originalsize</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="fittopage-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="printeroptions|extended_tip|fittopage">Adjusts the formula to the page format used in the printout.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="printeroptions|extended_tip|fittopage">按打印输出使用的页面格式调整公式。</property>
                   </object>
                 </child>
               </object>
@@ -172,7 +172,7 @@
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkRadioButton" id="scaling">
-                    <property name="label" translatable="yes" context="printeroptions|scaling">Scaling:</property>
+                    <property name="label" translatable="yes" context="printeroptions|scaling">缩放:</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -181,7 +181,7 @@
                     <property name="group">originalsize</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="scaling-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="printeroptions|extended_tip|scaling">Reduces or enlarges the size of the printed formula by a specified factor.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="printeroptions|extended_tip|scaling">按指定比例缩小或放大打印出的公式。</property>
                       </object>
                     </child>
                   </object>
@@ -199,7 +199,7 @@
                     <property name="adjustment">adjustment1</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="scalingspin-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="printeroptions|extended_tip|scalingspim">Enter the scale factor for scaling the formula.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="printeroptions|extended_tip|scalingspim">输入公式的缩放比例。</property>
                       </object>
                     </child>
                   </object>
@@ -222,7 +222,7 @@
           <object class="GtkLabel" id="label5">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="printeroptions|label5">Size</property>
+            <property name="label" translatable="yes" context="printeroptions|label5">大小</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>

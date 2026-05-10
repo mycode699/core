@@ -21,7 +21,7 @@
   <node oor:name="ModuleDependendFilterOrder">
     <node oor:name="com.sun.star.sheet.SpreadsheetDocument" oor:op="replace" install:module="calc">
       <prop oor:name="SortedFilterList">
-        <value oor:separator=";">calc8;calc8_template;StarOffice XML (Calc);calc_StarOffice_XML_Calc_Template;OpenDocument Spreadsheet Flat XML;UOF spreadsheet;Calc Office Open XML;Calc Office Open XML Template;Calc Office Open XML VBA;MS Excel 97;MS Excel 97 Vorlage/Template;MS Excel 95;MS Excel 95 Vorlage/Template;MS Excel 5.0/95;MS Excel 5.0/95 Vorlage/Template;MS Excel 4.0;MS Excel 4.0 Vorlage/Template;;DIF;dBase;HTML (StarCalc);Lotus;Pocket Excel;Quattro Pro 6.0;Rich Text Format (StarCalc);SYLK;Text - txt - csv (StarCalc);calc_HTML_WebQuery;ADO Rowset XML;Calc MS Excel 2007 XML;Calc MS Excel 2007 XML Template;Calc MS Excel 2007 Binary;Calc MS Excel 2007 VBA XML;MS Excel 2003 XML</value>
+        <value oor:separator=";">Calc Office Open XML;Calc Office Open XML Template;Calc Office Open XML VBA;calc8;calc8_template;OpenDocument Spreadsheet Flat XML;UOF spreadsheet;StarOffice XML (Calc);calc_StarOffice_XML_Calc_Template;Calc MS Excel 2007 XML;Calc MS Excel 2007 XML Template;Calc MS Excel 2007 Binary;Calc MS Excel 2007 VBA XML;MS Excel 2003 XML;MS Excel 97;MS Excel 97 Vorlage/Template;MS Excel 95;MS Excel 95 Vorlage/Template;MS Excel 5.0/95;MS Excel 5.0/95 Vorlage/Template;MS Excel 4.0;MS Excel 4.0 Vorlage/Template;;DIF;dBase;HTML (StarCalc);Lotus;Pocket Excel;Quattro Pro 6.0;Rich Text Format (StarCalc);SYLK;Text - txt - csv (StarCalc);calc_HTML_WebQuery;ADO Rowset XML</value>
       </prop>
     </node>
     <node oor:name="com.sun.star.drawing.DrawingDocument" oor:op="replace" install:module="draw">
@@ -31,7 +31,7 @@
     </node>
     <node oor:name="com.sun.star.presentation.PresentationDocument" oor:op="replace" install:module="impress">
       <prop oor:name="SortedFilterList">
-        <value oor:separator=";">impress8;impress8_template;impress8_draw;StarOffice XML (Impress);impress_StarOffice_XML_Impress_Template;impress_StarOffice_XML_Draw;OpenDocument Presentation Flat XML;UOF presentation;Impress MS PowerPoint 2007 XML;Impress MS PowerPoint 2007 XML AutoPlay;Impress MS PowerPoint 2007 XML Template;MS PowerPoint 97;MS PowerPoint 97 AutoPlay;MS PowerPoint 97 Vorlage;CGM - Computer Graphics Metafile;Impress Office Open XML;Impress Office Open XML AutoPlay;Impress Office Open XML Template</value>
+        <value oor:separator=";">Impress Office Open XML;Impress Office Open XML AutoPlay;Impress Office Open XML Template;impress8;impress8_template;impress8_draw;OpenDocument Presentation Flat XML;UOF presentation;StarOffice XML (Impress);impress_StarOffice_XML_Impress_Template;impress_StarOffice_XML_Draw;Impress MS PowerPoint 2007 XML;Impress MS PowerPoint 2007 XML AutoPlay;Impress MS PowerPoint 2007 XML Template;MS PowerPoint 97;MS PowerPoint 97 AutoPlay;MS PowerPoint 97 Vorlage;CGM - Computer Graphics Metafile</value>
       </prop>
     </node>
     <node oor:name="com.sun.star.formula.FormulaProperties" oor:op="replace" install:module="math">
@@ -46,7 +46,7 @@
     </node>
     <node oor:name="com.sun.star.text.TextDocument" oor:op="replace" install:module="writer">
       <prop oor:name="SortedFilterList">
-        <value oor:separator=";">writer8;writer8_template;StarOffice XML (Writer);writer_StarOffice_XML_Writer_Template;OpenDocument Text Flat XML;UOF text;Office Open XML Text;Office Open XML Text Template;Office Open XML Text VBA;MS Word 2007 XML;MS Word 2007 XML Template;MS Word 2003 XML;Rich Text Format;MS Word 97;MS Word 97 Vorlage;MS Word 95;MS Word 95 Vorlage;MS WinWord 6.0;MS WinWord 5;MS_Works;AportisDoc Palm DB;DocBook File;writer_MIZI_Hwp_97;HTML (StarWriter);LotusWordPro;PocketWord File;T602Document;Markdown;Text;Text (encoded);WordPerfect</value>
+        <value oor:separator=";">Office Open XML Text;Office Open XML Text Template;Office Open XML Text VBA;writer8;writer8_template;OpenDocument Text Flat XML;UOF text;StarOffice XML (Writer);writer_StarOffice_XML_Writer_Template;MS Word 2007 XML;MS Word 2007 XML Template;MS Word 2003 XML;Rich Text Format;MS Word 97;MS Word 97 Vorlage;MS Word 95;MS Word 95 Vorlage;MS WinWord 6.0;MS WinWord 5;MS_Works;AportisDoc Palm DB;DocBook File;writer_MIZI_Hwp_97;HTML (StarWriter);LotusWordPro;PocketWord File;T602Document;Markdown;Text;Text (encoded);WordPerfect</value>
       </prop>
     </node>
     <node oor:name="com.sun.star.text.WebDocument" oor:op="replace" install:module="writer">

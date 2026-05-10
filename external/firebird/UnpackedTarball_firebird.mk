@@ -38,6 +38,7 @@ $(eval $(call gb_UnpackedTarball_add_patches,firebird,\
 		external/firebird/c++17.patch \
 		external/firebird/ubsan.patch \
 		external/firebird/asan.patch \
+		external/firebird/nonascii-database-paths.patch \
 		external/firebird/firebird-tdf125284.patch.1 \
 		external/firebird/0001-Make-comparison-operator-member-functions-const.patch.1 \
 		external/firebird/macos-arm64.patch.0 \

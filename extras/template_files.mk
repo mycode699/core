@@ -37,6 +37,9 @@ extra_files_COMMON := \
     offimisc/Businesscard-with-logo/Pictures/10000201000001F4000000A0108F3F06.png \
     offimisc/Businesscard-with-logo/settings.xml \
     offimisc/Businesscard-with-logo/Thumbnails/thumbnail.png \
+    spreadsheets/Budget_CN/settings.xml \
+    spreadsheets/Project_Schedule_CN/settings.xml \
+    spreadsheets/Sales_Tracker_CN/settings.xml \
     personal/CV/manifest.rdf \
     personal/CV/Thumbnails/thumbnail.png \
     personal/Resume1page/manifest.rdf \
@@ -47,6 +50,7 @@ extra_files_COMMON := \
 
 
 extra_files_PRESENTATIONS := \
+    presnt/Business_Pitch_CN/Thumbnails/thumbnail.png \
     presnt/Beehive/Thumbnails/thumbnail.png \
     presnt/Blue_Curve/Thumbnails/thumbnail.png \
     presnt/Blueprint_Plans/Pictures/Blueprint_Plans-first-bg-wide.svg  \
@@ -96,7 +100,9 @@ extra_files_PRESENTATIONS := \
     presnt/Piano/Thumbnails/thumbnail.png \
     presnt/Portfolio/Thumbnails/thumbnail.png \
     presnt/Progress/Thumbnails/thumbnail.png \
+    presnt/Project_Report_CN/Thumbnails/thumbnail.png \
     presnt/Sunset/Thumbnails/thumbnail.png \
+    presnt/Teaching_Courseware_CN/Thumbnails/thumbnail.png \
     presnt/Vintage/Pictures/10000201000004B000000337490AE22881331C9B.png  \
     presnt/Vintage/Pictures/10000201000004B00000033776CA70A4BFE2196B.png  \
     presnt/Vintage/Pictures/10000201000004B0000003379D1127938561C230.png  \

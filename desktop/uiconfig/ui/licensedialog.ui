@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="LicenseDialog">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
-    <property name="title" translatable="yes" context="licensedialog|LicenseDialog">Extension Software License Agreement</property>
+    <property name="title" translatable="yes" context="licensedialog|LicenseDialog">扩展软件许可协议</property>
     <property name="type_hint">dialog</property>
     <child>
       <placeholder/>
@@ -21,7 +21,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="licensedialog|accept">Accept</property>
+                <property name="label" translatable="yes" context="licensedialog|accept">接受</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -36,7 +36,7 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="licensedialog|decline">Decline</property>
+                <property name="label" translatable="yes" context="licensedialog|decline">拒绝</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -67,7 +67,7 @@
               <object class="GtkLabel" id="head">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes" context="licensedialog|head">Please follow these steps to proceed with the installation of the extension:</property>
+                <property name="label" translatable="yes" context="licensedialog|head">请按以下步骤继续安装扩展：</property>
                 <property name="xalign">0</property>
               </object>
               <packing>
@@ -140,7 +140,7 @@
                     <property name="can_focus">False</property>
                     <property name="valign">start</property>
                     <property name="hexpand">True</property>
-                    <property name="label" translatable="yes" context="licensedialog|label4">Read the complete License Agreement. Use the scroll bar or the 'Scroll Down' button in this dialog to view the entire license text.</property>
+                    <property name="label" translatable="yes" context="licensedialog|label4">请阅读完整许可协议。可使用滚动条或本对话框中的“向下滚动”按钮查看全部许可文本。</property>
                     <property name="wrap">True</property>
                     <property name="width_chars">55</property>
                     <property name="max_width_chars">55</property>
@@ -157,7 +157,7 @@
                     <property name="can_focus">False</property>
                     <property name="valign">start</property>
                     <property name="hexpand">True</property>
-                    <property name="label" translatable="yes" context="licensedialog|label5">Accept the License Agreement for the extension by pressing the 'Accept' button.</property>
+                    <property name="label" translatable="yes" context="licensedialog|label5">点击“接受”按钮，即表示接受此扩展的许可协议。</property>
                     <property name="wrap">True</property>
                     <property name="width_chars">55</property>
                     <property name="max_width_chars">55</property>
@@ -170,7 +170,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="down">
-                    <property name="label" translatable="yes" context="licensedialog|down">_Scroll Down</property>
+                    <property name="label" translatable="yes" context="licensedialog|down">向下滚动(_S)</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>

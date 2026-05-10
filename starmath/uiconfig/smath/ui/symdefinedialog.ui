@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="EditSymbols">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
-    <property name="title" translatable="yes" context="symdefinedialog|EditSymbols">Edit Symbols</property>
+    <property name="title" translatable="yes" context="symdefinedialog|EditSymbols">编辑符号</property>
     <property name="modal">True</property>
     <property name="default_width">0</property>
     <property name="default_height">0</property>
@@ -21,7 +21,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="stock">_OK</property>
+                <property name="label" translatable="yes" context="stock">确定(_O)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -37,7 +37,7 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="stock">_Cancel</property>
+                <property name="label" translatable="yes" context="stock">取消(_C)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -51,7 +51,7 @@
             </child>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助(_H)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -98,7 +98,7 @@
                       <object class="GtkLabel" id="oldSymbolSetText">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes" context="symdefinedialog|oldSymbolSetText">O_ld symbol set:</property>
+                        <property name="label" translatable="yes" context="symdefinedialog|oldSymbolSetText">旧符号集(_L)：</property>
                         <property name="use_underline">True</property>
                         <property name="mnemonic_widget">oldSymbolSets</property>
                         <property name="xalign">0</property>
@@ -123,7 +123,7 @@
                         </child>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="oldSymbolSets-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="symdefinedialog|extended_tip|oldSymbolSets">This list box contains the name of the current symbol set. If you want, you can also select a different symbol set.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="symdefinedialog|extended_tip|oldSymbolSets">此列表框包含当前符号集的名称。也可以选择其他符号集。</property>
                           </object>
                         </child>
                       </object>
@@ -151,7 +151,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="margin_top">6</property>
-                        <property name="label" translatable="yes" context="symdefinedialog|oldSymbolText">_Old symbol:</property>
+                        <property name="label" translatable="yes" context="symdefinedialog|oldSymbolText">旧符号(_O)：</property>
                         <property name="use_underline">True</property>
                         <property name="mnemonic_widget">oldSymbols</property>
                         <property name="xalign">0</property>
@@ -176,7 +176,7 @@
                         </child>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="oldSymbols-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="symdefinedialog|extended_tip|oldSymbols">Select the name of the current symbol.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="symdefinedialog|extended_tip|oldSymbols">选择当前符号的名称。</property>
                           </object>
                         </child>
                       </object>
@@ -243,14 +243,14 @@
                     <property name="layout_style">start</property>
                     <child>
                       <object class="GtkButton" id="add">
-                        <property name="label" translatable="yes" context="stock">_Add</property>
+                        <property name="label" translatable="yes" context="stock">添加(_A)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="use-underline">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="add-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="symdefinedialog|extended_tip|add">Click this button to add the symbol shown in the right preview window to the current symbol set.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="symdefinedialog|extended_tip|add">点击此按钮可将右侧预览窗口中显示的符号添加到当前符号集。</property>
                           </object>
                         </child>
                       </object>
@@ -262,14 +262,14 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="modify">
-                        <property name="label" translatable="yes" context="symdefinedialog|modify">_Modify</property>
+                        <property name="label" translatable="yes" context="symdefinedialog|modify">修改(_M)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="use_underline">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="modify-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="symdefinedialog|extended_tip|modify">Click this button to replace the name of the symbol shown in the left preview window (the old name is displayed in the Old symbol list box) with the new name you have entered in the Symbol list box.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="symdefinedialog|extended_tip|modify">点击此按钮，可用“符号”列表框中输入的新名称替换左侧预览窗口中所示符号的名称（旧名称显示在“旧符号”列表框中）。</property>
                           </object>
                         </child>
                       </object>
@@ -281,14 +281,14 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="delete">
-                        <property name="label" translatable="yes" context="stock">_Delete</property>
+                        <property name="label" translatable="yes" context="stock">删除(_D)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="use-underline">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="delete-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="symdefinedialog|extended_tip|delete">Click to remove the symbol shown in the left preview window from the current symbol set.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="symdefinedialog|extended_tip|delete">点击可从当前符号集中删除左侧预览窗口中显示的符号。</property>
                           </object>
                         </child>
                       </object>
@@ -329,7 +329,7 @@
                       <object class="GtkLabel" id="symbolText">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes" context="symdefinedialog|symbolText">_Symbol:</property>
+                        <property name="label" translatable="yes" context="symdefinedialog|symbolText">符号(_S)：</property>
                         <property name="use_underline">True</property>
                         <property name="mnemonic_widget">symbols</property>
                         <property name="xalign">1</property>
@@ -343,7 +343,7 @@
                       <object class="GtkLabel" id="symbolSetText">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes" context="symdefinedialog|symbolSetText">Symbol s_et:</property>
+                        <property name="label" translatable="yes" context="symdefinedialog|symbolSetText">符号集(_E)：</property>
                         <property name="use_underline">True</property>
                         <property name="mnemonic_widget">symbolSets</property>
                         <property name="xalign">1</property>
@@ -357,7 +357,7 @@
                       <object class="GtkLabel" id="fontText">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes" context="symdefinedialog|fontText">_Font:</property>
+                        <property name="label" translatable="yes" context="symdefinedialog|fontText">字体(_F)：</property>
                         <property name="use_underline">True</property>
                         <property name="mnemonic_widget">fonts</property>
                         <property name="xalign">1</property>
@@ -371,7 +371,7 @@
                       <object class="GtkLabel" id="styleText">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes" context="symdefinedialog|styleText">S_tyle:</property>
+                        <property name="label" translatable="yes" context="symdefinedialog|styleText">样式(_T)：</property>
                         <property name="use_underline">True</property>
                         <property name="mnemonic_widget">styles</property>
                         <property name="xalign">1</property>
@@ -385,7 +385,7 @@
                       <object class="GtkLabel" id="fontsSubsetFT">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes" context="symdefinedialog|fontsSubsetFT">S_ubset:</property>
+                        <property name="label" translatable="yes" context="symdefinedialog|fontsSubsetFT">子集(_U)：</property>
                         <property name="use_underline">True</property>
                         <property name="mnemonic_widget">fontsSubsetLB</property>
                         <property name="xalign">1</property>
@@ -403,7 +403,7 @@
                         <property name="hexpand">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="fonts-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="symdefinedialog|extended_tip|fonts">Displays the name of the current font and enables you to select a different font.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="symdefinedialog|extended_tip|fonts">显示当前字体名称，并可选择其他字体。</property>
                           </object>
                         </child>
                       </object>
@@ -420,7 +420,7 @@
                         <property name="hexpand">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="fontsSubsetLB-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="symdefinedialog|extended_tip|fontsSubsetLB">If you selected a non-symbol font in the Font list box, you can select a Unicode subset in which to place your new or edited symbol. When a subset has been selected, all symbols belonging to this subset of the current symbol set are displayed in the symbols list above.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="symdefinedialog|extended_tip|fontsSubsetLB">如果在“字体”列表框中选择了非符号字体，可选择一个 Unicode 子集来放置新增或编辑后的符号。选择子集后，当前符号集中属于该子集的所有符号会显示在上方符号列表中。</property>
                           </object>
                         </child>
                       </object>
@@ -445,7 +445,7 @@
                         </child>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="symbols-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="symdefinedialog|extended_tip|symbols">Lists the names for the symbols in the current symbol set. Select a name from the list or type a name for a newly added symbol.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="symdefinedialog|extended_tip|symbols">列出当前符号集中各符号的名称。可从列表中选择名称，或为新增符号输入名称。</property>
                           </object>
                         </child>
                       </object>
@@ -470,7 +470,7 @@
                         </child>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="symbolSets-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="symdefinedialog|extended_tip|symbolSets">The Symbol set list box contains the names of all existing symbol sets. You can modify a symbol set or create a new one.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="symdefinedialog|extended_tip|symbolSets">“符号集”列表框包含所有现有符号集的名称。可修改符号集或创建新的符号集。</property>
                           </object>
                         </child>
                       </object>
@@ -487,7 +487,7 @@
                         <property name="hexpand">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="styles-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="symdefinedialog|extended_tip|styles">The current typeface is displayed. You can change the typeface by selecting one from the list box.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="symdefinedialog|extended_tip|styles">显示当前字形。可从列表框中选择其他字形。</property>
                           </object>
                         </child>
                       </object>
@@ -643,7 +643,7 @@
     </child>
     <child internal-child="accessible">
       <object class="AtkObject" id="EditSymbols-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="symdefinedialog|extended_tip|EditSymbols">Use this dialog to add symbols to a symbol set, to edit symbol sets, or to modify symbol notations.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="symdefinedialog|extended_tip|EditSymbols">使用此对话框可向符号集添加符号、编辑符号集或修改符号记法。</property>
       </object>
     </child>
   </object>

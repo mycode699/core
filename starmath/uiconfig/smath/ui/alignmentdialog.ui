@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="AlignmentDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="alignmentdialog|AlignmentDialog">Alignment</property>
+    <property name="title" translatable="yes" context="alignmentdialog|AlignmentDialog">对齐</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="type-hint">dialog</property>
@@ -20,14 +20,14 @@
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="default">
-                <property name="label" translatable="yes" context="alignmentdialog|default">_Default</property>
+                <property name="label" translatable="yes" context="alignmentdialog|default">默认(_D)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
                 <property name="use-underline">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="default-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="alignmentdialog|extended_tip|default">Click here to save your changes as the default settings for new formulas.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="alignmentdialog|extended_tip|default">点击此处可将更改保存为新公式的默认设置。</property>
                   </object>
                 </child>
               </object>
@@ -39,7 +39,7 @@
             </child>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="stock">_OK</property>
+                <property name="label" translatable="yes" context="stock">确定(_O)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
@@ -55,7 +55,7 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="stock">_Cancel</property>
+                <property name="label" translatable="yes" context="stock">取消(_C)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -69,7 +69,7 @@
             </child>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助(_H)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -110,7 +110,7 @@
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkRadioButton" id="left">
-                    <property name="label" translatable="yes" context="alignmentdialog|left">_Left</property>
+                    <property name="label" translatable="yes" context="alignmentdialog|left">左对齐(_L)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -119,7 +119,7 @@
                     <property name="draw-indicator">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="left-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="alignmentdialog|extended_tip|left">Aligns the selected elements of a formula to the left.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="alignmentdialog|extended_tip|left">将公式中选定的元素左对齐。</property>
                       </object>
                     </child>
                   </object>
@@ -131,7 +131,7 @@
                 </child>
                 <child>
                   <object class="GtkRadioButton" id="center">
-                    <property name="label" translatable="yes" context="alignmentdialog|center">_Centered</property>
+                    <property name="label" translatable="yes" context="alignmentdialog|center">居中(_C)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -140,7 +140,7 @@
                     <property name="group">left</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="center-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="alignmentdialog|extended_tip|center">Aligns the elements of a formula to the center.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="alignmentdialog|extended_tip|center">将公式中的元素居中对齐。</property>
                       </object>
                     </child>
                   </object>
@@ -152,7 +152,7 @@
                 </child>
                 <child>
                   <object class="GtkRadioButton" id="right">
-                    <property name="label" translatable="yes" context="alignmentdialog|right">_Right</property>
+                    <property name="label" translatable="yes" context="alignmentdialog|right">右对齐(_R)</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -161,7 +161,7 @@
                     <property name="group">left</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="right-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="alignmentdialog|extended_tip|right">Aligns the elements of a formula to the right.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="alignmentdialog|extended_tip|right">将公式中的元素右对齐。</property>
                       </object>
                     </child>
                   </object>
@@ -177,7 +177,7 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="alignmentdialog|label1">Horizontal</property>
+                <property name="label" translatable="yes" context="alignmentdialog|label1">水平</property>
                 <property name="use-underline">True</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
@@ -200,7 +200,7 @@
     </action-widgets>
     <child internal-child="accessible">
       <object class="AtkObject" id="AlignmentDialog-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="alignmentdialog|extended_tip|AlignmentDialog">You can define the alignment of multi-line formulas as well as formulas with several elements in one line.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="alignmentdialog|extended_tip|AlignmentDialog">可定义多行公式以及同一行中包含多个元素的公式的对齐方式。</property>
       </object>
     </child>
   </object>

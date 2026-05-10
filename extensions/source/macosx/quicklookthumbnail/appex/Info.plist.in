@@ -12,7 +12,7 @@
     <key>CFBundleDevelopmentRegion</key>
     <string>en</string>
     <key>CFBundleDisplayName</key>
-    <string>@PRODUCTNAME@ Quick Look Thumbnail</string>
+    <string>@PRODUCTNAME@ 缩略图</string>
     <key>CFBundleExecutable</key>
     <string>QuickLookThumbnail</string>
     <key>CFBundleIdentifier</key>

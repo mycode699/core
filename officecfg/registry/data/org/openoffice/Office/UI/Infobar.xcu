@@ -13,5 +13,11 @@
     <prop oor:name="Donate">
       <value>false</value>
     </prop>
+    <prop oor:name="GetInvolved">
+      <value>false</value>
+    </prop>
+    <prop oor:name="WhatsNew">
+      <value>false</value>
+    </prop>
   </node>
 </oor:component-data>

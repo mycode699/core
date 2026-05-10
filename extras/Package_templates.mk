@@ -12,7 +12,15 @@ $(eval $(call gb_Package_Package,extras_templates,$(gb_CustomTarget_workdir)/ext
 $(eval $(call gb_Package_add_files_with_dir,extras_templates,$(LIBO_SHARE_FOLDER)/template/common,\
 	officorr/Modern_business_letter_sans_serif.ott \
 	officorr/Modern_business_letter_serif.ott \
+	officorr/Notice_CN.ott \
 	offimisc/Businesscard-with-logo.ott \
+	offimisc/Meeting_Minutes_CN.ott \
+	offimisc/PPT_Outline_CN.ott \
+	offimisc/Project_Plan_CN.ott \
+	offimisc/Work_Report_CN.ott \
+	spreadsheets/Budget_CN.ots \
+	spreadsheets/Project_Schedule_CN.ots \
+	spreadsheets/Sales_Tracker_CN.ots \
 	personal/CV.ott \
 	personal/Resume1page.ott \
 	styles/Default.ott \

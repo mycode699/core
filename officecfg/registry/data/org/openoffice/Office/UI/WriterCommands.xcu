@@ -594,13 +594,13 @@
       </node>
       <node oor:name=".uno:ContentControlProperties" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
-          <value xml:lang="en-US">Content Control Properties</value>
+          <value xml:lang="en-US">内容控件属性</value>
         </prop>
         <prop oor:name="ContextLabel" oor:type="xs:string">
-          <value xml:lang="en-US">Properties</value>
+          <value xml:lang="en-US">属性</value>
         </prop>
         <prop oor:name="PopupLabel" oor:type="xs:string">
-          <value xml:lang="en-US">Content Control Properties</value>
+          <value xml:lang="en-US">内容控件属性</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>
@@ -681,13 +681,13 @@
       </node>
       <node oor:name=".uno:InsertCaptionDialog" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
-          <value xml:lang="en-US">Caption...</value>
+          <value xml:lang="en-US">题注...</value>
         </prop>
         <prop oor:name="TooltipLabel" oor:type="xs:string">
-          <value xml:lang="en-US">Insert Caption</value>
+          <value xml:lang="en-US">插入题注</value>
         </prop>
         <prop oor:name="PopupLabel" oor:type="xs:string">
-          <value xml:lang="en-US">Insert Caption...</value>
+          <value xml:lang="en-US">插入题注...</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>
@@ -1399,7 +1399,16 @@
       </node>
       <node oor:name=".uno:SendOutlineToStarImpress" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
-          <value xml:lang="en-US">Outline to ~Presentation</value>
+          <value xml:lang="en-US">Generate PPT Draft from Headings</value>
+          <value xml:lang="zh-CN">根据标题生成 PPT 初稿</value>
+        </prop>
+        <prop oor:name="ContextLabel" oor:type="xs:string">
+          <value xml:lang="en-US">Generate PPT Draft...</value>
+          <value xml:lang="zh-CN">生成 PPT 初稿...</value>
+        </prop>
+        <prop oor:name="TooltipLabel" oor:type="xs:string">
+          <value xml:lang="en-US">Generate a presentation draft from Writer headings</value>
+          <value xml:lang="zh-CN">按 Writer 标题层级生成演示文稿初稿</value>
         </prop>
       </node>
       <node oor:name=".uno:GoToEndOfPageSel" oor:op="replace">
@@ -1409,7 +1418,12 @@
       </node>
       <node oor:name=".uno:SendOutlineToClipboard" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
-          <value xml:lang="en-US">Outline to ~Clipboard</value>
+          <value xml:lang="en-US">Copy Heading Outline for PPT</value>
+          <value xml:lang="zh-CN">复制用于 PPT 的标题大纲</value>
+        </prop>
+        <prop oor:name="TooltipLabel" oor:type="xs:string">
+          <value xml:lang="en-US">Copy the heading outline for presentation drafting</value>
+          <value xml:lang="zh-CN">复制标题层级，便于继续整理演示文稿</value>
         </prop>
       </node>
       <node oor:name=".uno:RotateLeft" oor:op="replace">
@@ -1618,13 +1632,13 @@
       </node>
       <node oor:name=".uno:TableDialog" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
-          <value xml:lang="en-US">Ta~ble Properties...</value>
+          <value xml:lang="en-US">表格属性...</value>
         </prop>
         <prop oor:name="ContextLabel" oor:type="xs:string">
-          <value xml:lang="en-US">~Properties...</value>
+          <value xml:lang="en-US">属性...</value>
         </prop>
         <prop oor:name="PopupLabel" oor:type="xs:string">
-          <value xml:lang="en-US">~Table Properties...</value>
+          <value xml:lang="en-US">表格属性...</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>
@@ -1939,10 +1953,10 @@
       </node>
       <node oor:name=".uno:PasteSpecial" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
-          <value xml:lang="en-US">Paste ~Special...</value>
+          <value xml:lang="en-US">选择性粘贴...</value>
         </prop>
         <prop oor:name="PopupLabel" oor:type="xs:string">
-          <value xml:lang="en-US">~More Options...</value>
+          <value xml:lang="en-US">更多选项...</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>
@@ -3402,7 +3416,7 @@
       </node>
       <node oor:name=".uno:TableDialog-more" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
-          <value xml:lang="en-US">Table Properties</value>
+          <value xml:lang="en-US">表格属性</value>
         </prop>
         <prop oor:name="TargetURL" oor:type="xs:string">
           <value>.uno:TableDialog</value>

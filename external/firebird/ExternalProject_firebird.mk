@@ -22,25 +22,32 @@ $(eval $(call gb_ExternalProject_register_targets,firebird,\
 	build \
 ))
 
+firebird_ASCII_ROOT := /private/tmp/kdoffice-firebird-ascii
+firebird_ASCII_WORKDIR := $(firebird_ASCII_ROOT)/firebird
+firebird_ASCII_UNPACKED_WORKDIR := $(firebird_ASCII_ROOT)
 firebird_BUILDDIR = $(EXTERNAL_WORKDIR)/gen/$(if $(ENABLE_DEBUG),Debug,Release)/firebird
 firebird_VERSION := 3.0.13
 
+$(call gb_ExternalProject_get_target,firebird) : EXTERNAL_WORKDIR := $(firebird_ASCII_WORKDIR)
+$(call gb_ExternalProject_get_state_target,firebird,build) : EXTERNAL_WORKDIR := $(firebird_ASCII_WORKDIR)
+
 $(call gb_ExternalProject_get_state_target,firebird,build):
 	$(call gb_Trace_StartRange,firebird,EXTERNAL)
+	$(call gb_Helper_abbreviate_dirs,rm -rf $(firebird_ASCII_ROOT) && mkdir -p $(firebird_ASCII_ROOT) && cp -R $(gb_UnpackedTarball_workdir)/firebird $(firebird_ASCII_ROOT) && ln -s $(gb_UnpackedTarball_workdir)/icu $(firebird_ASCII_ROOT)/icu && ln -s $(gb_UnpackedTarball_workdir)/libatomic_ops $(firebird_ASCII_ROOT)/libatomic_ops && ln -s $(gb_UnpackedTarball_workdir)/libtommath $(firebird_ASCII_ROOT)/libtommath)
 	$(call gb_ExternalProject_run,build,\
 		export PKG_CONFIG="" \
 		&& export CPPFLAGS=" \
 			$(BOOST_CPPFLAGS) \
 			$(if $(SYSTEM_LIBATOMIC_OPS),$(LIBATOMIC_OPS_CFLAGS), \
-				-I$(gb_UnpackedTarball_workdir)/libatomic_ops/src \
+				-I$(firebird_ASCII_UNPACKED_WORKDIR)/libatomic_ops/src \
 			) \
 			$(if $(SYSTEM_LIBTOMMATH),$(LIBTOMMATH_CFLAGS), \
-				-I$(gb_UnpackedTarball_workdir)/libtommath \
+				-I$(firebird_ASCII_UNPACKED_WORKDIR)/libtommath \
 			) \
 			$(if $(SYSTEM_ICU),$(ICU_CPPFLAGS), \
-				-I$(gb_UnpackedTarball_workdir)/icu/source \
-				-I$(gb_UnpackedTarball_workdir)/icu/source/i18n \
-				-I$(gb_UnpackedTarball_workdir)/icu/source/common \
+				-I$(firebird_ASCII_UNPACKED_WORKDIR)/icu/source \
+				-I$(firebird_ASCII_UNPACKED_WORKDIR)/icu/source/i18n \
+				-I$(firebird_ASCII_UNPACKED_WORKDIR)/icu/source/common \
 			) \
 			$(if $(filter GCC-INTEL,$(COM)-$(CPUNAME)),-Di386=1) \
 			" \
@@ -64,16 +71,16 @@ $(call gb_ExternalProject_get_state_target,firebird,build):
 		&& export LDFLAGS=" \
 			$(call gb_ExternalProject_get_link_flags,firebird) \
 			$(if $(SYSTEM_LIBATOMIC_OPS),$(LIBATOMIC_OPS_LIBS), \
-				-L$(gb_UnpackedTarball_workdir)/libatomic_ops/src \
+				-L$(firebird_ASCII_UNPACKED_WORKDIR)/libatomic_ops/src \
 			) \
 			$(if $(SYSTEM_LIBTOMMATH),$(LIBTOMMATH_LIBS), \
-				-L$(gb_UnpackedTarball_workdir)/libtommath \
+				-L$(firebird_ASCII_UNPACKED_WORKDIR)/libtommath \
 			) \
 			$(if $(SYSTEM_ICU),$(ICU_LIBS), \
-				-L$(gb_UnpackedTarball_workdir)/icu/source/lib \
+				-L$(firebird_ASCII_UNPACKED_WORKDIR)/icu/source/lib \
 			) \
 		" \
-		&& export LIBREOFFICE_ICU_LIB="$(gb_UnpackedTarball_workdir)/icu/source/lib" \
+		&& export LIBREOFFICE_ICU_LIB="$(firebird_ASCII_UNPACKED_WORKDIR)/icu/source/lib" \
 		&& export MSVC_USE_INDIVIDUAL_PDBS=TRUE \
 		&& MAKE=$(MAKE) $(gb_RUN_CONFIGURE) ./configure \
 			--without-editline \
@@ -86,9 +93,10 @@ $(call gb_ExternalProject_get_state_target,firebird,build):
 			) \
 			$(if $(HAVE_LIBCPP),CXX='$(CXX) -D_LIBCPP_ENABLE_CXX17_REMOVED_AUTO_PTR') \
 		&& LC_ALL=C $(MAKE) \
+			ROOT='$(firebird_ASCII_WORKDIR)' \
 			$(if $(ENABLE_DEBUG),Debug) SHELL='$(SHELL)' $(if $(filter LINUX,$(OS)),CXXFLAGS="$$CXXFLAGS") \
-			MATHLIB="$(if $(SYSTEM_LIBTOMMATH),$(LIBTOMMATH_LIBS),-L$(gb_UnpackedTarball_workdir)/libtommath -ltommath)" \
-			LIBO_TUNNEL_LIBRARY_PATH='$(subst ','\'',$(subst $$,$$$$,$(call gb_Helper_extend_ld_path,$(gb_UnpackedTarball_workdir)/icu/source/lib)$(call gb_Helper_extend_ld_path,$(firebird_BUILDDIR)/lib)))' \
+			MATHLIB="$(if $(SYSTEM_LIBTOMMATH),$(LIBTOMMATH_LIBS),-L$(firebird_ASCII_UNPACKED_WORKDIR)/libtommath -ltommath)" \
+			LIBO_TUNNEL_LIBRARY_PATH='$(subst ','\'',$(subst $$,$$$$,$(call gb_Helper_extend_ld_path,$(firebird_ASCII_UNPACKED_WORKDIR)/icu/source/lib:$(firebird_BUILDDIR)/lib)))' \
 		$(if $(filter MACOSX,$(OS)), \
 			&& install_name_tool -id @__________________________________________________OOO/libfbclient.dylib.$(firebird_VERSION) \
 				-delete_rpath @loader_path/.. \
@@ -102,6 +110,8 @@ $(call gb_ExternalProject_get_state_target,firebird,build):
 				$(firebird_BUILDDIR)/lib/libfbclient.dylib.$(firebird_VERSION) \
 				$(firebird_BUILDDIR)/plugins/libEngine12.dylib \
 			) \
+		&& rm -rf $(gb_UnpackedTarball_workdir)/firebird/gen \
+		&& cp -R $(firebird_ASCII_WORKDIR)/gen $(gb_UnpackedTarball_workdir)/firebird/ \
 	)
 	$(call gb_Trace_EndRange,firebird,EXTERNAL)
 

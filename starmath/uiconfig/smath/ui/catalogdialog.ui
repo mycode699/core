@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="CatalogDialog">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
-    <property name="title" translatable="yes" context="catalogdialog|CatalogDialog">Symbols</property>
+    <property name="title" translatable="yes" context="catalogdialog|CatalogDialog">符号</property>
     <property name="modal">True</property>
     <property name="default_width">0</property>
     <property name="default_height">0</property>
@@ -21,14 +21,14 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="edit">
-                <property name="label" translatable="yes" context="catalogdialog|edit">_Edit...</property>
+                <property name="label" translatable="yes" context="catalogdialog|edit">编辑(_E)…</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_underline">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="edit-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="catalogdialog|extended_tip|edit">Click here to open the Edit Symbols dialog.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="catalogdialog|extended_tip|edit">点击此处打开“编辑符号”对话框。</property>
                   </object>
                 </child>
               </object>
@@ -40,7 +40,7 @@
             </child>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="catalogdialog|insert">_Insert</property>
+                <property name="label" translatable="yes" context="catalogdialog|insert">插入(_I)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -49,7 +49,7 @@
                 <property name="use_underline">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="ok-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="catalogdialog|extended_tip|ok">Saves all changes and closes dialog.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="catalogdialog|extended_tip|ok">保存所有更改并关闭对话框。</property>
                   </object>
                 </child>
               </object>
@@ -61,7 +61,7 @@
             </child>
             <child>
               <object class="GtkButton" id="close">
-                <property name="label" translatable="yes" context="stock">_Close</property>
+                <property name="label" translatable="yes" context="stock">关闭(_C)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -75,7 +75,7 @@
             </child>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助(_H)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -110,7 +110,7 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes" context="catalogdialog|label1">_Symbol set:</property>
+                <property name="label" translatable="yes" context="catalogdialog|label1">符号集(_S)：</property>
                 <property name="use_underline">True</property>
                 <property name="xalign">0</property>
               </object>
@@ -126,7 +126,7 @@
                 <property name="margin_bottom">6</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="symbolset-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="catalogdialog|extended_tip|symbolset">All symbols are organized into symbol sets. Select the desired symbol set from the list box. The corresponding group of symbols appear in the field below.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="catalogdialog|extended_tip|symbolset">所有符号按符号集组织。从列表框中选择所需的符号集，对应的符号组会显示在下方区域。</property>
                   </object>
                 </child>
               </object>
@@ -139,7 +139,7 @@
               <object class="GtkLabel" id="symbolname">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes" context="catalogdialog|symbolname">Unknown</property>
+                <property name="label" translatable="yes" context="catalogdialog|symbolname">未知</property>
                 <attributes>
                   <attribute name="scale" value="0.9"/>
                 </attributes>
@@ -205,7 +205,7 @@
                         <property name="vexpand">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="preview-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="catalogdialog|extended_tip|preview">Displays a preview of the current selection.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="catalogdialog|extended_tip|preview">显示当前所选内容的预览。</property>
                           </object>
                         </child>
                       </object>
@@ -246,7 +246,7 @@
     </child>
     <child internal-child="accessible">
       <object class="AtkObject" id="CatalogDialog-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="catalogdialog|extended_tip|CatalogDialog">Opens the Symbols dialog, in which you can select a symbol to insert in the formula.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="catalogdialog|extended_tip|CatalogDialog">打开“符号”对话框，可在其中选择要插入公式的符号。</property>
       </object>
     </child>
   </object>

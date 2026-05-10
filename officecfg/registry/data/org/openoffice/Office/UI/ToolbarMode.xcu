@@ -16,12 +16,13 @@
   <node oor:name="Applications">
     <node oor:name="Writer" oor:op="replace">
       <prop oor:name="Active">
-        <value>Default</value>
+        <value>Tabbed</value>
       </prop>
       <node oor:name="Modes">
         <node oor:name="Default" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Standard Toolbar</value>
+            <value xml:lang="zh-CN">标准工具栏</value>
           </prop>
           <prop oor:name="CommandArg">
             <value>Default</value>
@@ -49,6 +50,7 @@
         <node oor:name="Single" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Single Toolbar</value>
+            <value xml:lang="zh-CN">单行工具栏</value>
           </prop>
           <prop oor:name="CommandArg">
             <value>Single</value>
@@ -75,6 +77,7 @@
         <node oor:name="Sidebar" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Sidebar</value>
+            <value xml:lang="zh-CN">侧边栏</value>
           </prop>
           <prop oor:name="CommandArg">
             <value>Sidebar</value>
@@ -101,6 +104,7 @@
         <node oor:name="Tabbed" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Tabbed</value>
+            <value xml:lang="zh-CN">标签页</value>
           </prop>
           <prop oor:name="HasNotebookbar">
             <value>true</value>
@@ -129,6 +133,7 @@
         <node oor:name="TabbedCompact" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Tabbed Compact</value>
+            <value xml:lang="zh-CN">紧凑标签页</value>
           </prop>
           <prop oor:name="HasNotebookbar">
             <value>true</value>
@@ -157,6 +162,7 @@
         <node oor:name="GroupedbarCompact" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Groupedbar Compact</value>
+            <value xml:lang="zh-CN">紧凑分组栏</value>
           </prop>
           <prop oor:name="HasNotebookbar">
             <value>true</value>
@@ -190,6 +196,7 @@
         <node oor:name="GroupedbarFull" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Groupedbar</value>
+            <value xml:lang="zh-CN">分组栏</value>
           </prop>
           <prop oor:name="HasNotebookbar">
             <value>true</value>
@@ -223,6 +230,7 @@
         <node oor:name="ContextualSingle" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Contextual Single</value>
+            <value xml:lang="zh-CN">上下文单栏</value>
           </prop>
           <prop oor:name="HasNotebookbar">
             <value>true</value>
@@ -259,6 +267,7 @@
         <node oor:name="ContextualGroups" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Contextual groups</value>
+            <value xml:lang="zh-CN">上下文分组</value>
           </prop>
           <prop oor:name="HasNotebookbar">
             <value>true</value>
@@ -296,12 +305,13 @@
     </node>
     <node oor:name="Calc" oor:op="replace">
       <prop oor:name="Active">
-        <value>Default</value>
+        <value>Tabbed</value>
       </prop>
       <node oor:name="Modes">
         <node oor:name="Default" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Standard Toolbar</value>
+            <value xml:lang="zh-CN">标准工具栏</value>
           </prop>
           <prop oor:name="CommandArg">
             <value>Default</value>
@@ -329,6 +339,7 @@
         <node oor:name="Single" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Single Toolbar</value>
+            <value xml:lang="zh-CN">单行工具栏</value>
           </prop>
           <prop oor:name="CommandArg">
             <value>Single</value>
@@ -355,6 +366,7 @@
         <node oor:name="Sidebar" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Sidebar</value>
+            <value xml:lang="zh-CN">侧边栏</value>
           </prop>
           <prop oor:name="CommandArg">
             <value>Sidebar</value>
@@ -381,6 +393,7 @@
         <node oor:name="Tabbed" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Tabbed</value>
+            <value xml:lang="zh-CN">标签页</value>
           </prop>
           <prop oor:name="HasNotebookbar">
             <value>true</value>
@@ -409,6 +422,7 @@
         <node oor:name="TabbedCompact" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Tabbed Compact</value>
+            <value xml:lang="zh-CN">紧凑标签页</value>
           </prop>
           <prop oor:name="HasNotebookbar">
             <value>true</value>
@@ -442,6 +456,7 @@
         <node oor:name="GroupedbarCompact" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Groupedbar Compact</value>
+            <value xml:lang="zh-CN">紧凑分组栏</value>
           </prop>
           <prop oor:name="HasNotebookbar">
             <value>true</value>
@@ -475,6 +490,7 @@
         <node oor:name="GroupedbarFull" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Groupedbar</value>
+            <value xml:lang="zh-CN">分组栏</value>
           </prop>
           <prop oor:name="HasNotebookbar">
             <value>true</value>
@@ -508,6 +524,7 @@
         <node oor:name="ContextualGroups" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Contextual groups</value>
+            <value xml:lang="zh-CN">上下文分组</value>
           </prop>
           <prop oor:name="HasNotebookbar">
             <value>true</value>
@@ -545,12 +562,13 @@
     </node>
     <node oor:name="Impress" oor:op="replace">
       <prop oor:name="Active">
-        <value>Default</value>
+        <value>Tabbed</value>
       </prop>
       <node oor:name="Modes">
         <node oor:name="Default" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Standard Toolbar</value>
+            <value xml:lang="zh-CN">标准工具栏</value>
           </prop>
           <prop oor:name="CommandArg">
             <value>Default</value>
@@ -579,6 +597,7 @@
         <node oor:name="Single" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Single Toolbar</value>
+            <value xml:lang="zh-CN">单行工具栏</value>
           </prop>
           <prop oor:name="CommandArg">
             <value>Single</value>
@@ -605,6 +624,7 @@
         <node oor:name="Tabbed" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Tabbed</value>
+            <value xml:lang="zh-CN">标签页</value>
           </prop>
           <prop oor:name="HasNotebookbar">
             <value>true</value>
@@ -633,6 +653,7 @@
         <node oor:name="TabbedCompact" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Tabbed Compact</value>
+            <value xml:lang="zh-CN">紧凑标签页</value>
           </prop>
           <prop oor:name="HasNotebookbar">
             <value>true</value>
@@ -661,6 +682,7 @@
         <node oor:name="GroupedbarCompact" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Groupedbar Compact</value>
+            <value xml:lang="zh-CN">紧凑分组栏</value>
           </prop>
           <prop oor:name="HasNotebookbar">
             <value>true</value>
@@ -694,6 +716,7 @@
         <node oor:name="GroupedbarFull" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Groupedbar</value>
+            <value xml:lang="zh-CN">分组栏</value>
           </prop>
           <prop oor:name="HasNotebookbar">
             <value>true</value>
@@ -727,6 +750,7 @@
         <node oor:name="ContextualSingle" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Contextual Single</value>
+            <value xml:lang="zh-CN">上下文单栏</value>
           </prop>
           <prop oor:name="HasNotebookbar">
             <value>true</value>
@@ -763,6 +787,7 @@
         <node oor:name="ContextualGroups" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Contextual groups</value>
+            <value xml:lang="zh-CN">上下文分组</value>
           </prop>
           <prop oor:name="HasNotebookbar">
             <value>true</value>
@@ -806,6 +831,7 @@
         <node oor:name="Default" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Standard Toolbar</value>
+            <value xml:lang="zh-CN">标准工具栏</value>
           </prop>
           <prop oor:name="CommandArg">
             <value>Default</value>
@@ -832,6 +858,7 @@
         <node oor:name="Tabbed" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Tabbed</value>
+            <value xml:lang="zh-CN">标签页</value>
           </prop>
           <prop oor:name="HasNotebookbar">
             <value>true</value>
@@ -868,6 +895,7 @@
         <node oor:name="TabbedCompact" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Tabbed Compact</value>
+            <value xml:lang="zh-CN">紧凑标签页</value>
           </prop>
           <prop oor:name="HasNotebookbar">
             <value>true</value>
@@ -896,6 +924,7 @@
         <node oor:name="GroupedbarCompact" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Groupedbar Compact</value>
+            <value xml:lang="zh-CN">紧凑分组栏</value>
           </prop>
           <prop oor:name="HasNotebookbar">
             <value>true</value>
@@ -932,6 +961,7 @@
         <node oor:name="ContextualSingle" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Contextual Single</value>
+            <value xml:lang="zh-CN">上下文单栏</value>
           </prop>
           <prop oor:name="HasNotebookbar">
             <value>true</value>
@@ -970,6 +1000,7 @@
         <node oor:name="Default" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Standard Toolbar</value>
+            <value xml:lang="zh-CN">标准工具栏</value>
           </prop>
           <prop oor:name="CommandArg">
             <value>Default</value>
@@ -1003,6 +1034,7 @@
         <node oor:name="Default" oor:op="replace">
           <prop oor:name="Label">
             <value xml:lang="en-US">Standard Toolbar</value>
+            <value xml:lang="zh-CN">标准工具栏</value>
           </prop>
           <prop oor:name="CommandArg">
             <value>Default</value>

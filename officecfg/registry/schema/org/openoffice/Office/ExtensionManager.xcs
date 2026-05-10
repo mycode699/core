@@ -46,6 +46,12 @@
         </info>
         <value/>
       </prop>
+      <prop oor:name="CatalogURLBase" oor:type="xs:string" oor:nillable="false">
+        <info>
+          <desc>The base URL for additions catalog JSON data. The encoded category tag and .json suffix are appended at runtime.</desc>
+        </info>
+        <value/>
+      </prop>
     </group>
     <group oor:name="ExtensionSecurity">
       <info>

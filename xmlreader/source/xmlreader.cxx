@@ -391,9 +391,10 @@ char const * XmlReader::handleReference(char const * position, char const * end)
             p = position;
             for (;; ++position)
             {
-                val = o3tl::convertToHex<sal_uInt32>(*position);
-                if (val >= 16)
+                sal_uInt32 const n = o3tl::convertToHex<sal_uInt32>(*position);
+                if (n >= 16)
                     break;
+                val = 16 * val + n;
 
                 if (!rtl::isUnicodeCodePoint(val)) { // avoid overflow
                     throw css::uno::RuntimeException(

@@ -16,7 +16,11 @@ MigrationWarnDialog::MigrationWarnDialog(weld::Window* pParent)
     : MessageDialogController(pParent, u"dbaccess/ui/migrwarndlg.ui"_ustr,
                               u"MigrationWarnDialog"_ustr)
     , m_xLater(m_xBuilder->weld_button(u"no"_ustr))
+    , m_xLink(m_xBuilder->weld_link_button(u"link"_ustr))
 {
+    if (m_xLink->get_uri().isEmpty())
+        m_xLink->hide();
+
     m_xLater->grab_focus();
 }
 }

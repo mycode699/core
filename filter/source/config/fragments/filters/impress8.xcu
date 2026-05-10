@@ -26,5 +26,6 @@
         <prop oor:name="DocumentService"><value>com.sun.star.presentation.PresentationDocument</value></prop>
         <prop oor:name="UIName">
             <value xml:lang="en-US">ODF Presentation</value>
-                    </prop>
+            <value xml:lang="zh-CN">ODF 演示文稿</value>
+        </prop>
     </node>

@@ -75,7 +75,8 @@
           <value>scalc</value>
         </prop>
         <prop oor:name="ooSetupFactoryUIName">
-          <value>Calc</value>
+          <value xml:lang="en-US">Spreadsheet</value>
+          <value xml:lang="zh-CN">表格</value>
         </prop>
         <prop oor:name="ooSetupFactoryWindowStateConfigRef">
           <value>CalcWindowState</value>
@@ -119,7 +120,8 @@
           <value>sdraw</value>
         </prop>
         <prop oor:name="ooSetupFactoryUIName">
-          <value>Draw</value>
+          <value xml:lang="en-US">Draw</value>
+          <value xml:lang="zh-CN">绘图</value>
         </prop>
         <prop oor:name="ooSetupFactoryWindowStateConfigRef">
           <value>DrawWindowState</value>
@@ -163,7 +165,8 @@
           <value>simpress</value>
         </prop>
         <prop oor:name="ooSetupFactoryUIName">
-          <value>Impress</value>
+          <value xml:lang="en-US">Presentation</value>
+          <value xml:lang="zh-CN">演示</value>
         </prop>
         <prop oor:name="ooSetupFactoryWindowStateConfigRef">
           <value>ImpressWindowState</value>
@@ -205,7 +208,8 @@
           <value>smath</value>
         </prop>
         <prop oor:name="ooSetupFactoryUIName">
-          <value>Math</value>
+          <value xml:lang="en-US">Math</value>
+          <value xml:lang="zh-CN">公式</value>
         </prop>
         <prop oor:name="ooSetupFactoryWindowStateConfigRef">
           <value>MathWindowState</value>
@@ -249,7 +253,8 @@
           <value>sglobal</value>
         </prop>
         <prop oor:name="ooSetupFactoryUIName">
-          <value>Writer</value>
+          <value xml:lang="en-US">Document</value>
+          <value xml:lang="zh-CN">文档</value>
         </prop>
         <prop oor:name="ooSetupFactoryWindowStateConfigRef">
           <value>WriterGlobalWindowState</value>
@@ -293,7 +298,8 @@
           <value>swriter</value>
         </prop>
         <prop oor:name="ooSetupFactoryUIName">
-          <value>Writer</value>
+          <value xml:lang="en-US">Writer</value>
+          <value xml:lang="zh-CN">文档</value>
         </prop>
         <prop oor:name="ooSetupFactoryWindowStateConfigRef">
           <value>WriterWindowState</value>
@@ -332,6 +338,7 @@
         </prop>
         <prop oor:name="ooSetupFactoryUIName">
           <value xml:lang="en-US">Base: Database Form</value>
+          <value xml:lang="zh-CN">数据库表单</value>
         </prop>
         <prop oor:name="ooSetupFactoryWindowStateConfigRef">
           <value>WriterFormWindowState</value>
@@ -367,6 +374,7 @@
         </prop>
         <prop oor:name="ooSetupFactoryUIName">
           <value xml:lang="en-US">Base: Report Design</value>
+          <value xml:lang="zh-CN">报表设计</value>
         </prop>
         <prop oor:name="ooSetupFactoryWindowStateConfigRef">
           <value>WriterReportWindowState</value>
@@ -405,6 +413,7 @@
         </prop>
         <prop oor:name="ooSetupFactoryUIName">
           <value xml:lang="en-US">XML Form Document</value>
+          <value xml:lang="zh-CN">XML 表单文档</value>
         </prop>
         <prop oor:name="ooSetupFactoryWindowStateConfigRef">
           <value>XFormsWindowState</value>
@@ -446,7 +455,8 @@
           <value>sweb</value>
         </prop>
         <prop oor:name="ooSetupFactoryUIName">
-          <value>Writer/Web</value>
+          <value xml:lang="en-US">Writer/Web</value>
+          <value xml:lang="zh-CN">网页文档</value>
         </prop>
         <prop oor:name="ooSetupFactoryWindowStateConfigRef">
           <value>WriterWebWindowState</value>
@@ -478,6 +488,7 @@
         </prop>
         <prop oor:name="ooSetupFactoryUIName">
           <value xml:lang="en-US">Base: Relation Design</value>
+          <value xml:lang="zh-CN">关系设计</value>
         </prop>
       </node>
       <node oor:name="com.sun.star.sdb.QueryDesign" oor:op="replace" install:module="base">
@@ -503,6 +514,7 @@
         </prop>
         <prop oor:name="ooSetupFactoryUIName">
           <value xml:lang="en-US">Base: Query Design</value>
+          <value xml:lang="zh-CN">查询设计</value>
         </prop>
       </node>
       <node oor:name="com.sun.star.sdb.ViewDesign" oor:op="replace" install:module="base">
@@ -528,6 +540,7 @@
         </prop>
         <prop oor:name="ooSetupFactoryUIName">
           <value xml:lang="en-US">Base: View Design</value>
+          <value xml:lang="zh-CN">视图设计</value>
         </prop>
       </node>
       <node oor:name="com.sun.star.sdb.TableDesign" oor:op="replace" install:module="base">
@@ -553,6 +566,7 @@
         </prop>
         <prop oor:name="ooSetupFactoryUIName">
           <value xml:lang="en-US">Base: Table Design</value>
+          <value xml:lang="zh-CN">表设计</value>
         </prop>
       </node>
       <node oor:name="com.sun.star.sdb.DataSourceBrowser" oor:op="replace" install:module="base">
@@ -578,6 +592,7 @@
         </prop>
         <prop oor:name="ooSetupFactoryUIName">
           <value xml:lang="en-US">Base: Data View</value>
+          <value xml:lang="zh-CN">数据视图</value>
         </prop>
       </node>
       <node oor:name="com.sun.star.sdb.TableDataView" oor:op="replace" install:module="base">
@@ -603,6 +618,7 @@
         </prop>
         <prop oor:name="ooSetupFactoryUIName">
           <value xml:lang="en-US">Base: Table Data View</value>
+          <value xml:lang="zh-CN">表数据视图</value>
         </prop>
       </node>
       <node oor:name="com.sun.star.frame.Bibliography" oor:op="replace">
@@ -624,7 +640,8 @@
           <value>GenericCategories</value>
         </prop>
         <prop oor:name="ooSetupFactoryUIName">
-          <value>Bibliography</value>
+          <value xml:lang="en-US">Bibliography</value>
+          <value xml:lang="zh-CN">参考文献</value>
         </prop>
       </node>
       <node oor:name="com.sun.star.script.BasicIDE" oor:op="replace">
@@ -646,7 +663,8 @@
           <value>GenericCategories</value>
         </prop>
         <prop oor:name="ooSetupFactoryUIName">
-          <value>Basic</value>
+          <value xml:lang="en-US">Basic</value>
+          <value xml:lang="zh-CN">Basic 宏</value>
         </prop>
       </node>
       <node oor:name="com.sun.star.frame.StartModule" oor:op="replace" install:module="start">
@@ -701,7 +719,8 @@
           <value>schart</value>
         </prop>
         <prop oor:name="ooSetupFactoryUIName">
-          <value>Chart</value>
+          <value xml:lang="en-US">Chart</value>
+          <value xml:lang="zh-CN">图表</value>
         </prop>
         <prop oor:name="ooSetupFactoryWindowStateConfigRef">
           <value>ChartWindowState</value>
@@ -749,7 +768,8 @@
           <value>GenericCategories</value>
         </prop>
         <prop oor:name="ooSetupFactoryUIName">
-          <value>Base</value>
+          <value xml:lang="en-US">Base</value>
+          <value xml:lang="zh-CN">数据库</value>
         </prop>
       </node>
       <node oor:name="com.sun.star.report.ReportDefinition" oor:op="replace" install:module="reportbuilder">
@@ -770,6 +790,7 @@
         </prop>
         <prop oor:name="ooSetupFactoryUIName">
           <value xml:lang="en-US">Base: Report Builder</value>
+          <value xml:lang="zh-CN">报表生成器</value>
         </prop>
       </node>
     </node>

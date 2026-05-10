@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="ShowLicenseDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="showlicensedialog|ShowLicenseDialog">Extension Software License Agreement</property>
+    <property name="title" translatable="yes" context="showlicensedialog|ShowLicenseDialog">扩展软件许可协议</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
     <property name="default-height">0</property>
@@ -21,7 +21,7 @@
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="close">
-                <property name="label" translatable="yes" context="stock">_Close</property>
+                <property name="label" translatable="yes" context="stock">关闭(_C)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
@@ -73,7 +73,7 @@
     </action-widgets>
     <child internal-child="accessible">
       <object class="AtkObject" id="ShowLicenseDialog-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="showlicensedialog|extended_tip|ShowLicenseDialog">Read the license. Click the Scroll Down button to scroll down if necessary. Click Accept to continue the installation of the extension.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="showlicensedialog|extended_tip|ShowLicenseDialog">请阅读许可协议。必要时点击“向下滚动”继续查看。点击“接受”即可继续安装扩展。</property>
       </object>
     </child>
   </object>

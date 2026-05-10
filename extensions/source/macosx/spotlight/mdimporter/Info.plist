@@ -54,8 +54,10 @@
     </array>
     <key>CFBundleExecutable</key>
     <string>OOoSpotlightImporter</string>
+    <key>CFBundleDisplayName</key>
+    <string>可圈office Spotlight 导入器</string>
     <key>CFBundleName</key>
-    <string>OOoSpotlightImporter</string>
+    <string>可圈office Spotlight 导入器</string>
     <key>CFBundleIconFile</key>
     <string></string>
     <key>CFBundleIdentifier</key>

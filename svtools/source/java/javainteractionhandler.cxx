@@ -128,8 +128,9 @@ void SAL_CALL JavaInteractionHandler::handle( const Reference< XInteractionReque
         {
            // No suitable JRE found
             OUString sPrimTex;
-            OUString urlLink(officecfg::Office::Common::Menus::InstallJavaURL::get() + // https://hub.libreoffice.org/InstallJava/
-                "?LOlocale=" + utl::ConfigManager::getUILocale());
+            OUString urlLink(officecfg::Office::Common::Menus::InstallJavaURL::get());
+            if (!urlLink.isEmpty())
+                urlLink += "?LOlocale=" + utl::ConfigManager::getUILocale();
             g_JavaEvents.bNotFoundHandled = true;
 #if defined(MACOSX)
             sPrimTex = SvtResId(STR_WARNING_JAVANOTFOUND_MAC);
@@ -143,7 +144,10 @@ void SAL_CALL JavaInteractionHandler::handle( const Reference< XInteractionReque
 #else
             sPrimTex = SvtResId(STR_WARNING_JAVANOTFOUND);
 #endif
-            sPrimTex = sPrimTex.replaceAll("%FAQLINK", urlLink);
+            if (urlLink.isEmpty())
+                sPrimTex = sPrimTex.replaceAll(" %FAQLINK", "");
+            else
+                sPrimTex = sPrimTex.replaceAll("%FAQLINK", urlLink);
             std::unique_ptr<weld::MessageDialog> xWarningBox(Application::CreateMessageDialog(
                 nullptr, VclMessageType::Warning, VclButtonsType::Ok, sPrimTex));
             xWarningBox->set_title(SvtResId(STR_WARNING_JAVANOTFOUND_TITLE));

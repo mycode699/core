@@ -50,10 +50,10 @@
 #define STR_UNTITLED_DOCUMENT                       NC_("STR_UNTITLED_DOCUMENT", "Untitled" )
 // To translators: for displaying 'Multiple Languages' in the language statusbar control
 #define STR_LANGSTATUS_MULTIPLE_LANGUAGES           NC_("STR_LANGSTATUS_MULTIPLE_LANGUAGES", "Multiple Languages" )
-#define STR_LANGSTATUS_NONE                         NC_("STR_LANGSTATUS_NONE", "None (Do not check spelling)" )
+#define STR_LANGSTATUS_NONE                         NC_("STR_LANGSTATUS_NONE", "无（不检查拼写）" )
 #define STR_RESET_TO_DEFAULT_LANGUAGE               NC_("STR_RESET_TO_DEFAULT_LANGUAGE", "Reset to Default Language" )
 #define STR_LANGSTATUS_MORE                         NC_("STR_LANGSTATUS_MORE", "More..." )
-#define STR_SET_LANGUAGE_FOR_PARAGRAPH              NC_("STR_SET_LANGUAGE_FOR_PARAGRAPH", "Set Language for Paragraph" )
+#define STR_SET_LANGUAGE_FOR_PARAGRAPH              NC_("STR_SET_LANGUAGE_FOR_PARAGRAPH", "设置段落语言" )
 #define STR_LANGSTATUS_HINT                         NC_("STR_LANGSTATUS_HINT", "Text Language. Right-click to set character or paragraph language" )
 
 #define RID_STR_PROPTITLE_EDIT                      NC_("RID_STR_PROPTITLE_EDIT", "Text Box")

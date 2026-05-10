@@ -13,11 +13,11 @@
     <p>Third Party Code Additional copyright notices and license terms applicable to portions of the Software can be
     found <a href="#thirdparty">below</a> in this document.</p>
     <p>All trademarks and registered trademarks mentioned herein are the property of their respective owners.</p>
-    <p>Copyright © 2000–2026 LibreOffice contributors. All rights reserved.</p>
-    <p>This product is based on OpenOffice.org. Portions of this software are copyright © 2000-2011, Oracle and/or its
-    affiliates.</p>
-    <p>This product has been created by The Document Foundation, incorporating many modifications from different
-    contributors, see <a href="http://www.libreoffice.org/">http://www.libreoffice.org/</a> for more details.</p>
+    <p>Copyright © 2000–2026 the applicable contributors and rights holders. All rights reserved.</p>
+    <p>This product incorporates open-source office software and other third-party components whose notices and
+    attributions are included in this document.</p>
+    <p>This release was supplied by %OOOVENDOR. See the notices below for upstream attributions, copyright details, and
+    third-party license terms.</p>
     <p><strong>Note:</strong> Do not translate or localize this document. Only English version is legally binding.</p>
     <h2>Contents</h2>
     <p><a href="#a__Libraries">Libraries</a></p>

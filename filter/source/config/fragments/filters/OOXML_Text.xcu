@@ -22,6 +22,7 @@
         <prop oor:name="UserData"><value>OXML</value></prop>
         <prop oor:name="UIName">
             <value xml:lang="en-US">Word 2010–365 Document</value>
+            <value xml:lang="zh-CN">Word 文档 2010–365</value>
         </prop>
         <!-- ISO/IEC 29500:2008 -->
         <prop oor:name="FileFormatVersion"><value>1</value></prop>

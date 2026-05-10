@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="UpdateInstallDialog">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
-    <property name="title" translatable="yes" context="updateinstalldialog|UpdateInstallDialog">Download and Installation</property>
+    <property name="title" translatable="yes" context="updateinstalldialog|UpdateInstallDialog">下载与安装</property>
     <property name="modal">True</property>
     <property name="default_width">0</property>
     <property name="default_height">0</property>
@@ -21,7 +21,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助(_H)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -36,7 +36,7 @@
             </child>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="stock">_OK</property>
+                <property name="label" translatable="yes" context="stock">确定(_O)</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
@@ -51,7 +51,7 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="stock">_Cancel</property>
+                <property name="label" translatable="yes" context="stock">取消(_C)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -84,7 +84,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="updateinstalldialog|DOWNLOADING">Downloading extensions...</property>
+                <property name="label" translatable="yes" context="updateinstalldialog|DOWNLOADING">正在下载扩展...</property>
                 <property name="use_underline">True</property>
                 <property name="mnemonic_widget">STATUSBAR</property>
               </object>
@@ -122,7 +122,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="updateinstalldialog|RESULTS">Result</property>
+                <property name="label" translatable="yes" context="updateinstalldialog|RESULTS">结果</property>
                 <property name="use_underline">True</property>
                 <property name="mnemonic_widget">INFO</property>
               </object>
@@ -175,7 +175,7 @@
     </child>
     <child internal-child="accessible">
       <object class="AtkObject" id="UpdateInstallDialog-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="updateinstalldialog|extended_tip|UpdateInstallDialog">Click the Check for Updates button in the Extensions dialog to check for online updates for all installed extensions. To check for online updates for only the selected extension, right-click to open the context menu, then choose Update.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="updateinstalldialog|extended_tip|UpdateInstallDialog">在“扩展管理”对话框中点击“检查更新”，可检查所有已安装扩展的在线更新。若只检查所选扩展，请在右键菜单中选择“更新”。</property>
       </object>
     </child>
   </object>

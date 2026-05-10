@@ -87,7 +87,7 @@
     <property name="height-request">600</property>
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="matrixeditor|MatrixEditorDialog">Matrix Editor</property>
+    <property name="title" translatable="yes" context="matrixeditor|MatrixEditorDialog">矩阵编辑器</property>
     <property name="type-hint">dialog</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox3">
@@ -176,7 +176,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="halign">start</property>
-                        <property name="label" translatable="yes" context="matrixeditor|Columns">Columns:</property>
+                        <property name="label" translatable="yes" context="matrixeditor|Columns">列数:</property>
                         <accessibility>
                           <relation type="label-for" target="num_cols"/>
                         </accessibility>
@@ -211,7 +211,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="halign">start</property>
-                        <property name="label" translatable="yes" context="matrixeditor|Rows">Rows:</property>
+                        <property name="label" translatable="yes" context="matrixeditor|Rows">行数:</property>
                         <accessibility>
                           <relation type="label-for" target="num_rows"/>
                         </accessibility>
@@ -247,7 +247,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="halign">start</property>
-                        <property name="label" translatable="yes" context="matrixeditor|Name">Name:</property>
+                        <property name="label" translatable="yes" context="matrixeditor|Name">名称:</property>
                         <accessibility>
                           <relation type="label-for" target="matrixname"/>
                         </accessibility>
@@ -277,7 +277,7 @@
                     </child>
                     <child>
                       <object class="GtkRadioButton" id="unitmatrix">
-                        <property name="label" translatable="yes" context="matrixeditor|UnitMatrix">Unit matrix</property>
+                        <property name="label" translatable="yes" context="matrixeditor|UnitMatrix">单位矩阵</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -294,7 +294,7 @@
                     </child>
                     <child>
                       <object class="GtkRadioButton" id="diagmatrix">
-                        <property name="label" translatable="yes" context="matrixeditor|DiagonalMatrix">Diagonal matrix</property>
+                        <property name="label" translatable="yes" context="matrixeditor|DiagonalMatrix">对角矩阵</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -311,7 +311,7 @@
                     </child>
                     <child>
                       <object class="GtkRadioButton" id="symmatrix">
-                        <property name="label" translatable="yes" context="matrixeditor|SymmetrixMatrix">Symmetric matrix</property>
+                        <property name="label" translatable="yes" context="matrixeditor|SymmetrixMatrix">对称矩阵</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -328,7 +328,7 @@
                     </child>
                     <child>
                       <object class="GtkRadioButton" id="fullmatrix">
-                        <property name="label" translatable="yes" context="matrixeditor|FullMatrix">Full matrix</property>
+                        <property name="label" translatable="yes" context="matrixeditor|FullMatrix">完整矩阵</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -350,7 +350,7 @@
                     <property name="can-focus">False</property>
                     <property name="halign">start</property>
                     <property name="valign">start</property>
-                    <property name="label" translatable="yes" context="matrixeditor|Properties">Properties</property>
+                    <property name="label" translatable="yes" context="matrixeditor|Properties">属性</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -612,7 +612,7 @@
     </action-widgets>
     <child internal-child="accessible">
       <object class="AtkObject" id="MatrixEditor-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="matrixeditor|extended_tip|MatrixEditorDialog">You can edit a vector or a matrix.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="matrixeditor|extended_tip|MatrixEditorDialog">可编辑向量或矩阵。</property>
       </object>
     </child>
   </object>

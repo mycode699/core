@@ -20,7 +20,7 @@
       <object class="GtkLabel" id="headerText">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="generalpagewizard|headerText">Welcome to the %PRODUCTNAME Database Wizard</property>
+        <property name="label" translatable="yes" context="generalpagewizard|headerText">欢迎使用 %PRODUCTNAME 数据库向导</property>
         <property name="single-line-mode">True</property>
         <property name="xalign">0</property>
         <attributes>
@@ -37,7 +37,7 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="hexpand">True</property>
-        <property name="label" translatable="yes" context="generalpagewizard|helpText">Use the Database Wizard to create a new database, open an existing database file, or connect to a database stored on a server.</property>
+        <property name="label" translatable="yes" context="generalpagewizard|helpText">可使用数据库向导新建数据库、打开现有数据库文件，或连接到服务器上的现有数据库。</property>
         <property name="wrap">True</property>
         <property name="width-chars">72</property>
         <property name="max-width-chars">72</property>
@@ -52,7 +52,7 @@
       <object class="GtkLabel" id="sourceTypeHeader">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="generalpagewizard|sourceTypeHeader">What do you want to do?</property>
+        <property name="label" translatable="yes" context="generalpagewizard|sourceTypeHeader">你想进行哪种操作？</property>
         <property name="wrap">True</property>
         <property name="xalign">0</property>
       </object>
@@ -63,7 +63,7 @@
     </child>
     <child>
       <object class="GtkRadioButton" id="createDatabase">
-        <property name="label" translatable="yes" context="generalpagewizard|createDatabase">Create a n_ew database</property>
+        <property name="label" translatable="yes" context="generalpagewizard|createDatabase">新建数据库(_N)</property>
         <property name="visible">True</property>
         <property name="can-focus">True</property>
         <property name="has-focus">True</property>
@@ -74,7 +74,7 @@
         <property name="draw-indicator">True</property>
         <child internal-child="accessible">
           <object class="AtkObject" id="createDatabase-atkobject">
-            <property name="AtkObject::accessible-description" translatable="yes" context="generalpagewizard|extended_tip|createDatabase">Select to create a new database.</property>
+            <property name="AtkObject::accessible-description" translatable="yes" context="generalpagewizard|extended_tip|createDatabase">选择此项可新建数据库。</property>
           </object>
         </child>
       </object>
@@ -93,7 +93,7 @@
           <object class="GtkLabel" id="embeddeddbLabel">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="generalpagewizard|embeddeddbLabel">_Embedded database:</property>
+            <property name="label" translatable="yes" context="generalpagewizard|embeddeddbLabel">内嵌数据库(_E)：</property>
             <property name="use-underline">True</property>
             <property name="mnemonic-widget">embeddeddbList</property>
             <property name="xalign">0</property>
@@ -123,7 +123,7 @@
     </child>
     <child>
       <object class="GtkRadioButton" id="openExistingDatabase">
-        <property name="label" translatable="yes" context="generalpagewizard|openExistingDatabase">Open an existing database _file</property>
+        <property name="label" translatable="yes" context="generalpagewizard|openExistingDatabase">打开现有数据库文件(_F)</property>
         <property name="visible">True</property>
         <property name="can-focus">True</property>
         <property name="receives-default">False</property>
@@ -133,7 +133,7 @@
         <property name="group">createDatabase</property>
         <child internal-child="accessible">
           <object class="AtkObject" id="openExistingDatabase-atkobject">
-            <property name="AtkObject::accessible-description" translatable="yes" context="generalpagewizard|extended_tip|openExistingDatabase">Select to open a database file from a list of recently used files or from a file selection dialog.</property>
+            <property name="AtkObject::accessible-description" translatable="yes" context="generalpagewizard|extended_tip|openExistingDatabase">选择此项可从最近使用列表或文件选择对话框中打开数据库文件。</property>
           </object>
         </child>
       </object>
@@ -152,7 +152,7 @@
           <object class="GtkLabel" id="docListLabel">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="generalpagewizard|docListLabel">_Recently used:</property>
+            <property name="label" translatable="yes" context="generalpagewizard|docListLabel">最近使用(_R)：</property>
             <property name="use-underline">True</property>
             <property name="mnemonic-widget">documentList</property>
             <property name="xalign">0</property>
@@ -177,7 +177,7 @@
         </child>
         <child internal-child="accessible">
           <object class="AtkObject" id="docListBox-atkobject">
-            <property name="AtkObject::accessible-description" translatable="yes" context="generalpagewizard|extended_tip|docListBox">Select a database file to open from the list of recently used files. Click Finish to open the file immediately and to exit the wizard.</property>
+            <property name="AtkObject::accessible-description" translatable="yes" context="generalpagewizard|extended_tip|docListBox">从最近使用列表中选择要打开的数据库文件。单击“完成”可立即打开文件并退出向导。</property>
           </object>
         </child>
       </object>
@@ -188,7 +188,7 @@
     </child>
     <child>
       <object class="GtkButton" id="openDatabase">
-        <property name="label" translatable="yes" context="generalpagewizard|openDatabase">Open</property>
+        <property name="label" translatable="yes" context="generalpagewizard|openDatabase">打开</property>
         <property name="visible">True</property>
         <property name="can-focus">True</property>
         <property name="receives-default">True</property>
@@ -199,7 +199,7 @@
         <property name="always-show-image">True</property>
         <child internal-child="accessible">
           <object class="AtkObject" id="openDatabase-atkobject">
-            <property name="AtkObject::accessible-name" translatable="yes" context="generalpagewizard|extended_tip|openDatabase">Opens a file selection dialog where you can select a database file. Click Open or OK in the file selection dialog to open the file immediately and to exit the wizard.</property>
+            <property name="AtkObject::accessible-name" translatable="yes" context="generalpagewizard|extended_tip|openDatabase">打开文件选择对话框以选择数据库文件。在该对话框中单击“打开”或“确定”后，将立即打开文件并退出向导。</property>
           </object>
         </child>
       </object>
@@ -210,7 +210,7 @@
     </child>
     <child>
       <object class="GtkRadioButton" id="connectDatabase">
-        <property name="label" translatable="yes" context="generalpagewizard|connectDatabase">Connect to an e_xisting database</property>
+        <property name="label" translatable="yes" context="generalpagewizard|connectDatabase">连接到现有数据库(_X)</property>
         <property name="visible">True</property>
         <property name="can-focus">True</property>
         <property name="receives-default">False</property>
@@ -220,7 +220,7 @@
         <property name="group">createDatabase</property>
         <child internal-child="accessible">
           <object class="AtkObject" id="connectDatabase-atkobject">
-            <property name="AtkObject::accessible-description" translatable="yes" context="generalpagewizard|extended_tip|connectDatabase">Select to create a database document for an existing database connection.</property>
+            <property name="AtkObject::accessible-description" translatable="yes" context="generalpagewizard|extended_tip|connectDatabase">选择此项可为现有数据库连接创建数据库文档。</property>
           </object>
         </child>
       </object>
@@ -239,7 +239,7 @@
           <object class="GtkLabel" id="docListLabelDatasourceType">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="generalpagewizard|docListLabelDatasourceType">_Database:</property>
+            <property name="label" translatable="yes" context="generalpagewizard|docListLabelDatasourceType">数据库类型(_D)：</property>
             <property name="use-underline">True</property>
             <property name="mnemonic-widget">datasourceType</property>
             <property name="xalign">0</property>
@@ -258,7 +258,7 @@
         <property name="margin-start">24</property>
         <child internal-child="accessible">
           <object class="AtkObject" id="datasourceType-atkobject">
-            <property name="AtkObject::accessible-description" translatable="yes" context="generalpagewizard|extended_tip|datasourceType">Select the database type for the existing database connection.</property>
+            <property name="AtkObject::accessible-description" translatable="yes" context="generalpagewizard|extended_tip|datasourceType">选择现有数据库连接对应的数据库类型。</property>
           </object>
         </child>
       </object>
@@ -287,8 +287,8 @@
       <object class="GtkLabel" id="noembeddeddbLabel">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="generalpagewizard|noembeddeddbLabel">It is not possible to create a new database, because neither HSQLDB, nor Firebird is
-available in this setup.</property>
+        <property name="label" translatable="yes" context="generalpagewizard|noembeddeddbLabel">当前安装中既没有 HSQLDB，也没有 Firebird，
+因此无法新建数据库。</property>
         <child internal-child="accessible">
           <object class="AtkObject">
             <property name="AtkObject::accessible-role">static</property>
@@ -302,7 +302,7 @@ available in this setup.</property>
     </child>
     <child internal-child="accessible">
       <object class="AtkObject" id="PageGeneral-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="generalpagewizard|extended_tip|PageGeneral">The Database Wizard creates a database file that contains information about a database.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="generalpagewizard|extended_tip|PageGeneral">数据库向导会创建一个包含数据库连接信息的数据库文件。</property>
       </object>
     </child>
   </object>

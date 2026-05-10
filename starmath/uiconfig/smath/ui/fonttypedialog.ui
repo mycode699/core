@@ -9,7 +9,7 @@
       <object class="GtkMenuItem" id="math">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="fonttypedialog|menuitem0">_Math</property>
+        <property name="label" translatable="yes" context="fonttypedialog|menuitem0">数学(_M)</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -17,7 +17,7 @@
       <object class="GtkMenuItem" id="variables">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="fonttypedialog|menuitem1">_Variables</property>
+        <property name="label" translatable="yes" context="fonttypedialog|menuitem1">变量(_V)</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -25,7 +25,7 @@
       <object class="GtkMenuItem" id="functions">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="fonttypedialog|menuitem2">_Functions</property>
+        <property name="label" translatable="yes" context="fonttypedialog|menuitem2">函数(_F)</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -33,7 +33,7 @@
       <object class="GtkMenuItem" id="numbers">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="fonttypedialog|menuitem3">_Numbers</property>
+        <property name="label" translatable="yes" context="fonttypedialog|menuitem3">数字(_N)</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -41,7 +41,7 @@
       <object class="GtkMenuItem" id="text">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="fonttypedialog|menuitem4">_Text</property>
+        <property name="label" translatable="yes" context="fonttypedialog|menuitem4">文本(_T)</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -49,7 +49,7 @@
       <object class="GtkMenuItem" id="serif">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="fonttypedialog|menuitem5">_Serif</property>
+        <property name="label" translatable="yes" context="fonttypedialog|menuitem5">衬线字体(_S)</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -57,7 +57,7 @@
       <object class="GtkMenuItem" id="sansserif">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="fonttypedialog|menuitem6">S_ans-serif</property>
+        <property name="label" translatable="yes" context="fonttypedialog|menuitem6">无衬线字体(_A)</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -65,7 +65,7 @@
       <object class="GtkMenuItem" id="fixedwidth">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="label" translatable="yes" context="fonttypedialog|menuitem7">Fixe_d-width</property>
+        <property name="label" translatable="yes" context="fonttypedialog|menuitem7">等宽字体(_D)</property>
         <property name="use-underline">True</property>
       </object>
     </child>
@@ -73,7 +73,7 @@
   <object class="GtkDialog" id="FontsDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="fonttypedialog|FontsDialog">Fonts</property>
+    <property name="title" translatable="yes" context="fonttypedialog|FontsDialog">字体</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="type-hint">dialog</property>
@@ -103,7 +103,7 @@
             </child>
             <child>
               <object class="GtkMenuButton" id="modify">
-                <property name="label" translatable="yes" context="fonttypedialog|modify">_Modify</property>
+                <property name="label" translatable="yes" context="fonttypedialog|modify">修改(_M)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -116,7 +116,7 @@
                 </child>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="modify-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="fonttypedialog|extended_tip|modify">Click one of the choices from this pop-up menu to access the Fonts dialog, where you can define the font and attributes for the respective formula and for custom fonts.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="fonttypedialog|extended_tip|modify">点击弹出菜单中的选项以打开字体对话框，可为相应公式元素和自定义字体定义字体及属性。</property>
                   </object>
                 </child>
               </object>
@@ -128,14 +128,14 @@
             </child>
             <child>
               <object class="GtkButton" id="default">
-                <property name="label" translatable="yes" context="fonttypedialog|default">_Default</property>
+                <property name="label" translatable="yes" context="fonttypedialog|default">默认(_D)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
                 <property name="use-underline">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="default-atkobject">
-                    <property name="AtkObject::accessible-description" translatable="yes" context="fonttypedialog|extended_tip|default">Click this button to save your changes as the default for all new formulas.</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="fonttypedialog|extended_tip|default">点击此按钮可将更改保存为所有新公式的默认设置。</property>
                   </object>
                 </child>
               </object>
@@ -212,7 +212,7 @@
                       <object class="GtkLabel" id="label0">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="fonttypedialog|label1">_Math:</property>
+                        <property name="label" translatable="yes" context="fonttypedialog|label1">数学(_M):</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">mathCB</property>
                         <property name="xalign">0</property>
@@ -229,7 +229,7 @@
                       <object class="GtkLabel" id="label1">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="fonttypedialog|label1">_Variables:</property>
+                        <property name="label" translatable="yes" context="fonttypedialog|label1">变量(_V):</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">variableCB</property>
                         <property name="xalign">0</property>
@@ -246,7 +246,7 @@
                       <object class="GtkLabel" id="label2">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="fonttypedialog|label2">_Functions:</property>
+                        <property name="label" translatable="yes" context="fonttypedialog|label2">函数(_F):</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">functionCB</property>
                         <property name="xalign">0</property>
@@ -263,7 +263,7 @@
                       <object class="GtkLabel" id="label3">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="fonttypedialog|label3">_Numbers:</property>
+                        <property name="label" translatable="yes" context="fonttypedialog|label3">数字(_N):</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">numberCB</property>
                         <property name="xalign">0</property>
@@ -280,7 +280,7 @@
                       <object class="GtkLabel" id="label4">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="fonttypedialog|label4">_Text:</property>
+                        <property name="label" translatable="yes" context="fonttypedialog|label4">文本(_T):</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">textCB</property>
                         <property name="xalign">0</property>
@@ -300,7 +300,7 @@
                         <property name="hexpand">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="mathCB-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="fonttypedialog|extended_tip|mathCB">You can select the font for the math symbols in your formula.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="fonttypedialog|extended_tip|mathCB">可选择公式中数学符号使用的字体。</property>
                           </object>
                         </child>
                       </object>
@@ -316,7 +316,7 @@
                         <property name="hexpand">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="variableCB-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="fonttypedialog|extended_tip|variableCB">You can select the font for the variables in your formula.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="fonttypedialog|extended_tip|variableCB">可选择公式中变量使用的字体。</property>
                           </object>
                         </child>
                       </object>
@@ -332,7 +332,7 @@
                         <property name="hexpand">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="functionCB-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="fonttypedialog|extended_tip|functionCB">Select the font for names and properties of functions.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="fonttypedialog|extended_tip|functionCB">选择函数名称和属性使用的字体。</property>
                           </object>
                         </child>
                       </object>
@@ -348,7 +348,7 @@
                         <property name="hexpand">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="numberCB-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="fonttypedialog|extended_tip|numberCB">You can select the font for the numbers in your formula.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="fonttypedialog|extended_tip|numberCB">可选择公式中数字使用的字体。</property>
                           </object>
                         </child>
                       </object>
@@ -364,7 +364,7 @@
                         <property name="hexpand">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="textCB-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="fonttypedialog|extended_tip|textCB">Define the font for the text in your formula here.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="fonttypedialog|extended_tip|textCB">在此定义公式中文本使用的字体。</property>
                           </object>
                         </child>
                       </object>
@@ -379,7 +379,7 @@
                   <object class="GtkLabel" id="formulaL">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="fonttypedialog|formulaL">Formula Fonts</property>
+                    <property name="label" translatable="yes" context="fonttypedialog|formulaL">公式字体</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -413,7 +413,7 @@
                       <object class="GtkLabel" id="label5">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="fonttypedialog|label5">_Serif:</property>
+                        <property name="label" translatable="yes" context="fonttypedialog|label5">衬线字体(_S):</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">serifCB</property>
                         <property name="xalign">0</property>
@@ -430,7 +430,7 @@
                       <object class="GtkLabel" id="label6">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="fonttypedialog|label6">S_ans-serif:</property>
+                        <property name="label" translatable="yes" context="fonttypedialog|label6">无衬线字体(_A):</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">sansCB</property>
                         <property name="xalign">0</property>
@@ -447,7 +447,7 @@
                       <object class="GtkLabel" id="label7">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="fonttypedialog|label7">F_ixed-width:</property>
+                        <property name="label" translatable="yes" context="fonttypedialog|label7">等宽字体(_I):</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">fixedCB</property>
                         <property name="xalign">0</property>
@@ -467,7 +467,7 @@
                         <property name="hexpand">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="serifCB-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="fonttypedialog|extended_tip|serifCB">You can specify the font to be used as serif font.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="fonttypedialog|extended_tip|serifCB">可指定要用作衬线字体的字体。</property>
                           </object>
                         </child>
                       </object>
@@ -483,7 +483,7 @@
                         <property name="hexpand">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="sansCB-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="fonttypedialog|extended_tip|sansCB">You can specify the font to be used for sans serif font.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="fonttypedialog|extended_tip|sansCB">可指定要用作无衬线字体的字体。</property>
                           </object>
                         </child>
                       </object>
@@ -499,7 +499,7 @@
                         <property name="hexpand">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="fixedCB-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="fonttypedialog|extended_tip|fixedCB">You can specify the font to be used for fixed-width font.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="fonttypedialog|extended_tip|fixedCB">可指定要用作等宽字体的字体。</property>
                           </object>
                         </child>
                       </object>
@@ -514,7 +514,7 @@
                   <object class="GtkLabel" id="customL">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="fonttypedialog|customL">Custom Fonts</property>
+                    <property name="label" translatable="yes" context="fonttypedialog|customL">自定义字体</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
@@ -543,7 +543,7 @@
     </action-widgets>
     <child internal-child="accessible">
       <object class="AtkObject" id="FontsDialog-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="fonttypedialog|extended_tip|FontsDialog">Defines the fonts that can be applied to formula elements.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="fonttypedialog|extended_tip|FontsDialog">定义可应用于公式元素的字体。</property>
       </object>
     </child>
   </object>

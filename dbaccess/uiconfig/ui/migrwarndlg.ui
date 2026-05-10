@@ -63,7 +63,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="relief">none</property>
-            <property name="uri">https://wiki.documentfoundation.org/Documentation/HowTo/MigrateFromHSQLDB</property>
+            <property name="uri"></property>
           </object>
           <packing>
             <property name="expand">False</property>

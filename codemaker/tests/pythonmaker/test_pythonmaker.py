@@ -40,6 +40,7 @@ class TestPythonMaker(unittest.TestCase):
         sdk_patterns: List[str] = [
             os.path.join(self.instdir, "sdk", "bin"),
             os.path.join(self.instdir, "LibreOffice*_SDK", "bin"),
+            os.path.join(self.instdir, "*_SDK", "bin"),
         ]
 
         exe_suffix: str = ".exe" if os.name == "nt" else ""
@@ -75,10 +76,14 @@ class TestPythonMaker(unittest.TestCase):
                     "Contents",
                     "Resources",
                 ),
+                os.path.join(self.instdir, "*.app", "Contents", "Resources"),
             ]
             for pattern in app_patterns:
-                if os.path.exists(pattern):
-                    self.program_dir = pattern
+                for app_dir in glob.glob(pattern):
+                    if os.path.exists(app_dir):
+                        self.program_dir = app_dir
+                        break
+                if self.program_dir:
                     break
         else:
             self.program_dir = os.path.join(self.instdir, "program")

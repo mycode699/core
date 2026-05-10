@@ -12,6 +12,9 @@ $(eval $(call gb_Package_Package,extras_tplpresnt,$(gb_CustomTarget_workdir)/ext
 ifneq ($(WITH_TEMPLATES),)
 
 $(eval $(call gb_Package_add_files,extras_tplpresnt,$(LIBO_SHARE_FOLDER)/template/common/presnt,\
+	Business_Pitch_CN.otp \
+	Project_Report_CN.otp \
+	Teaching_Courseware_CN.otp \
 	Candy.otp \
 	DNA.otp \
 	Inspiration.otp \

@@ -13,7 +13,7 @@
   <object class="GtkDialog" id="FontDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="fontdialog|FontDialog">Fonts</property>
+    <property name="title" translatable="yes" context="fontdialog|FontDialog">字体</property>
     <property name="modal">True</property>
     <property name="type-hint">dialog</property>
     <child internal-child="vbox">
@@ -27,7 +27,7 @@
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="stock">_OK</property>
+                <property name="label" translatable="yes" context="stock">确定(_O)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
@@ -43,7 +43,7 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="stock">_Cancel</property>
+                <property name="label" translatable="yes" context="stock">取消(_C)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -57,7 +57,7 @@
             </child>
             <child>
               <object class="GtkButton" id="help">
-                <property name="label" translatable="yes" context="stock">_Help</property>
+                <property name="label" translatable="yes" context="stock">帮助(_H)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -113,7 +113,7 @@
                         <property name="truncate-multiline">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="font-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="fontdialog|extended_tip|font">Select a font from the list.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="fontdialog|extended_tip|font">从列表中选择字体。</property>
                           </object>
                         </child>
                       </object>
@@ -167,7 +167,7 @@
                   <object class="GtkLabel" id="formulaL">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="fontdialog|formulaL">Font</property>
+                    <property name="label" translatable="yes" context="fontdialog|formulaL">字体</property>
                     <property name="use-underline">True</property>
                     <property name="xalign">0</property>
                     <attributes>
@@ -200,7 +200,7 @@
                     <property name="column-homogeneous">True</property>
                     <child>
                       <object class="GtkCheckButton" id="bold">
-                        <property name="label" translatable="yes" context="fontdialog|bold">_Bold</property>
+                        <property name="label" translatable="yes" context="fontdialog|bold">粗体(_B)</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -208,7 +208,7 @@
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="bold-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="fontdialog|extended_tip|bold">Check this box to assign the bold attribute to the font.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="fontdialog|extended_tip|bold">选中此框可为字体应用粗体属性。</property>
                           </object>
                         </child>
                       </object>
@@ -219,7 +219,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="italic">
-                        <property name="label" translatable="yes" context="fontdialog|italic">_Italic</property>
+                        <property name="label" translatable="yes" context="fontdialog|italic">斜体(_I)</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
@@ -227,7 +227,7 @@
                         <property name="draw-indicator">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="italic-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="fontdialog|extended_tip|italic">Check this box to assign the italic attribute to the font.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="fontdialog|extended_tip|italic">选中此框可为字体应用斜体属性。</property>
                           </object>
                         </child>
                       </object>
@@ -242,7 +242,7 @@
                   <object class="GtkLabel" id="formulaL1">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="fontdialog|formulaL1">Attributes</property>
+                    <property name="label" translatable="yes" context="fontdialog|formulaL1">属性</property>
                     <property name="use-underline">True</property>
                     <property name="xalign">0</property>
                     <attributes>
@@ -299,7 +299,7 @@
     </action-widgets>
     <child internal-child="accessible">
       <object class="AtkObject" id="FontDialog-atkobject">
-        <property name="AtkObject::accessible-description" translatable="yes" context="fontdialog|extended_tip|FontDialog">Use this dialog to select the font for the respective category in the Fonts dialog.</property>
+        <property name="AtkObject::accessible-description" translatable="yes" context="fontdialog|extended_tip|FontDialog">使用此对话框为“字体”对话框中的相应类别选择字体。</property>
       </object>
     </child>
   </object>
