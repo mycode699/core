@@ -1952,6 +1952,8 @@
     <string>6.0</string>
     <key>CFBundleName</key>
     <string>@PRODUCTNAME@</string>
+    <key>CFBundleDisplayName</key>
+    <string>KQOffice</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleSignature</key>

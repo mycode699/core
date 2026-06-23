@@ -7066,6 +7066,7 @@ bit 3 (0x8): #define UICOMMANDDESCRIPTION_PROPERTIES_TOGGLEBUTTON 8
       <node oor:name=".uno:CommandPopup" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
           <value xml:lang="en-US">Search Commands</value>
+          <value xml:lang="zh-CN">搜索命令</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>
@@ -7803,9 +7804,11 @@ bit 3 (0x8): #define UICOMMANDDESCRIPTION_PROPERTIES_TOGGLEBUTTON 8
       <node oor:name=".uno:CommandPalette" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
           <value xml:lang="en-US">Command Palette...</value>
+          <value xml:lang="zh-CN">命令面板(&P)</value>
         </prop>
         <prop oor:name="TooltipLabel" oor:type="xs:string">
           <value xml:lang="en-US">Open the Command Palette to search and run any command</value>
+          <value xml:lang="zh-CN">打开命令面板，搜索并执行办公命令</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>
@@ -7814,9 +7817,11 @@ bit 3 (0x8): #define UICOMMANDDESCRIPTION_PROPERTIES_TOGGLEBUTTON 8
       <node oor:name=".uno:CoworkTaskManager" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
           <value xml:lang="en-US">Async Tasks...</value>
+          <value xml:lang="zh-CN">异步任务(&T)</value>
         </prop>
         <prop oor:name="TooltipLabel" oor:type="xs:string">
           <value xml:lang="en-US">Open the async task manager (cowork)</value>
+          <value xml:lang="zh-CN">打开异步任务管理器，查看和管理 AI 委托任务</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>

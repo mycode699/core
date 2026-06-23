@@ -53,6 +53,8 @@
 #include <officecfg/Office/Calc.hxx>
 #include <officecfg/Office/Common.hxx>
 
+#include "AiI18nStrings.hxx"
+
 using namespace ::com::sun::star::uno;
 
 namespace
@@ -242,19 +244,23 @@ OUString AboutDialog::GetMiscString()
     {
         if (!aCalcMode.isEmpty())
             aCalcMode += " / ";
-        aCalcMode += "多线程";
+        aCalcMode += kqoffice::ai::i18n::get(u"about.calc_mode.multithreaded"_ustr);
     }
 
     if (officecfg::Office::Calc::Defaults::Sheet::JumboSheets::get())
     {
         if (!aCalcMode.isEmpty())
             aCalcMode += " / ";
-        aCalcMode += "大表格";
+        aCalcMode += kqoffice::ai::i18n::get(u"about.calc_mode.jumbo"_ustr);
     }
 
     if (aCalcMode.isEmpty())
-        aCalcMode = "默认";
-    sMisc += "表格引擎：" + aCalcMode;
+        aCalcMode = kqoffice::ai::i18n::get(u"about.calc_mode.default"_ustr);
+    sMisc += kqoffice::ai::i18n::get(u"about.calc_engine_label"_ustr) + aCalcMode;
+
+    // ── V2 AI feature section ──
+    sMisc += kqoffice::ai::i18n::get(u"about.ai_section_header"_ustr)
+          +  kqoffice::ai::i18n::get(u"about.ai_features"_ustr);
 
     return sMisc;
 }
