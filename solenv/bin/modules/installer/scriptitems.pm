@@ -1529,6 +1529,7 @@ sub add_directory_with_create_flag_hash
 {
     my ($alldirectoryhash, $directoryname, $specificlanguage, $gid, $styles, $modules) = @_;
     if ( ! $directoryname ) { installer::exiter::exit_program("No directory name (HostName) set for specified language in gid $gid", "add_directory_with_create_flag_hash"); }
+    $styles //= "";
     my $origdirectoryname = $directoryname;
     my $newdirincluded = 0;
     if ( $styles =~ /\bCREATE\b/ )
@@ -1659,21 +1660,21 @@ sub collect_directories_from_filesarray
                 $directoryhash{'HostName'} = $destinationpath;
                 $directoryhash{'specificlanguage'} = $onefile->{'specificlanguage'};
                 $directoryhash{'Dir'} = $onefile->{'Dir'};
-                $directoryhash{'modules'} = $onefile->{'modules'}; # NEW, saving modules
-                $directoryhash{'gid'} = $onefile->{'gid'};
+                $directoryhash{'modules'} = $onefile->{'modules'} // ""; # NEW, saving modules
+                $directoryhash{'gid'} = $onefile->{'gid'} // "";
 
                 $alldirectoryhash{$destinationpath} = \%directoryhash;
             }
             else
             {
                 # Adding the modules to the module list!
-                $alldirectoryhash{$destinationpath}->{'modules'} .= "," . $onefile->{'modules'};
+                $alldirectoryhash{$destinationpath}->{'modules'} .= "," . ($onefile->{'modules'} // "");
                 # Save file's gid iff this directory appears in only a single
                 # file's FILELIST (so that unused directories will be filtered
                 # out in remove_not_required_spellcheckerlanguage_files, based
                 # on gid):
-                if ($alldirectoryhash{$destinationpath}->{'gid'}
-                    ne $onefile->{'gid'})
+                if (($alldirectoryhash{$destinationpath}->{'gid'} // "")
+                    ne ($onefile->{'gid'} // ""))
                 {
                     $alldirectoryhash{$destinationpath}->{'gid'} = '';
                 }

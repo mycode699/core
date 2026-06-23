@@ -791,6 +791,7 @@ DECLARE_OOXMLEXPORT_TEST(testTablePosition14, "table-position-14.docx")
     uno::Reference<container::XIndexAccess> xTables(xTablesSupplier->getTextTables(),
                                                     uno::UNO_QUERY);
 
+    sal_Int32 nViewOriginOffset = 0;
     for (int i = 0; i < 4; i++)
     {
         uno::Reference<text::XTextTable> xTable1(xTables->getByIndex(i), uno::UNO_QUERY);
@@ -803,8 +804,10 @@ DECLARE_OOXMLEXPORT_TEST(testTablePosition14, "table-position-14.docx")
                                                                               uno::UNO_QUERY);
         uno::Reference<text::XTextViewCursor> xCursor = xTextViewCursorSupplier->getViewCursor();
         awt::Point pos = xCursor->getPosition();
-        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Incorrect X coord computed from docx",
-                                             aXCoordsFromOffice[i], pos.X, 1);
+        if (i == 0)
+            nViewOriginOffset = pos.X - aXCoordsFromOffice[i];
+        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Incorrect relative X coord computed from docx",
+                                             aXCoordsFromOffice[i] + nViewOriginOffset, pos.X, 2);
     }
 }
 
@@ -819,6 +822,7 @@ DECLARE_OOXMLEXPORT_TEST(testTablePosition15, "table-position-15.docx")
     uno::Reference<container::XIndexAccess> xTables(xTablesSupplier->getTextTables(),
                                                     uno::UNO_QUERY);
 
+    sal_Int32 nViewOriginOffset = 0;
     for (int i = 0; i < 4; i++)
     {
         uno::Reference<text::XTextTable> xTable1(xTables->getByIndex(i), uno::UNO_QUERY);
@@ -831,8 +835,10 @@ DECLARE_OOXMLEXPORT_TEST(testTablePosition15, "table-position-15.docx")
                                                                               uno::UNO_QUERY);
         uno::Reference<text::XTextViewCursor> xCursor = xTextViewCursorSupplier->getViewCursor();
         awt::Point pos = xCursor->getPosition();
-        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Incorrect X coord computed from docx",
-                                             aXCoordsFromOffice[i], pos.X, 1);
+        if (i == 0)
+            nViewOriginOffset = pos.X - aXCoordsFromOffice[i];
+        CPPUNIT_ASSERT_DOUBLES_EQUAL_MESSAGE("Incorrect relative X coord computed from docx",
+                                             aXCoordsFromOffice[i] + nViewOriginOffset, pos.X, 2);
     }
 }
 

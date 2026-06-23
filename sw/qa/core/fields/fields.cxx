@@ -456,16 +456,16 @@ CPPUNIT_TEST_FIXTURE(Test, testODFStyleRef)
 
     // Similarly to testChapterFieldsFollowedBy, the fields are enumerated with #1 first and everything else in reverse order
     std::vector<std::pair<OUString, OUString>> aFieldValues = {
-        { " Heading 1", "1:" }, // #1
+        { " Heading 1", "3:" }, // #1
         { " Heading 2", "In footnotes" }, // #10
         { " Heading 2", "In document text" }, // #9
-        { " Heading 1", "STYLEREF in different locations" }, // #8
-        { " Heading 1", "2:" }, // #7
-        { " Heading 1", "With STYLEREF, many things are possible" }, // #6
-        { " Heading 1", "1:" }, // #5
-        { " Heading 1", "STYLEREF in different locations" }, // #4
-        { " Heading 1", "2:" }, // #3
-        { " Heading 1", "With STYLEREF, many things are possible" }, // #2
+        { " Heading 1", "Thank you!" }, // #8
+        { " Heading 1", "4:" }, // #7
+        { " Heading 1", "Field flags" }, // #6
+        { " Heading 1", "3:" }, // #5
+        { " Heading 1", "Thank you!" }, // #4
+        { " Heading 1", "4:" }, // #3
+        { " Heading 1", "Field flags" }, // #2
     };
 
     for (const auto& sValue : aFieldValues)

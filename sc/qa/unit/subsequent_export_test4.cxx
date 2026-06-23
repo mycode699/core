@@ -872,13 +872,18 @@ CPPUNIT_TEST_FIXTURE(ScExportTest4, testTdf147088)
 {
     createScDoc("fods/tdf147088.fods");
 
+    save(TestFilter::XLSX);
+    xmlDocUniquePtr pSheet = parseExport(u"xl/worksheets/sheet1.xml"_ustr);
+    CPPUNIT_ASSERT(pSheet);
+
+    // The formula result is U+FFFF, which is not valid XML 1.0 content, so the XLSX cached value
+    // must be x-escaped.
+    assertXPathContent(pSheet, "/x:worksheet/x:sheetData/x:row/x:c/x:v", u"_xffff_");
+
     saveAndReload(TestFilter::XLSX);
 
     ScDocument* pDoc = getScDoc();
 
-    // Without the fix in place, this test would have failed with
-    // - Expected: _xffff_
-    // - Actual  :
     CPPUNIT_ASSERT_EQUAL(u"_xffff_"_ustr, pDoc->GetString(0, 0, 0));
 }
 

@@ -2672,15 +2672,22 @@ CPPUNIT_TEST_FIXTURE(SwUiWriterTest2, testTdf122942)
     createSwDoc("tdf122942.odt");
     SwDoc* pDoc = getSwDoc();
     SwWrtShell* pWrtShell = getSwDocShell()->GetWrtShell();
+    const auto& rInitialFormats = *pDoc->GetSpzFrameFormats();
+    CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), rInitialFormats.size());
+    SdrObject* pInitialObject = rInitialFormats[0]->FindSdrObject();
+    CPPUNIT_ASSERT(pInitialObject);
+    const tools::Rectangle& rInitialRect = pInitialObject->GetLastBoundRect();
 
     // Do the moral equivalent of mouse button down, move and up.
     // Start creating a custom shape that overlaps with the rounded rectangle
     // already present in the document.
-    Point aStartPos(8000, 3000);
+    Point aStartPos(rInitialRect.Left() + rInitialRect.GetWidth() / 4,
+                    rInitialRect.Top() + rInitialRect.GetHeight() / 4);
     pWrtShell->BeginCreate(SdrObjKind::CustomShape, aStartPos);
 
     // Set its size.
-    Point aMovePos(10000, 5000);
+    Point aMovePos(rInitialRect.Left() + rInitialRect.GetWidth() / 2,
+                   rInitialRect.Top() + rInitialRect.GetHeight() / 2);
     pWrtShell->MoveCreate(aMovePos);
 
     // Finish creation.

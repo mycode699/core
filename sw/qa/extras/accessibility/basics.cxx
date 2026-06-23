@@ -8,11 +8,15 @@
  */
 
 #include <com/sun/star/awt/Key.hpp>
+#include <com/sun/star/frame/XModel.hpp>
 #include <LibreOfficeKit/LibreOfficeKitEnums.h>
 #include <vcl/scheduler.hxx>
 
 #include <test/a11y/accessibletestbase.hxx>
 #include <test/a11y/AccessibilityTools.hxx>
+
+#include <vcl/commandinfoprovider.hxx>
+#include <vcl/mnemonic.hxx>
 
 using namespace css;
 
@@ -73,7 +77,28 @@ CPPUNIT_TEST_FIXTURE(test::AccessibleTestBase, TestTypeMultiPara)
 CPPUNIT_TEST_FIXTURE(test::AccessibleTestBase, TestMenuInsertPageNumber)
 {
     load(u"private:factory/swriter"_ustr);
-    CPPUNIT_ASSERT(activateMenuItem(u"Insert", u"Field", u"Page Number"));
+    auto xMenuBar = AccessibilityTools::getAccessibleObjectForRole(
+        uno::Reference<accessibility::XAccessibleContext>(getWindowAccessible()),
+        accessibility::AccessibleRole::MENU_BAR);
+    CPPUNIT_ASSERT(xMenuBar.is());
+
+    uno::Reference<frame::XModel> xModel(mxDocument, uno::UNO_QUERY_THROW);
+    const OUString aModuleIdentifier
+        = vcl::CommandInfoProvider::GetModuleIdentifier(xModel->getCurrentController()->getFrame());
+
+    auto getMenuName = [&](const OUString& rCommand) {
+        auto aProperties
+            = vcl::CommandInfoProvider::GetCommandProperties(rCommand, aModuleIdentifier);
+        OUString aLabel = vcl::CommandInfoProvider::GetMenuLabelForCommand(aProperties);
+        if (aLabel.isEmpty())
+            aLabel = vcl::CommandInfoProvider::GetLabelForCommand(aProperties);
+        CPPUNIT_ASSERT(!aLabel.isEmpty());
+        return MnemonicGenerator::EraseAllMnemonicChars(aLabel);
+    };
+
+    CPPUNIT_ASSERT(activateMenuItem(xMenuBar, getMenuName(u".uno:InsertMenu"_ustr),
+                                    getMenuName(u".uno:InsertFieldCtrl"_ustr),
+                                    getMenuName(u".uno:InsertPageNumberField"_ustr)));
     CPPUNIT_ASSERT_EQUAL(u"<PARAGRAPH>1</PARAGRAPH>"_ustr, collectText());
 }
 
@@ -81,11 +106,35 @@ CPPUNIT_TEST_FIXTURE(test::AccessibleTestBase, TestMenuInsertPageBreak)
 {
     load(u"private:factory/swriter"_ustr);
 
-    CPPUNIT_ASSERT(activateMenuItem(u"Insert", u"Field", u"Page Number"));
-    CPPUNIT_ASSERT(activateMenuItem(u"Insert", u"Page Break"));
+    auto xMenuBar = AccessibilityTools::getAccessibleObjectForRole(
+        uno::Reference<accessibility::XAccessibleContext>(getWindowAccessible()),
+        accessibility::AccessibleRole::MENU_BAR);
+    CPPUNIT_ASSERT(xMenuBar.is());
+
+    uno::Reference<frame::XModel> xModel(mxDocument, uno::UNO_QUERY_THROW);
+    const OUString aModuleIdentifier
+        = vcl::CommandInfoProvider::GetModuleIdentifier(xModel->getCurrentController()->getFrame());
+
+    auto getMenuName = [&](const OUString& rCommand) {
+        auto aProperties
+            = vcl::CommandInfoProvider::GetCommandProperties(rCommand, aModuleIdentifier);
+        OUString aLabel = vcl::CommandInfoProvider::GetMenuLabelForCommand(aProperties);
+        if (aLabel.isEmpty())
+            aLabel = vcl::CommandInfoProvider::GetLabelForCommand(aProperties);
+        CPPUNIT_ASSERT(!aLabel.isEmpty());
+        return MnemonicGenerator::EraseAllMnemonicChars(aLabel);
+    };
+
+    CPPUNIT_ASSERT(activateMenuItem(xMenuBar, getMenuName(u".uno:InsertMenu"_ustr),
+                                    getMenuName(u".uno:InsertFieldCtrl"_ustr),
+                                    getMenuName(u".uno:InsertPageNumberField"_ustr)));
+    CPPUNIT_ASSERT(activateMenuItem(xMenuBar, getMenuName(u".uno:InsertMenu"_ustr),
+                                    getMenuName(u".uno:InsertPagebreak"_ustr)));
     // we need to move focus to the paragraph after the page break to insert the page number there
     documentPostKeyEvent(LOK_KEYEVENT_KEYINPUT, 0, awt::Key::DOWN);
-    CPPUNIT_ASSERT(activateMenuItem(u"Insert", u"Field", u"Page Number"));
+    CPPUNIT_ASSERT(activateMenuItem(xMenuBar, getMenuName(u".uno:InsertMenu"_ustr),
+                                    getMenuName(u".uno:InsertFieldCtrl"_ustr),
+                                    getMenuName(u".uno:InsertPageNumberField"_ustr)));
 
     CPPUNIT_ASSERT_EQUAL(u"<PARAGRAPH>1</PARAGRAPH><PARAGRAPH>2</PARAGRAPH>"_ustr, collectText());
 }

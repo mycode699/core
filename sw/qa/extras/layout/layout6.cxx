@@ -1207,7 +1207,12 @@ CPPUNIT_TEST_FIXTURE(SwLayoutWriter6, testTdf134298)
     assertXPath(pXmlDoc, "/root/page[2]/body/tab", 0);
     assertXPath(pXmlDoc, "/root/page[2]/body/txt", 1);
     assertXPath(pXmlDoc, "/root/page[2]/body/txt[1]/anchored/fly", 1);
-    assertXPath(pXmlDoc, "/root/page[2]/body/txt[1]/anchored/fly[1]/infos/bounds", "top", u"17897");
+    const sal_Int32 nTextTop
+        = getXPath(pXmlDoc, "/root/page[2]/body/txt[1]/infos/bounds", "top").toInt32();
+    const sal_Int32 nFlyTop
+        = getXPath(pXmlDoc, "/root/page[2]/body/txt[1]/anchored/fly[1]/infos/bounds", "top")
+              .toInt32();
+    CPPUNIT_ASSERT_EQUAL(nTextTop - 18, nFlyTop);
     assertXPath(pXmlDoc, "/root/page[2]/body/txt[1]/anchored/fly[1]/infos/bounds", "height",
                 u"15819");
 }

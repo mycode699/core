@@ -21,6 +21,8 @@
 
 #include <test/a11y/accessibletestbase.hxx>
 
+#include <string_view>
+
 using namespace css;
 
 CPPUNIT_TEST_FIXTURE(test::AccessibleTestBase, TestCalcMenu)
@@ -30,12 +32,44 @@ CPPUNIT_TEST_FIXTURE(test::AccessibleTestBase, TestCalcMenu)
     const Date beforeDate(Date::SYSTEM);
     const double beforeTime = tools::Time(tools::Time::SYSTEM).GetTimeInDays();
 
+    auto xMenuBar = AccessibilityTools::getAccessibleObjectForRole(
+        uno::Reference<accessibility::XAccessibleContext>(getWindowAccessible()),
+        accessibility::AccessibleRole::MENU_BAR);
+    CPPUNIT_ASSERT(xMenuBar.is());
+
+    auto getMenuItemByName = [&](const uno::Reference<accessibility::XAccessibleContext>& xMenu,
+                                 std::u16string_view aPrimaryName,
+                                 std::u16string_view aFallbackName) {
+        for (const auto& xChild : getAllChildren(xMenu))
+        {
+            if (AccessibilityTools::nameEquals(xChild, aPrimaryName)
+                || AccessibilityTools::nameEquals(xChild, aFallbackName))
+            {
+                return xChild;
+            }
+        }
+        return uno::Reference<accessibility::XAccessibleContext>();
+    };
+
+    auto activateInsertMenuItem = [&](std::u16string_view aEnglishName,
+                                      std::u16string_view aChineseName) {
+        auto xInsertMenu = getMenuItemByName(xMenuBar, u"插入", u"Insert");
+
+        CPPUNIT_ASSERT(xInsertMenu.is());
+        CPPUNIT_ASSERT(activateMenuItem(xInsertMenu));
+
+        auto xItem = getMenuItemByName(xInsertMenu, aEnglishName, aChineseName);
+
+        CPPUNIT_ASSERT(xItem.is());
+        return activateMenuItem(xItem);
+    };
+
     // in cell A1, insert the date
-    CPPUNIT_ASSERT(activateMenuItem(u"Insert", u"Date"));
+    CPPUNIT_ASSERT(activateInsertMenuItem(u"Date", u"日期"));
     // move down to A2
     documentPostKeyEvent(LOK_KEYEVENT_KEYINPUT, 0, css::awt::Key::DOWN);
     // in cell A2, insert the time
-    CPPUNIT_ASSERT(activateMenuItem(u"Insert", u"Time"));
+    CPPUNIT_ASSERT(activateInsertMenuItem(u"Time", u"时间"));
 
     uno::Reference<accessibility::XAccessibleTable> sheet(
         getDocumentAccessibleContext()->getAccessibleChild(0)->getAccessibleContext(), // sheet 1

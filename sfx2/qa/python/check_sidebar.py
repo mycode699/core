@@ -49,9 +49,11 @@ class CheckSidebar(unittest.TestCase):
         deck_element_names = xDecks.getElementNames()
         assert ( first_deck_name in deck_element_names )
         assert ( xDecks.hasByName(first_deck_name) )
+        assert ( xDecks.hasByName("AIChatDeck") )
+        assert ( xDecks.hasByName("DiffReviewDeck") )
 
         decks_count = len(xDecks)
-        self.assertEqual ( 5, decks_count )
+        self.assertEqual ( 7, decks_count )
 
         xDeck = xDecks[first_deck_name]
         assert ( xDeck )

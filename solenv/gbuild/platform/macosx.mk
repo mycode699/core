@@ -67,12 +67,12 @@ $(patsubst $(1):%,%,$(filter $(1):%,$(gb_LinkTarget__RPATHS)))
 endef
 
 gb_LinkTarget__RPATHS := \
-	URELIB:@__________________________________________________URELIB/ \
+	URELIB:/@__________________________________________________URELIB/ \
 	UREBIN: \
-	OOO:@__________________________________________________OOO/ \
+	OOO:/@__________________________________________________OOO/ \
 	SDKBIN: \
 	OXT: \
-	NONE:@__________________________________________________NONE/ \
+	NONE:/@__________________________________________________NONE/ \
 
 # $(call gb_LinkTarget__get_installname,libfilename,layerprefix)
 define gb_LinkTarget__get_installname
