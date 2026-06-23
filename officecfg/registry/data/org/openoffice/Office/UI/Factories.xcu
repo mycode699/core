@@ -132,6 +132,20 @@
           <value>org.apache.openoffice.comp.sw.sidebar.SwPanelFactory</value>
         </prop>
       </node>
+      <node oor:name="SfxAIChatPanelFactory" oor:op="replace">
+        <prop oor:name="Type">
+          <value>toolpanel</value>
+        </prop>
+        <prop oor:name="Name">
+          <value>SfxAIChatPanelFactory</value>
+        </prop>
+        <prop oor:name="Module">
+          <value></value>
+        </prop>
+        <prop oor:name="FactoryImplementation">
+          <value>org.kqoffice.comp.sfx2.sidebar.AIChatPanelFactory</value>
+        </prop>
+      </node>
       <node oor:name="ChartPanelFactory" oor:op="replace">
         <prop oor:name="Type">
           <value>toolpanel</value>

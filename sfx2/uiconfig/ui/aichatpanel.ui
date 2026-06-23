@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface domain="sfx">
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkBox" id="AIChatPanel">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="hexpand">True</property>
+    <property name="vexpand">True</property>
+    <property name="border-width">6</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">6</property>
+    <child>
+      <object class="GtkLabel" id="status_label">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="halign">start</property>
+        <property name="label">State: ready</property>
+        <attributes>
+          <attribute name="weight" value="bold"/>
+        </attributes>
+        <child internal-child="accessible">
+          <object class="AtkObject" id="status_label-atkobject">
+            <property name="AtkObject::accessible-role">static</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkScrolledWindow" id="transcript_scroller">
+        <property name="visible">True</property>
+        <property name="can-focus">True</property>
+        <property name="hexpand">True</property>
+        <property name="vexpand">True</property>
+        <property name="shadow-type">in</property>
+        <child>
+          <object class="GtkTextView" id="transcript_view">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="editable">False</property>
+            <property name="wrap-mode">word-char</property>
+            <property name="left-margin">6</property>
+            <property name="right-margin">6</property>
+            <property name="top-margin">6</property>
+            <property name="bottom-margin">6</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="transcript_view-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="aichatpanel|transcript">AI chat transcript</property>
+                <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|transcript">Shows the current in-document AI chat messages.</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">True</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkEntry" id="prompt_entry">
+        <property name="visible">True</property>
+        <property name="can-focus">True</property>
+        <property name="hexpand">True</property>
+        <property name="placeholder-text" translatable="yes" context="aichatpanel|prompt">询问、审查或整理当前内容</property>
+        <child internal-child="accessible">
+          <object class="AtkObject" id="prompt_entry-atkobject">
+            <property name="AtkObject::accessible-name" translatable="yes" context="aichatpanel|prompt_entry">AI chat prompt</property>
+            <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|prompt_entry">Enter a prompt for the current document context.</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkBox" id="artifact_navigator_box">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">4</property>
+        <child>
+          <object class="GtkBox" id="artifact_header_box">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="orientation">horizontal</property>
+            <property name="spacing">6</property>
+            <child>
+              <object class="GtkLabel" id="artifact_title_label">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="hexpand">True</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes" context="aichatpanel|artifacts">Artifacts</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="artifact_title_label-atkobject">
+                    <property name="AtkObject::accessible-name" translatable="yes" context="aichatpanel|artifact_title">AI workspace artifacts</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|artifact_title">Section title for registered AI workspace artifacts.</property>
+                    <property name="AtkObject::accessible-role">static</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="refresh_artifacts_button">
+                <property name="label" translatable="yes" context="aichatpanel|refresh_artifacts">刷新</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="artifact_scroller">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">False</property>
+            <property name="min-content-height">88</property>
+            <property name="shadow-type">in</property>
+            <child>
+              <object class="GtkTreeView" id="artifact_tree">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="headers-visible">False</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="artifact_tree-atkobject">
+                    <property name="AtkObject::accessible-name" translatable="yes" context="aichatpanel|artifact_tree">AI artifacts</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|artifact_tree">Lists registered AI workspace artifacts for the current workspace.</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="artifact_tree_column">
+                    <child>
+                      <object class="GtkCellRendererText" id="artifact_tree_cell"/>
+                      <attributes>
+                        <attribute name="text">0</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="artifact_details_label">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="halign">start</property>
+            <property name="wrap">True</property>
+            <property name="label">No artifact selected</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="artifact_details_label-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="aichatpanel|artifact_details">Selected artifact details</property>
+                <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|artifact_details">Shows redacted metadata and route status for the selected AI workspace artifact.</property>
+                <property name="AtkObject::accessible-role">static</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="artifact_action_box">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="halign">end</property>
+            <property name="orientation">horizontal</property>
+            <property name="spacing">6</property>
+            <child>
+              <object class="GtkButton" id="open_artifact_button">
+                <property name="label" translatable="yes" context="aichatpanel|open_artifact">打开</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="open_diff_review_button">
+                <property name="label" translatable="yes" context="aichatpanel|open_diff_review">Diff</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="open_diff_review_button-atkobject">
+                    <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|open_diff_review">Opens the selected review through DiffReview metadata without applying changes.</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="approve_selected_button">
+                <property name="label" translatable="yes" context="aichatpanel|approve_selected">批准</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="approve_selected_button-atkobject">
+                    <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|approve_selected">Approves the selected evidence-linked review without applying it to the main document.</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">6</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="reject_selected_button">
+                <property name="label" translatable="yes" context="aichatpanel|reject_selected">拒绝</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="reject_selected_button-atkobject">
+                    <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|reject_selected">Rejects the selected evidence-linked review without mutating the main document.</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">7</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="copy_reference_button">
+                <property name="label" translatable="yes" context="aichatpanel|copy_reference">引用</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="copy_reference_button-atkobject">
+                    <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|copy_reference">Copies a metadata reference for the selected artifact, review, or evidence item.</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">8</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="export_evidence_button">
+                <property name="label" translatable="yes" context="aichatpanel|export_evidence">导出证据</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="export_evidence_button-atkobject">
+                    <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|export_evidence">Exports redacted metadata and hash-only evidence references for the selected item.</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">9</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="remove_artifact_button">
+                <property name="label" translatable="yes" context="aichatpanel|remove_artifact">移除</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">10</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="review_artifact_button">
+                <property name="label" translatable="yes" context="aichatpanel|review_artifact">审查</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="review_artifact_button-atkobject">
+                    <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|review_artifact">Creates an evidence-linked content review item for the selected artifact.</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="format_artifact_button">
+                <property name="label" translatable="yes" context="aichatpanel|format_artifact">排版审查</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="format_artifact_button-atkobject">
+                    <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|format_artifact">Creates an evidence-linked formatting and layout review item for the selected artifact.</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="inspect_evidence_button">
+                <property name="label" translatable="yes" context="aichatpanel|inspect_evidence">证据</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="inspect_evidence_button-atkobject">
+                    <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|inspect_evidence">Opens redacted metadata for the selected artifact's evidence and citation links.</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">3</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkBox" id="action_box">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="halign">end</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">6</property>
+        <child>
+          <object class="GtkButton" id="filter_workspace_button">
+            <property name="label" translatable="yes" context="aichatpanel|filter_workspace">筛选</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="filter_workspace_button-atkobject">
+                <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|filter_workspace">Shows visible workspace filters for state, type, and surface.</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="sort_workspace_button">
+            <property name="label" translatable="yes" context="aichatpanel|sort_workspace">排序</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="sort_workspace_button-atkobject">
+                <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|sort_workspace">Shows the workspace sort order as recent-first metadata ordering.</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="clear_history_button">
+            <property name="label" translatable="yes" context="aichatpanel|clear_history">清除历史</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="clear_history_button-atkobject">
+                <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|clear_history">Clears local AI chat history for the current document.</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="cancel_button">
+            <property name="label" translatable="yes" context="aichatpanel|cancel">停止</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="cancel_button-atkobject">
+                <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|cancel">Stops the current AI chat request.</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="retry_button">
+            <property name="label" translatable="yes" context="aichatpanel|retry">重试</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="retry_button-atkobject">
+                <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|retry">Restores the last prompt for another attempt.</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="send_button">
+            <property name="label" translatable="yes" context="aichatpanel|send">发送</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="send_button-atkobject">
+                <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|send">Sends the prompt to the AI chat runtime.</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">5</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">4</property>
+      </packing>
+    </child>
+  </object>
+</interface>

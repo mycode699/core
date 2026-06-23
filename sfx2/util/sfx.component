@@ -93,4 +93,8 @@
       constructor="com_sun_star_comp_sfx2_InsertSymbolToolBoxControl_get_implementation">
     <service name="com.sun.star.frame.ToolbarController"/>
   </implementation>
+  <implementation name="org.kqoffice.comp.sfx2.sidebar.AIChatPanelFactory"
+      constructor="org_kqoffice_comp_sfx2_sidebar_AIChatPanelFactory_get_implementation">
+    <service name="com.sun.star.ui.UIElementFactory"/>
+  </implementation>
 </component>
