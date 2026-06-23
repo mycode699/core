@@ -34,9 +34,9 @@ unzip \
 	-qq \
 	-d $(UNPACKED_DIR) $(UNPACKED_TARBALL) \
 $(if $(filter-out 0,$(UNPACKED_STRIP_COMPONENTS)),\
-	&& UNZIP_DIR=`ls $(UNPACKED_DIR)` \
-	&& mv $(UNPACKED_DIR)/$$UNZIP_DIR/* $(UNPACKED_DIR) \
-	&& rm -rf $(UNPACKED_DIR)/$$UNZIP_DIR \
+	&& UNZIP_DIR=`find $(UNPACKED_DIR) -mindepth 1 -maxdepth 1 | sed 1q` \
+	&& mv "$$UNZIP_DIR"/* $(UNPACKED_DIR)/ \
+	&& rm -rf "$$UNZIP_DIR" \
 )
 endef
 

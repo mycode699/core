@@ -228,6 +228,7 @@ $(if $(findstring YES,$(UNPACKED_IS_BIN_TARBALL)),\
 	touch $@,
 $(call gb_Helper_print_on_error,cd $(EXTERNAL_WORKDIR)/$(3) && \
 	unset Platform && \
+	export GCC_COLORS=0 NO_COLOR=1 TERM=dumb CLICOLOR=0 CLICOLOR_FORCE=0 && \
 	$(if $(WRAPPERS),export $(WRAPPERS) &&) \
 	$(if $(NMAKE),export $(NMAKE) &&) \
 	$(if $(gb_COMPILER_SETUP),export $(gb_COMPILER_SETUP) &&) \

@@ -18,7 +18,7 @@ postprocess_XCU := $(call gb_XcuDataTarget_get_target,officecfg/registry/data/or
 postprocess_MOD := $(call gb_XcuModuleTarget_get_target,officecfg/registry/data)
 postprocess_DRIVERS :=
 
-postprocess_ASCII_WORKDIR := /Users/lu/kdoffice-build/workdir
+postprocess_ASCII_WORKDIR := $(or $(KQOFFICE_ASCII_WORKDIR),$(WORKDIR))
 
 define postprocess__ascii_path
 $(if $(filter $(WORKDIR)%,$(1)),$(patsubst $(WORKDIR)%,$(postprocess_ASCII_WORKDIR)%,$(1)),$(1))
@@ -596,25 +596,25 @@ $(call gb_XcdTarget_get_target,main.xcd) \
         | $(call gb_ExternalExecutable_get_dependencies,xsltproc)
 	$(call gb_Output_announce,main,$(true),XCD,3)
 	$(call gb_Trace_StartRange,main,XCD)
-	$(call gb_Helper_abbreviate_dirs, \
-		mkdir -p $(dir $@) && \
-		$(call gb_ExternalExecutable_get_command,xsltproc) --nonet \
-			$(SRCDIR)/solenv/bin/packregistry.xslt \
-			$(gb_CustomTarget_workdir)/postprocess/registry/main.list \
-		|  sed $(postprocess_main_SED) > $@ \
-	)
+		$(call gb_Helper_abbreviate_dirs, \
+			mkdir -p $(dir $@) && \
+			$(call gb_ExternalExecutable_get_command,xsltproc) --nonet \
+				$(SRCDIR)/solenv/bin/packregistry.xslt \
+				$(call postprocess__ascii_path,$(gb_CustomTarget_workdir)/postprocess/registry/main.list) \
+			|  sed $(postprocess_main_SED) > $@ \
+		)
 	$(call gb_Trace_EndRange,main,XCD)
 
 $(call gb_XcdTarget_get_target,registry_%.xcd) : \
         | $(call gb_ExternalExecutable_get_dependencies,xsltproc)
 	$(call gb_Output_announce,registry_$*,$(true),XCD,3)
 	$(call gb_Trace_StartRange,registry_$*,XCD)
-	$(call gb_Helper_abbreviate_dirs, \
-		mkdir -p $(dir $@) && \
-		$(call gb_ExternalExecutable_get_command,xsltproc) --nonet \
-			$(SRCDIR)/solenv/bin/packregistry.xslt $< \
-			$(if $(filter REPORTBUILDER,$(BUILD_TYPE)),, | \
+		$(call gb_Helper_abbreviate_dirs, \
+			mkdir -p $(dir $@) && \
 			$(call gb_ExternalExecutable_get_command,xsltproc) --nonet \
+				$(SRCDIR)/solenv/bin/packregistry.xslt $(call postprocess__ascii_path,$<) \
+				$(if $(filter REPORTBUILDER,$(BUILD_TYPE)),, | \
+				$(call gb_ExternalExecutable_get_command,xsltproc) --nonet \
 			$(SRCDIR)/solenv/bin/removereportbuilder.xslt - ) \
 			> $@ \
 	)
@@ -624,11 +624,11 @@ $(call gb_XcdTarget_get_target,%.xcd) : \
         | $(call gb_ExternalExecutable_get_dependencies,xsltproc)
 	$(call gb_Output_announce,$*,$(true),XCD,3)
 	$(call gb_Trace_StartRange,$*,XCD)
-	$(call gb_Helper_abbreviate_dirs, \
-		mkdir -p $(dir $@) && \
-		$(call gb_ExternalExecutable_get_command,xsltproc) --nonet \
-			-o $@ $(SRCDIR)/solenv/bin/packregistry.xslt $< \
-	)
+		$(call gb_Helper_abbreviate_dirs, \
+			mkdir -p $(dir $@) && \
+			$(call gb_ExternalExecutable_get_command,xsltproc) --nonet \
+				-o $@ $(SRCDIR)/solenv/bin/packregistry.xslt $(call postprocess__ascii_path,$<) \
+		)
 	$(call gb_Trace_EndRange,$*,XCD)
 
 $(gb_CustomTarget_workdir)/postprocess/registry/Langpack-%.list :

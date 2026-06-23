@@ -53,7 +53,7 @@ gb_Configuration__stringparam_schemaRoot = --stringparam schemaRoot \
 
 gb_Configuration_XSLTCOMMAND = $(call gb_ExternalExecutable_get_command,xsltproc)
 gb_Configuration_XSLTCOMMAND_DEPS = $(call gb_ExternalExecutable_get_dependencies,xsltproc)
-gb_Configuration_ASCII_WORKDIR := /Users/lu/kdoffice-build/workdir
+gb_Configuration_ASCII_WORKDIR := $(or $(KQOFFICE_ASCII_WORKDIR),$(WORKDIR))
 
 define gb_Configuration__xslt_path
 $(if $(filter $(WORKDIR)%,$(1)),$(patsubst $(WORKDIR)%,$(gb_Configuration_ASCII_WORKDIR)%,$(1)),$(1))
