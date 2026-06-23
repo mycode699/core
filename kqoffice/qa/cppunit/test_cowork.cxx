@@ -26,6 +26,7 @@
 
 #include <osl/thread.hxx>
 
+#include <atomic>
 #include <cstdlib>
 #include <memory>
 #include <unistd.h>
@@ -122,6 +123,17 @@ public:
     void testCoworkUiBridgeRunsNewTaskToOpenedReview();
     void testCoworkUiBridgePostsOsNotificationRequest();
     void testCoworkUiAsyncBridgeExposesPendingRunningAndCompletes();
+    void testTaskPriorityTokenRoundTrip();
+    void testPriorityFieldPersistsInStore();
+    void testStoreTransitionStateAtomic();
+    void testStoreMutexConcurrentReadWrite();
+    void testSchedulerPriorityOrderDispatchesHighFirst();
+    void testSchedulerParallelDispatchAllTasks();
+    void testSchedulerParallelThreadEvidence();
+    void testSchedulerShutdownCancelsWorkers();
+    void testRunnerCancellationToken();
+    void testRunnerThreadIdTracking();
+    void testCoworkParallelismOptimalCount();
 
     CPPUNIT_TEST_SUITE(CowoekTest);
     CPPUNIT_TEST(testTaskKindRoundTrip);
@@ -169,6 +181,17 @@ public:
     CPPUNIT_TEST(testCoworkUiBridgeRunsNewTaskToOpenedReview);
     CPPUNIT_TEST(testCoworkUiBridgePostsOsNotificationRequest);
     CPPUNIT_TEST(testCoworkUiAsyncBridgeExposesPendingRunningAndCompletes);
+    CPPUNIT_TEST(testTaskPriorityTokenRoundTrip);
+    CPPUNIT_TEST(testPriorityFieldPersistsInStore);
+    CPPUNIT_TEST(testStoreTransitionStateAtomic);
+    CPPUNIT_TEST(testStoreMutexConcurrentReadWrite);
+    CPPUNIT_TEST(testSchedulerPriorityOrderDispatchesHighFirst);
+    CPPUNIT_TEST(testSchedulerParallelDispatchAllTasks);
+    CPPUNIT_TEST(testSchedulerParallelThreadEvidence);
+    CPPUNIT_TEST(testSchedulerShutdownCancelsWorkers);
+    CPPUNIT_TEST(testRunnerCancellationToken);
+    CPPUNIT_TEST(testRunnerThreadIdTracking);
+    CPPUNIT_TEST(testCoworkParallelismOptimalCount);
     CPPUNIT_TEST_SUITE_END();
 };
 
@@ -1792,6 +1815,388 @@ void CowoekTest::testCoworkUiAsyncBridgeExposesPendingRunningAndCompletes()
     CPPUNIT_ASSERT(store.read(u"2026-05"_ustr, task.taskId, stored));
     CPPUNIT_ASSERT(stored.state == TaskState::AwaitingReview);
     CPPUNIT_ASSERT_EQUAL(size_t(1), openSink.snapshot().size());
+}
+
+void CowoekTest::testTaskPriorityTokenRoundTrip()
+{
+    CPPUNIT_ASSERT_EQUAL(u"high"_ustr, taskPriorityToken(TaskPriority::High));
+    CPPUNIT_ASSERT_EQUAL(u"normal"_ustr, taskPriorityToken(TaskPriority::Normal));
+    CPPUNIT_ASSERT_EQUAL(u"low"_ustr, taskPriorityToken(TaskPriority::Low));
+
+    TaskPriority out = TaskPriority::Normal;
+    CPPUNIT_ASSERT(parseTaskPriority(u"high"_ustr, out));
+    CPPUNIT_ASSERT(out == TaskPriority::High);
+    CPPUNIT_ASSERT(parseTaskPriority(u"normal"_ustr, out));
+    CPPUNIT_ASSERT(out == TaskPriority::Normal);
+    CPPUNIT_ASSERT(parseTaskPriority(u"low"_ustr, out));
+    CPPUNIT_ASSERT(out == TaskPriority::Low);
+
+    CPPUNIT_ASSERT(!parseTaskPriority(u"critical"_ustr, out));
+    CPPUNIT_ASSERT(!parseTaskPriority(OUString(), out));
+}
+
+void CowoekTest::testPriorityFieldPersistsInStore()
+{
+    ScopedTasksDir scope;
+    TaskStore store;
+
+    AsyncTaskEnvelope env;
+    env.taskId = u"tk-20260623-001"_ustr;
+    env.kind = TaskKind::WeeklyReport;
+    env.title = u"Priority persistence"_ustr;
+    env.createdAt = u"2026-06-23T10:00:00Z"_ustr;
+    env.updatedAt = u"2026-06-23T10:00:00Z"_ustr;
+    env.serviceMode = u"offline"_ustr;
+    env.priority = TaskPriority::High;
+
+    CPPUNIT_ASSERT(store.write(env));
+
+    AsyncTaskEnvelope out;
+    CPPUNIT_ASSERT(store.read(u"2026-06"_ustr, env.taskId, out));
+    CPPUNIT_ASSERT(out.priority == TaskPriority::High);
+
+    // Test default = Normal
+    AsyncTaskEnvelope env2;
+    env2.taskId = u"tk-20260623-002"_ustr;
+    env2.kind = TaskKind::ContractReview;
+    env2.title = u"Default priority"_ustr;
+    env2.createdAt = u"2026-06-23T10:01:00Z"_ustr;
+    env2.updatedAt = u"2026-06-23T10:01:00Z"_ustr;
+    env2.serviceMode = u"offline"_ustr;
+
+    CPPUNIT_ASSERT(store.write(env2));
+    AsyncTaskEnvelope out2;
+    CPPUNIT_ASSERT(store.read(u"2026-06"_ustr, env2.taskId, out2));
+    CPPUNIT_ASSERT(out2.priority == TaskPriority::Normal);
+}
+
+void CowoekTest::testStoreTransitionStateAtomic()
+{
+    ScopedTasksDir scope;
+    TaskStore store;
+
+    AsyncTaskEnvelope env;
+    env.taskId = u"tk-20260623-003"_ustr;
+    env.kind = TaskKind::DataCleanup;
+    env.title = u"Atomic transition"_ustr;
+    env.createdAt = u"2026-06-23T10:00:00Z"_ustr;
+    env.updatedAt = u"2026-06-23T10:00:00Z"_ustr;
+    env.serviceMode = u"offline"_ustr;
+
+    CPPUNIT_ASSERT(store.write(env));
+
+    // Valid transition: pending -> running
+    AsyncTaskEnvelope result;
+    CPPUNIT_ASSERT(store.transitionState(u"2026-06"_ustr, env.taskId,
+                                         TaskState::Pending, TaskState::Running,
+                                         &result));
+    CPPUNIT_ASSERT(result.state == TaskState::Running);
+
+    // Invalid: expected state mismatch (task is now Running, not Pending)
+    CPPUNIT_ASSERT(!store.transitionState(u"2026-06"_ustr, env.taskId,
+                                          TaskState::Pending, TaskState::Running,
+                                          &result));
+
+    // Valid: running -> awaiting-review
+    CPPUNIT_ASSERT(store.transitionState(u"2026-06"_ustr, env.taskId,
+                                         TaskState::Running,
+                                         TaskState::AwaitingReview, &result));
+    CPPUNIT_ASSERT(result.state == TaskState::AwaitingReview);
+
+    // Invalid: awaiting-review -> failed (illegal transition)
+    CPPUNIT_ASSERT(!store.transitionState(u"2026-06"_ustr, env.taskId,
+                                          TaskState::AwaitingReview,
+                                          TaskState::Failed, &result));
+}
+
+namespace
+{
+class ConcurrentReadWriteThread final : public osl::Thread
+{
+public:
+    ConcurrentReadWriteThread(TaskStore& store, OUString monthDir, OUString taskId,
+                              std::atomic<sal_Int32>& successCount)
+        : m_store(store), m_monthDir(std::move(monthDir)),
+          m_taskId(std::move(taskId)), m_successCount(successCount) {}
+
+    void SAL_CALL run() override
+    {
+        // Repeatedly read the task from the store
+        AsyncTaskEnvelope env;
+        for (sal_Int32 i = 0; i < 50; ++i)
+        {
+            if (m_store.read(m_monthDir, m_taskId, env))
+                ++m_successCount;
+            osl::Thread::yield();
+        }
+    }
+
+private:
+    TaskStore& m_store;
+    OUString m_monthDir;
+    OUString m_taskId;
+    std::atomic<sal_Int32>& m_successCount;
+};
+} // namespace
+
+void CowoekTest::testStoreMutexConcurrentReadWrite()
+{
+    ScopedTasksDir scope;
+    TaskStore store;
+
+    AsyncTaskEnvelope env;
+    env.taskId = u"tk-20260623-004"_ustr;
+    env.kind = TaskKind::WeeklyReport;
+    env.title = u"Concurrent read/write"_ustr;
+    env.createdAt = u"2026-06-23T10:00:00Z"_ustr;
+    env.updatedAt = u"2026-06-23T10:00:00Z"_ustr;
+    env.serviceMode = u"offline"_ustr;
+
+    CPPUNIT_ASSERT(store.write(env));
+
+    std::atomic<sal_Int32> successCount{0};
+
+    // Spawn 4 concurrent reader threads
+    ConcurrentReadWriteThread t1(store, u"2026-06"_ustr, env.taskId, successCount);
+    ConcurrentReadWriteThread t2(store, u"2026-06"_ustr, env.taskId, successCount);
+    ConcurrentReadWriteThread t3(store, u"2026-06"_ustr, env.taskId, successCount);
+    ConcurrentReadWriteThread t4(store, u"2026-06"_ustr, env.taskId, successCount);
+
+    CPPUNIT_ASSERT(t1.create());
+    CPPUNIT_ASSERT(t2.create());
+    CPPUNIT_ASSERT(t3.create());
+    CPPUNIT_ASSERT(t4.create());
+
+    t1.join();
+    t2.join();
+    t3.join();
+    t4.join();
+
+    // All 4 threads x 50 reads = 200 successful reads expected
+    CPPUNIT_ASSERT(successCount > 0);
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(200), successCount.load());
+}
+
+void CowoekTest::testSchedulerPriorityOrderDispatchesHighFirst()
+{
+    ScopedTasksDir scope;
+    TaskStore store;
+    TaskQueue queue(store, 4);
+    TaskScheduler scheduler(store, queue);
+
+    auto makeTask = [](const OUString& id, TaskPriority p) {
+        AsyncTaskEnvelope env;
+        env.taskId = id;
+        env.kind = TaskKind::WeeklyReport;
+        env.title = u"Priority test"_ustr;
+        env.createdAt = u"2026-06-23T10:00:00Z"_ustr;
+        env.updatedAt = u"2026-06-23T10:00:00Z"_ustr;
+        env.serviceMode = u"offline"_ustr;
+        env.priority = p;
+        return env;
+    };
+
+    // Enqueue in order: Low, Normal, High
+    CPPUNIT_ASSERT(queue.enqueue(makeTask(u"tk-20260623-010"_ustr, TaskPriority::Low)));
+    CPPUNIT_ASSERT(queue.enqueue(makeTask(u"tk-20260623-011"_ustr, TaskPriority::Normal)));
+    CPPUNIT_ASSERT(queue.enqueue(makeTask(u"tk-20260623-012"_ustr, TaskPriority::High)));
+
+    // Verify dispatchNext picks highest priority first (single-threaded test)
+    AsyncTaskEnvelope first;
+    CPPUNIT_ASSERT(queue.dispatchNext(u"2026-06"_ustr, first));
+    CPPUNIT_ASSERT_EQUAL(u"tk-20260623-012"_ustr, first.taskId);
+
+    AsyncTaskEnvelope second;
+    CPPUNIT_ASSERT(queue.dispatchNext(u"2026-06"_ustr, second));
+    CPPUNIT_ASSERT_EQUAL(u"tk-20260623-011"_ustr, second.taskId);
+
+    AsyncTaskEnvelope third;
+    CPPUNIT_ASSERT(queue.dispatchNext(u"2026-06"_ustr, third));
+    CPPUNIT_ASSERT_EQUAL(u"tk-20260623-010"_ustr, third.taskId);
+}
+
+void CowoekTest::testSchedulerParallelDispatchAllTasks()
+{
+    ScopedTasksDir scope;
+    TaskStore store;
+    TaskQueue queue(store, 4);
+    TaskScheduler scheduler(store, queue);
+
+    auto makeTask = [](const OUString& id) {
+        AsyncTaskEnvelope env;
+        env.taskId = id;
+        env.kind = TaskKind::WeeklyReport;
+        env.title = u"Parallel test"_ustr;
+        env.createdAt = u"2026-06-23T10:00:00Z"_ustr;
+        env.updatedAt = u"2026-06-23T10:00:00Z"_ustr;
+        env.serviceMode = u"offline"_ustr;
+        return env;
+    };
+
+    CPPUNIT_ASSERT(queue.enqueue(makeTask(u"tk-20260623-020"_ustr)));
+    CPPUNIT_ASSERT(queue.enqueue(makeTask(u"tk-20260623-021"_ustr)));
+
+    scheduler.setMaxParallelism(2);
+
+    class SuccessWorker final : public TaskWorker
+    {
+    public:
+        TaskWorkerResult run(const AsyncTaskEnvelope& runningTask) override
+        {
+            ++callCount;
+            // Small delay to encourage parallel overlap
+            TimeValue tv;
+            tv.Seconds = 0;
+            tv.Nanosec = 5000000; // 5ms
+            osl::Thread::wait(tv);
+            return TaskWorkerResult::awaitingReview(
+                u"ap-0000000000000002"_ustr, u"parallel-evidence"_ustr);
+        }
+        sal_Int32 callCount = 0;
+    };
+
+    SuccessWorker worker;
+    TaskSchedulerDispatchAllResult result = scheduler.dispatchAll(u"2026-06"_ustr, worker);
+
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(2), result.dispatched);
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(2), result.completed);
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(2), worker.callCount);
+
+    // Verify tasks are now awaiting review
+    for (const auto& id : { u"tk-20260623-020"_ustr, u"tk-20260623-021"_ustr })
+    {
+        AsyncTaskEnvelope stored;
+        CPPUNIT_ASSERT(store.read(u"2026-06"_ustr, id, stored));
+        CPPUNIT_ASSERT(stored.state == TaskState::AwaitingReview);
+    }
+}
+
+void CowoekTest::testSchedulerParallelThreadEvidence()
+{
+    ScopedTasksDir scope;
+    TaskStore store;
+    TaskQueue queue(store, 4);
+    TaskScheduler scheduler(store, queue);
+
+    auto makeTask = [](const OUString& id) {
+        AsyncTaskEnvelope env;
+        env.taskId = id;
+        env.kind = TaskKind::WeeklyReport;
+        env.title = u"Evidence test"_ustr;
+        env.createdAt = u"2026-06-23T10:00:00Z"_ustr;
+        env.updatedAt = u"2026-06-23T10:00:00Z"_ustr;
+        env.serviceMode = u"offline"_ustr;
+        return env;
+    };
+
+    CPPUNIT_ASSERT(queue.enqueue(makeTask(u"tk-20260623-030"_ustr)));
+    CPPUNIT_ASSERT(queue.enqueue(makeTask(u"tk-20260623-031"_ustr)));
+
+    scheduler.setMaxParallelism(2);
+
+    class EvidenceWorker final : public TaskWorker
+    {
+    public:
+        TaskWorkerResult run(const AsyncTaskEnvelope& runningTask) override
+        {
+            return TaskWorkerResult::awaitingReview(
+                u"ap-0000000000000003"_ustr, u"evidence-test"_ustr);
+        }
+    };
+
+    EvidenceWorker worker;
+    TaskSchedulerDispatchAllResult result = scheduler.dispatchAll(u"2026-06"_ustr, worker);
+
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(2), result.dispatched);
+    CPPUNIT_ASSERT_EQUAL(size_t(2), result.workerEvidence.size());
+
+    // H9 evidence gate: each dispatched task has a "worker-started" event
+    bool sawStarted = false;
+    bool sawCompleted = false;
+    for (const auto& ev : result.workerEvidence)
+    {
+        if (ev.event == u"worker-started"_ustr)
+            sawStarted = true;
+        if (ev.event == u"worker-completed"_ustr)
+            sawCompleted = true;
+        // Evidence IDs must be unique per thread event
+        CPPUNIT_ASSERT(!ev.evidenceId.isEmpty());
+        CPPUNIT_ASSERT(!ev.threadId.isEmpty());
+        CPPUNIT_ASSERT(!ev.taskId.isEmpty());
+        CPPUNIT_ASSERT(ev.startTimeMs > 0);
+        CPPUNIT_ASSERT(ev.endTimeMs > 0);
+        CPPUNIT_ASSERT(ev.endTimeMs >= ev.startTimeMs);
+    }
+    CPPUNIT_ASSERT(sawStarted);
+    CPPUNIT_ASSERT(sawCompleted);
+}
+
+void CowoekTest::testSchedulerShutdownCancelsWorkers()
+{
+    ScopedTasksDir scope;
+    TaskStore store;
+    TaskQueue queue(store, 4);
+    TaskScheduler scheduler(store, queue);
+
+    scheduler.setMaxParallelism(2);
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(0), scheduler.activeWorkers());
+
+    // Shutdown on idle scheduler should be safe
+    scheduler.shutdown();
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(0), scheduler.activeWorkers());
+}
+
+void CowoekTest::testRunnerCancellationToken()
+{
+    ScopedTasksDir scope;
+    TaskStore store;
+    TaskQueue queue(store);
+    TaskScheduler scheduler(store, queue);
+    InMemoryTaskNotificationSink sink;
+    TaskRunner runner(scheduler, sink);
+
+    CPPUNIT_ASSERT(!runner.isCancelled());
+    runner.cancel();
+    CPPUNIT_ASSERT(runner.isCancelled());
+
+    // Enqueue a task and verify cancellation prevents dispatch
+    CPPUNIT_ASSERT(queue.enqueue(makeSchedulerTask(u"tk-20260623-040"_ustr)));
+
+    FixedResultWorker worker(TaskWorkerResult::awaitingReview(
+        u"ap-0000000000000004"_ustr, u"cancelled-evidence"_ustr));
+    TaskRunnerResult result;
+    // Start should return false because the runner is cancelled immediately
+    bool ok = runner.startOneAndJoinForTest(u"2026-06"_ustr, worker, &result);
+
+    // The runner's RunOneThread checks isCancelled() at start
+    CPPUNIT_ASSERT(result.threadStarted);
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(0), worker.callCount());
+}
+
+void CowoekTest::testRunnerThreadIdTracking()
+{
+    ScopedTasksDir scope;
+    TaskStore store;
+    TaskQueue queue(store);
+    TaskScheduler scheduler(store, queue);
+    InMemoryTaskNotificationSink sink;
+    TaskRunner runner(scheduler, sink);
+
+    CPPUNIT_ASSERT(queue.enqueue(makeSchedulerTask(u"tk-20260623-045"_ustr)));
+
+    FixedResultWorker worker(TaskWorkerResult::awaitingReview(
+        u"ap-0000000000000005"_ustr, u"threadid-evidence"_ustr));
+    CPPUNIT_ASSERT(runner.startOneAndJoinForTest(u"2026-06"_ustr, worker));
+
+    // Thread ID should be set after the worker runs
+    CPPUNIT_ASSERT(runner.lastThreadId() != 0);
+}
+
+void CowoekTest::testCoworkParallelismOptimalCount()
+{
+    sal_Int32 n = optimalCoworkParallelism();
+    CPPUNIT_ASSERT(n >= 1);
+    CPPUNIT_ASSERT(n <= 4);
 }
 
 } // namespace

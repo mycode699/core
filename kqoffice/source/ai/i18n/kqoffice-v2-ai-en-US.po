@@ -1,0 +1,213 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: 可圈office V2 AI\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+# ===== cowork-dialog.ui (domain=cui) =====
+
+#. coworkdialog|CoworkDialog
+msgctxt "coworkdialog|CoworkDialog"
+msgid "异步任务"
+msgstr "Async Tasks"
+
+#. coworkdialog|newtask
+msgctxt "coworkdialog|newtask"
+msgid "新建任务(&N)"
+msgstr "New Task (&N)"
+
+#. coworkdialog|accepttask
+msgctxt "coworkdialog|accepttask"
+msgid "接受任务(&A)"
+msgstr "Accept Task (&A)"
+
+#. coworkdialog|status
+msgctxt "coworkdialog|status"
+msgid "任务列表（本月）"
+msgstr "Tasks (This Month)"
+
+# ===== commandpalette.ui (domain=cui) =====
+
+#. commandpalette|search
+msgctxt "commandpalette|search"
+msgid "输入命令名 / 拼音 / 中文（如 \"粗体\" \"ct\"）"
+msgstr "Type command, pinyin, or keyword"
+
+#. commandpalette|hint
+msgctxt "commandpalette|hint"
+msgid "按 Enter 执行 · ESC 关闭 · ↑/↓ 选择"
+msgstr "Enter to execute · ESC to close · ↑/↓ to select"
+
+# ===== select-to-act-popover.ui (domain=sw) =====
+
+#. selecttoact|rewrite
+msgctxt "selecttoact|rewrite"
+msgid "改写"
+msgstr "Rewrite"
+
+#. selecttoact|expand
+msgctxt "selecttoact|expand"
+msgid "扩写"
+msgstr "Expand"
+
+#. selecttoact|shorten
+msgctxt "selecttoact|shorten"
+msgid "简写"
+msgstr "Shorten"
+
+#. selecttoact|translate
+msgctxt "selecttoact|translate"
+msgid "翻译为英文"
+msgstr "Translate"
+
+#. selecttoact|formatclean
+msgctxt "selecttoact|formatclean"
+msgid "清理格式"
+msgstr "Clean Format"
+
+#. selecttoact|explain
+msgctxt "selecttoact|explain"
+msgid "解释"
+msgstr "Explain"
+
+#. selecttoact|custom
+msgctxt "selecttoact|custom"
+msgid "自定义提示"
+msgstr "Custom Prompt"
+
+# ===== cell-range-popover.ui (domain=sc) =====
+
+#. cellrange|explaindata
+msgctxt "cellrange|explaindata"
+msgid "解释这些数据"
+msgstr "Explain Data"
+
+#. cellrange|suggestchart
+msgctxt "cellrange|suggestchart"
+msgid "建议图表"
+msgstr "Suggest Chart"
+
+#. cellrange|generateformula
+msgctxt "cellrange|generateformula"
+msgid "生成公式"
+msgstr "Generate Formula"
+
+#. cellrange|formatclean
+msgctxt "cellrange|formatclean"
+msgid "清理格式"
+msgstr "Clean Format"
+
+#. cellrange|formatchange
+msgctxt "cellrange|formatchange"
+msgid "改格式"
+msgstr "Format"
+
+# ===== slide-element-popover.ui (domain=sd) =====
+
+#. slideelement|rewritetext
+msgctxt "slideelement|rewritetext"
+msgid "改写文字"
+msgstr "Rewrite Text"
+
+#. slideelement|adjustcolor
+msgctxt "slideelement|adjustcolor"
+msgid "调整配色"
+msgstr "Adjust Colors"
+
+#. slideelement|relayout
+msgctxt "slideelement|relayout"
+msgid "重新排版"
+msgstr "Rearrange Layout"
+
+#. slideelement|translatetext
+msgctxt "slideelement|translatetext"
+msgid "翻译"
+msgstr "Translate"
+
+# ===== aichatpanel.ui (domain=sfx) =====
+
+#. aichatpanel|prompt
+msgctxt "aichatpanel|prompt"
+msgid "询问、审查或整理当前内容"
+msgstr "Ask, review, or organize current content"
+
+#. aichatpanel|refresh_artifacts
+msgctxt "aichatpanel|refresh_artifacts"
+msgid "刷新"
+msgstr "Refresh"
+
+#. aichatpanel|open_artifact
+msgctxt "aichatpanel|open_artifact"
+msgid "打开"
+msgstr "Open"
+
+#. aichatpanel|approve_selected
+msgctxt "aichatpanel|approve_selected"
+msgid "批准"
+msgstr "Approve"
+
+#. aichatpanel|reject_selected
+msgctxt "aichatpanel|reject_selected"
+msgid "拒绝"
+msgstr "Reject"
+
+#. aichatpanel|copy_reference
+msgctxt "aichatpanel|copy_reference"
+msgid "引用"
+msgstr "Reference"
+
+#. aichatpanel|export_evidence
+msgctxt "aichatpanel|export_evidence"
+msgid "导出证据"
+msgstr "Export Evidence"
+
+#. aichatpanel|remove_artifact
+msgctxt "aichatpanel|remove_artifact"
+msgid "移除"
+msgstr "Remove"
+
+#. aichatpanel|review_artifact
+msgctxt "aichatpanel|review_artifact"
+msgid "审查"
+msgstr "Review"
+
+#. aichatpanel|format_artifact
+msgctxt "aichatpanel|format_artifact"
+msgid "排版审查"
+msgstr "Format Review"
+
+#. aichatpanel|inspect_evidence
+msgctxt "aichatpanel|inspect_evidence"
+msgid "证据"
+msgstr "Evidence"
+
+#. aichatpanel|filter_workspace
+msgctxt "aichatpanel|filter_workspace"
+msgid "筛选"
+msgstr "Filter"
+
+#. aichatpanel|sort_workspace
+msgctxt "aichatpanel|sort_workspace"
+msgid "排序"
+msgstr "Sort"
+
+#. aichatpanel|clear_history
+msgctxt "aichatpanel|clear_history"
+msgid "清除历史"
+msgstr "Clear History"
+
+#. aichatpanel|cancel
+msgctxt "aichatpanel|cancel"
+msgid "停止"
+msgstr "Stop"
+
+#. aichatpanel|retry
+msgctxt "aichatpanel|retry"
+msgid "重试"
+msgstr "Retry"
+
+#. aichatpanel|send
+msgctxt "aichatpanel|send"
+msgid "发送"
+msgstr "Send"

@@ -11,6 +11,7 @@ $(eval $(call gb_CppunitTest_CppunitTest,kqoffice_cowork))
 
 $(eval $(call gb_CppunitTest_set_include,kqoffice_cowork,\
     -I$(SRCDIR)/kqoffice/source/ai/cowork \
+    -I$(SRCDIR)/kqoffice/source/ai/i18n \
     $$(INCLUDE) \
 ))
 

@@ -17,12 +17,16 @@
 #include <cowork/CoworkPanel.hxx>
 #include <dispatch/CoworkPanelDispatcher.hxx>
 
+#include "AgentDelegation.hxx"
 #include "AsyncTask.hxx"
 #include "CoworkUiBridge.hxx"
 #include "TaskNativeOsNotificationBackend.hxx"
 #include "TaskReviewBridge.hxx"
 #include "TaskRunner.hxx"
+#include "TaskStateMachine.hxx"
 #include "TaskStore.hxx"
+
+#include <kqoffice/source/ai/i18n/AiI18nStrings.hxx>
 
 #include <algorithm>
 #include <cstdio>
@@ -76,6 +80,29 @@ OUString formatTaskRow(const AsyncTaskEnvelope& env)
 {
     OUString aTitle = env.title.isEmpty() ? env.taskId : env.title;
     return aTitle + " [" + taskStateToken(env.state) + "]";
+}
+
+/// Format a sub-agent row for use as a child in the task tree.
+OUString formatSubAgentRow(const SubAgentTask& sub, TaskState subState)
+{
+    OUStringBuffer buf;
+    buf.append(sub.agentRole);
+    buf.append("  ");
+    buf.append(sub.instruction);
+    buf.append(" [");
+    buf.append(taskStateToken(subState));
+    buf.append("]");
+    return buf.makeStringAndClear();
+}
+
+/// Resolve a task list row id to the parent task id. For sub-agent rows
+/// (id contains "-sub-"), extract the parent id. Otherwise return as-is.
+OUString resolveParentId(const OUString& id)
+{
+    sal_Int32 pos = id.indexOf("-sub-");
+    if (pos >= 0)
+        return id.copy(0, pos);
+    return id;
 }
 
 std::vector<svx::sidebar::diff_review::DiffReviewPatchEntry> buildCoworkReviewEntries(
@@ -263,8 +290,10 @@ OUString CoworkDialog::nextStubTaskId(const OUString& /*rMonthDir*/,
 
 void CoworkDialog::updateStatusLabel(std::size_t nCount)
 {
+    using kqoffice::ai::i18n::get;
     m_xStatusLabel->set_label(
-        "任务列表（" + m_aMonthDir + "）：" + OUString::number(nCount) + " 项");
+        get(u"cowork.status.this_month"_ustr) + " " + m_aMonthDir + ": "
+        + OUString::number(nCount));
 }
 
 void CoworkDialog::refreshTaskList(const OUString& rPreferredTaskId)
@@ -277,22 +306,54 @@ void CoworkDialog::refreshTaskList(const OUString& rPreferredTaskId)
     m_xTaskList->clear();
     std::size_t shown = 0;
     int nPreferredRow = -1;
+
     for (const OUString& id : ids)
     {
         AsyncTaskEnvelope env;
         if (!store.read(m_aMonthDir, id, env))
             continue;
-        m_xTaskList->append(id, formatTaskRow(env));
-        if (id == aTaskIdToSelect)
-            nPreferredRow = static_cast<int>(shown);
-        ++shown;
+
+        const std::vector<SubAgentTask> subs = AgentTaskDelegation::decompose(env, id);
+        if (subs.empty())
+        {
+            // Flat row (no sub-agents).
+            m_xTaskList->append(id, formatTaskRow(env));
+            if (id == aTaskIdToSelect)
+                nPreferredRow = static_cast<int>(shown);
+            ++shown;
+        }
+        else
+        {
+            // Tree mode: parent with aggregate progress + child rows.
+            std::vector<AgentTaskResult> emptyResults;
+            AgentProgressAggregate agg
+                = AgentProgressAggregateBuilder::build(id, subs, emptyResults);
+            OUString aggText = AgentProgressAggregateBuilder::formatForUI(agg);
+            OUString parentText = u"["_ustr + aggText + u"] "_ustr
+                                  + (env.title.isEmpty() ? env.taskId : env.title)
+                                  + u" ["_ustr + taskStateToken(env.state) + u"]"_ustr;
+
+            m_xTaskList->append(id, parentText);
+            if (id == aTaskIdToSelect)
+                nPreferredRow = static_cast<int>(shown);
+            ++shown;
+
+            for (const auto& sub : subs)
+            {
+                m_xTaskList->append(id, sub.subTaskId,
+                                    formatSubAgentRow(sub, TaskState::Pending));
+                ++shown;
+            }
+        }
     }
 
     if (shown > 0)
     {
         const int nRow = nPreferredRow >= 0 ? nPreferredRow : 0;
         m_xTaskList->select(nRow);
-        m_aSelectedTaskId = m_xTaskList->get_id(nRow);
+        // The selected id may be a sub-task id; resolve to parent for
+        // subsequent operations (accept, review, etc.).
+        m_aSelectedTaskId = resolveParentId(m_xTaskList->get_id(nRow));
     }
     else
         m_aSelectedTaskId.clear();
@@ -307,7 +368,9 @@ void CoworkDialog::refreshTaskList(const OUString& rPreferredTaskId)
 OUString CoworkDialog::selectedTaskId() const
 {
     const OUString aSelectedId = m_xTaskList->get_selected_id();
-    return aSelectedId.isEmpty() ? m_aSelectedTaskId : aSelectedId;
+    if (aSelectedId.isEmpty())
+        return m_aSelectedTaskId;
+    return resolveParentId(aSelectedId);
 }
 
 void CoworkDialog::updateActionButtons()
@@ -354,11 +417,11 @@ IMPL_LINK_NOARG(CoworkDialog, OnNewTask, weld::Button&, void)
     env.taskId = nextStubTaskId(m_aMonthDir, ids);
     env.kind = TaskKind::WeeklyReport;
     env.state = TaskState::Pending;
-    env.title = u"新任务（等待审批）"_ustr;
+    env.title = kqoffice::ai::i18n::get(u"cowork.task.stub_title"_ustr);
     env.createdAt = aNow;
     env.updatedAt = aNow;
     env.serviceMode = u"offline"_ustr;
-    env.userPrompt = u"从异步任务面板启动"_ustr;
+    env.userPrompt = kqoffice::ai::i18n::get(u"cowork.task.stub_prompt"_ustr);
     env.schemaVersion = 1;
 
     m_xTaskJob = std::make_unique<CoworkUiTaskBridgeJob>(m_aMonthDir, env,

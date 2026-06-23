@@ -130,7 +130,7 @@
                     <property name="model">task_store</property>
                     <property name="headers-visible">False</property>
                     <property name="enable-search">False</property>
-                    <property name="show-expanders">False</property>
+                    <property name="show-expanders">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="task_list_view-atkobject">
                         <property name="AtkObject::accessible-name" translatable="yes" context="coworkdialog|tasks-atk">Tasks this month</property>

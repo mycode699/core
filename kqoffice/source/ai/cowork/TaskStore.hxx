@@ -12,6 +12,7 @@
 
 #include "AsyncTask.hxx"
 
+#include <osl/mutex.hxx>
 #include <rtl/ustring.hxx>
 #include <sal/types.h>
 
@@ -51,9 +52,33 @@ public:
     std::vector<OUString> listByState(const OUString& monthDir,
                                       TaskState state);
 
+    /// Atomic state transition: reads the task, checks its state matches
+    /// `expected`, and if so updates to `next`. Returns true only if the
+    /// transition occurred. Thread-safe via internal mutex.
+    bool transitionState(const OUString& monthDir,
+                         const OUString& taskId,
+                         TaskState expected,
+                         TaskState next,
+                         AsyncTaskEnvelope* out = nullptr);
+
     /// Exposed for tests — compute the root directory using the env
     /// precedence above.
     static OUString resolveRootDir();
+
+private:
+    mutable osl::Mutex m_aMutex;
+
+    /// Non-locking internal write — caller must hold m_aMutex.
+    bool writeImpl(const AsyncTaskEnvelope& env);
+
+    /// Non-locking internal read — caller must hold m_aMutex.
+    bool readImpl(const OUString& monthDir,
+                  const OUString& taskId,
+                  AsyncTaskEnvelope& out);
+
+    /// Non-locking internal list — caller must hold m_aMutex.
+    std::vector<OUString> listByStateImpl(const OUString& monthDir,
+                                          TaskState state);
 };
 
 } // namespace kqoffice::ai::cowork

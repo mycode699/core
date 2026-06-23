@@ -7,7 +7,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include "TaskStore.hxx"
+#include "TaskStateMachine.hxx"
 
 #include <cstdio>
 #include <cstdlib>
@@ -16,6 +16,8 @@
 #include <vector>
 
 #include <osl/file.hxx>
+#include <osl/mutex.hxx>
+#include <osl/thread.hxx>
 #include <osl/time.h>
 #include <rtl/strbuf.hxx>
 #include <rtl/ustrbuf.hxx>
@@ -212,7 +214,7 @@ void parseStringArray(const OString& data, std::vector<OUString>& out)
 
 } // namespace
 
-// --- Public API -------------------------------------------------------
+// --- Public API (thin wrappers with locking) --------------------------
 
 OUString TaskStore::resolveRootDir()
 {
@@ -235,15 +237,68 @@ OUString TaskStore::resolveRootDir()
 
 bool TaskStore::write(const AsyncTaskEnvelope& env)
 {
-    // Month dir from createdAt's first 7 chars when plausibly YYYY-MM;
-    // fall back to current UTC otherwise.
-    OUString monthDir;
-    if (env.createdAt.getLength() >= 7 && env.createdAt[4] == '-')
-        monthDir = env.createdAt.copy(0, 7);
-    else
-        monthDir = currentMonthDir();
+    osl::MutexGuard g(m_aMutex);
+    return writeImpl(env);
+}
 
-    OUString root = resolveRootDir();
+bool TaskStore::read(const OUString& monthDir,
+                     const OUString& taskId,
+                     AsyncTaskEnvelope& out)
+{
+    osl::MutexGuard g(m_aMutex);
+    return readImpl(monthDir, taskId, out);
+}
+
+std::vector<OUString> TaskStore::listByState(const OUString& monthDir,
+                                             TaskState state)
+{
+    osl::MutexGuard g(m_aMutex);
+    return listByStateImpl(monthDir, state);
+}
+
+bool TaskStore::transitionState(const OUString& monthDir,
+                                 const OUString& taskId,
+                                 TaskState expected,
+                                 TaskState next,
+                                 AsyncTaskEnvelope* out)
+{
+    osl::MutexGuard g(m_aMutex);
+
+    AsyncTaskEnvelope env;
+    if (!readImpl(monthDir, taskId, env))
+        return false;
+
+    if (env.state != expected)
+        return false;
+
+    if (!canTransition(env.state, next))
+        return false;
+
+    env.state = next;
+
+    TimeValue tv;
+    osl_getSystemTime(&tv);
+    std::time_t secs = static_cast<std::time_t>(tv.Seconds);
+    std::tm utc{};
+    gmtime_r(&secs, &utc);
+    char ts[21];
+    std::snprintf(ts, sizeof(ts), "%04d-%02d-%02dT%02d:%02d:%02dZ",
+                  utc.tm_year + 1900, utc.tm_mon + 1, utc.tm_mday,
+                  utc.tm_hour, utc.tm_min, utc.tm_sec);
+    env.updatedAt = OUString::createFromAscii(ts);
+
+    if (!writeImpl(env))
+        return false;
+
+    if (out)
+        *out = env;
+    return true;
+}
+
+// --- Private non-locking implementations --------------------------------
+
+bool TaskStore::writeImpl(const AsyncTaskEnvelope& env)
+{
     OUString dir = ensureMonthDir(root, monthDir);
     if (dir.isEmpty()) return false;
 
@@ -267,6 +322,8 @@ bool TaskStore::write(const AsyncTaskEnvelope& env)
     appendEscaped(body, env.updatedAt);
     body.append(",\n  \"service_mode\": ");
     appendEscaped(body, env.serviceMode);
+    body.append(",\n  \"priority\": ");
+    appendEscaped(body, taskPriorityToken(env.priority));
 
     // input object — one line per sub-field; arrays stay inline
     body.append(",\n  \"input\": {\n");
@@ -347,7 +404,7 @@ bool TaskStore::write(const AsyncTaskEnvelope& env)
     return true;
 }
 
-bool TaskStore::read(const OUString& monthDir,
+bool TaskStore::readImpl(const OUString& monthDir,
                      const OUString& taskId,
                      AsyncTaskEnvelope& out)
 {
@@ -481,6 +538,12 @@ bool TaskStore::read(const OUString& monthDir,
                 out.updatedAt = extractStringValue(data);
             else if (key == "service_mode")
                 out.serviceMode = extractStringValue(data);
+            else if (key == "priority")
+            {
+                OUString ptoken = extractStringValue(data);
+                if (!ptoken.isEmpty())
+                    parseTaskPriority(ptoken, out.priority);
+            }
             else if (key == "result_plan_id")
                 out.resultPlanId = extractStringValue(data); // empty on `null`
             else if (key == "failure_reason")
@@ -493,7 +556,7 @@ bool TaskStore::read(const OUString& monthDir,
     return !out.taskId.isEmpty();
 }
 
-std::vector<OUString> TaskStore::listByState(const OUString& monthDir,
+std::vector<OUString> TaskStore::listByStateImpl(const OUString& monthDir,
                                              TaskState state)
 {
     std::vector<OUString> result;
@@ -518,7 +581,7 @@ std::vector<OUString> TaskStore::listByState(const OUString& monthDir,
         OUString taskId = name.copy(0, name.getLength() - 5);
 
         AsyncTaskEnvelope env;
-        if (read(monthDir, taskId, env) && env.state == state)
+        if (readImpl(monthDir, taskId, env) && env.state == state)
             result.push_back(taskId);
     }
     d.close();

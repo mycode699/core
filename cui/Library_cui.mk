@@ -16,6 +16,7 @@ $(eval $(call gb_Library_set_include,cui,\
     -I$(SRCDIR)/cui/inc \
     -I$(SRCDIR)/cui/source/inc \
     -I$(SRCDIR)/kqoffice/source/ai/cowork \
+    -I$(SRCDIR)/kqoffice/source/ai/i18n \
     -I$(SRCDIR)/sfx2/inc \
 ))
 

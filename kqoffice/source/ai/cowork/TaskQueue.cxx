@@ -82,12 +82,24 @@ bool TaskQueue::dispatchNext(const OUString& monthDir, AsyncTaskEnvelope& out)
     if (pending.empty())
         return false;
 
-    std::sort(pending.begin(), pending.end(),
-              [](const OUString& a, const OUString& b) {
-                  return a.compareTo(b) < 0;
+    // Read each pending task to sort by priority (HIGH > NORMAL > LOW),
+    // then by task ID for stable ordering.
+    std::vector<AsyncTaskEnvelope> pendingEnvelopes;
+    for (const auto& id : pending)
+    {
+        AsyncTaskEnvelope env;
+        if (m_store.read(monthDir, id, env))
+            pendingEnvelopes.push_back(std::move(env));
+    }
+
+    std::sort(pendingEnvelopes.begin(), pendingEnvelopes.end(),
+              [](const AsyncTaskEnvelope& a, const AsyncTaskEnvelope& b) {
+                  if (a.priority != b.priority)
+                      return static_cast<int>(a.priority) > static_cast<int>(b.priority);
+                  return a.taskId.compareTo(b.taskId) < 0;
               });
 
-    return transition(monthDir, pending.front(), TaskState::Running,
+    return transition(monthDir, pendingEnvelopes.front().taskId, TaskState::Running,
                       u"dispatched"_ustr, OUString(), &out);
 }
 

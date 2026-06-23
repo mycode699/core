@@ -19,6 +19,7 @@
 #include <atomic>
 #include <cstdio>
 #include <mutex>
+#include <thread>
 #include <utility>
 
 namespace kqoffice::ai::cowork
@@ -295,6 +296,15 @@ bool runCoworkUiTaskBridge(TaskStore& store,
     OsNotificationTaskNotificationSink osSink(autoSink, osNotificationSink);
     return runCoworkUiTaskBridgeImpl(store, monthDir, task, osSink, autoSink,
                                     &osSink, out);
+}
+
+sal_Int32 optimalCoworkParallelism()
+{
+    unsigned n = std::thread::hardware_concurrency();
+    if (n == 0)
+        n = 2;
+    sal_Int32 r = std::min(static_cast<sal_Int32>(n), sal_Int32(4));
+    return r < 1 ? 1 : r;
 }
 
 } // namespace kqoffice::ai::cowork

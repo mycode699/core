@@ -54,6 +54,15 @@ enum class TaskStepState
     Failed,
 };
 
+/// Task priority for scheduling order. HIGH tasks are dispatched before
+/// NORMAL and LOW. Order matches W5 spec priority scheduling table.
+enum class TaskPriority
+{
+    Low = 0,
+    Normal = 1,
+    High = 2,
+};
+
 /// Per-step record. Maps 1:1 to schema steps[] item.
 struct TaskStep
 {
@@ -61,6 +70,45 @@ struct TaskStep
     OUString title;      // schema steps[].title
     TaskStepState state = TaskStepState::Pending;
     OUString evidenceId; // schema steps[].evidence, empty when absent
+};
+
+/// Sub-agent task decomposed from a parent task
+struct SubAgentTask
+{
+    OUString subTaskId;       // unique ID for this sub-task
+    OUString parentTaskId;    // parent task ID
+    OUString agentRole;       // "writer", "reviewer", "data-analyst", etc.
+    OUString instruction;     // what this sub-agent should do
+    sal_Int32 stepOrder;      // execution order (0-based)
+    OUString dependsOn;       // optional: subTaskId this depends on (empty = no dependency)
+};
+
+/// Result of a sub-agent execution
+struct AgentTaskResult
+{
+    OUString subTaskId;
+    OUString parentTaskId;
+    TaskState state;          // applied, failed, cancelled
+    OUString resultPlanId;    // plan produced by this sub-agent
+    OUString summary;         // human-readable result summary
+    std::vector<OUString> evidenceIds;
+    std::vector<SubAgentTask> nextSteps; // sub-agents this result may spawn
+};
+
+/// Progress aggregate for a task tree
+struct AgentProgressAggregate
+{
+    OUString rootTaskId;
+    sal_Int32 totalSteps;
+    sal_Int32 completedSteps;
+    sal_Int32 failedSteps;
+    sal_Int32 pendingSteps;
+    sal_Int32 runningSteps;
+    std::vector<OUString> activeSubTasks; // currently running
+    double completionPercent() const
+    {
+        return totalSteps > 0 ? (completedSteps * 100.0 / totalSteps) : 0.0;
+    }
 };
 
 /// Per-task envelope. Maps 1:1 to async-task.schema.json envelope
@@ -83,6 +131,11 @@ struct AsyncTaskEnvelope
     std::vector<OUString> evidenceIds;
     OUString failureReason;    // required iff state == Failed
     sal_Int32 schemaVersion = 1;
+    TaskPriority priority = TaskPriority::Normal;
+
+    // For multi-agent tasks:
+    std::vector<SubAgentTask> subAgentTasks;
+    OUString rootTaskId;  // empty or same as taskId for root tasks
 };
 
 /// TaskKind -> schema token. W5 spec §"Token lock" order locked.
@@ -153,6 +206,26 @@ inline bool parseTaskStepState(const OUString& token, TaskStepState& out)
     if (token == u"running")   { out = TaskStepState::Running;   return true; }
     if (token == u"completed") { out = TaskStepState::Completed; return true; }
     if (token == u"failed")    { out = TaskStepState::Failed;    return true; }
+    return false;
+}
+
+/// TaskPriority <-> schema token.
+inline OUString taskPriorityToken(TaskPriority p)
+{
+    switch (p)
+    {
+        case TaskPriority::High:   return u"high"_ustr;
+        case TaskPriority::Normal: return u"normal"_ustr;
+        case TaskPriority::Low:    return u"low"_ustr;
+    }
+    return u"normal"_ustr;
+}
+
+inline bool parseTaskPriority(const OUString& token, TaskPriority& out)
+{
+    if (token == u"high")   { out = TaskPriority::High;   return true; }
+    if (token == u"normal") { out = TaskPriority::Normal; return true; }
+    if (token == u"low")    { out = TaskPriority::Low;    return true; }
     return false;
 }
 

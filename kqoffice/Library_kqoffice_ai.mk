@@ -10,6 +10,7 @@
 $(eval $(call gb_Library_Library,kqoffice_ai))
 
 $(eval $(call gb_Library_set_include,kqoffice_ai,\
+    -I$(SRCDIR)/kqoffice/source/ai/i18n \
     $$(INCLUDE) \
 ))
 
@@ -30,6 +31,7 @@ $(eval $(call gb_Library_add_exception_objects,kqoffice_ai,\
     kqoffice/source/ai/provider/Provider \
     kqoffice/source/ai/provider/RuntimePlanStub \
     kqoffice/source/ai/provider/ServiceModePolicy \
+    kqoffice/source/ai/cowork/AgentDelegation \
     kqoffice/source/ai/cowork/CoworkUiBridge \
     kqoffice/source/ai/cowork/TaskNativeOsNotificationBackend \
     kqoffice/source/ai/cowork/TaskQueue \

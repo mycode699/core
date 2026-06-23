@@ -84,6 +84,10 @@ SAL_DLLPUBLIC_EXPORT bool runCoworkUiTaskBridge(
     TaskOsNotificationSink& osNotificationSink,
     CoworkUiBridgeResult* out = nullptr);
 
+/// Return the recommended number of parallel cowork workers, bounded by
+/// hardware concurrency and a sane upper limit (default 4).
+SAL_DLLPUBLIC_EXPORT sal_Int32 optimalCoworkParallelism();
+
 } // namespace kqoffice::ai::cowork
 
 #endif

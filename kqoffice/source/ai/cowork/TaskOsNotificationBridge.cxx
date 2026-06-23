@@ -9,6 +9,8 @@
 
 #include "TaskOsNotificationBridge.hxx"
 
+#include <kqoffice/source/ai/i18n/AiI18nStrings.hxx>
+
 namespace kqoffice::ai::cowork
 {
 
@@ -101,8 +103,9 @@ bool buildOsNotificationFromTaskNotification(
     out.valid = true;
     out.actionToken = taskOsNotificationPostedToken();
     out.clickToken = taskOsNotificationClickToken();
-    out.title = u"任务已完成，等待审批"_ustr;
-    out.body = notification.taskId + u" 已准备好打开 review"_ustr;
+    out.title = kqoffice::ai::i18n::get(u"cowork.notify.ready_for_review"_ustr);
+    out.body = kqoffice::ai::i18n::format(u"cowork.notify.review_ready_body"_ustr,
+                                           notification.taskId);
     out.reviewRequest = reviewRequest;
     return true;
 }

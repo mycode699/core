@@ -12,7 +12,10 @@
 
 #include "AsyncTask.hxx"
 #include "TaskScheduler.hxx"
+#include "TaskStore.hxx"
 
+#include <atomic>
+#include <osl/thread.h>
 #include <rtl/ustring.hxx>
 #include <sal/types.h>
 
@@ -92,9 +95,25 @@ public:
                                 TaskWorker& worker,
                                 TaskRunnerResult* out = nullptr);
 
+    /// Cancellation token for cooperative shutdown.
+    void cancel() { m_bCancelled = true; }
+    bool isCancelled() const { return m_bCancelled; }
+
+    /// Thread ID of the last worker that ran, or 0.
+    oslThreadIdentifier lastThreadId() const { return m_lastThreadId; }
+
+    /// Each runner owns a dedicated TaskStore for thread-local I/O.
+    TaskStore& store() { return m_store; }
+
+    /// Direct access for internal thread classes.
+    std::atomic<sal_uIntPtr> m_lastThreadId;
+
 private:
     TaskScheduler& m_scheduler;
     TaskNotificationSink& m_sink;
+    TaskStore m_store;
+    std::atomic<bool> m_bCancelled;
+    std::atomic<sal_uIntPtr> m_lastThreadId;
 };
 
 } // namespace kqoffice::ai::cowork

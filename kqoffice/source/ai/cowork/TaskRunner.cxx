@@ -68,16 +68,24 @@ public:
     RunOneThread(TaskScheduler& scheduler,
                  TaskNotificationSink& sink,
                  OUString monthDir,
-                 TaskWorker& worker)
+                 TaskWorker& worker,
+                 TaskRunner& runner)
         : m_scheduler(scheduler)
         , m_sink(sink)
         , m_monthDir(std::move(monthDir))
         , m_worker(worker)
+        , m_runner(runner)
     {
     }
 
     void SAL_CALL run() override
     {
+        if (m_runner.isCancelled())
+            return;
+
+        oslThreadIdentifier tid = osl::Thread::getCurrentIdentifier();
+        m_runner.m_lastThreadId = static_cast<sal_uIntPtr>(tid);
+
         osl_setThreadName("KQOfficeTaskRunner");
 
         TaskNotification start;
@@ -115,6 +123,7 @@ private:
     TaskNotificationSink& m_sink;
     OUString m_monthDir;
     TaskWorker& m_worker;
+    TaskRunner& m_runner;
     bool m_ok = false;
     TaskSchedulerRunResult m_runResult;
 };
@@ -167,6 +176,8 @@ std::vector<OUString> InMemoryTaskNotificationSink::tokens() const
 TaskRunner::TaskRunner(TaskScheduler& scheduler, TaskNotificationSink& sink)
     : m_scheduler(scheduler)
     , m_sink(sink)
+    , m_bCancelled(false)
+    , m_lastThreadId(0)
 {
 }
 
@@ -174,7 +185,7 @@ bool TaskRunner::startOneAndJoinForTest(const OUString& monthDir,
                                         TaskWorker& worker,
                                         TaskRunnerResult* out)
 {
-    auto thread = std::make_unique<RunOneThread>(m_scheduler, m_sink, monthDir, worker);
+    auto thread = std::make_unique<RunOneThread>(m_scheduler, m_sink, monthDir, worker, *this);
     thread->create();
     thread->join();
 

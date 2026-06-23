@@ -29,6 +29,8 @@
 #include <rtl/ustring.hxx>
 #include <sal/types.h>
 
+#include <kqoffice/source/ai/i18n/AiI18nStrings.hxx>
+
 namespace kqoffice::ai
 {
 enum class ApplyPlanValidationCode
@@ -558,58 +560,59 @@ inline OUString applyPlanValidationMessage(
     const ApplyPlanValidationResult& r)
 {
     using Code = ApplyPlanValidationCode;
-    // Base message per code — terse zh-CN, suitable for a single
-    // toast line. The errorPath (when non-empty) is appended as
-    // "（字段：<path>）" so the user sees which field failed without
-    // us needing a per-path template explosion.
+    using kqoffice::ai::i18n::get;
+    // Base message per code via i18n string provider. The errorPath
+    // (when non-empty) is appended using the locale-aware field suffix
+    // format so the user sees which field failed without us needing a
+    // per-path template explosion.
     OUString base;
     switch (r.code)
     {
         case Code::Ok:
             return u""_ustr; // no toast on success
         case Code::NotJsonObject:
-            base = u"AI 回包不是合法的 JSON 对象，已取消本次应用。"_ustr;
+            base = get(u"applyplan.error.not_json_long"_ustr);
             break;
         case Code::MissingField:
-            base = u"AI 回包缺少必填字段，已取消本次应用。"_ustr;
+            base = get(u"applyplan.error.missing_field_long"_ustr);
             break;
         case Code::SchemaVersionMismatch:
-            base = u"AI 回包版本与当前可圈office 不兼容，已取消本次应用。"_ustr;
+            base = get(u"applyplan.error.schema_mismatch_long"_ustr);
             break;
         case Code::IdPatternMismatch:
-            base = u"AI 回包的标识字段格式不合法，已取消本次应用。"_ustr;
+            base = get(u"applyplan.error.id_pattern_long"_ustr);
             break;
         case Code::RevisionPreconditionBad:
-            base = u"文档版本前置条件不匹配，已取消本次应用。"_ustr;
+            base = get(u"applyplan.error.revision_bad_long"_ustr);
             break;
         case Code::DeterministicNotTrue:
-            base = u"AI 回包未声明确定性执行，已取消本次应用。"_ustr;
+            base = get(u"applyplan.error.deterministic"_ustr);
             break;
         case Code::RollbackRequiredNotTrue:
-            base = u"AI 回包未声明回滚支持，已取消本次应用。"_ustr;
+            base = get(u"applyplan.error.rollback_required"_ustr);
             break;
         case Code::UndoGroupModeBad:
-            base = u"撤销分组模式不合法，已取消本次应用。"_ustr;
+            base = get(u"applyplan.error.undo_group_mode"_ustr);
             break;
         case Code::UndoLabelEmpty:
-            base = u"撤销分组标签缺失，已取消本次应用。"_ustr;
+            base = get(u"applyplan.error.undo_label_empty"_ustr);
             break;
         case Code::FailureBehaviorBad:
-            base = u"AI 回包的失败处理策略不合法，已取消本次应用。"_ustr;
+            base = get(u"applyplan.error.failure_behavior_bad"_ustr);
             break;
         case Code::FailureMessageEmpty:
-            base = u"AI 回包缺少失败提示文案，已取消本次应用。"_ustr;
+            base = get(u"applyplan.error.failure_empty"_ustr);
             break;
         case Code::OperationSummaryEmpty:
-            base = u"AI 回包缺少操作摘要，已取消本次应用。"_ustr;
+            base = get(u"applyplan.error.summary_empty"_ustr);
             break;
         case Code::RepeatedDiagnosticsBad:
-            base = u"AI 回包未声明重新诊断要求，已取消本次应用。"_ustr;
+            base = get(u"applyplan.error.repeated_diagnostics"_ustr);
             break;
     }
     if (r.errorPath.isEmpty())
         return base;
-    return base + u"（字段："_ustr + r.errorPath + u"）"_ustr;
+    return base + kqoffice::ai::i18n::format(u"i18n.field_suffix"_ustr, r.errorPath);
 }
 
 inline OString applyPlanValidationStatus(ApplyPlanValidationCode code)
