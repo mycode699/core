@@ -20,6 +20,7 @@ $(eval $(call gb_Module_add_targets,kqoffice,\
 
 $(eval $(call gb_Module_add_check_targets,kqoffice,\
     CppunitTest_kqoffice_provider \
+    CppunitTest_kqoffice_cowork \
 ))
 
 # vim: set noet sw=4 ts=4:

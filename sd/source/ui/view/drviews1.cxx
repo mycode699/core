@@ -69,6 +69,8 @@
 #include <controller/SlideSorterController.hxx>
 #include <controller/SlsPageSelector.hxx>
 
+#include "SlideElementSelectController.hxx"
+
 #include <comphelper/lok.hxx>
 #include <LibreOfficeKit/LibreOfficeKitEnums.h>
 #include <vcl/uitest/logger.hxx>
@@ -235,6 +237,8 @@ void DrawViewShell::SelectionHasChanged()
     mpDrawView->UpdateSelectionClipboard();
 
     GetViewShellBase().GetDrawController()->FireSelectionChangeListener();
+
+    sd::inline_actions::OnImpressSlideElementSelectionChanged(*this);
 }
 
 namespace {

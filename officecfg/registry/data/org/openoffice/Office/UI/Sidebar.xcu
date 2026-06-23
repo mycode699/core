@@ -420,6 +420,56 @@
         </prop>
       </node>
 
+      <!-- V3 W1: cross-app native AI chat workbench entry. -->
+      <node oor:name="AIChatDeck" oor:op="replace">
+        <prop oor:name="Title" oor:type="xs:string">
+          <value xml:lang="en-US">AI 助手</value>
+        </prop>
+        <prop oor:name="Id" oor:type="xs:string">
+          <value>AIChatDeck</value>
+        </prop>
+        <prop oor:name="IconURL" oor:type="xs:string">
+          <value>private:graphicrepository/cmd/lc_trackchanges.png</value>
+        </prop>
+        <prop oor:name="ContextList">
+          <value oor:separator=";">
+            WriterVariants, any, visible ;
+            Calc, any, visible ;
+            DrawImpress, any, visible ;
+          </value>
+        </prop>
+        <prop oor:name="OrderIndex" oor:type="xs:int">
+          <value>725</value>
+        </prop>
+        <prop oor:name="HiddenInViewer" oor:type="xs:boolean">
+          <value>true</value>
+        </prop>
+      </node>
+
+      <!-- V2 W4 Select-to-Act: neutral DiffReview deck (svx-owned, cross-app) -->
+      <node oor:name="DiffReviewDeck" oor:op="replace">
+        <prop oor:name="Title" oor:type="xs:string">
+          <value xml:lang="en-US">差异审阅</value>
+        </prop>
+        <prop oor:name="Id" oor:type="xs:string">
+          <value>DiffReviewDeck</value>
+        </prop>
+        <prop oor:name="IconURL" oor:type="xs:string">
+          <value>private:graphicrepository/cmd/lc_trackchanges.png</value>
+        </prop>
+        <prop oor:name="ContextList">
+          <value oor:separator=";">
+            any, any, hidden ;
+          </value>
+        </prop>
+        <prop oor:name="OrderIndex" oor:type="xs:int">
+          <value>750</value>
+        </prop>
+        <prop oor:name="HiddenInViewer" oor:type="xs:boolean">
+          <value>true</value>
+        </prop>
+      </node>
+
     </node>
 
     <node oor:name="PanelList">
@@ -2308,6 +2358,34 @@
         </prop>
         <prop oor:name="OrderIndex" oor:type="xs:int">
           <value>300</value>
+        </prop>
+        <prop oor:name="WantsAWT" oor:type="xs:boolean">
+          <value>false</value>
+        </prop>
+      </node>
+
+      <node oor:name="AIChatPanel" oor:op="replace">
+        <prop oor:name="Title" oor:type="xs:string">
+          <value xml:lang="en-US">AI 助手</value>
+        </prop>
+        <prop oor:name="Id" oor:type="xs:string">
+          <value>AIChatPanel</value>
+        </prop>
+        <prop oor:name="DeckId" oor:type="xs:string">
+          <value>AIChatDeck</value>
+        </prop>
+        <prop oor:name="ContextList">
+          <value oor:separator=";">
+            WriterVariants, any, visible ;
+            Calc, any, visible ;
+            DrawImpress, any, visible ;
+          </value>
+        </prop>
+        <prop oor:name="ImplementationURL" oor:type="xs:string">
+          <value>private:resource/toolpanel/SfxAIChatPanelFactory/AIChatPanel</value>
+        </prop>
+        <prop oor:name="OrderIndex" oor:type="xs:int">
+          <value>100</value>
         </prop>
         <prop oor:name="WantsAWT" oor:type="xs:boolean">
           <value>false</value>

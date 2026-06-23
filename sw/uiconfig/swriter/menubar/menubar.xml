@@ -848,6 +848,7 @@
       <menu:menuitem menu:id=".uno:HelpIndex"/>
       <menu:menuitem menu:id=".uno:ExtendedHelp"/>
       <menu:menuitem menu:id=".uno:CommandPopup" menu:style="text"/>
+      <menu:menuitem menu:id=".uno:CoworkTaskManager" menu:style="text"/>
       <menu:menuseparator/>
       <menu:menuitem menu:id=".uno:SafeMode" menu:style="text"/>
       <menu:menuseparator/>

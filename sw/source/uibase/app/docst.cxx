@@ -95,6 +95,8 @@
 #include <svx/dialog/TableStylesDlg.hxx>
 #include <vcl/weld/Dialog.hxx>
 #include <tools/json_writer.hxx>
+#include <IntelligentWriterApplyEngine.hxx>
+#include "ApplyDiffReviewBridge.hxx"
 
 using namespace ::com::sun::star;
 
@@ -1883,6 +1885,20 @@ OString SwDocShell::runIntelligentDiagnosticsPreview()
         }
     }
     return aJson.finishAndGetAsOString();
+}
+
+sw::intelligent::ApplyResult
+SwDocShell::applyDiagnosticsPlan(const sw::intelligent::ApplyPlan& rPlan)
+{
+    // W3 Day-1b D1 — full pipeline in ApplyEngine; Diff Review UI opens here
+    // (W4.E) so sw/core stays free of uibase/ai includes.
+    sw::intelligent::ApplyResult aResult = sw::intelligent::ApplyEngine(*this).run(rPlan);
+    if (aResult.meStatus == sw::intelligent::ApplyStatus::Ok && aResult.mnAppliedCount > 0)
+    {
+        if (SwWrtShell* pWrtShell = GetWrtShell())
+            ShowApplyPlanDiffReview(*pWrtShell, aResult, rPlan.maPlanId, &rPlan.maPatches);
+    }
+    return aResult;
 }
 
 std::set<Color> SwDocShell::GetDocColors()

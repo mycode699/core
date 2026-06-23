@@ -29,6 +29,8 @@ $(eval $(call gb_Library_set_include,sw,\
     -I$(SRCDIR)/sw/source/core/inc \
     -I$(SRCDIR)/sw/source/filter/inc \
     -I$(SRCDIR)/sw/source/uibase/inc \
+    -I$(SRCDIR)/sw/source/uibase/inline-actions \
+    -I$(SRCDIR)/sw/source/uibase/ai \
     -I$(SRCDIR)/sw/inc \
     -I$(WORKDIR)/SdiTarget/sw/sdi \
     $$(INCLUDE) \
@@ -245,6 +247,7 @@ $(eval $(call gb_Library_add_exception_objects,sw,\
     sw/source/core/doc/gctable \
     sw/source/core/doc/htmltbl \
     sw/source/core/doc/IntelligentWriterAnalyzer \
+    sw/source/core/doc/IntelligentWriterApplyEngine \
     sw/source/core/doc/lineinfo \
     sw/source/core/doc/list \
     sw/source/core/doc/notxtfrm \
@@ -494,6 +497,7 @@ $(eval $(call gb_Library_add_exception_objects,sw,\
     sw/source/core/undo/untbl \
     sw/source/core/undo/untblk \
     sw/source/core/undo/UndoThemeChange \
+    sw/source/core/undo/UndoApplyPatch \
     sw/source/core/unocore/SwXTextDefaults \
     sw/source/core/unocore/TextCursorHelper  \
     sw/source/core/unocore/XMLRangeHelper \
@@ -609,6 +613,14 @@ $(eval $(call gb_Library_add_exception_objects,sw,\
     sw/source/filter/xml/xmltexti \
     sw/source/filter/indexing/IndexingExport \
     sw/source/filter/indexing/IndexingExportFilter \
+    sw/source/uibase/ai/ApplyDiffReviewBridge \
+    sw/source/uibase/inline-actions/InlineActionProviderDispatch \
+    sw/source/uibase/inline-actions/InlineActionRequest \
+    sw/source/uibase/inline-actions/ParagraphActions \
+    sw/source/uibase/inline-actions/SelectToActPopover \
+    sw/source/uibase/inline-actions/SelectToActController \
+    sw/source/uibase/inline-actions/WriterBodyTextParagraphId \
+    sw/source/uibase/inline-actions/WriterSelectToActPopover \
     sw/source/uibase/app/appenv \
     sw/source/uibase/app/apphdl \
     sw/source/uibase/app/applab \

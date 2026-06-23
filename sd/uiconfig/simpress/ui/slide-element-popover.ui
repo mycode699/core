@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  V2 W4-C Day-1 — Impress slide-element Select-to-Act inline action popover.
+  Spec: docs/product/v2/w4-select-to-act-spec.md §"Impress 浮窗动作"
+-->
+<interface domain="sd">
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkPopover" id="SlideElementPopover">
+    <property name="can-focus">False</property>
+    <property name="position">bottom</property>
+    <property name="constrain-to">none</property>
+    <child>
+      <object class="GtkBox" id="container">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="border-width">6</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">4</property>
+        <child>
+          <object class="GtkButton" id="btn_rewrite_text">
+            <property name="label" translatable="yes" context="slideelement|rewritetext">改写文字</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="relief">none</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="btn_rewrite_text-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="slideelement|rewritetext-atk">Rewrite text in selection</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="btn_adjust_color">
+            <property name="label" translatable="yes" context="slideelement|adjustcolor">调整配色</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="relief">none</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="btn_adjust_color-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="slideelement|adjustcolor-atk">Adjust color in selection</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="btn_relayout">
+            <property name="label" translatable="yes" context="slideelement|relayout">重新排版</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="relief">none</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="btn_relayout-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="slideelement|relayout-atk">Relayout selection</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="btn_translate_text">
+            <property name="label" translatable="yes" context="slideelement|translatetext">翻译</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="relief">none</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="btn_translate_text-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="slideelement|translatetext-atk">Translate text in selection</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

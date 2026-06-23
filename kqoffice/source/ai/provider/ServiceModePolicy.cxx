@@ -54,6 +54,19 @@ OUString ServiceModePolicy::modeName() const
     return u"offline"_ustr;
 }
 
+css::uno::Sequence<OUString> ServiceModePolicy::currentAllowlist() const
+{
+    if (m_mode != Mode::Offline)
+        return {};
+
+    css::uno::Sequence<OUString> seq(static_cast<sal_Int32>(kOfflineCapabilities.size()));
+    auto* p = seq.getArray();
+    sal_Int32 i = 0;
+    for (const auto cap : kOfflineCapabilities)
+        p[i++] = OUString(cap.data(), cap.size());
+    return seq;
+}
+
 } // namespace kqoffice::ai
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

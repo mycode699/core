@@ -36,10 +36,15 @@
         <property name="width-request">500</property>
         <property name="height-request">400</property>
         <child>
-          <object class="GtkSearchEntry" id="search_input">
+          <object class="GtkEntry" id="search_input">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="placeholder-text" translatable="yes" context="commandpalette|search">输入命令名 / 拼音 / 中文（如 “粗体” “ct”）</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="search_input-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="commandpalette|search-atk">Search commands</property>
+              </object>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -63,6 +68,11 @@
                 <property name="enable-search">False</property>
                 <property name="show-expanders">False</property>
                 <property name="activate-on-single-click">True</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="results_view-atkobject">
+                    <property name="AtkObject::accessible-name" translatable="yes" context="commandpalette|results-atk">Matching commands</property>
+                  </object>
+                </child>
                 <child internal-child="selection">
                   <object class="GtkTreeSelection"/>
                 </child>

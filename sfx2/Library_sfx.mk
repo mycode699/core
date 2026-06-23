@@ -142,6 +142,8 @@ $(eval $(call gb_Library_add_exception_objects,sfx,\
     sfx2/source/bastyp/sfxhtml \
     sfx2/source/bastyp/sfxresid \
     sfx2/source/commandpopup/CommandPopup \
+    sfx2/source/dispatch/CommandPaletteDispatcher \
+    sfx2/source/dispatch/CoworkPanelDispatcher \
     sfx2/source/config/evntconf \
     sfx2/source/control/bindings \
     sfx2/source/control/ctrlitem \
@@ -260,6 +262,46 @@ $(eval $(call gb_Library_add_exception_objects,sfx,\
     sfx2/source/notify/hintpost \
     sfx2/source/notify/openurlhint \
     sfx2/source/safemode/safemode \
+    sfx2/source/sidebar/AIChatAgentPlannerRuntime \
+    sfx2/source/sidebar/AIChatAgentFailureRecoveryBridge \
+    sfx2/source/sidebar/AIChatAgentReviewSurfaceBridge \
+    sfx2/source/sidebar/AIChatAgentShadowDocBridge \
+    sfx2/source/sidebar/AIChatAgentTaskStateStore \
+    sfx2/source/sidebar/AIChatAuditLogRuntime \
+    sfx2/source/sidebar/AIChatCompanionApprovalRuntime \
+    sfx2/source/sidebar/AIChatContentRegistry \
+    sfx2/source/sidebar/AIChatConnectorAuthFlowRuntime \
+    sfx2/source/sidebar/AIChatConnectorManifestLoader \
+    sfx2/source/sidebar/AIChatConnectorOperationRuntime \
+    sfx2/source/sidebar/AIChatContentReviewStore \
+    sfx2/source/sidebar/AIChatEvidenceInspector \
+    sfx2/source/sidebar/AIChatFormattingReviewStore \
+    sfx2/source/sidebar/AIChatContentOpener \
+    sfx2/source/sidebar/AIChatContentObjectStore \
+    sfx2/source/sidebar/AIChatDistributionRecoveryRuntime \
+    sfx2/source/sidebar/AIChatEditionPolicyRuntime \
+    sfx2/source/sidebar/AIChatHistoryStore \
+    sfx2/source/sidebar/AIChatI18nManualRuntime \
+    sfx2/source/sidebar/AIChatKnowledgeExtractionRuntime \
+    sfx2/source/sidebar/AIChatKnowledgeIndexStore \
+    sfx2/source/sidebar/AIChatKnowledgeRetrievalRuntime \
+    sfx2/source/sidebar/AIChatKnowledgeResultContentBridge \
+    sfx2/source/sidebar/AIChatLocalCloudSyncRuntime \
+    sfx2/source/sidebar/AIChatMarkdownRenderer \
+    sfx2/source/sidebar/AIChatOnboardingRuntime \
+    sfx2/source/sidebar/AIChatPanel \
+    sfx2/source/sidebar/AIChatPanelFactory \
+    sfx2/source/sidebar/AIChatPerfCrashRuntime \
+    sfx2/source/sidebar/AIChatPolicyEngineRuntime \
+    sfx2/source/sidebar/AIChatPreviewMatrix \
+    sfx2/source/sidebar/AIChatReleaseGARuntime \
+    sfx2/source/sidebar/AIChatReviewQueueStore \
+    sfx2/source/sidebar/AIChatReviewStateSyncStore \
+    sfx2/source/sidebar/AIChatSourceProvenance \
+    sfx2/source/sidebar/AIChatStarterPackRuntime \
+    sfx2/source/sidebar/AIChatTenantContextRuntime \
+    sfx2/source/sidebar/AIChatWorkspaceActionBarStore \
+    sfx2/source/sidebar/AIChatWorkspaceSessionStore \
     sfx2/source/sidebar/Sidebar \
     sfx2/source/sidebar/SidebarChildWindow \
     sfx2/source/sidebar/SidebarDockingWindow \

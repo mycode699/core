@@ -101,7 +101,11 @@ IMPL_LINK_NOARG(ExecuteWrapper, ExecuteActionHdl, Timer*, void)
         Idle aIdle("UI Test Idle Handler2");
         {
             mFunc();
-            aIdle.SetPriority(TaskPriority::LOWEST);
+            // Start Center document creation can keep lower-priority idles
+            // postponed while the new document frame is being created. The
+            // UITest caller only needs to know that the requested action was
+            // executed, so do not wait on a LOWEST idle here.
+            aIdle.SetPriority(TaskPriority::DEFAULT);
             aIdle.SetInvokeHandler(mHandler);
             aIdle.Start();
         }

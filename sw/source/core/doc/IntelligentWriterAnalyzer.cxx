@@ -8,6 +8,7 @@
  */
 
 #include <IntelligentWriterAnalyzer.hxx>
+#include <IntelligentWriterApplyEngine.hxx>
 
 #include <doc.hxx>
 #include <ndarr.hxx>
@@ -60,6 +61,14 @@ std::vector<Diagnostic> AnalyzeWriterDocumentPreview(const SwDoc& rDoc)
     }
 
     return aDiagnostics;
+}
+
+ApplyResult runApply(SwDocShell& rDocShell, const ApplyPlan& rPlan)
+{
+    // W3 Day-1b D1 bridge — exposes the apply engine to callers that already
+    // include IntelligentWriterAnalyzer.hxx, mirroring the preview/apply pair
+    // documented in W3 spec §"File Map" L48-49.
+    return ApplyEngine(rDocShell).run(rPlan);
 }
 }
 

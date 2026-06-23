@@ -45,6 +45,7 @@ $(eval $(call gb_UIConfig_add_uifiles,cui,\
 	cui/uiconfig/ui/certdialog \
 	cui/uiconfig/ui/chapterfragment \
 	cui/uiconfig/ui/commandpalette \
+	cui/uiconfig/ui/cowork-dialog \
 	cui/uiconfig/ui/charnamepage \
 	cui/uiconfig/ui/colorfragment \
 	cui/uiconfig/ui/colorpage \

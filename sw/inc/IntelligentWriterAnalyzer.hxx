@@ -14,6 +14,7 @@
 #include <vector>
 
 class SwDoc;
+class SwDocShell;
 
 namespace sw::intelligent
 {
@@ -51,6 +52,13 @@ struct Diagnostic
 };
 
 SW_DLLPUBLIC std::vector<Diagnostic> AnalyzeWriterDocumentPreview(const SwDoc& rDoc);
+
+// Forward-declared in IntelligentWriterApplyEngine.hxx; bridge helper exposed
+// here so callers that already include IntelligentWriterAnalyzer.hxx can reach
+// the apply engine without a second include in cold paths.
+struct ApplyPlan;
+struct ApplyResult;
+SW_DLLPUBLIC ApplyResult runApply(SwDocShell& rDocShell, const ApplyPlan& rPlan);
 }
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

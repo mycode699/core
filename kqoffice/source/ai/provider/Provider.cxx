@@ -10,12 +10,14 @@
 #include "Provider.hxx"
 
 #include "OllamaAdapter.hxx"
+#include "RuntimePlanStub.hxx"
 
 #include <com/sun/star/lang/IllegalArgumentException.hpp>
 #include <com/sun/star/uno/XComponentContext.hpp>
 #include <cppuhelper/supportsservice.hxx>
 
 #include <cstdlib>
+#include <osl/time.h>
 
 namespace kqoffice::ai
 {
@@ -39,7 +41,9 @@ Provider::call(const css::ai::ProviderRequest& req)
     }
 
     css::ai::ProviderResponse rsp;
-    rsp.durationMs = 0;
+
+    TimeValue aStart{};
+    osl_getSystemTime(&aStart);
 
     if (!m_policy.allows(req.capability))
     {
@@ -47,6 +51,35 @@ Provider::call(const css::ai::ProviderRequest& req)
         rsp.content = "service mode " + m_policy.modeName()
                     + " denies capability " + req.capability;
         rsp.evidenceId = OUString();
+        TimeValue aEnd{};
+        osl_getSystemTime(&aEnd);
+        rsp.durationMs = static_cast<sal_Int32>(
+            (aEnd.Seconds - aStart.Seconds) * 1000
+            + static_cast<sal_Int64>(aEnd.Nanosec - aStart.Nanosec) / 1000000);
+        return rsp;
+    }
+
+    // W4 E2E: v2-w3-runtime-1 JSON when Ollama is off. Requires both env vars so
+    // legacy cppunit (DISABLE_PROBE only → provider-error) stays unchanged.
+    if (std::getenv("KQOFFICE_AI_STUB_RUNTIME") != nullptr
+        && std::getenv("KQOFFICE_AI_DISABLE_PROBE") != nullptr)
+    {
+        rsp.status = "ok";
+        rsp.content = buildStubRuntimePlanJson(req);
+        EvidenceRecord rec;
+        rec.serviceMode = m_policy.modeName();
+        rec.provider = u"stub-runtime"_ustr;
+        rec.capability = req.capability;
+        rec.status = rsp.status;
+        rec.requestSizeBytes = req.prompt.getLength();
+        rec.responseSizeBytes = rsp.content.getLength();
+        TimeValue aEnd{};
+        osl_getSystemTime(&aEnd);
+        rsp.durationMs = static_cast<sal_Int32>(
+            (aEnd.Seconds - aStart.Seconds) * 1000
+            + static_cast<sal_Int64>(aEnd.Nanosec - aStart.Nanosec) / 1000000);
+        rec.durationMs = rsp.durationMs;
+        rsp.evidenceId = m_evidence.record(rec);
         return rsp;
     }
 
@@ -108,6 +141,11 @@ Provider::call(const css::ai::ProviderRequest& req)
     rec.status = rsp.status;
     rec.requestSizeBytes = req.prompt.getLength();
     rec.responseSizeBytes = rsp.content.getLength();
+    TimeValue aEnd{};
+    osl_getSystemTime(&aEnd);
+    rsp.durationMs = static_cast<sal_Int32>(
+        (aEnd.Seconds - aStart.Seconds) * 1000
+        + static_cast<sal_Int64>(aEnd.Nanosec - aStart.Nanosec) / 1000000);
     rec.durationMs = rsp.durationMs;
     rsp.evidenceId = m_evidence.record(rec);
     return rsp;
@@ -115,8 +153,7 @@ Provider::call(const css::ai::ProviderRequest& req)
 
 css::uno::Sequence<OUString> SAL_CALL Provider::listCapabilities()
 {
-    // Empty until W1 Day-1 wires OllamaAdapter capability discovery.
-    return {};
+    return m_policy.currentAllowlist();
 }
 
 OUString SAL_CALL Provider::getServiceMode()

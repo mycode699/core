@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  V2 W4-B Day-1 — Calc cell-range Select-to-Act inline action popover.
+  Spec: docs/product/v2/w4-select-to-act-spec.md §"Calc 浮窗动作"
+-->
+<interface domain="sc">
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkPopover" id="CellRangePopover">
+    <property name="can-focus">False</property>
+    <property name="position">bottom</property>
+    <property name="constrain-to">none</property>
+    <child>
+      <object class="GtkBox" id="container">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="border-width">6</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">4</property>
+        <child>
+          <object class="GtkButton" id="btn_explain_data">
+            <property name="label" translatable="yes" context="cellrange|explaindata">解释这些数据</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="relief">none</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="btn_explain_data-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="cellrange|explaindata-atk">Explain data in selection</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="btn_suggest_chart">
+            <property name="label" translatable="yes" context="cellrange|suggestchart">建议图表</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="relief">none</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="btn_suggest_chart-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="cellrange|suggestchart-atk">Suggest chart for selection</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="btn_generate_formula">
+            <property name="label" translatable="yes" context="cellrange|generateformula">生成公式</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="relief">none</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="btn_generate_formula-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="cellrange|generateformula-atk">Generate formula for selection</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="btn_format_clean">
+            <property name="label" translatable="yes" context="cellrange|formatclean">清理格式</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="relief">none</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="btn_format_clean-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="cellrange|formatclean-atk">Clean formatting in selection</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="btn_format_change">
+            <property name="label" translatable="yes" context="cellrange|formatchange">改格式</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="relief">none</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="btn_format_change-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="cellrange|formatchange-atk">Change number format in selection</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

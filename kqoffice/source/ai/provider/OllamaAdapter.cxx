@@ -203,10 +203,9 @@ std::vector<OUString> OllamaAdapter::listModels()
     return parseModelsJson(body);
 }
 
-OUString OllamaAdapter::generate(const OUString& model, const OUString& prompt)
+OString OllamaAdapter::buildGenerateRequestJson(const OUString& model,
+                                                const OUString& prompt)
 {
-    // Build the JSON request body up front so we can supply an exact
-    // Content-Length and avoid chunked encoding on the request side.
     OString modelUtf8 = OUStringToOString(model, RTL_TEXTENCODING_UTF8);
     OString promptUtf8 = OUStringToOString(prompt, RTL_TEXTENCODING_UTF8);
     OStringBuffer body(256 + promptUtf8.getLength());
@@ -214,8 +213,15 @@ OUString OllamaAdapter::generate(const OUString& model, const OUString& prompt)
     appendJsonEscaped(body, modelUtf8);
     body.append("\",\"prompt\":\"");
     appendJsonEscaped(body, promptUtf8);
-    body.append("\",\"stream\":false}");
-    OString jsonBody = body.makeStringAndClear();
+    body.append("\",\"stream\":false,\"format\":\"json\",\"options\":{\"temperature\":0}}");
+    return body.makeStringAndClear();
+}
+
+OUString OllamaAdapter::generate(const OUString& model, const OUString& prompt)
+{
+    // Build the JSON request body up front so we can supply an exact
+    // Content-Length and avoid chunked encoding on the request side.
+    OString jsonBody = buildGenerateRequestJson(model, prompt);
 
     int fd = openConnection(kGenerateTimeoutMs);
     if (fd < 0)

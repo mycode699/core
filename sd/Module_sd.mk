@@ -26,6 +26,10 @@ $(eval $(call gb_Module_add_l10n_targets,sd,\
     AllLangMoTarget_sd \
 ))
 
+$(eval $(call gb_Module_add_check_targets,sd,\
+    CppunitTest_sd_inline_actions \
+))
+
 ifeq ($(filter DRAGONFLY FREEBSD,$(OS)),)
 $(eval $(call gb_Module_add_slowcheck_targets,sd,\
 	Library_sdqahelper \
@@ -85,5 +89,6 @@ $(eval $(call gb_Module_add_uicheck_targets,sd,\
 	UITest_impress_tests \
 	UITest_impress_tests2 \
 	UITest_sd_findReplace \
+	UITest_sd_select_to_act \
 ))
 # vim: set noet sw=4 ts=4:

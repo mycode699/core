@@ -48,7 +48,8 @@ public:
     /// a fresh Ollama install.
     std::vector<OUString> listModels();
 
-    /// Blocking POST /api/generate with `{"stream":false}`. 30s send/recv
+    /// Blocking POST /api/generate with `{"stream":false,"format":"json"}`.
+    /// 30s send/recv
     /// timeout — long enough for a 7B local model to produce a short
     /// answer, short enough that a hung daemon never wedges the UI.
     /// Returns the generated text on success, empty OUString on any
@@ -56,6 +57,11 @@ public:
     /// empty `response` field). Caller maps empty → provider-error.
     /// Never throws.
     OUString generate(const OUString& model, const OUString& prompt);
+
+    /// Exposed for cppunit: build the exact non-stream /api/generate request body.
+    /// The app-level Writer provider path expects runtime JSON, so the request
+    /// pins Ollama JSON mode and temperature 0 for deterministic structure.
+    static OString buildGenerateRequestJson(const OUString& model, const OUString& prompt);
 
     /// Exposed for cppunit: parse just the `models[].name` fields from
     /// a raw Ollama `/api/tags` JSON body. No generic JSON parser —

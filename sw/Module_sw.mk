@@ -58,6 +58,8 @@ ifneq ($(OS),iOS)
 $(eval $(call gb_Module_add_check_targets,sw,\
     Library_swqahelper \
     CppunitTest_sw_uibase_unit \
+    CppunitTest_sw_inline_actions \
+    CppunitTest_sw_apply_engine \
 ))
 
 $(eval $(call gb_Module_add_slowcheck_targets,sw,\
@@ -283,6 +285,7 @@ $(eval $(call gb_Module_add_uicheck_targets,sw,\
 	UITest_sw_chart \
 	UITest_sw_fieldDialog \
 	UITest_sw_findBar \
+	UITest_sw_select_to_act \
 	UITest_sw_findReplace \
 	UITest_chapterNumbering \
 	UITest_sw_navigator \

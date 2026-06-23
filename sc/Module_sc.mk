@@ -66,6 +66,7 @@ $(eval $(call gb_Module_add_check_targets,sc,\
 	CppunitTest_sc_cache_test \
 	CppunitTest_sc_parallelism \
     CppunitTest_sc_shapetest \
+    CppunitTest_sc_inline_actions \
 ))
 endif
 
@@ -286,6 +287,7 @@ $(eval $(call gb_Module_add_uicheck_targets,sc,\
 	UITest_statistics \
 	UITest_goalSeek \
 	UITest_protect \
+	UITest_sc_select_to_act \
 	UITest_sc_options \
 	UITest_validity \
 	UITest_key_f4 \

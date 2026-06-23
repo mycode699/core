@@ -19,6 +19,7 @@ $(eval $(call gb_Library_set_include,sc,\
     -I$(SRCDIR)/sc/source/core/inc \
     -I$(SRCDIR)/sc/source/filter/inc \
     -I$(SRCDIR)/sc/source/ui/inc \
+    -I$(SRCDIR)/sc/source/ui/inline-actions \
     -I$(SRCDIR)/sc/inc \
     -I$(WORKDIR)/SdiTarget/sc/sdi \
     $$(INCLUDE) \
@@ -367,6 +368,13 @@ $(eval $(call gb_Library_add_exception_objects,sc,\
     sc/source/filter/xml/xmltransformationi \
     sc/source/filter/xml/xmlwrap \
     sc/source/filter/importfilterdata \
+    sc/source/ui/inline-actions/InlineActionRequest \
+    sc/source/ui/inline-actions/InlineActionCellApply \
+    sc/source/ui/inline-actions/InlineActionProviderDispatch \
+    sc/source/ui/inline-actions/CalcCellRangePopover \
+    sc/source/ui/inline-actions/CellActions \
+    sc/source/ui/inline-actions/CellRangePopover \
+    sc/source/ui/inline-actions/CellRangeSelectController \
     sc/source/ui/Accessibility/AccessibilityHints \
     sc/source/ui/Accessibility/AccessibleCell \
     sc/source/ui/Accessibility/AccessibleCellBase \

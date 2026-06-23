@@ -15,6 +15,8 @@ $(eval $(call gb_Library_set_include,cui,\
     $$(INCLUDE) \
     -I$(SRCDIR)/cui/inc \
     -I$(SRCDIR)/cui/source/inc \
+    -I$(SRCDIR)/kqoffice/source/ai/cowork \
+    -I$(SRCDIR)/sfx2/inc \
 ))
 
 $(eval $(call gb_Library_set_precompiled_header,cui,cui/inc/pch/precompiled_cui))
@@ -63,6 +65,7 @@ $(eval $(call gb_Library_use_libraries,cui,\
     ucbhelper \
     utl \
     vcl \
+    kqoffice_ai \
     $(if $(ENABLE_BREAKPAD), \
         crashreport \
     ) \
@@ -114,7 +117,9 @@ $(eval $(call gb_Library_add_exception_objects,cui,\
         cui/source/dialogs/AdditionsDialog) \
     cui/source/dialogs/commandpalette/CommandIndex \
     cui/source/dialogs/commandpalette/CommandPalette \
+    cui/source/dialogs/commandpalette/CommandPaletteLoader \
     cui/source/dialogs/commandpalette/RecentStore \
+    cui/source/dialogs/cowork/CoworkDialog \
     cui/source/dialogs/cuifmsearch \
     cui/source/dialogs/cuigaldlg \
     cui/source/dialogs/cuigrfflt \

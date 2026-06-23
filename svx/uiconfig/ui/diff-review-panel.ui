@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  V2 W4-D Day-1 — Diff Review sidebar panel stub.
+  Signal-only: plan label, diff list placeholder, per-entry Accept/Reject.
+-->
+<interface domain="svx">
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkTreeStore" id="diff_list_store">
+    <columns>
+      <!-- column-name diff_id -->
+      <column type="gchararray"/>
+      <!-- column-name summary -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkGrid" id="DiffReviewPanel">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="hexpand">True</property>
+    <property name="vexpand">True</property>
+    <property name="row-spacing">6</property>
+    <property name="column-spacing">6</property>
+    <property name="border-width">6</property>
+    <child>
+      <object class="GtkLabel" id="label_plan_id">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="hexpand">True</property>
+        <property name="label" translatable="yes" context="diffreview|planplaceholder">Apply plan: (none)</property>
+        <property name="xalign">0</property>
+        <property name="wrap">True</property>
+        <child internal-child="accessible">
+          <object class="AtkObject" id="label_plan_id-atkobject">
+            <property name="AtkObject::accessible-role" translatable="no">static</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkScrolledWindow" id="scrolled_diff_list">
+        <property name="visible">True</property>
+        <property name="can-focus">True</property>
+        <property name="hexpand">True</property>
+        <property name="vexpand">True</property>
+        <property name="shadow-type">in</property>
+        <property name="min-content-height">120</property>
+        <child>
+          <object class="GtkTreeView" id="tree_diff_list">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <property name="model">diff_list_store</property>
+            <property name="headers-visible">True</property>
+            <property name="enable-tree-lines">True</property>
+            <child internal-child="selection">
+              <object class="GtkTreeSelection"/>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="treeviewcolumn_diff">
+                <property name="resizable">True</property>
+                <property name="expand">True</property>
+                <property name="title" translatable="yes" context="diffreview|diffcolumn">Diff</property>
+                <child>
+                  <object class="GtkCellRendererText" id="cellrenderertext_diff"/>
+                  <attributes>
+                    <attribute name="text">1</attribute>
+                  </attributes>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButtonBox" id="buttonbox_actions">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="layout-style">end</property>
+        <property name="spacing">6</property>
+        <child>
+          <object class="GtkButton" id="btn_accept">
+            <property name="label" translatable="yes" context="diffreview|accept">Accept</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="btn_accept-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="diffreview|accept-atk">Accept selected diff</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="btn_reject">
+            <property name="label" translatable="yes" context="diffreview|reject">Reject</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="btn_reject-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="diffreview|reject-atk">Reject selected diff</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">2</property>
+      </packing>
+    </child>
+  </object>
+</interface>

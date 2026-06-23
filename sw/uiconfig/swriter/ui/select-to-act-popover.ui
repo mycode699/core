@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  V2 W4-A Day-1 — Writer Select-to-Act inline action popover.
+  Spec: docs/product/v2/w4-select-to-act-spec.md §"Writer 浮窗动作"
+-->
+<interface domain="sw">
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkPopover" id="SelectToActPopover">
+    <property name="can-focus">False</property>
+    <property name="position">bottom</property>
+    <property name="constrain-to">none</property>
+    <child>
+      <object class="GtkBox" id="container">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="border-width">6</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">4</property>
+        <child>
+          <object class="GtkButton" id="btn_rewrite">
+            <property name="label" translatable="yes" context="selecttoact|rewrite">改写</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="relief">none</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="btn_rewrite-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="selecttoact|rewrite-atk">Rewrite paragraph</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="btn_expand">
+            <property name="label" translatable="yes" context="selecttoact|expand">扩写</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="relief">none</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="btn_expand-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="selecttoact|expand-atk">Expand paragraph</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="btn_shorten">
+            <property name="label" translatable="yes" context="selecttoact|shorten">简写</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="relief">none</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="btn_shorten-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="selecttoact|shorten-atk">Shorten paragraph</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="btn_translate_en">
+            <property name="label" translatable="yes" context="selecttoact|translate">翻译为英文</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="relief">none</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="btn_translate_en-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="selecttoact|translate-atk">Translate to English</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="btn_format_clean">
+            <property name="label" translatable="yes" context="selecttoact|formatclean">清理格式</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="relief">none</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="btn_format_clean-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="selecttoact|formatclean-atk">Clean formatting</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="btn_explain">
+            <property name="label" translatable="yes" context="selecttoact|explain">解释</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="relief">none</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="btn_explain-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="selecttoact|explain-atk">Explain paragraph</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="btn_custom">
+            <property name="label" translatable="yes" context="selecttoact|custom">自定义提示</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="relief">none</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="btn_custom-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="selecttoact|custom-atk">Custom AI prompt</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">6</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

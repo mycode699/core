@@ -60,6 +60,11 @@ namespace svt
 {
 class EmbeddedObjectRef;
 }
+namespace sw::intelligent
+{
+struct ApplyPlan;
+struct ApplyResult;
+}
 namespace com::sun::star::frame { class XController; }
 namespace ooo::vba { class XSinkCaller; }
 namespace ooo::vba::word { class XDocument; }
@@ -270,6 +275,12 @@ public:
 
     sfx::AccessibilityIssueCollection runAccessibilityCheck() override;
     OString runIntelligentDiagnosticsPreview();
+    /// W3 Day-1b D1: apply a validated ApplyPlan against this Writer document.
+    /// Signature locked to W3 spec §"Apply Pipeline"; impl delegates to
+    /// sw::intelligent::ApplyEngine. Forward-declared to keep this header
+    /// free of the engine header — callers must include
+    /// <IntelligentWriterApplyEngine.hxx>.
+    sw::intelligent::ApplyResult applyDiagnosticsPlan(const sw::intelligent::ApplyPlan& rPlan);
 
     virtual void LoadStyles( SfxObjectShell& rSource ) override;
 

@@ -303,6 +303,7 @@ class SvxZoomItem;
 #define SID_EXPORTDIRECTORY                 TypedWhichId<SfxStringItem>(SID_SFX_START + 1751)
 #define SID_EXTENSION_MANAGER               TypedWhichId<SfxStringItem>(SID_SFX_START + 1752)
 #define SID_COMMAND_PALETTE                 (SID_SFX_START + 1753)
+#define SID_COWORK_TASK_MANAGER             (SID_SFX_START + 1754)
 //      SID_SFX_free_END                    (SID_SFX_START + 3999)
 
 #define SID_OPEN_NEW_VIEW                   TypedWhichId<SfxBoolItem>(SID_SFX_START + 520)

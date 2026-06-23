@@ -43,6 +43,7 @@ $(eval $(call gb_Library_set_include,sd,\
 	$$(INCLUDE) \
 	-I$(SRCDIR)/sd/inc \
 	-I$(SRCDIR)/sd/source/ui/inc \
+	-I$(SRCDIR)/sd/source/ui/inline-actions \
 	-I$(SRCDIR)/sd/source/ui/slidesorter/inc \
 	-I$(WORKDIR)/SdiTarget/sd/sdi \
 ))
@@ -152,6 +153,13 @@ $(eval $(call gb_Library_add_exception_objects,sd,\
 endif
 
 $(eval $(call gb_Library_add_exception_objects,sd,\
+	sd/source/ui/inline-actions/InlineActionRequest \
+	sd/source/ui/inline-actions/InlineActionSlideApply \
+	sd/source/ui/inline-actions/InlineActionProviderDispatch \
+	sd/source/ui/inline-actions/ImpressSlideElementPopover \
+	sd/source/ui/inline-actions/SlideElementActions \
+	sd/source/ui/inline-actions/SlideElementPopover \
+	sd/source/ui/inline-actions/SlideElementSelectController \
 	sd/source/core/CustomAnimationCloner \
 	sd/source/core/CustomAnimationEffect \
 	sd/source/core/CustomAnimationPreset \

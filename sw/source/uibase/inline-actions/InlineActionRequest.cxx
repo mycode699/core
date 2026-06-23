@@ -1,0 +1,152 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/*
+ * This file is part of the 可圈office project (V2 W4-A: Select-to-Act Writer).
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+#include "InlineActionRequest.hxx"
+#include "InlineActionProviderDispatch.hxx"
+
+#include <atomic>
+#include <cstdio>
+#include <ctime>
+
+#include <osl/time.h>
+#include <rtl/ustrbuf.hxx>
+#include <sal/log.hxx>
+
+namespace sw::inline_actions {
+namespace {
+
+constexpr OUStringLiteral kSchemaVersion = u"v2-w4-1";
+constexpr OUStringLiteral kSurface = u"writer-paragraph";
+
+std::atomic<sal_uInt64> g_nRequestCounter{0};
+
+void appendEscapedJsonString(OUStringBuffer& rBuf, const OUString& rValue)
+{
+    rBuf.append('"');
+    for (sal_Int32 i = 0; i < rValue.getLength(); ++i)
+    {
+        const sal_Unicode c = rValue[i];
+        switch (c)
+        {
+            case '"':
+                rBuf.append("\\\"");
+                break;
+            case '\\':
+                rBuf.append("\\\\");
+                break;
+            case '\n':
+                rBuf.append("\\n");
+                break;
+            case '\r':
+                rBuf.append("\\r");
+                break;
+            case '\t':
+                rBuf.append("\\t");
+                break;
+            default:
+                if (c < 0x20)
+                {
+                    char aTmp[8];
+                    std::snprintf(aTmp, sizeof(aTmp), "\\u%04x", static_cast<unsigned>(c));
+                    rBuf.appendAscii(aTmp);
+                }
+                else
+                {
+                    rBuf.append(c);
+                }
+        }
+    }
+    rBuf.append('"');
+}
+
+OUString mintRequestId()
+{
+    const sal_uInt64 nTimer = osl_getGlobalTimer();
+    const sal_uInt64 nSeq = g_nRequestCounter.fetch_add(1, std::memory_order_relaxed);
+    char aBuf[24];
+    std::snprintf(aBuf, sizeof(aBuf), "iar-%08x%08x",
+                  static_cast<unsigned>(nTimer & 0xFFFFFFFFu),
+                  static_cast<unsigned>(nSeq & 0xFFFFFFFFu));
+    return OUString::createFromAscii(aBuf);
+}
+
+OUString isoTimestampUtc()
+{
+    TimeValue aTv;
+    osl_getSystemTime(&aTv);
+    std::time_t nSecs = static_cast<std::time_t>(aTv.Seconds);
+    std::tm aUtc{};
+    gmtime_r(&nSecs, &aUtc);
+    char aBuf[24];
+    std::snprintf(aBuf, sizeof(aBuf), "%04d-%02d-%02dT%02d:%02d:%02dZ", aUtc.tm_year + 1900,
+                  aUtc.tm_mon + 1, aUtc.tm_mday, aUtc.tm_hour, aUtc.tm_min, aUtc.tm_sec);
+    return OUString::createFromAscii(aBuf);
+}
+
+} // namespace
+
+bool actionRoutesToDiff(ParagraphAction eAction)
+{
+    return eAction != ParagraphAction::Explain;
+}
+
+OUString buildWriterParagraphRequest(const OUString& rActionToken, const OUString& rParagraphId,
+                                     const OUString& rServiceMode, const OUString& rUserPrompt)
+{
+    OUStringBuffer aBody(384);
+    aBody.append('{');
+    aBody.append("\"schema_version\":");
+    appendEscapedJsonString(aBody, kSchemaVersion);
+    aBody.append(',');
+    aBody.append("\"request_id\":");
+    appendEscapedJsonString(aBody, mintRequestId());
+    aBody.append(',');
+    aBody.append("\"surface\":");
+    appendEscapedJsonString(aBody, kSurface);
+    aBody.append(',');
+    aBody.append("\"action\":");
+    appendEscapedJsonString(aBody, rActionToken);
+    aBody.append(',');
+    aBody.append("\"target\":{\"paragraph_id\":");
+    appendEscapedJsonString(aBody, rParagraphId);
+    aBody.append("},");
+    aBody.append("\"service_mode\":");
+    appendEscapedJsonString(aBody, rServiceMode);
+    aBody.append(',');
+    aBody.append("\"created_at\":");
+    appendEscapedJsonString(aBody, isoTimestampUtc());
+
+    if (!rUserPrompt.isEmpty())
+    {
+        aBody.append(',');
+        aBody.append("\"user_prompt\":");
+        appendEscapedJsonString(aBody, rUserPrompt);
+    }
+
+    const ParagraphAction eAction = fromToken(rActionToken);
+    if (actionRoutesToDiff(eAction))
+    {
+        aBody.append(',');
+        aBody.append("\"expected_capability\":");
+        appendEscapedJsonString(aBody, rActionToken);
+    }
+
+    aBody.append('}');
+    return aBody.makeStringAndClear();
+}
+
+void OpenDiffReviewForInlineAction(const OUString& rJsonRequest, weld::Widget* pParent,
+                                   SfxObjectShell* pDocShell)
+{
+    dispatchWriterInlineAction(rJsonRequest, pParent, pDocShell);
+}
+
+} // namespace sw::inline_actions
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

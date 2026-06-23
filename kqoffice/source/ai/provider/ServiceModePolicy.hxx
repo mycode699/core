@@ -13,6 +13,7 @@
 #ifndef INCLUDED_KQOFFICE_SOURCE_AI_PROVIDER_SERVICEMODEPOLICY_HXX
 #define INCLUDED_KQOFFICE_SOURCE_AI_PROVIDER_SERVICEMODEPOLICY_HXX
 
+#include <com/sun/star/uno/Sequence.hxx>
 #include <rtl/ustring.hxx>
 #include <sal/types.h>
 
@@ -46,6 +47,9 @@ public:
 
     /// Stringified mode for ProviderResponse / evidence.
     OUString modeName() const;
+
+    /// Capability tokens permitted in the active mode (W1.A honesty).
+    css::uno::Sequence<OUString> currentAllowlist() const;
 
     Mode mode() const { return m_mode; }
 

@@ -58,6 +58,8 @@
 #include <editutil.hxx>
 #include <inputhdl.hxx>
 #include <inputwin.hxx>
+
+#include "CellRangeSelectController.hxx"
 #include <validat.hxx>
 #include <inputopt.hxx>
 #include <rfindlst.hxx>
@@ -661,6 +663,9 @@ void ScTabView::SelectionChanged(bool bFromPaste)
         aViewData.GetViewShell()->BroadcastAccessibility(SfxHint(SfxHintId::ScAccCursorChanged));
 
     CellContentChanged();
+
+    if (ScTabViewShell* pViewShell = aViewData.GetViewShell())
+        sc::inline_actions::OnCalcCellRangeSelectionChanged(*pViewShell);
 }
 
 void ScTabView::CursorPosChanged()

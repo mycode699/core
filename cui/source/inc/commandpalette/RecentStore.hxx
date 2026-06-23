@@ -85,6 +85,12 @@ public:
     /// Best-effort: returns false on any I/O error.
     static bool saveToUser(const OUString& userInstallation,
                            const std::vector<RecentEntry>& entries);
+
+    /// Load → bump useCount for `unoCommand` → save. Best-effort; no-op
+    /// when `unoCommand` is empty. Called from the palette popover after
+    /// a successful dispatch (not from sfx2 — avoids cui↔sfx2 cycles).
+    static void recordUse(const OUString& userInstallation,
+                          const OUString& unoCommand);
 };
 
 namespace detail

@@ -12,6 +12,7 @@
 
 #include <commandpalette/RecentStore.hxx>
 
+#include <tools/datetime.hxx>
 #include <osl/file.hxx>
 #include <rtl/string.hxx>
 #include <rtl/ustring.hxx>
@@ -24,6 +25,20 @@ namespace cui::commandpalette
 {
 namespace
 {
+OUString pad2(sal_uInt16 n)
+{
+    OUString s = OUString::number(n);
+    return s.getLength() == 1 ? u"0"_ustr + s : s;
+}
+
+OUString isoNowLocal()
+{
+    const DateTime aNow(DateTime::SYSTEM);
+    return OUString::number(aNow.GetYear()) + u"-"_ustr + pad2(aNow.GetMonth())
+           + u"-"_ustr + pad2(aNow.GetDay()) + u"T"_ustr + pad2(aNow.GetHour())
+           + u":"_ustr + pad2(aNow.GetMin()) + u":"_ustr + pad2(aNow.GetSec());
+}
+
 constexpr OUStringLiteral kRecentSubdir = u"/cmdpalette";
 constexpr OUStringLiteral kRecentBasename = u"/recent.json";
 
@@ -92,6 +107,16 @@ bool RecentStore::saveToUser(const OUString& userInstallation,
         return false;
     OUString file = joinUrl(dir, kRecentBasename);
     return writeFileUrl(file, serializeRecentJson(entries));
+}
+
+void RecentStore::recordUse(const OUString& userInstallation,
+                           const OUString& unoCommand)
+{
+    if (unoCommand.isEmpty())
+        return;
+    std::vector<RecentEntry> entries = loadFromUser(userInstallation);
+    entries = bump(std::move(entries), unoCommand, isoNowLocal());
+    (void)saveToUser(userInstallation, entries);
 }
 
 } // namespace cui::commandpalette

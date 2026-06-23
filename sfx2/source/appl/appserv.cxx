@@ -77,6 +77,10 @@
 #include <vcl/themecolors.hxx>
 #include <vcl/svapp.hxx>
 
+#include <dispatch/CommandPaletteDispatcher.hxx>
+#include <dispatch/CoworkPanelDispatcher.hxx>
+#include <sfx2/viewfrm.hxx>
+
 #include <unotools/moduleoptions.hxx>
 #include <unotools/securityoptions.hxx>
 #include <rtl/bootstrap.hxx>
@@ -1320,13 +1324,34 @@ void SfxApplication::MiscExec_Impl( SfxRequest& rReq )
         }
         case SID_COMMAND_PALETTE:
         {
-            // V2 W2 Cmd+K: slot dispatch landed; popover GUI is the next slice (D3.2).
-            // Placeholder confirms the .uno:CommandPalette pipeline reaches Exec.
-            std::unique_ptr<weld::MessageDialog> xBox(Application::CreateMessageDialog(
-                rReq.GetFrameWeld(),
-                VclMessageType::Info, VclButtonsType::Ok,
-                u"命令面板（Cmd+K）即将推出"_ustr));
-            xBox->run();
+            // W2 Day-1c: Start Center / launcher has no SfxViewFrame — the
+            // palette needs an open document view. Never dereference Current()
+            // when null (would crash); inform the user instead.
+            if (SfxViewFrame* pFrame = SfxViewFrame::Current())
+            {
+                sfx2::CommandPaletteDispatcher::Get().ShowPalette(*pFrame);
+            }
+            else
+            {
+                SAL_INFO("sfx.commandpalette",
+                         "SID_COMMAND_PALETTE: no active view (Start Center?)");
+                weld::Window* pParent = rReq.GetFrameWeld();
+                if (!pParent)
+                    pParent = Application::GetDefDialogParent();
+                std::unique_ptr<weld::MessageDialog> xBox(
+                    Application::CreateMessageDialog(
+                        pParent, VclMessageType::Info, VclButtonsType::Ok,
+                        u"Open a document to use the command palette."_ustr));
+                xBox->run();
+            }
+            break;
+        }
+        case SID_COWORK_TASK_MANAGER:
+        {
+            weld::Window* pParent = rReq.GetFrameWeld();
+            if (!pParent)
+                pParent = Application::GetDefDialogParent();
+            sfx2::CoworkPanelDispatcher::Get().ShowPanel(pParent);
             break;
         }
         default:

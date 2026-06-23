@@ -96,6 +96,20 @@ Ctrl+Shift+u aka U_SHIFT_MOD1 under GTK/IBUS is for unicode key input
           <value xml:lang="en-US">.uno:HyperlinkDialog</value>
         </prop>
       </node>
+      <!-- V2 W2 Day-1b (B1 option B): Cmd+Shift+K opens Command Palette; Cmd+K stays HyperlinkDialog -->
+      <node oor:name="K_SHIFT_MOD1" oor:op="replace">
+        <prop oor:name="Command">
+          <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
+          <value xml:lang="en-US">.uno:CommandPalette</value>
+        </prop>
+      </node>
+      <!-- V2 W5 Day-1: Cmd+Shift+T opens async task manager -->
+      <node oor:name="T_SHIFT_MOD1" oor:op="replace">
+        <prop oor:name="Command">
+          <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
+          <value xml:lang="en-US">.uno:CoworkTaskManager</value>
+        </prop>
+      </node>
       <node oor:name="DELETE" oor:op="replace">
         <prop oor:name="Command">
           <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
@@ -2665,7 +2679,7 @@ Ctrl+Shift+u aka U_SHIFT_MOD1 under GTK/IBUS is for unicode key input
         <node oor:name="K_SHIFT_MOD1" oor:op="replace">
           <prop oor:name="Command">
             <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
-            <value xml:lang="en-US">.uno:SmallCaps</value>
+            <value xml:lang="en-US">.uno:CommandPalette</value>
             <value xml:lang="de">.uno:Italic</value>
           </prop>
         </node>
@@ -2872,7 +2886,7 @@ Ctrl+Shift+u aka U_SHIFT_MOD1 under GTK/IBUS is for unicode key input
         <node oor:name="T_SHIFT_MOD1" oor:op="replace">
           <prop oor:name="Command">
             <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
-            <value xml:lang="en-US">.uno:ResetTableProtection</value>
+            <value xml:lang="en-US">.uno:CoworkTaskManager</value>
           </prop>
         </node>
         <node oor:name="UP" oor:op="replace">
@@ -4209,7 +4223,7 @@ Ctrl+Shift+u aka U_SHIFT_MOD1 under GTK/IBUS is for unicode key input
         <node oor:name="K_SHIFT_MOD1" oor:op="replace">
           <prop oor:name="Command">
             <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
-            <value xml:lang="en-US">.uno:SmallCaps</value>
+            <value xml:lang="en-US">.uno:CommandPalette</value>
             <value xml:lang="de">.uno:Italic</value>
           </prop>
         </node>
@@ -4410,7 +4424,7 @@ Ctrl+Shift+u aka U_SHIFT_MOD1 under GTK/IBUS is for unicode key input
         <node oor:name="T_SHIFT_MOD1" oor:op="replace">
           <prop oor:name="Command">
             <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
-            <value xml:lang="en-US">.uno:ResetTableProtection</value>
+            <value xml:lang="en-US">.uno:CoworkTaskManager</value>
           </prop>
         </node>
         <node oor:name="UP" oor:op="replace">
@@ -6755,7 +6769,7 @@ Ctrl+Shift+u aka U_SHIFT_MOD1 under GTK/IBUS is for unicode key input
         <node oor:name="K_SHIFT_MOD1" oor:op="replace">
           <prop oor:name="Command">
             <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
-            <value xml:lang="en-US">.uno:SmallCaps</value>
+            <value xml:lang="en-US">.uno:CommandPalette</value>
             <value xml:lang="de">.uno:Italic</value>
           </prop>
         </node>
@@ -6986,7 +7000,7 @@ Ctrl+Shift+u aka U_SHIFT_MOD1 under GTK/IBUS is for unicode key input
         <node oor:name="T_SHIFT_MOD1" oor:op="replace">
           <prop oor:name="Command">
             <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
-            <value xml:lang="en-US">.uno:ResetTableProtection</value>
+            <value xml:lang="en-US">.uno:CoworkTaskManager</value>
           </prop>
         </node>
         <node oor:name="UP" oor:op="replace">

@@ -41,6 +41,8 @@
 #include <vcl/uitest/logger.hxx>
 #include <vcl/uitest/eventdescription.hxx>
 
+#include "SelectToActController.hxx"
+
 #include <officecfg/Office/Common.hxx>
 #include <strings.hrc>
 
@@ -464,6 +466,7 @@ void SwWrtShell::EndSelect()
         pWrdCnt->UpdateCounts();
 
     collectUIInformation(GetCursor_());
+    sw::inline_actions::OnWriterSelectionChanged(*this);
 }
 
 void SwWrtShell::ExtSelWrd(const Point *pPt, bool )

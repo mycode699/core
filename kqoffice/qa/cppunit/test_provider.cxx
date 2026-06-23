@@ -92,6 +92,7 @@ public:
     void testEvidenceFileWrittenWithCapability();
     void testEvidenceIdsAreUniqueAcrossCalls();
     void testParseModelsJsonFixture();
+    void testBuildGenerateRequestJsonUsesJsonMode();
     void testParseGenerateJsonFixture();
     void testParseGenerateJsonHandlesEscapes();
     void testProbeUnreachableOnClosedPort();
@@ -132,6 +133,9 @@ public:
     void testApplyPlanRejectsEmojiInId();
     void testApplyPlanRejectsFullwidthInId();
     void testApplyPlanAcceptsEscapedQuoteInLabel();
+    void testListCapabilitiesMatchesPolicy();
+    void testDurationMsBoundedWhenProbeDisabled();
+    void testStubRuntimeReturnsOkJsonEnvelope();
 
     CPPUNIT_TEST_SUITE(ProviderTest);
     CPPUNIT_TEST(testDefaultModeIsOffline);
@@ -145,6 +149,7 @@ public:
     CPPUNIT_TEST(testEvidenceFileWrittenWithCapability);
     CPPUNIT_TEST(testEvidenceIdsAreUniqueAcrossCalls);
     CPPUNIT_TEST(testParseModelsJsonFixture);
+    CPPUNIT_TEST(testBuildGenerateRequestJsonUsesJsonMode);
     CPPUNIT_TEST(testParseGenerateJsonFixture);
     CPPUNIT_TEST(testParseGenerateJsonHandlesEscapes);
     CPPUNIT_TEST(testProbeUnreachableOnClosedPort);
@@ -185,6 +190,9 @@ public:
     CPPUNIT_TEST(testApplyPlanRejectsEmojiInId);
     CPPUNIT_TEST(testApplyPlanRejectsFullwidthInId);
     CPPUNIT_TEST(testApplyPlanAcceptsEscapedQuoteInLabel);
+    CPPUNIT_TEST(testListCapabilitiesMatchesPolicy);
+    CPPUNIT_TEST(testDurationMsBoundedWhenProbeDisabled);
+    CPPUNIT_TEST(testStubRuntimeReturnsOkJsonEnvelope);
     CPPUNIT_TEST_SUITE_END();
 };
 
@@ -335,6 +343,17 @@ void ProviderTest::testParseModelsJsonFixture()
     CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(2), names.size());
     CPPUNIT_ASSERT_EQUAL(u"qwen2.5:7b"_ustr, names[0]);
     CPPUNIT_ASSERT_EQUAL(u"llama3.2:3b"_ustr, names[1]);
+}
+
+void ProviderTest::testBuildGenerateRequestJsonUsesJsonMode()
+{
+    OString body = kqoffice::ai::OllamaAdapter::buildGenerateRequestJson(
+        u"qwen\"3:0.6b"_ustr, u"Return JSON with tab\tindent"_ustr);
+    CPPUNIT_ASSERT(body.indexOf("\"model\":\"qwen\\\"3:0.6b\"") >= 0);
+    CPPUNIT_ASSERT(body.indexOf("\"prompt\":\"Return JSON with tab\\tindent\"") >= 0);
+    CPPUNIT_ASSERT(body.indexOf("\"stream\":false") >= 0);
+    CPPUNIT_ASSERT(body.indexOf("\"format\":\"json\"") >= 0);
+    CPPUNIT_ASSERT(body.indexOf("\"options\":{\"temperature\":0}") >= 0);
 }
 
 void ProviderTest::testParseGenerateJsonFixture()
@@ -1283,6 +1302,57 @@ void ProviderTest::testApplyPlanAcceptsEscapedQuoteInLabel()
     auto r = kqoffice::ai::ApplyPlanValidator::validate(body);
     CPPUNIT_ASSERT_EQUAL(
         kqoffice::ai::ApplyPlanValidationCode::Ok, r.code);
+}
+
+void ProviderTest::testListCapabilitiesMatchesPolicy()
+{
+    kqoffice::ai::ServiceModePolicy policy;
+    auto policyCaps = policy.currentAllowlist();
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(4), policyCaps.getLength());
+
+    rtl::Reference<kqoffice::ai::Provider> provider(new kqoffice::ai::Provider());
+    auto listed = provider->listCapabilities();
+    CPPUNIT_ASSERT_EQUAL(policyCaps.getLength(), listed.getLength());
+    for (sal_Int32 i = 0; i < listed.getLength(); ++i)
+        CPPUNIT_ASSERT(policyCaps[i] == listed[i]);
+}
+
+void ProviderTest::testDurationMsBoundedWhenProbeDisabled()
+{
+    ScopedEvidenceDir guard;
+    rtl::Reference<kqoffice::ai::Provider> provider(new kqoffice::ai::Provider());
+
+    css::ai::ProviderRequest req;
+    req.capability = u"rewrite"_ustr;
+    req.prompt = u"ping"_ustr;
+
+    auto rsp = provider->call(req);
+    CPPUNIT_ASSERT(rsp.durationMs >= 0);
+    CPPUNIT_ASSERT(rsp.durationMs < 30000);
+}
+
+void ProviderTest::testStubRuntimeReturnsOkJsonEnvelope()
+{
+    ScopedEvidenceDir guard;
+    ::setenv("KQOFFICE_AI_STUB_RUNTIME", "1", 1);
+    // ScopedEvidenceDir already sets KQOFFICE_AI_DISABLE_PROBE=1.
+
+    rtl::Reference<kqoffice::ai::Provider> provider(new kqoffice::ai::Provider());
+    css::ai::ProviderRequest req;
+    req.capability = u"rewrite"_ustr;
+    req.prompt = u"after stub runtime"_ustr;
+    req.context = u"swpara-2"_ustr;
+
+    const css::ai::ProviderResponse rsp = provider->call(req);
+    ::unsetenv("KQOFFICE_AI_STUB_RUNTIME");
+
+    CPPUNIT_ASSERT_EQUAL(u"ok"_ustr, rsp.status);
+    CPPUNIT_ASSERT(rsp.content.indexOf(u"\"schema_version\""_ustr) >= 0);
+    CPPUNIT_ASSERT(rsp.content.indexOf(u"v2-w3-runtime-1"_ustr) >= 0);
+    CPPUNIT_ASSERT(rsp.content.indexOf(u"paragraph-replace"_ustr) >= 0);
+    CPPUNIT_ASSERT(rsp.content.indexOf(u"swpara-2"_ustr) >= 0);
+    CPPUNIT_ASSERT(rsp.content.indexOf(u"after stub runtime"_ustr) >= 0);
+    CPPUNIT_ASSERT(!rsp.evidenceId.isEmpty());
 }
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ProviderTest);

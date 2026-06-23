@@ -14,6 +14,7 @@ $(eval $(call gb_CppunitTest_CppunitTest,sw_uwriter))
 $(eval $(call gb_CppunitTest_use_common_precompiled_header,sw_uwriter))
 
 $(eval $(call gb_CppunitTest_add_exception_objects,sw_uwriter, \
+    sw/qa/core/test_apply_engine_doc \
     sw/qa/core/uwriter \
     sw/qa/core/Test-BigPtrArray \
     sw/qa/core/test_ToxWhitespaceStripper \

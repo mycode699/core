@@ -20,6 +20,7 @@ $(eval $(call gb_Module_add_check_targets,cui,\
     CppunitTest_cui_commandpalette_fuzzy \
     CppunitTest_cui_commandpalette_index \
     CppunitTest_cui_commandpalette_recent \
+    CppunitTest_cui_dispatcher \
 ))
 
 $(eval $(call gb_Module_add_l10n_targets,cui,\
