@@ -1372,12 +1372,14 @@ $(foreach lib,$(call gb_LinkTarget__filter_lo_libraries,$(2)),$(if $(filter $(li
 endef # gb_LinkTarget__use_libraries
 
 # libraries which are merged but need to be built for gb_BUILD_HELPER_TOOLS
+# (also includes non-merged UNO components that must link direct deps, not merged)
 gb_BUILD_HELPER_LIBS := $(foreach lib, \
     basegfx \
 	comphelper \
 	cppu \
 	cppuhelper \
 	i18nlangtag \
+	kqoffice_ai \
 	reg \
 	sal \
 	salhelper \

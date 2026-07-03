@@ -56,6 +56,7 @@ gb_MERGE_LIBRARY_LIST := \
 	i18npool \
 	i18nutil \
 	icg \
+		kqoffice_ai \
 	lng \
 	lnth \
 	localebe1 \
