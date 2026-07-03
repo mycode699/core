@@ -174,10 +174,10 @@ std::vector<OUString> InMemoryTaskNotificationSink::tokens() const
 }
 
 TaskRunner::TaskRunner(TaskScheduler& scheduler, TaskNotificationSink& sink)
-    : m_scheduler(scheduler)
+    : m_lastThreadId(0)
+    , m_scheduler(scheduler)
     , m_sink(sink)
     , m_bCancelled(false)
-    , m_lastThreadId(0)
 {
 }
 

@@ -113,7 +113,6 @@ private:
     TaskNotificationSink& m_sink;
     TaskStore m_store;
     std::atomic<bool> m_bCancelled;
-    std::atomic<sal_uIntPtr> m_lastThreadId;
 };
 
 } // namespace kqoffice::ai::cowork

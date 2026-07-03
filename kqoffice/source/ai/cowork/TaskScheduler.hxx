@@ -94,6 +94,7 @@ class SAL_DLLPUBLIC_EXPORT TaskScheduler
 {
 public:
     TaskScheduler(TaskStore& store, TaskQueue& queue);
+    ~TaskScheduler();
 
     /// Single-task dispatch (backward compat). Runs one task synchronously
     /// in the calling thread.

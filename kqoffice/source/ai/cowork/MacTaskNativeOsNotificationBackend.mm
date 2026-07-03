@@ -12,7 +12,11 @@
 #include <rtl/strbuf.hxx>
 #include <rtl/textenc.h>
 
+typedef TimeValue KQOfficeOslTimeValue;
+#define TimeValue KQOfficeMacOSTimeValue
 #import <Foundation/Foundation.h>
+#undef TimeValue
+typedef KQOfficeOslTimeValue TimeValue;
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"

@@ -144,14 +144,10 @@ class TaskScheduler::ParallelWorkerThread final : public osl::Thread
 {
 public:
     ParallelWorkerThread(TaskScheduler& scheduler,
-                         TaskStore& store,
-                         TaskQueue& queue,
                          OUString monthDir,
                          TaskWorker& worker,
                          TaskWorkerEvidence& ev)
         : m_scheduler(scheduler)
-        , m_store(store)
-        , m_queue(queue)
         , m_monthDir(std::move(monthDir))
         , m_worker(worker)
         , m_evidence(ev)
@@ -168,21 +164,22 @@ public:
         }
 
         osl_setThreadName("KQOfficeParTask");
-        osl::ThreadIdentifier tid = osl::Thread::getCurrentIdentifier();
+        oslThreadIdentifier tid = osl::Thread::getCurrentIdentifier();
         char tidBuf[32];
         std::snprintf(tidBuf, sizeof(tidBuf), "tid-%p",
                       reinterpret_cast<void*>(static_cast<sal_uIntPtr>(tid)));
         m_evidence.threadId = OUString::createFromAscii(tidBuf);
-        m_evidence.event = u"worker-started"_ustr;
         m_evidence.startTimeMs = currentTimeMs();
+        m_evidence.event = u"worker-started"_ustr;
 
         SAL_INFO("kqoffice.ai.cowork.scheduler",
-                  "ParallelWorker " << tidBuf << " started for task "
+                  "ParallelWorker " << tidBuf << " starting for task "
                   << m_evidence.taskId);
 
         TaskSchedulerRunResult runResult;
         bool ok = m_scheduler.runOne(m_monthDir, m_worker, &runResult);
 
+        m_evidence.taskId = runResult.taskId;
         m_evidence.endTimeMs = currentTimeMs();
         if (ok)
         {
@@ -206,12 +203,12 @@ public:
 
 private:
     TaskScheduler& m_scheduler;
-    TaskStore& m_store;
-    TaskQueue& m_queue;
     OUString m_monthDir;
     TaskWorker& m_worker;
     TaskWorkerEvidence& m_evidence;
 };
+
+TaskScheduler::~TaskScheduler() = default;
 
 // --- Parallel dispatch methods -------------------------------------------
 
@@ -263,8 +260,7 @@ TaskSchedulerDispatchAllResult TaskScheduler::dispatchAll(
             result.workerEvidence[i].taskId = u"pending"_ustr;
 
             auto thread = std::make_unique<ParallelWorkerThread>(
-                *this, m_store, m_queue, monthDir, w,
-                result.workerEvidence[i]);
+                *this, monthDir, w, result.workerEvidence[i]);
             if (thread->create())
             {
                 m_aWorkers.push_back(std::move(thread));
@@ -277,6 +273,18 @@ TaskSchedulerDispatchAllResult TaskScheduler::dispatchAll(
     for (auto& worker : m_aWorkers)
     {
         worker->join();
+    }
+
+    // Post-join: patch any evidence that still shows "pending" taskId
+    // to reflect the actual dispatched taskId, and ensure event is set
+    // to the proper outcome rather than the initial "worker-started".
+    for (auto& ev : result.workerEvidence)
+    {
+        if (ev.taskId == u"pending"_ustr)
+        {
+            ev.taskId = u"no-task-dispatched"_ustr;
+            ev.event = u"worker-empty"_ustr;
+        }
     }
 
     // Count completions/failures from evidence

@@ -7,6 +7,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include "TaskStore.hxx"
 #include "TaskStateMachine.hxx"
 
 #include <cstdio>
@@ -299,6 +300,10 @@ bool TaskStore::transitionState(const OUString& monthDir,
 
 bool TaskStore::writeImpl(const AsyncTaskEnvelope& env)
 {
+    OUString root = resolveRootDir();
+    OUString monthDir = env.createdAt.getLength() >= 7
+        ? env.createdAt.copy(0, 7)
+        : currentMonthDir();
     OUString dir = ensureMonthDir(root, monthDir);
     if (dir.isEmpty()) return false;
 

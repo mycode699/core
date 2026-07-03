@@ -11,6 +11,7 @@
 #include "TaskStateMachine.hxx"
 
 #include <sal/log.hxx>
+#include <rtl/ustrbuf.hxx>
 
 #include <algorithm>
 #include <map>
