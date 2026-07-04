@@ -922,27 +922,27 @@ bool BackingWindow::resolveTemplatePathByFileName(const SfxDocumentTemplates& rT
 
 std::array<BackingWindow::ScenarioTemplate, 11> BackingWindow::getScenarioTemplates()
 {
-    return { { { mxScenarioReportButton.get(), u"Work_Report_CN.ott", u"工作汇报",
+    return { { { mxScenarioReportButton.get(), u"offimisc/Work_Report_CN.ott", u"工作汇报",
                  FILTER_APPLICATION::WRITER },
-               { mxScenarioMinutesButton.get(), u"Meeting_Minutes_CN.ott", u"会议纪要",
+               { mxScenarioMinutesButton.get(), u"offimisc/Meeting_Minutes_CN.ott", u"会议纪要",
                  FILTER_APPLICATION::WRITER },
-               { mxScenarioNoticeButton.get(), u"Notice_CN.ott", u"通知",
+               { mxScenarioNoticeButton.get(), u"officorr/Notice_CN.ott", u"通知",
                  FILTER_APPLICATION::WRITER },
-               { mxScenarioPlanButton.get(), u"Project_Plan_CN.ott", u"项目方案",
+               { mxScenarioPlanButton.get(), u"offimisc/Project_Plan_CN.ott", u"项目方案",
                  FILTER_APPLICATION::WRITER },
-               { mxScenarioBudgetButton.get(), u"Budget_CN.ots", u"预算总览",
+               { mxScenarioBudgetButton.get(), u"spreadsheets/Budget_CN.ots", u"预算总览",
                  FILTER_APPLICATION::CALC },
-               { mxScenarioSalesButton.get(), u"Sales_Tracker_CN.ots", u"销售跟进",
+               { mxScenarioSalesButton.get(), u"spreadsheets/Sales_Tracker_CN.ots", u"销售跟进",
                  FILTER_APPLICATION::CALC },
-               { mxScenarioScheduleButton.get(), u"Project_Schedule_CN.ots", u"项目排期",
+               { mxScenarioScheduleButton.get(), u"spreadsheets/Project_Schedule_CN.ots", u"项目排期",
                  FILTER_APPLICATION::CALC },
-               { mxScenarioOutlineButton.get(), u"PPT_Outline_CN.ott", u"PPT 提纲初稿",
+               { mxScenarioOutlineButton.get(), u"offimisc/PPT_Outline_CN.ott", u"演示提纲",
                  FILTER_APPLICATION::WRITER },
-               { mxScenarioPitchButton.get(), u"Business_Pitch_CN.otp", u"商务路演",
+               { mxScenarioPitchButton.get(), u"presnt/Business_Pitch_CN.otp", u"商务路演",
                  FILTER_APPLICATION::IMPRESS },
-               { mxScenarioProjectReportButton.get(), u"Project_Report_CN.otp", u"项目汇报",
+               { mxScenarioProjectReportButton.get(), u"presnt/Project_Report_CN.otp", u"项目汇报",
                  FILTER_APPLICATION::IMPRESS },
-               { mxScenarioCoursewareButton.get(), u"Teaching_Courseware_CN.otp", u"教学课件",
+               { mxScenarioCoursewareButton.get(), u"presnt/Teaching_Courseware_CN.otp", u"教学课件",
                  FILTER_APPLICATION::IMPRESS } } };
 }
 

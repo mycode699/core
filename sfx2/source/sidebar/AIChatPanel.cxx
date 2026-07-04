@@ -20,8 +20,21 @@
 #include "AIChatPreviewMatrix.hxx"
 #include "AIChatReviewQueueStore.hxx"
 #include "AIChatReviewStateSyncStore.hxx"
+#include "AIChatSlashCommands.hxx"
 #include "AIChatWorkspaceActionBarStore.hxx"
 #include "AIChatWorkspaceSessionStore.hxx"
+
+#include <AgentChatDiffApplier.hxx>
+#include <AgentChatDiffExtractor.hxx>
+
+#include <AICanvasIntegration.hxx>
+#include <AICanvasMode.hxx>
+#include <AICanvasUI.hxx>
+
+#include <AIFileManager.hxx>
+#include <AIFileSearchUI.hxx>
+
+#include <AICanvasEntryPoint.hxx>
 
 #include <com/sun/star/ai/ProviderRequest.hpp>
 #include <com/sun/star/ai/XProvider.hpp>
@@ -29,6 +42,7 @@
 #include <com/sun/star/uno/Exception.hpp>
 #include <com/sun/star/uno/XComponentContext.hpp>
 #include <comphelper/processfactory.hxx>
+#include <osl/security.hxx>
 #include <rtl/ustrbuf.hxx>
 #include <vcl/weld/Builder.hxx>
 #include <vcl/weld/Entry.hxx>
@@ -968,6 +982,143 @@ void AIChatPanel::SubmitPrompt()
     if (!ValidateContextMentions(sPrompt))
         return;
 
+    // ── V6: File manager routing ────────────────────────────────────
+    // /files [scan|list|sort:name|sort:time]  — scan & list files
+    // /find <query>                           — AI semantic search
+    // /nav [generate]                         — generate navigation index
+    if (sPrompt.startsWith("/files"))
+    {
+        OUString arg = sPrompt.copy(6).trim();
+        kqoffice::ai::filemgr::AIFileManager mgr;
+        auto files = mgr.quickScan().files;
+
+        kqoffice::ai::filemgr::SortOrder order = kqoffice::ai::filemgr::SortOrder::TimeDesc;
+        if (arg.indexOf("sort:name") >= 0 || arg.indexOf("名称") >= 0)
+            order = kqoffice::ai::filemgr::SortOrder::NameAsc;
+        else if (arg.indexOf("sort:size") >= 0 || arg.indexOf("大小") >= 0)
+            order = kqoffice::ai::filemgr::SortOrder::SizeDesc;
+
+        OUString list = kqoffice::ai::filemgr::AIFileSearchUI::formatFileList(files, order);
+        AppendTranscript(u"Files"_ustr,
+            kqoffice::ai::filemgr::AIFileSearchUI::formatScanSummary(mgr.quickScan()));
+        AppendAssistantMarkdown(list);
+        m_xPromptEntry->set_text(OUString());
+        return;
+    }
+
+    if (sPrompt.startsWith("/find"))
+    {
+        OUString query = sPrompt.copy(5).trim();
+        kqoffice::ai::filemgr::AIFileManager mgr;
+        auto results = mgr.quickSearch(query.isEmpty() ? u"文档"_ustr : query);
+
+        if (results.empty())
+            AppendTranscript(u"Files"_ustr, u"未找到匹配 \""_ustr + query + u"\" 的文件"_ustr);
+        else
+            AppendAssistantMarkdown(kqoffice::ai::filemgr::AIFileSearchUI::formatSearchResults(results));
+        m_xPromptEntry->set_text(OUString());
+        return;
+    }
+
+    if (sPrompt.startsWith("/nav"))
+    {
+        kqoffice::ai::filemgr::AIFileManager mgr;
+        auto files = mgr.quickScan().files;
+        OUString homeDir;
+        osl::Security().getHomeDir(homeDir);
+        OUString navPath = mgr.generateNavIndex(files, homeDir + u"/Desktop"_ustr);
+
+        AppendTranscript(u"Files"_ustr,
+            u"导航索引已生成!\n→ "_ustr + navPath
+            + u"\n共 " + OUString::number(static_cast<sal_Int32>(files.size()))
+            + u" 个文件"_ustr);
+        m_xPromptEntry->set_text(OUString());
+        return;
+    }
+
+    // ── V5: Canvas mode routing ──────────────────────────────────────
+    // /canvas start <goals>   — start canvas mode for current doc type
+    // /canvas confirm         — confirm current step
+    // /canvas revise <notes>  — request revision
+    // /canvas skip            — skip current step
+    if (sPrompt.startsWith("/canvas"))
+    {
+        OUString arg = sPrompt.copy(7).trim();
+        if (arg.startsWith("start") || arg.startsWith("开始"))
+        {
+            OUString goal = arg.copy(arg.indexOf(' ') >= 0 ? arg.indexOf(' ') + 1 : 0).trim();
+            if (goal.isEmpty())
+                goal = u"创建新文档"_ustr;
+
+            auto docType = kqoffice::ai::canvas::CanvasDocType::Writer;
+            // Detect document type from current active document
+            OUString activeType; // could be inferred from SfxViewShell
+            if (activeType == "calc")
+                docType = kqoffice::ai::canvas::CanvasDocType::Calc;
+            else if (activeType == "impress")
+                docType = kqoffice::ai::canvas::CanvasDocType::Impress;
+
+            kqoffice::ai::canvas::AICanvasIntegration::startCanvasViaChat(docType, goal);
+            auto display = kqoffice::ai::canvas::AICanvasUI::buildDisplay(
+                kqoffice::ai::canvas::AICanvasIntegration::getCurrentSession());
+
+            AppendTranscript(u"Canvas"_ustr, display.progressBar);
+            AppendTranscript(u"AI"_ustr,
+                u"画布模式已启动: "_ustr + kqoffice::ai::canvas::AICanvasEntryPoint::getDescription(docType)
+                + u"\n\n请描述第1步的需求:"_ustr);
+
+            m_xPromptEntry->set_text(OUString());
+            SetState(AIChatPanelState::Idle);
+            return;
+        }
+
+        if (arg.startsWith("confirm") || arg.startsWith("确认"))
+        {
+            OUString response = kqoffice::ai::canvas::AICanvasIntegration::processConfirm();
+            AppendTranscript(u"Canvas"_ustr, response);
+            m_xPromptEntry->set_text(OUString());
+            return;
+        }
+
+        if (arg.startsWith("revise") || arg.startsWith("修改"))
+        {
+            OUString feedback = arg.copy(arg.indexOf(' ') >= 0 ? arg.indexOf(' ') + 1 : 0).trim();
+            if (feedback.isEmpty())
+                feedback = u"请重新生成"_ustr;
+            OUString response = kqoffice::ai::canvas::AICanvasIntegration::processRevise(feedback);
+            AppendTranscript(u"Canvas"_ustr, response);
+            m_xPromptEntry->set_text(OUString());
+            return;
+        }
+
+        if (arg.startsWith("skip") || arg.startsWith("跳过"))
+        {
+            // Trigger skip via confirm variant
+            OUString response = kqoffice::ai::canvas::AICanvasIntegration::processConfirm();
+            AppendTranscript(u"Canvas"_ustr, u"⏭ 已跳过当前步骤\n"_ustr + response);
+            m_xPromptEntry->set_text(OUString());
+            return;
+        }
+    }
+
+    // ── V5: Active canvas pipeline ───────────────────────────────────
+    if (kqoffice::ai::canvas::AICanvasIntegration::isCanvasActive())
+    {
+        OUString response = kqoffice::ai::canvas::AICanvasIntegration::processCanvasMessage(sPrompt);
+        auto display = kqoffice::ai::canvas::AICanvasUI::buildDisplay(
+            kqoffice::ai::canvas::AICanvasIntegration::getCurrentSession());
+
+        AppendTranscript(u"User"_ustr, sPrompt);
+        AppendTranscript(u"Canvas"_ustr, display.progressBar);
+        AppendAssistantMarkdown(response);
+
+        m_xPromptEntry->set_text(OUString());
+        m_sLastPrompt = sPrompt;
+        SetState(AIChatPanelState::AwaitingApproval);
+        return;
+    }
+
+    // ── Normal chat pipeline ─────────────────────────────────────────
     m_sLastPrompt = sPrompt;
     m_sStreamingBuffer.clear();
     SetState(AIChatPanelState::Requesting);
@@ -996,6 +1147,26 @@ void AIChatPanel::SubmitPrompt()
     {
         SetState(AIChatPanelState::AwaitingApproval);
         AppendTerminalEvidence(aResponse.status, aResponse.evidenceId);
+
+        // V4: Extract and apply diff operations from AI response
+        auto plan = kqoffice::ai::chat::AgentChatDiffExtractor::extract(aResponse.content);
+        if (kqoffice::ai::chat::AgentChatDiffExtractor::validate(plan))
+        {
+            auto result = kqoffice::ai::chat::AgentChatDiffApplier::apply(plan);
+            if (result.success)
+            {
+                AppendTranscript(u"System"_ustr,
+                    u"diff-applied plan="_ustr + plan.planId
+                    + u" ops="_ustr + OUString::number(
+                        static_cast<sal_Int32>(result.appliedOps.size())));
+            }
+            else
+            {
+                AppendTranscript(u"System"_ustr,
+                    u"diff-failed plan="_ustr + plan.planId
+                    + u" error="_ustr + result.error);
+            }
+        }
     }
     else
     {

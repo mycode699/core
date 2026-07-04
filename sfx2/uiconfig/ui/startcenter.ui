@@ -109,15 +109,16 @@
                     <property name="can-focus">False</property>
                     <property name="vexpand">True</property>
                     <property name="orientation">vertical</property>
-                    <property name="spacing">6</property>
+                    <property name="spacing">8</property>
                     <child>
                       <object class="GtkButton" id="open_all">
                         <property name="label" translatable="yes" context="startcenter|open_all">打开本地文件</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="margin-start">10</property>
-                        <property name="margin-end">10</property>
+                        <property name="height-request">36</property>
+                        <property name="margin-start">16</property>
+                        <property name="margin-end">16</property>
                         <property name="margin-top">8</property>
                         <property name="image">open_all_image</property>
                         <property name="relief">none</property>
@@ -137,8 +138,9 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="margin-start">10</property>
-                        <property name="margin-end">10</property>
+                        <property name="height-request">36</property>
+                        <property name="margin-start">16</property>
+                        <property name="margin-end">16</property>
                         <property name="image">open_all_image2</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
@@ -153,10 +155,11 @@
                     </child>
                     <child>
                       <object class="GtkSeparator" id="separator3">
-                        <property name="visible">True</property>
+                        <property name="visible">False</property>
                         <property name="can-focus">False</property>
-                        <property name="margin-start">10</property>
-                        <property name="margin-end">10</property>
+                        <property name="no-show-all">True</property>
+                        <property name="margin-start">16</property>
+                        <property name="margin-end">16</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -170,8 +173,9 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="margin-start">10</property>
-                        <property name="margin-end">10</property>
+                        <property name="height-request">36</property>
+                        <property name="margin-start">16</property>
+                        <property name="margin-end">16</property>
                         <property name="image">open_all_image1</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
@@ -190,8 +194,9 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="margin-start">10</property>
-                        <property name="margin-end">10</property>
+                        <property name="height-request">36</property>
+                        <property name="margin-start">16</property>
+                        <property name="margin-end">16</property>
                         <property name="image">templates_all_image</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
@@ -206,10 +211,11 @@
                     </child>
                     <child>
                       <object class="GtkSeparator" id="separator1">
-                        <property name="visible">True</property>
+                        <property name="visible">False</property>
                         <property name="can-focus">False</property>
-                        <property name="margin-start">10</property>
-                        <property name="margin-end">10</property>
+                        <property name="no-show-all">True</property>
+                        <property name="margin-start">16</property>
+                        <property name="margin-end">16</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -239,8 +245,9 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="margin-start">10</property>
-                        <property name="margin-end">10</property>
+                        <property name="height-request">36</property>
+                        <property name="margin-start">16</property>
+                        <property name="margin-end">16</property>
                         <property name="image">writer_all_image</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
@@ -259,8 +266,9 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="margin-start">10</property>
-                        <property name="margin-end">10</property>
+                        <property name="height-request">36</property>
+                        <property name="margin-start">16</property>
+                        <property name="margin-end">16</property>
                         <property name="image">calc_all_image</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
@@ -279,8 +287,9 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="margin-start">10</property>
-                        <property name="margin-end">10</property>
+                        <property name="height-request">36</property>
+                        <property name="margin-start">16</property>
+                        <property name="margin-end">16</property>
                         <property name="image">impress_all_image</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
@@ -299,8 +308,9 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="margin-start">10</property>
-                        <property name="margin-end">10</property>
+                        <property name="height-request">36</property>
+                        <property name="margin-start">16</property>
+                        <property name="margin-end">16</property>
                         <property name="image">draw_all_image</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
@@ -319,8 +329,9 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="margin-start">10</property>
-                        <property name="margin-end">10</property>
+                        <property name="height-request">36</property>
+                        <property name="margin-start">16</property>
+                        <property name="margin-end">16</property>
                         <property name="image">math_all_image</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
@@ -339,8 +350,9 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="margin-start">10</property>
-                        <property name="margin-end">10</property>
+                        <property name="height-request">36</property>
+                        <property name="margin-start">16</property>
+                        <property name="margin-end">16</property>
                         <property name="image">database_all_image</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
@@ -390,9 +402,10 @@
                 </child>
                 <child>
                   <object class="GtkSeparator" id="separator2">
-                    <property name="height-request">2</property>
-                    <property name="visible">True</property>
+                    <property name="height-request">1</property>
+                    <property name="visible">False</property>
                     <property name="can-focus">False</property>
+                    <property name="no-show-all">True</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -404,11 +417,11 @@
                   <object class="GtkBox" id="small_buttons_box">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="margin-start">10</property>
-                    <property name="margin-end">10</property>
-                    <property name="margin-top">8</property>
-                    <property name="margin-bottom">8</property>
-                    <property name="spacing">6</property>
+                    <property name="margin-start">14</property>
+                    <property name="margin-end">14</property>
+                    <property name="margin-top">12</property>
+                    <property name="margin-bottom">10</property>
+                    <property name="spacing">8</property>
                     <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkButton" id="help">
@@ -475,10 +488,10 @@
                 <property name="visible">False</property>
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
-                <property name="margin-start">12</property>
-                <property name="margin-end">12</property>
-                <property name="margin-top">12</property>
-                <property name="margin-bottom">8</property>
+                <property name="margin-start">18</property>
+                <property name="margin-end">18</property>
+                <property name="margin-top">16</property>
+                <property name="margin-bottom">10</property>
                 <property name="xalign">0</property>
                 <property name="yalign">0</property>
                 <property name="wrap">False</property>
@@ -500,10 +513,10 @@
               <object class="GtkLabel" id="local_view_label">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="margin-start">12</property>
-                <property name="margin-end">12</property>
-                <property name="margin-top">12</property>
-                <property name="margin-bottom">8</property>
+                <property name="margin-start">18</property>
+                <property name="margin-end">18</property>
+                <property name="margin-top">16</property>
+                <property name="margin-bottom">10</property>
                 <property name="xalign">0</property>
                 <property name="yalign">0</property>
                 <property name="wrap">False</property>
@@ -526,11 +539,11 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="orientation">vertical</property>
-                <property name="spacing">8</property>
-                <property name="margin-start">12</property>
-                <property name="margin-end">12</property>
+                <property name="spacing">10</property>
+                <property name="margin-start">18</property>
+                <property name="margin-end">18</property>
                 <property name="margin-top">0</property>
-                <property name="margin-bottom">8</property>
+                <property name="margin-bottom">12</property>
                 <child>
                   <object class="GtkLabel" id="scenario_label">
                     <property name="visible">True</property>
@@ -576,8 +589,8 @@
                   <object class="GtkGrid" id="scenario_grid">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="row-spacing">8</property>
-                    <property name="column-spacing">8</property>
+                    <property name="row-spacing">10</property>
+                    <property name="column-spacing">12</property>
                     <property name="column-homogeneous">True</property>
                     <child>
                       <object class="GtkLabel" id="scenario_writer_group">
