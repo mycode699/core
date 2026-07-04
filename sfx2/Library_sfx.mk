@@ -38,6 +38,9 @@ $(eval $(call gb_Library_use_sdk_api,sfx))
 $(eval $(call gb_Library_set_include,sfx,\
     -I$(SRCDIR)/sfx2/inc \
     -I$(SRCDIR)/sfx2/source/inc \
+    -I$(SRCDIR)/kqoffice/source/ai/chat \
+    -I$(SRCDIR)/kqoffice/source/ai/canvas \
+    -I$(SRCDIR)/kqoffice/source/ai/filemgr \
     -I$(WORKDIR)/SdiTarget/sfx2/sdi \
     $$(INCLUDE) \
 ))
@@ -55,6 +58,7 @@ $(eval $(call gb_Library_use_libraries,sfx,\
     fwk \
     i18nlangtag \
     i18nutil \
+    kqoffice_ai \
     sal \
     salhelper \
     sax \
@@ -290,6 +294,8 @@ $(eval $(call gb_Library_add_exception_objects,sfx,\
     sfx2/source/sidebar/AIChatMarkdownRenderer \
     sfx2/source/sidebar/AIChatOnboardingRuntime \
     sfx2/source/sidebar/AIChatPanel \
+    sfx2/source/sidebar/AIChatComposer \
+    sfx2/source/sidebar/AIChatSlashCommands \
     sfx2/source/sidebar/AIChatPanelFactory \
     sfx2/source/sidebar/AIChatPerfCrashRuntime \
     sfx2/source/sidebar/AIChatPolicyEngineRuntime \

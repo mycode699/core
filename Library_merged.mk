@@ -19,7 +19,6 @@ $(eval $(call gb_Library_use_libraries,merged,\
 	cppu \
 	cppuhelper \
 	i18nlangtag \
-	kqoffice_ai \
 	$(if $(ENABLE_JAVA), \
 		jvmaccess \
 		jvmfwk) \
