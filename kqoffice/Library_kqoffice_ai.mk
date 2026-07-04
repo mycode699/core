@@ -10,13 +10,19 @@
 $(eval $(call gb_Library_Library,kqoffice_ai))
 
 $(eval $(call gb_Library_set_include,kqoffice_ai,\
+    -I$(SRCDIR)/kqoffice/source/ai/canvas \
+    -I$(SRCDIR)/kqoffice/source/ai/chat \
+    -I$(SRCDIR)/kqoffice/source/ai/control \
+    -I$(SRCDIR)/kqoffice/source/ai/filemgr \
     -I$(SRCDIR)/kqoffice/source/ai/i18n \
+    -I$(SRCDIR)/kqoffice/source/ai/mesh \
     $$(INCLUDE) \
 ))
 
 $(eval $(call gb_Library_use_sdk_api,kqoffice_ai))
 
 $(eval $(call gb_Library_use_libraries,kqoffice_ai,\
+    comphelper \
     cppu \
     cppuhelper \
     sal \
@@ -40,6 +46,26 @@ $(eval $(call gb_Library_add_exception_objects,kqoffice_ai,\
     kqoffice/source/ai/cowork/TaskRunner \
     kqoffice/source/ai/cowork/TaskScheduler \
     kqoffice/source/ai/cowork/TaskStore \
+    kqoffice/source/ai/chat/AgentChatContextBuilder \
+    kqoffice/source/ai/chat/AgentChatDiffApplier \
+    kqoffice/source/ai/chat/AgentChatDiffExtractor \
+    kqoffice/source/ai/chat/AgentChatMentionResolver \
+    kqoffice/source/ai/chat/AgentChatSelectionCapture \
+    kqoffice/source/ai/chat/AgentChatStreamingClient \
+    kqoffice/source/ai/control/ResourceBudgetWatchdog \
+    kqoffice/source/ai/control/SafeRestore \
+    kqoffice/source/ai/control/SessionStore \
+    kqoffice/source/ai/control/SurfaceLifecycleManager \
+    kqoffice/source/ai/mesh/WorkspaceAgentMesh \
+    kqoffice/source/ai/mesh/WorkspaceAgentMeshOrchestrator \
+    kqoffice/source/ai/mesh/WorkspaceMeshTaskQueue \
+    kqoffice/source/ai/mesh/WorkspaceSupervisorAgentAPI \
+    kqoffice/source/ai/canvas/AICanvasEntryPoint \
+    kqoffice/source/ai/canvas/AICanvasIntegration \
+    kqoffice/source/ai/canvas/AICanvasMode \
+    kqoffice/source/ai/canvas/AICanvasUI \
+    kqoffice/source/ai/filemgr/AIFileManager \
+    kqoffice/source/ai/filemgr/AIFileSearchUI \
 ))
 
 ifeq ($(OS),MACOSX)

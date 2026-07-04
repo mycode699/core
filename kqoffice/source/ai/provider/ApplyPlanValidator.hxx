@@ -29,7 +29,7 @@
 #include <rtl/ustring.hxx>
 #include <sal/types.h>
 
-#include <kqoffice/source/ai/i18n/AiI18nStrings.hxx>
+#include <AiI18nStrings.hxx>
 
 namespace kqoffice::ai
 {

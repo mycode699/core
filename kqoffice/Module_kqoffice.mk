@@ -23,6 +23,11 @@ $(eval $(call gb_Module_add_check_targets,kqoffice,\
     CppunitTest_kqoffice_cowork \
     CppunitTest_kqoffice_agent_delegation \
     CppunitTest_kqoffice_ai_i18n \
+    CppunitTest_kqoffice_agent_chat \
+    CppunitTest_kqoffice_agent_mesh \
+    CppunitTest_kqoffice_control_plane \
+    CppunitTest_kqoffice_ai_canvas \
+    CppunitTest_kqoffice_ai_filemgr \
 ))
 
 # vim: set noet sw=4 ts=4:

@@ -15,6 +15,7 @@
 #ifndef INCLUDED_KQOFFICE_SOURCE_AI_I18N_AII18NSTRINGS_HXX
 #define INCLUDED_KQOFFICE_SOURCE_AI_I18N_AII18NSTRINGS_HXX
 
+#include <rtl/ustrbuf.hxx>
 #include <rtl/ustring.hxx>
 #include <sal/types.h>
 
@@ -27,7 +28,7 @@ namespace kqoffice::ai::i18n
 namespace detail
 {
 /// Number of entries in the string table.
-constexpr sal_Int32 kEntryCount = 50;
+constexpr sal_Int32 kEntryCount = 53;
 
 /// One locale-variant entry keyed by stable ASCII id.
 struct AiStringEntry
