@@ -5,12 +5,12 @@
       <stop offset="1" stop-color="#E6ECF8"/>
     </linearGradient>
     <linearGradient id="ring" x1="112" y1="96" x2="304" y2="288" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#8FB6FF"/>
-      <stop offset="1" stop-color="#2F5FD7"/>
+      <stop offset="0" stop-color="#7C9EFF"/>
+      <stop offset="1" stop-color="#1E40AF"/>
     </linearGradient>
     <linearGradient id="spark" x1="306" y1="158" x2="356" y2="212" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#E9F1FF"/>
-      <stop offset="1" stop-color="#A7C2FF"/>
+      <stop offset="0" stop-color="#E2E9FF"/>
+      <stop offset="1" stop-color="#89A9FF"/>
     </linearGradient>
   </defs>
   <rect width="512" height="512" rx="120" fill="url(#bg)"/>
@@ -18,8 +18,8 @@
   <circle cx="256" cy="256" r="128" fill="none" stroke="url(#ring)" stroke-width="42"/>
   <circle cx="256" cy="256" r="30" fill="#FFFFFF"/>
   <path d="M344 168a128 128 0 0 1 30 72" fill="none" stroke="url(#spark)" stroke-linecap="round" stroke-width="24"/>
-  <circle cx="146" cy="146" r="18" fill="#5B84F1" opacity=".9"/>
-  <circle cx="366" cy="146" r="18" fill="#5B84F1" opacity=".72"/>
-  <circle cx="146" cy="366" r="18" fill="#5B84F1" opacity=".72"/>
-  <circle cx="366" cy="366" r="18" fill="#5B84F1" opacity=".9"/>
+  <circle cx="146" cy="146" r="18" fill="#7C9EFF" opacity=".9"/>
+  <circle cx="366" cy="146" r="18" fill="#7C9EFF" opacity=".72"/>
+  <circle cx="146" cy="366" r="18" fill="#7C9EFF" opacity=".72"/>
+  <circle cx="366" cy="366" r="18" fill="#7C9EFF" opacity=".9"/>
 </svg>

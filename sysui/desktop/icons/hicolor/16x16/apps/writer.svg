@@ -1,7 +1,7 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="bg" x1="72" y1="48" x2="448" y2="464" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stop-color="#64B5FF"/>
+              <stop offset="0" stop-color="#60A5FA"/>
               <stop offset="1" stop-color="#1D4ED8"/>
             </linearGradient>
             <linearGradient id="panel" x1="132" y1="112" x2="380" y2="400" gradientUnits="userSpaceOnUse">

@@ -9,7 +9,7 @@
         <text:sequence-decl text:display-outline-level="0" text:name="Drawing"/>
         <text:sequence-decl text:display-outline-level="0" text:name="Figure"/>
       </text:sequence-decls>
-      <text:p text:style-name="Title">PPT 提纲初稿</text:p>
+      <text:p text:style-name="Title">演示提纲</text:p>
       <text:p text:style-name="Subtitle">适用于汇报、提案、复盘与教学演示文稿的快速起稿</text:p>
       <text:p text:style-name="Text_20_body">使用说明：用“标题 1”填写每页标题，用“标题 2 / 标题 3”填写要点和子要点；完成后选择“文件 &gt; 根据标题生成 PPT 初稿”。</text:p>
       <text:p text:style-name="First_20_line_20_indent">以下内容是常用演示结构示例，可直接改写、复制或删除，再一键生成演示文稿框架。</text:p>

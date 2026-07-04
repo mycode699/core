@@ -43,9 +43,9 @@ INTRO_PACKAGE_DIRS = [
     ROOT / "icon-themes/colibre/brand_dev",
 ]
 
-BRAND_RING_START = "#8FB6FF"
-BRAND_RING_END = "#2F5FD7"
-BRAND_SWEEP = "#DCE6F8"
+BRAND_RING_START = "#7C9EFF"
+BRAND_RING_END = "#1E40AF"
+BRAND_SWEEP = "#E0E7FF"
 
 
 @dataclass(frozen=True)
@@ -69,10 +69,10 @@ APP_ICON_NAMES = [
 ]
 
 APP_GENERATED = {
-    "writer": Palette("#64B5FF", "#1D4ED8", "#2563EB", "#B9DBFF"),
-    "calc": Palette("#86E56B", "#0F9D58", "#15803D", "#CFF6BE"),
-    "impress": Palette("#FFBC78", "#F05A28", "#EA580C", "#FFDDBB"),
-    "draw": Palette("#FFD65A", "#F59E0B", "#D97706", "#FFF0BA"),
+    "writer": Palette("#60A5FA", "#1D4ED8", "#2563EB", "#BFDBFE"),
+    "calc": Palette("#86EFAC", "#059669", "#15803D", "#CFF6BE"),
+    "impress": Palette("#FBBF6F", "#DC2626", "#EA580C", "#FFDDBB"),
+    "draw": Palette("#FCD65A", "#D97706", "#D97706", "#FFF0BA"),
     "chart": Palette("#94A3B8", "#334155", "#475569", "#D8E0EB"),
     "base": Palette("#64D2C8", "#0F766E", "#0F766E", "#C8F3EE"),
     "math": Palette("#FF9B85", "#D9485F", "#E11D48", "#FFD6CF"),
@@ -80,8 +80,8 @@ APP_GENERATED = {
 }
 
 APP_SVG_GENERATED = {
-    "main": Palette("#8FB6FF", "#2F5FD7", "#2F5FD7", "#EEF4FF"),
-    "startcenter": Palette("#8FB6FF", "#2F5FD7", "#2F5FD7", "#EEF4FF"),
+    "main": Palette("#7C9EFF", "#1E40AF", "#1E40AF", "#E0E7FF"),
+    "startcenter": Palette("#7C9EFF", "#1E40AF", "#1E40AF", "#E0E7FF"),
     **APP_GENERATED,
 }
 

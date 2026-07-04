@@ -5,12 +5,12 @@
       <stop offset="1" stop-color="#E6ECF8"/>
     </linearGradient>
     <linearGradient id="ring" x1="170" y1="150" x2="394" y2="374" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#8FB6FF"/>
-      <stop offset="1" stop-color="#2F5FD7"/>
+      <stop offset="0" stop-color="#7C9EFF"/>
+      <stop offset="1" stop-color="#1E40AF"/>
     </linearGradient>
     <linearGradient id="spark" x1="294" y1="182" x2="366" y2="250" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#E9F1FF"/>
-      <stop offset="1" stop-color="#A7C2FF"/>
+      <stop offset="0" stop-color="#E2E9FF"/>
+      <stop offset="1" stop-color="#89A9FF"/>
     </linearGradient>
   </defs>
   <rect width="720" height="720" rx="96" fill="url(#bg)"/>
@@ -20,10 +20,10 @@
     <circle cx="152" cy="152" r="98" fill="none" stroke="url(#ring)" stroke-width="34"/>
     <circle cx="152" cy="152" r="24" fill="#FFFFFF"/>
     <path d="M220 80a98 98 0 0 1 22 56" fill="none" stroke="url(#spark)" stroke-linecap="round" stroke-width="20"/>
-    <circle cx="68" cy="68" r="16" fill="#5B84F1" opacity=".95"/>
-    <circle cx="236" cy="68" r="16" fill="#5B84F1" opacity=".72"/>
-    <circle cx="68" cy="236" r="16" fill="#5B84F1" opacity=".72"/>
-    <circle cx="236" cy="236" r="16" fill="#5B84F1" opacity=".95"/>
+    <circle cx="68" cy="68" r="16" fill="#7C9EFF" opacity=".95"/>
+    <circle cx="236" cy="68" r="16" fill="#7C9EFF" opacity=".72"/>
+    <circle cx="68" cy="236" r="16" fill="#7C9EFF" opacity=".72"/>
+    <circle cx="236" cy="236" r="16" fill="#7C9EFF" opacity=".95"/>
   </g>
   <g fill="#172033">
     <text x="124" y="514" font-family="'PingFang SC','Noto Sans SC','Microsoft YaHei',sans-serif" font-size="86" font-weight="700" letter-spacing="4">可圈可点</text>

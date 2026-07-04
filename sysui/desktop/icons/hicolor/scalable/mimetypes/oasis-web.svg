@@ -1,7 +1,7 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="accent" x1="116" y1="110" x2="178" y2="420" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stop-color="#64B5FF"/>
+              <stop offset="0" stop-color="#60A5FA"/>
               <stop offset="1" stop-color="#1D4ED8"/>
             </linearGradient>
             <linearGradient id="panel" x1="116" y1="84" x2="360" y2="444" gradientUnits="userSpaceOnUse">
@@ -19,7 +19,7 @@
           <path d="M246 84v54c0 11.046 8.954 20 20 20h54z" fill="url(#fold)"/>
 
           <g transform="translate(48 62)"><g transform="scale(.72)"><g>
-  <rect x="168" y="196" width="208" height="144" rx="18" fill="#B9DBFF" opacity=".16" stroke="#2563EB" stroke-width="12"/>
+  <rect x="168" y="196" width="208" height="144" rx="18" fill="#BFDBFE" opacity=".16" stroke="#2563EB" stroke-width="12"/>
   <rect x="168" y="196" width="208" height="32" rx="18" fill="#2563EB" opacity="0.18"/>
   <circle cx="194" cy="212" r="6" fill="#2563EB" opacity="0.72"/>
   <circle cx="214" cy="212" r="6" fill="#2563EB" opacity="0.56"/>

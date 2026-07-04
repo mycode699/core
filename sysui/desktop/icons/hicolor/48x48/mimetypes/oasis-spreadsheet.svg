@@ -1,8 +1,8 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="accent" x1="116" y1="110" x2="178" y2="420" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stop-color="#86E56B"/>
-              <stop offset="1" stop-color="#0F9D58"/>
+              <stop offset="0" stop-color="#86EFAC"/>
+              <stop offset="1" stop-color="#059669"/>
             </linearGradient>
             <linearGradient id="panel" x1="116" y1="84" x2="360" y2="444" gradientUnits="userSpaceOnUse">
               <stop offset="0" stop-color="#ffffff"/>
