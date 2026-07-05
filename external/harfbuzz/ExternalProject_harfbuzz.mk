@@ -43,12 +43,16 @@ cpu = '$(if $(filter x86,$(RTL_ARCH)),i686,$(if $(filter X86_64,$(RTL_ARCH)),x86
 endian = '$(ENDIANNESS)'
 endef
 
+gb_KqofficePkgConfigWrapper := $(BUILDDIR)/bin/kqoffice-pkgconf-utf8.sh
+gb_KqofficePkgConfig := $(if $(wildcard $(gb_KqofficePkgConfigWrapper)),$(gb_KqofficePkgConfigWrapper),$(if $(wildcard /tmp/kqoffice-pkgconf-utf8),/tmp/kqoffice-pkgconf-utf8,$(PKG_CONFIG)))
+
 # cannot use CROSS_COMPILING as condition since we have cross-compilation "light" for cases where
 # the builder can run the host binaries, like for example when compiling for win 32bit on win 64bit
 $(call gb_ExternalProject_get_state_target,harfbuzz,build) : | $(call gb_ExternalExecutable_get_dependencies,python)
 	$(call gb_Trace_StartRange,harfbuzz,EXTERNAL)
 	$(file >$(gb_UnpackedTarball_workdir)/harfbuzz/cross-file.txt,$(gb_harfbuzz_cross_compile))
 	$(call gb_ExternalProject_run,build,\
+		PKG_CONFIG="$(gb_KqofficePkgConfig)" \
 		PKG_CONFIG_PATH="${PKG_CONFIG_PATH}$(LIBO_PATH_SEPARATOR)$(gb_UnpackedTarball_workdir)/graphite$(if $(SYSTEM_ICU),,$(LIBO_PATH_SEPARATOR)$(gb_UnpackedTarball_workdir)/icu)" \
 		PYTHONWARNINGS= \
 		$(MESON) setup --wrap-mode nofallback builddir \
