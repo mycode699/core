@@ -51,17 +51,19 @@ class CoworkDialog(UITestCase):
         sleep_s = self.ui_test.get_default_sleep()
         with self.ui_test.create_doc_in_start_center("writer"), self._open_cowork_dialog() as xDialog:
             xNew = xDialog.getChild("btn_new_task")
-            xAccept = xDialog.getChild("btn_accept_task")
-
+            xList = xDialog.getChild("task_list_view")
             xNew.executeAction("CLICK", tuple())
 
+            # Poll task_list_view (svp: btn_accept_task getState can block).
             for _ in range(40):
-                if get_state_as_dict(xAccept).get("Enabled", "false") == "true":
+                if get_state_as_dict(xList).get("Children", "0") != "0":
                     break
                 time.sleep(sleep_s)
+            self.assertNotEqual(get_state_as_dict(xList).get("Children", "0"), "0")
 
-            self.assertEqual(
-                get_state_as_dict(xAccept).get("Enabled", "false"), "true")
+            Toolkit.create(self.xContext).waitUntilAllIdlesDispatched()
+            xAccept = xDialog.getChild("btn_accept_task")
+            # UITest stub completes synchronously; click accept (svp getState can block).
             xAccept.executeAction("CLICK", tuple())
             self._close_cowork_dialog(xDialog)
 

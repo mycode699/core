@@ -128,8 +128,13 @@ class UITest(object):
             self.close_doc()
 
     def wait_and_yield_dialog(self, event, parent, close_button):
-        while not event.executed:
+        for _ in range(300):
+            if event.executed:
+                break
+            Toolkit.create(self._xContext).waitUntilAllIdlesDispatched()
             time.sleep(DEFAULT_SLEEP)
+        else:
+            raise Exception("Timed out waiting for dialog event: " + str(event.eventNames))
         dialog = self._xUITest.getTopFocusWindow()
         if parent.equals(dialog):
             raise Exception("executing the action did not open the dialog")
@@ -151,6 +156,7 @@ class UITest(object):
             xDialogParent = self._xUITest.getTopFocusWindow()
             if not self._xUITest.executeDialog(command):
                 raise Exception("Dialog not executed for: " + command)
+            Toolkit.create(self._xContext).waitUntilAllIdlesDispatched()
             yield from self.wait_and_yield_dialog(event, xDialogParent, close_button)
 
     @contextmanager
