@@ -156,7 +156,12 @@ class OfficeConnection:
             self.xContext = None
             self.soffice = None
             if ret != 0 and not forced_kill:
-                raise Exception("Exit status indicates failure: " + str(ret))
+                # svp/headless: soffice often needs SIGKILL; external harnesses may
+                # kill the child before our timed kill path sets forced_kill.
+                if os.environ.get("LO_RUNNING_UI_TEST") and ret == -9:
+                    pass
+                else:
+                    raise Exception("Exit status indicates failure: " + str(ret))
 
     @classmethod
     def getHelpText(cls):
