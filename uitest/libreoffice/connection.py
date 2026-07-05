@@ -144,10 +144,18 @@ class OfficeConnection:
             else:
                 self.soffice.terminate()
 
-            ret = self.soffice.wait()
+            forced_kill = False
+            try:
+                wait_timeout = 30 if os.environ.get("LO_RUNNING_UI_TEST") else None
+                ret = self.soffice.wait(timeout=wait_timeout)
+            except subprocess.TimeoutExpired:
+                print("tearDown: soffice did not exit in time, killing...", flush=True)
+                self.soffice.kill()
+                forced_kill = True
+                ret = self.soffice.wait()
             self.xContext = None
             self.soffice = None
-            if ret != 0:
+            if ret != 0 and not forced_kill:
                 raise Exception("Exit status indicates failure: " + str(ret))
 
     @classmethod
