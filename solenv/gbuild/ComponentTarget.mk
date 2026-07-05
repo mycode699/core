@@ -68,11 +68,12 @@ $(call gb_ComponentTarget_get_target,%).optionals : \
 $(call gb_ComponentTarget_get_target,%).filtered : $(call gb_ComponentTarget_get_target,%).optionals
 	cat $< $(COMPONENTIMPL) | sed -e '/^#\|^\s*$$/d' | sort | uniq -u > $@
 
-# when a library is renamed, the component file needs to be rebuilt to match.
-# hence simply depend on Repository{,Fixes}.mk since the command runs quickly.
+# when a library is renamed or merged, the component file needs to be rebuilt to match.
+# hence simply depend on Repository{,Fixes}.mk and pre_MergedLibsList.mk since the command runs quickly.
 $(call gb_ComponentTarget_get_target,%) : \
 		$(SRCDIR)/Repository.mk \
 		$(SRCDIR)/RepositoryFixes.mk \
+		$(SRCDIR)/solenv/gbuild/extensions/pre_MergedLibsList.mk \
 		$(gb_ComponentTarget_XSLT_CREATE_COMPONENT) \
 		$(call gb_ComponentTarget_get_target,%).filtered \
 		| $(call gb_ExternalExecutable_get_dependencies,xsltproc)
