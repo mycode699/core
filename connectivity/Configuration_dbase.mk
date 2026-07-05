@@ -8,7 +8,6 @@
 #
 
 $(eval $(call gb_Configuration_Configuration,driver_dbase))
-$(eval $(call gb_Configuration_use_configuration,driver_dbase,registry))
 
 $(eval $(call gb_Configuration_add_spool_modules,driver_dbase,connectivity/registry/dbase,\
 	org/openoffice/Office/DataAccess/Drivers-dbase.xcu \

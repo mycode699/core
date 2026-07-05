@@ -7,7 +7,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  -->
 <oor:component-data oor:name="Drivers" oor:package="org.openoffice.Office.DataAccess" xmlns:install="http://openoffice.org/2004/installation" xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <node oor:name="Installed" install:module="writer">
+  <set oor:name="Installed" install:module="writer">
     <node oor:name="sdbc:writer:*" oor:op="replace">
       <prop oor:name="Driver">
         <value>com.sun.star.comp.sdbc.writer.ODriver</value>
@@ -47,5 +47,5 @@
         </node>
       </node>
     </node>
-  </node>
+  </set>
 </oor:component-data>

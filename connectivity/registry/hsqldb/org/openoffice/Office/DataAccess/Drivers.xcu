@@ -17,7 +17,7 @@
  *   the License at http://www.apache.org/licenses/LICENSE-2.0 .
 -->
 <oor:component-data oor:name="Drivers" oor:package="org.openoffice.Office.DataAccess" xmlns:install="http://openoffice.org/2004/installation" xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <node oor:name="Installed" install:module="hsqldb">
+  <set oor:name="Installed" install:module="hsqldb">
     <node oor:name="sdbc:embedded:hsqldb" oor:op="replace">
       <prop oor:name="Driver">
         <value>com.sun.star.sdbcx.comp.hsqldb.Driver</value>
@@ -99,5 +99,5 @@
         </node>
       </node>
     </node>
-  </node>
+  </set>
 </oor:component-data>

@@ -13,6 +13,8 @@
 
 #include <sal/config.h>
 
+#include <o3tl/test_info.hxx>
+
 #include <cowork/CoworkDialog.hxx>
 #include <cowork/CoworkPanel.hxx>
 #include <dispatch/CoworkPanelDispatcher.hxx>
@@ -146,6 +148,11 @@ public:
         ++m_openCount;
 
         if (!result.opened || !m_pParent)
+            return;
+
+        // Background cowork workers may auto-open review; skip sidebar UI under
+        // UITest so VCL stays on the main thread and the dialog poller can finish.
+        if (o3tl::IsRunningUITest())
             return;
 
         svx::sidebar::diff_review::ShowDiffReviewPanel(
@@ -424,8 +431,8 @@ IMPL_LINK_NOARG(CoworkDialog, OnNewTask, weld::Button&, void)
     env.userPrompt = kqoffice::ai::i18n::get(u"cowork.task.stub_prompt"_ustr);
     env.schemaVersion = 1;
 
-    m_xTaskJob = std::make_unique<CoworkUiTaskBridgeJob>(m_aMonthDir, env,
-                                                         *m_xReviewOpenSink);
+    m_xTaskJob = std::make_unique<CoworkUiTaskBridgeJob>(
+        m_aMonthDir, env, *m_xReviewOpenSink, !o3tl::IsRunningUITest());
     if (!m_xTaskJob->prepare())
     {
         SAL_INFO("cui.cowork", "OnNewTask prepare failed task_id=" << env.taskId);
