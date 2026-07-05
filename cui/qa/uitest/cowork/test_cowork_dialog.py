@@ -61,10 +61,9 @@ class CoworkDialog(UITestCase):
                 time.sleep(sleep_s)
             self.assertNotEqual(get_state_as_dict(xList).get("Children", "0"), "0")
 
-            Toolkit.create(self.xContext).waitUntilAllIdlesDispatched()
-            xAccept = xDialog.getChild("btn_accept_task")
-            # UITest stub completes synchronously; click accept (svp getState can block).
-            xAccept.executeAction("CLICK", tuple())
+            # svp: waitUntilAllIdlesDispatched can hang; UITest stub is synchronous.
+            time.sleep(sleep_s)
+            xDialog.getChild("btn_accept_task").executeAction("CLICK", tuple())
             self._close_cowork_dialog(xDialog)
 
 
