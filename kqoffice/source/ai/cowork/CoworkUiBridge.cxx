@@ -307,6 +307,16 @@ sal_Int32 optimalCoworkParallelism()
     return r < 1 ? 1 : r;
 }
 
+OUString coworkStubPlanIdForTask(const OUString& taskId)
+{
+    return u"ap-"_ustr + digest16(taskId + u":plan"_ustr);
+}
+
+OUString coworkStubEvidenceIdForTask(const OUString& taskId)
+{
+    return u"ev-"_ustr + digest16(taskId + u":evidence"_ustr);
+}
+
 } // namespace kqoffice::ai::cowork
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

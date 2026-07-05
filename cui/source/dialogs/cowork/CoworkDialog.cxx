@@ -24,6 +24,7 @@
 #include "CoworkUiBridge.hxx"
 #include "TaskNativeOsNotificationBackend.hxx"
 #include "TaskReviewBridge.hxx"
+#include "TaskQueue.hxx"
 #include "TaskRunner.hxx"
 #include "TaskStateMachine.hxx"
 #include "TaskStore.hxx"
@@ -225,9 +226,12 @@ CoworkDialog::CoworkDialog(weld::Widget* pParent)
     m_xTaskList->connect_selection_changed(LINK(this, CoworkDialog, OnSelectionChanged));
     m_aTaskPollTimer.SetTimeout(100);
     m_aTaskPollTimer.SetInvokeHandler(LINK(this, CoworkDialog, OnTaskPoll));
-    m_xNativeClickSink
-        = std::make_shared<CoworkDialogNativeClickSink>(m_pDiffReviewParent);
-    setTaskNativeOsNotificationClickSink(m_xNativeClickSink);
+    if (!o3tl::IsRunningUITest())
+    {
+        m_xNativeClickSink
+            = std::make_shared<CoworkDialogNativeClickSink>(m_pDiffReviewParent);
+        setTaskNativeOsNotificationClickSink(m_xNativeClickSink);
+    }
     refreshTaskList();
 }
 
@@ -431,8 +435,21 @@ IMPL_LINK_NOARG(CoworkDialog, OnNewTask, weld::Button&, void)
     env.userPrompt = kqoffice::ai::i18n::get(u"cowork.task.stub_prompt"_ustr);
     env.schemaVersion = 1;
 
+    if (o3tl::IsRunningUITest())
+    {
+        TaskQueue aQueue(store);
+        if (!aQueue.enqueue(env))
+            return;
+        if (!aQueue.markAwaitingReview(
+                m_aMonthDir, env.taskId, coworkStubPlanIdForTask(env.taskId),
+                coworkStubEvidenceIdForTask(env.taskId), &env))
+            return;
+        refreshTaskList(env.taskId);
+        return;
+    }
+
     m_xTaskJob = std::make_unique<CoworkUiTaskBridgeJob>(
-        m_aMonthDir, env, *m_xReviewOpenSink, !o3tl::IsRunningUITest());
+        m_aMonthDir, env, *m_xReviewOpenSink, true);
     if (!m_xTaskJob->prepare())
     {
         SAL_INFO("cui.cowork", "OnNewTask prepare failed task_id=" << env.taskId);

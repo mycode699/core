@@ -82,6 +82,9 @@ class OfficeConnection:
                 "-env:UserInstallation=" + userdir,
                 "--quickstart=no", "--nofirststartwizard",
                 "--norestore", "--nologo"]
+        for var in ("LO_RUNNING_UI_TEST", "LO_RUNNING_UNIT_TEST"):
+            if var in os.environ:
+                argv.append("-env:%s=%s" % (var, os.environ[var]))
         if "--valgrind" in self.args:
             argv.append("--valgrind")
 
@@ -92,11 +95,9 @@ class OfficeConnection:
             argv.insert(3, "--args")
             argv[4] = argv[4].replace("soffice", "soffice.bin")
 
-        env = None
-        environ = dict(os.environ)
-        if 'LIBO_LANG' in environ:
-            env = environ
-            env['LC_ALL'] = environ['LIBO_LANG']
+        env = dict(os.environ)
+        if 'LIBO_LANG' in env:
+            env['LC_ALL'] = env['LIBO_LANG']
 
         return subprocess.Popen(argv, env=env)
 

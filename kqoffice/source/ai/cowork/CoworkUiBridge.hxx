@@ -88,6 +88,10 @@ SAL_DLLPUBLIC_EXPORT bool runCoworkUiTaskBridge(
 /// hardware concurrency and a sane upper limit (default 4).
 SAL_DLLPUBLIC_EXPORT sal_Int32 optimalCoworkParallelism();
 
+/// Deterministic plan/evidence ids used by the UI bridge worker stub.
+SAL_DLLPUBLIC_EXPORT OUString coworkStubPlanIdForTask(const OUString& taskId);
+SAL_DLLPUBLIC_EXPORT OUString coworkStubEvidenceIdForTask(const OUString& taskId);
+
 } // namespace kqoffice::ai::cowork
 
 #endif
