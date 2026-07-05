@@ -1976,7 +1976,7 @@ sal_Int32 PDFWriterImpl::createToUnicodeCMap( sal_uInt8 const * pEncoding,
     return nStream;
 }
 
-sal_Int32 PDFWriterImpl::emitFontDescriptor( const vcl::font::PhysicalFontFace* pFace, FontSubsetInfo const & rInfo, sal_Int32 nSubsetID, sal_Int32 nFontStream )
+sal_Int32 PDFWriterImpl::emitFontDescriptor( const vcl::font::PhysicalFontFace* pFace, FontSubsetInfo const & rInfo, sal_Int32 nSubsetID, sal_Int32 nFontStream, sal_GlyphId const* pGlyphIds, uint32_t nGlyphs )
 {
     OStringBuffer aLine( PDFWRITER_IMPL_BUFFERSIZE );
     // get font flags, see PDF reference 1.4 p. 358
@@ -2031,6 +2031,17 @@ sal_Int32 PDFWriterImpl::emitFontDescriptor( const vcl::font::PhysicalFontFace* 
     // seems a tad strange to me, but well ...
         + "\n"
           "/StemV 80\n" );
+    if (m_nPDFA_Version > 0 && nFontStream && pGlyphIds && nGlyphs > 1
+        && (rInfo.m_nFontType & (FontType::TYPE1_PFB | FontType::CFF_FONT)))
+    {
+        aLine.append("/CharSet (");
+        for (uint32_t i = 1; i < nGlyphs; ++i)
+        {
+            aLine.append('/');
+            aLine.append(pFace->GetGlyphName(pGlyphIds[i], true));
+        }
+        aLine.append(")\n");
+    }
     if( nFontStream )
     {
         aLine.append( "/FontFile" );
@@ -2195,7 +2206,7 @@ bool PDFWriterImpl::emitFonts()
                 if ( !writeBuffer( aLine ) ) return false;
 
                 // write font descriptor
-                sal_Int32 nFontDescriptor = emitFontDescriptor( subset.first.m_pFace, aSubsetInfo, s_subset.m_nFontID, nFontStream );
+                sal_Int32 nFontDescriptor = emitFontDescriptor( subset.first.m_pFace, aSubsetInfo, s_subset.m_nFontID, nFontStream, pGlyphIds, nGlyphs );
 
                 if( nToUnicodeStream )
                     nToUnicodeStream = createToUnicodeCMap( pEncoding, aCodeUnits, pCodeUnitsPerGlyph, pEncToUnicodeIndex, nGlyphs );

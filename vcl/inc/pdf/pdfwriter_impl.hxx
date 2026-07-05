@@ -948,7 +948,7 @@ private:
     /* writes a type3 font object and appends it to the font id mapping, or returns false in case of failure */
     bool emitType3Font(const vcl::font::PhysicalFontFace*, const FontSubset&, std::map<sal_Int32, sal_Int32>&);
     /* writes a font descriptor and returns its object id (or 0) */
-    sal_Int32 emitFontDescriptor(const vcl::font::PhysicalFontFace*, FontSubsetInfo const &, sal_Int32 nSubsetID, sal_Int32 nStream);
+    sal_Int32 emitFontDescriptor(const vcl::font::PhysicalFontFace*, FontSubsetInfo const &, sal_Int32 nSubsetID, sal_Int32 nStream, sal_GlyphId const* pGlyphIds = nullptr, uint32_t nGlyphs = 0);
     /* writes a ToUnicode cmap, returns the corresponding stream object */
     sal_Int32 createToUnicodeCMap( sal_uInt8 const * pEncoding, const std::vector<sal_Ucs>& CodeUnits, const sal_Int32* pCodeUnitsPerGlyph,
                                    const sal_Int32* pEncToUnicodeIndex, uint32_t nGlyphs );
