@@ -15,7 +15,7 @@
   <object class="GtkDialog" id="DocRecoverySaveDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="docrecoverysavedialog|DocRecoverySaveDialog">%PRODUCTNAME %PRODUCTVERSION Document Recovery</property>
+    <property name="title" translatable="yes" context="docrecoverysavedialog|DocRecoverySaveDialog">%PRODUCTNAME %PRODUCTVERSION 文档恢复</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
     <property name="default-height">0</property>
@@ -72,7 +72,7 @@
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" context="docrecoverysavedialog|label1">Due to an error, %PRODUCTNAME crashed. All the files you were working on will now be saved. The next time %PRODUCTNAME is launched, your files will be recovered automatically.</property>
+                    <property name="label" translatable="yes" context="docrecoverysavedialog|label1">由于出现错误，%PRODUCTNAME 已崩溃。您正在处理的所有文件将得以保存。下次启动 %PRODUCTNAME 时，这些文件会自动恢复。</property>
                     <property name="wrap">True</property>
                     <property name="width-chars">70</property>
                     <property name="max-width-chars">70</property>
@@ -95,7 +95,7 @@
                       <object class="GtkLabel" id="label2">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes" context="docrecoverysavedialog|label2">The following files will be recovered:</property>
+                        <property name="label" translatable="yes" context="docrecoverysavedialog|label2">将恢复以下文件：</property>
                         <property name="use-underline">True</property>
                         <property name="mnemonic-widget">filelist</property>
                         <property name="xalign">0</property>

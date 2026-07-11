@@ -13,7 +13,7 @@
   <object class="GtkDialog" id="DocRecoveryBrokenDialog">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
-    <property name="title" translatable="yes" context="docrecoverybrokendialog|DocRecoveryBrokenDialog">%PRODUCTNAME Document Recovery</property>
+    <property name="title" translatable="yes" context="docrecoverybrokendialog|DocRecoveryBrokenDialog">%PRODUCTNAME 文档恢复</property>
     <property name="modal">True</property>
     <property name="default_width">0</property>
     <property name="default_height">0</property>
@@ -32,7 +32,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="ok">
-                <property name="label" translatable="yes" context="docrecoverybrokendialog|save">_Save</property>
+                <property name="label" translatable="yes" context="docrecoverybrokendialog|save">保存(_S)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -82,9 +82,9 @@
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
                 <property name="hexpand">True</property>
-                <property name="label" translatable="yes" context="docrecoverybrokendialog|label1">The automatic recovery process was interrupted.
+                <property name="label" translatable="yes" context="docrecoverybrokendialog|label1">自动恢复过程被中断。
 
-The documents listed below will be saved in the folder noted below if you click 'Save'. Click 'Cancel' to close the wizard without saving the documents.</property>
+若点击「保存」，下列文档将保存到下方所示文件夹。点击「取消」可关闭向导且不保存文档。</property>
                 <property name="wrap">True</property>
                 <property name="max_width_chars">100</property>
                 <property name="xalign">0</property>

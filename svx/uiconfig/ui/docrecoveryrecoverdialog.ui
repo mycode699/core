@@ -25,7 +25,7 @@
   <object class="GtkDialog" id="DocRecoveryRecoverDialog">
     <property name="can-focus">False</property>
     <property name="border-width">6</property>
-    <property name="title" translatable="yes" context="docrecoveryrecoverdialog|DocRecoveryRecoverDialog">%PRODUCTNAME %PRODUCTVERSION Document Recovery</property>
+    <property name="title" translatable="yes" context="docrecoveryrecoverdialog|DocRecoveryRecoverDialog">%PRODUCTNAME %PRODUCTVERSION 文档恢复</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="default-width">0</property>
@@ -42,7 +42,7 @@
             <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="docrecoveryrecoverdialog|cancel">_Discard All</property>
+                <property name="label" translatable="yes" context="docrecoveryrecoverdialog|cancel">全部放弃(_D)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
@@ -57,7 +57,7 @@
             </child>
             <child>
               <object class="GtkButton" id="next">
-                <property name="label" translatable="yes" context="docrecoveryrecoverdialog|next">_Recover Selected</property>
+                <property name="label" translatable="yes" context="docrecoveryrecoverdialog|next">恢复所选文档(_R)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="can-default">True</property>
@@ -91,7 +91,7 @@
               <object class="GtkLabel" id="desc">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="docrecoveryrecoverdialog|desc">%PRODUCTNAME will attempt to recover the state of the files you were working on before it crashed. Click 'Recover Selected' to begin the process, or click 'Discard' to cancel the recovery.</property>
+                <property name="label" translatable="yes" context="docrecoveryrecoverdialog|desc">%PRODUCTNAME 将尝试把文档恢复到崩溃前的状态。点击「恢复所选文档」开始恢复，或点击「全部放弃」取消。</property>
                 <property name="wrap">True</property>
                 <property name="width-chars">70</property>
                 <property name="max-width-chars">70</property>
@@ -106,7 +106,7 @@
               <object class="GtkLabel" id="label2">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="docrecoveryrecoverdialog|label2">Status of recovered documents:</property>
+                <property name="label" translatable="yes" context="docrecoveryrecoverdialog|label2">文档恢复状态：</property>
                 <property name="use-underline">True</property>
                 <property name="mnemonic-widget">filelist</property>
                 <property name="xalign">0</property>
@@ -139,7 +139,7 @@
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="colRecover">
-                        <property name="title" translatable="yes" context="docrecoveryrecoverdialog|recoverft">Recover Document</property>
+                        <property name="title" translatable="yes" context="docrecoveryrecoverdialog|recoverft">待恢复文档</property>
                         <child>
                           <object class="GtkCellRendererToggle" id="cellrenderertoggle"/>
                           <attributes>
@@ -172,7 +172,7 @@
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="colStatusText">
-                        <property name="title" translatable="yes" context="docrecoveryrecoverdialog|statusft">Status</property>
+                        <property name="title" translatable="yes" context="docrecoveryrecoverdialog|statusft">状态</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext3"/>
                           <attributes>
