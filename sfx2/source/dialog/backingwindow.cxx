@@ -66,6 +66,9 @@
 #include <sfx2/objsh.hxx>
 #include <sfx2/docfac.hxx>
 #include <sfx2/tplpitem.hxx>
+#include <sfx2/sidebar/Sidebar.hxx>
+#include <sfx2/sidebar/SidebarController.hxx>
+#include <sfx2/childwin.hxx>
 
 #include <svl/itemset.hxx>
 #include <sfx2/dispatch.hxx>
@@ -1056,48 +1059,48 @@ void writePendingPromptInjectZh(const OUString& rText)
     f.close();
 }
 
-/** Open AI assistant sidebar on the given document frame (once). */
-bool dispatchAiChatDeckOnFrame(SfxViewFrame* pFrame)
+/**
+ * Open AI deck using the official Sidebar API.
+ * Returns false if sidebar controller is not ready yet (caller should retry).
+ * UNO ".uno:SidebarDeck.*" alone is unreliable right after factory open.
+ */
+bool tryOpenAiChatDeck(SfxViewFrame* pFrame)
 {
     if (!pFrame || !pFrame->GetObjectShell())
         return false;
-    try
-    {
-        // Switch to AI deck (also reveals sidebar when a deck is activated).
-        css::util::URL aUrl;
-        aUrl.Complete = u".uno:SidebarDeck.AIChatDeck"_ustr;
-        auto xTrans = css::util::URLTransformer::create(comphelper::getProcessComponentContext());
-        if (xTrans.is())
-            xTrans->parseStrict(aUrl);
-        css::uno::Reference<css::frame::XDispatchProvider> xProv(
-            pFrame->GetFrame().GetFrameInterface(), css::uno::UNO_QUERY);
-        if (!xProv.is())
-            return false;
-        auto xDisp = xProv->queryDispatch(aUrl, u"_self"_ustr, 0);
-        if (!xDisp.is())
-            return false;
-        xDisp->dispatch(aUrl, {});
-        return true;
-    }
-    catch (...)
-    {
+    if (!isAiDraftTargetFactory(pFrame->GetObjectShell()->GetFactory().GetFactoryName()))
         return false;
-    }
+
+    // 1) Force sidebar child window visible
+    pFrame->ShowChildWindow(SID_SIDEBAR);
+
+    // 2) Controller is created asynchronously with the child window
+    const css::uno::Reference<css::frame::XFrame> xFrame(
+        pFrame->GetFrame().GetFrameInterface());
+    sfx2::sidebar::SidebarController* pCtrl
+        = sfx2::sidebar::SidebarController::GetSidebarControllerForFrame(xFrame);
+    if (!pCtrl)
+        return false;
+
+    // 3) Switch deck (bToggle=false: never close if already open)
+    sfx2::sidebar::Sidebar::ShowDeck(u"AIChatDeck"_ustr, pFrame, /*bToggle*/ false);
+    // Expand/focus the AI panel when resource id is known
+    sfx2::sidebar::Sidebar::ShowPanel(u"AIChatPanel"_ustr, xFrame, /*bFocus*/ true);
+    return true;
 }
 
 /**
  * Timer-based opener: factory document open is async.
- * Scan ALL view frames (not only Current) every 200ms until Writer/Calc/Impress
- * appears, open AI deck once, then self-delete.
+ * Scan ALL view frames every 250ms; open AI deck once when controller is ready.
  */
 class AiDraftDeckOpener final
 {
 public:
     AiDraftDeckOpener()
         : m_aTimer("AiDraftDeckOpener")
-        , m_nLeft(40)
+        , m_nLeft(48) // ~12s
     {
-        m_aTimer.SetTimeout(200);
+        m_aTimer.SetTimeout(250);
         m_aTimer.SetInvokeHandler(LINK(this, AiDraftDeckOpener, OnTick));
     }
 
@@ -1115,13 +1118,7 @@ IMPL_LINK_NOARG(AiDraftDeckOpener, OnTick, Timer*, void)
     for (SfxViewFrame* pFrame = SfxViewFrame::GetFirst(); pFrame;
          pFrame = SfxViewFrame::GetNext(*pFrame))
     {
-        SfxObjectShell* pSh = pFrame->GetObjectShell();
-        if (!pSh)
-            continue;
-        const OUString aFact = pSh->GetFactory().GetFactoryName();
-        if (!isAiDraftTargetFactory(aFact))
-            continue;
-        if (dispatchAiChatDeckOnFrame(pFrame))
+        if (tryOpenAiChatDeck(pFrame))
         {
             m_aTimer.Stop();
             delete this;
@@ -1133,7 +1130,6 @@ IMPL_LINK_NOARG(AiDraftDeckOpener, OnTick, Timer*, void)
     {
         m_aTimer.Stop();
         delete this;
-        return;
     }
 }
 
@@ -1142,21 +1138,24 @@ OUString buildAiDraftInjectText(const OUString& rScenarioId)
     using kqoffice::ai::chat::DocumentAIScenarioStore;
     const auto cat = DocumentAIScenarioStore::load();
     const auto* p = DocumentAIScenarioStore::find(cat, rScenarioId);
+
+    // Short, user-facing Chinese first — then full template for the model.
     OUStringBuffer b;
-    b.append(u"【可圈 AI 创作】\n"_ustr);
+    b.append(u"【可圈 AI 创作】"_ustr);
+    if (p && !p->titleZh.isEmpty())
+    {
+        b.append(u" · "_ustr);
+        b.append(p->titleZh);
+    }
+    b.append(u"\n\n"_ustr);
+    b.append(u"请在下一行写上你的主题（例如：本周工作汇报 / 销售数据表 / 项目路演）：\n\n"_ustr);
+    b.append(u"主题：\n"_ustr);
     if (p && !p->id.isEmpty())
     {
-        b.append(u"方案："_ustr);
-        b.append(p->titleZh.isEmpty() ? p->id : p->titleZh);
-        b.append(u"\n\n"_ustr);
+        b.append(u"\n——（以下为 AI 执行说明，可改）——\n"_ustr);
         b.append(DocumentAIScenarioStore::expandPrompt(*p, OUString()));
-        b.append(u"\n\n——\n请在上方补充你的主题/素材，然后点击发送。"_ustr);
     }
-    else
-    {
-        b.append(u"请输入主题，然后点击发送，开始 AI 起草。\n方案 ID："_ustr);
-        b.append(rScenarioId);
-    }
+    b.append(u"\n\n写好主题后，点击右侧「发送」。"_ustr);
     return b.makeStringAndClear();
 }
 }

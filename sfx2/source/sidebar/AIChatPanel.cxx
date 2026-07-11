@@ -1579,10 +1579,11 @@ void AIChatPanel::ConsumePendingScenarioRun()
         = kqoffice::ai::chat::DocumentAIScenarioStore::takePendingRun();
     if (id.isEmpty())
         return;
-    AppendTranscript(u"System"_ustr,
-                     u"pending-scenario-run id="_ustr + id
-                         + u" source=queue-or-env auto-exec=true"_ustr);
-    m_xStatusLabel->set_label(u"自动执行排队方案："_ustr + id);
+    // Chinese-only status — avoid raw English protocol noise in the panel.
+    if (m_xStatusLabel)
+        m_xStatusLabel->set_label(u"正在打开创作方案…"_ustr);
+    AppendTranscript(u"系统"_ustr, u"已载入启动中心创作任务，请补充主题后发送。"_ustr,
+                     /*bPersistHistory*/ false);
     RunScenarioById(id);
 }
 

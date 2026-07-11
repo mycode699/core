@@ -44,7 +44,7 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">end</property>
-            <property name="label">State: ready</property>
+            <property name="label" translatable="yes" context="aichat|status_ready">就绪 — 可输入或点方案按钮</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
