@@ -103,6 +103,19 @@ Workbench / notebook / AI panels use `shadow-type=none` (no inset frames) for a 
 | `SidebarIconSize` / `NotebookbarIconSize` | `1` (small) | Dense side / ribbon icons |
 | `SymbolStyle` | `colibre_svg` | Brand-recolored toolbar theme |
 
+Splash progress (`downstream-branding/progress.conf`): bar `#1677FF`, frame `#0958D9`, text `#1F2329`.
+
+### Force defaults on an existing profile
+
+Package defaults only apply cleanly to fresh profiles. For an existing macOS user:
+
+```bash
+# from 可点office BUILDDIR
+bash bin/kqoffice-apply-chrome-defaults.sh
+```
+
+Then fully quit and relaunch 可圈办公. The script backs up `registrymodifications.xcu` first.
+
 ## Do not
 
 - Clone WPS red as product brand (identity collision)
