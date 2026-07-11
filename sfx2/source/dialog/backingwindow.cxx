@@ -1005,12 +1005,74 @@ IMPL_LINK(BackingWindow, OpenScenarioHdl, weld::Button&, rButton, void)
     }
 }
 
+namespace
+{
+/** Open AI assistant sidebar on the current document frame. */
+void dispatchAiChatDeckOnCurrentFrame()
+{
+    SfxViewFrame* pFrame = SfxViewFrame::Current();
+    if (!pFrame || !pFrame->GetObjectShell())
+        return;
+    try
+    {
+        css::util::URL aUrl;
+        aUrl.Complete = u".uno:SidebarDeck.AIChatDeck"_ustr;
+        auto xTrans = css::util::URLTransformer::create(comphelper::getProcessComponentContext());
+        if (xTrans.is())
+            xTrans->parseStrict(aUrl);
+        css::uno::Reference<css::frame::XDispatchProvider> xProv(
+            pFrame->GetFrame().GetFrameInterface(), css::uno::UNO_QUERY);
+        if (!xProv.is())
+            return;
+        auto xDisp = xProv->queryDispatch(aUrl, u"_self"_ustr, 0);
+        if (xDisp.is())
+            xDisp->dispatch(aUrl, {});
+    }
+    catch (...)
+    {
+    }
+}
+
+/** Retries opening the AI deck after async factory-document open from Start Center. */
+struct DelayedOpenAiDeck
+{
+    sal_Int32 nLeft = 40;
+};
+
+void implDelayedOpenAiDeck(void*, void* pArg)
+{
+    auto* pState = static_cast<DelayedOpenAiDeck*>(pArg);
+    if (!pState)
+        return;
+
+    SfxViewFrame* pFrame = SfxViewFrame::Current();
+    // Wait until a real document frame exists (not the start-center shell alone).
+    if (pFrame && pFrame->GetObjectShell())
+        dispatchAiChatDeckOnCurrentFrame();
+
+    if (--pState->nLeft > 0)
+    {
+        if (!Application::PostUserEvent(LINK_NONMEMBER(nullptr, implDelayedOpenAiDeck), pState))
+            delete pState;
+    }
+    else
+        delete pState;
+}
+}
+
 void BackingWindow::openAiDraft(std::u16string_view rScenarioId, const OUString& rFactoryUrl)
 {
-    // Queue scenario so AIChatPanel::ConsumePendingScenarioRun picks it up when
-    // the AI deck opens on the new document (blank-draft * autoSubmit=false → prefill).
+    // 1) Queue scenario → AIChatPanel::ConsumePendingScenarioRun prefills prompt
+    //    (blank-draft * use autoSubmit=false so user can edit topic then Send).
+    // 2) Open blank factory document.
+    // 3) Retry-open AI deck after the async factory dispatch becomes current —
+    //    without this step users only saw a blank doc and no AI interaction.
     kqoffice::ai::chat::DocumentAIScenarioStore::queuePendingRun(OUString(rScenarioId));
     dispatchURL(rFactoryUrl);
+
+    auto* pState = new DelayedOpenAiDeck;
+    if (!Application::PostUserEvent(LINK_NONMEMBER(nullptr, implDelayedOpenAiDeck), pState))
+        delete pState;
 }
 
 IMPL_LINK(BackingWindow, AiDraftHdl, weld::Button&, rButton, void)
