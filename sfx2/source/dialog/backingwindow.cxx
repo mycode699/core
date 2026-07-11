@@ -61,6 +61,7 @@
 
 #include <sfx2/viewfrm.hxx>
 #include <vcl/commandinfoprovider.hxx>
+#include <vcl/timer.hxx>
 #include <sfx2/styfitem.hxx>
 #include <sfx2/objsh.hxx>
 #include <sfx2/docfac.hxx>
@@ -72,9 +73,15 @@
 #include <sfx2/strings.hrc>
 #include <sfx2/sfxresid.hxx>
 
+#include <osl/file.hxx>
+#include <rtl/ustrbuf.hxx>
+
 #include <DocumentAIScenarioStore.hxx>
 
 #include <config_folders.h>
+#include <cstdlib>
+#include <string>
+#include <string_view>
 
 using namespace ::com::sun::star;
 using namespace ::com::sun::star::beans;
@@ -1017,6 +1024,38 @@ bool isAiDraftTargetFactory(const OUString& rFactoryName)
            || rFactoryName.startsWith(u"simpress/"_ustr);
 }
 
+/** Dual path: AI panel also polls pending-prompt-inject (Chinese, user-visible). */
+void writePendingPromptInjectZh(const OUString& rText)
+{
+    const char* home = std::getenv("HOME");
+    if (!home || !*home || rText.isEmpty())
+        return;
+    const OUString path
+        = OUString::fromUtf8(home) + u"/.config/kqoffice/pending-prompt-inject"_ustr;
+    const sal_Int32 slash = path.lastIndexOf(u'/');
+    if (slash > 0)
+    {
+        OUString dirUrl;
+        if (osl::FileBase::getFileURLFromSystemPath(path.copy(0, slash), dirUrl)
+            == osl::FileBase::E_None)
+            osl::Directory::createPath(dirUrl);
+    }
+    OUString url;
+    if (osl::FileBase::getFileURLFromSystemPath(path, url) != osl::FileBase::E_None)
+        return;
+    osl::File f(url);
+    auto e = f.open(osl_File_OpenFlag_Write | osl_File_OpenFlag_Create);
+    if (e != osl::FileBase::E_None)
+        e = f.open(osl_File_OpenFlag_Write);
+    if (e != osl::FileBase::E_None)
+        return;
+    f.setSize(0);
+    const OString utf8 = OUStringToOString(rText, RTL_TEXTENCODING_UTF8);
+    sal_uInt64 n = 0;
+    f.write(utf8.getStr(), utf8.getLength(), n);
+    f.close();
+}
+
 /** Open AI assistant sidebar on the given document frame (once). */
 bool dispatchAiChatDeckOnFrame(SfxViewFrame* pFrame)
 {
@@ -1024,6 +1063,7 @@ bool dispatchAiChatDeckOnFrame(SfxViewFrame* pFrame)
         return false;
     try
     {
+        // Switch to AI deck (also reveals sidebar when a deck is activated).
         css::util::URL aUrl;
         aUrl.Complete = u".uno:SidebarDeck.AIChatDeck"_ustr;
         auto xTrans = css::util::URLTransformer::create(comphelper::getProcessComponentContext());
@@ -1046,58 +1086,94 @@ bool dispatchAiChatDeckOnFrame(SfxViewFrame* pFrame)
 }
 
 /**
- * After Start Center AI draft, factory open is async. Retry a few times until
- * Current is a real office doc, open AI deck once, then stop.
- * (Earlier code re-dispatched up to 40 times and could hit StartModule → crash.)
+ * Timer-based opener: factory document open is async.
+ * Scan ALL view frames (not only Current) every 200ms until Writer/Calc/Impress
+ * appears, open AI deck once, then self-delete.
  */
-struct DelayedOpenAiDeck
+class AiDraftDeckOpener final
 {
-    sal_Int32 nLeft = 24;
+public:
+    AiDraftDeckOpener()
+        : m_aTimer("AiDraftDeckOpener")
+        , m_nLeft(40)
+    {
+        m_aTimer.SetTimeout(200);
+        m_aTimer.SetInvokeHandler(LINK(this, AiDraftDeckOpener, OnTick));
+    }
+
+    void Start() { m_aTimer.Start(); }
+
+private:
+    DECL_LINK(OnTick, Timer*, void);
+
+    Timer m_aTimer;
+    sal_Int32 m_nLeft;
 };
 
-void implDelayedOpenAiDeck(void*, void* pArg)
+IMPL_LINK_NOARG(AiDraftDeckOpener, OnTick, Timer*, void)
 {
-    auto* pState = static_cast<DelayedOpenAiDeck*>(pArg);
-    if (!pState)
-        return;
-
-    bool bDone = false;
-    if (SfxViewFrame* pFrame = SfxViewFrame::Current())
+    for (SfxViewFrame* pFrame = SfxViewFrame::GetFirst(); pFrame;
+         pFrame = SfxViewFrame::GetNext(*pFrame))
     {
-        if (SfxObjectShell* pSh = pFrame->GetObjectShell())
+        SfxObjectShell* pSh = pFrame->GetObjectShell();
+        if (!pSh)
+            continue;
+        const OUString aFact = pSh->GetFactory().GetFactoryName();
+        if (!isAiDraftTargetFactory(aFact))
+            continue;
+        if (dispatchAiChatDeckOnFrame(pFrame))
         {
-            const OUString aFact = pSh->GetFactory().GetFactoryName();
-            if (isAiDraftTargetFactory(aFact))
-            {
-                // One successful open attempt is enough — do not thrash the frame.
-                dispatchAiChatDeckOnFrame(pFrame);
-                bDone = true;
-            }
+            m_aTimer.Stop();
+            delete this;
+            return;
         }
     }
 
-    if (bDone || --pState->nLeft <= 0)
+    if (--m_nLeft <= 0)
     {
-        delete pState;
+        m_aTimer.Stop();
+        delete this;
         return;
     }
-    if (!Application::PostUserEvent(LINK_NONMEMBER(nullptr, implDelayedOpenAiDeck), pState))
-        delete pState;
+}
+
+OUString buildAiDraftInjectText(const OUString& rScenarioId)
+{
+    using kqoffice::ai::chat::DocumentAIScenarioStore;
+    const auto cat = DocumentAIScenarioStore::load();
+    const auto* p = DocumentAIScenarioStore::find(cat, rScenarioId);
+    OUStringBuffer b;
+    b.append(u"【可圈 AI 创作】\n"_ustr);
+    if (p && !p->id.isEmpty())
+    {
+        b.append(u"方案："_ustr);
+        b.append(p->titleZh.isEmpty() ? p->id : p->titleZh);
+        b.append(u"\n\n"_ustr);
+        b.append(DocumentAIScenarioStore::expandPrompt(*p, OUString()));
+        b.append(u"\n\n——\n请在上方补充你的主题/素材，然后点击发送。"_ustr);
+    }
+    else
+    {
+        b.append(u"请输入主题，然后点击发送，开始 AI 起草。\n方案 ID："_ustr);
+        b.append(rScenarioId);
+    }
+    return b.makeStringAndClear();
 }
 }
 
 void BackingWindow::openAiDraft(std::u16string_view rScenarioId, const OUString& rFactoryUrl)
 {
-    // 1) Queue scenario → AIChatPanel::ConsumePendingScenarioRun prefills prompt
-    //    (blank-draft * use autoSubmit=false so user can edit topic then Send).
-    // 2) Open blank factory document.
-    // 3) After async factory open yields swriter/scalc/simpress, open AI deck once.
-    kqoffice::ai::chat::DocumentAIScenarioStore::queuePendingRun(OUString(rScenarioId));
+    const OUString aId(rScenarioId);
+    // 1) Queue scenario for AIChatPanel::ConsumePendingScenarioRun (structured prefill).
+    kqoffice::ai::chat::DocumentAIScenarioStore::queuePendingRun(aId);
+    // 2) Also write Chinese pending-prompt-inject — panel polls this every 500ms when open
+    //    (covers cases where scenario consume races or user opens AI manually).
+    writePendingPromptInjectZh(buildAiDraftInjectText(aId));
+    // 3) Open blank factory document (async).
     dispatchURL(rFactoryUrl);
-
-    auto* pState = new DelayedOpenAiDeck;
-    if (!Application::PostUserEvent(LINK_NONMEMBER(nullptr, implDelayedOpenAiDeck), pState))
-        delete pState;
+    // 4) Timer: wait for real doc frame, open sidebar + AI deck once.
+    auto* pOpener = new AiDraftDeckOpener;
+    pOpener->Start();
 }
 
 IMPL_LINK(BackingWindow, AiDraftHdl, weld::Button&, rButton, void)
