@@ -94,6 +94,15 @@ Then convert macOS document iconsets → `.icns` and refresh Start Center theme 
 
 Workbench / notebook / AI panels use `shadow-type=none` (no inset frames) for a flatter WPS-like surface.
 
+### Editor chrome defaults (`officecfg`)
+
+| Setting | Value | Why |
+|---------|-------|-----|
+| Toolbar mode | `TabbedCompact` + `notebookbar_compact.ui` | WPS-like dense ribbon |
+| `SymbolSet` | `0` (16×16) | Compact classic toolbar icons |
+| `SidebarIconSize` / `NotebookbarIconSize` | `1` (small) | Dense side / ribbon icons |
+| `SymbolStyle` | `colibre_svg` | Brand-recolored toolbar theme |
+
 ## Do not
 
 - Clone WPS red as product brand (identity collision)

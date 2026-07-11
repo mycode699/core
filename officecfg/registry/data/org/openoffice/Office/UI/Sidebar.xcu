@@ -423,13 +423,14 @@
       <!-- 工作中台：日/月/年使用洞察（左侧一级入口） -->
       <node oor:name="WorkDashboardDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">工作中台</value>
+          <value xml:lang="en-US">Workbench</value>
+          <value xml:lang="zh-CN">工作中台</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>WorkDashboardDeck</value>
         </prop>
         <prop oor:name="IconURL" oor:type="xs:string">
-          <value>private:graphicrepository/cmd/lc_databaseranges.png</value>
+          <value>private:graphicrepository/cmd/lc_viewdatasourcebrowser.png</value>
         </prop>
         <prop oor:name="ContextList">
           <value oor:separator=";">
@@ -450,13 +451,14 @@
       <!-- 本地记事本（NotebookLM 本地化） -->
       <node oor:name="LocalNotebookDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">记事本</value>
+          <value xml:lang="en-US">Notebook</value>
+          <value xml:lang="zh-CN">记事本</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>LocalNotebookDeck</value>
         </prop>
         <prop oor:name="IconURL" oor:type="xs:string">
-          <value>private:graphicrepository/cmd/lc_insertannotation.png</value>
+          <value>private:graphicrepository/cmd/lc_editdoc.png</value>
         </prop>
         <prop oor:name="ContextList">
           <value oor:separator=";">
@@ -477,13 +479,14 @@
       <!-- V3 W1: cross-app native AI chat workbench entry. -->
       <node oor:name="AIChatDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">AI 助手</value>
+          <value xml:lang="en-US">AI Assistant</value>
+          <value xml:lang="zh-CN">AI 助手</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>AIChatDeck</value>
         </prop>
         <prop oor:name="IconURL" oor:type="xs:string">
-          <value>private:graphicrepository/cmd/lc_trackchanges.png</value>
+          <value>private:graphicrepository/cmd/lc_autopilotmenu.png</value>
         </prop>
         <prop oor:name="ContextList">
           <value oor:separator=";">

@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE oor:component-data SYSTEM "../../../../../component-update.dtd">
 <oor:component-data xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:install="http://openoffice.org/2004/installation" oor:name="ToolbarMode" oor:package="org.openoffice.Office.UI">
+  <!-- WPS-modern density: compact tabbed notebookbar as default chrome -->
   <prop oor:name="ActiveWriter">
-    <value>notebookbar.ui</value>
+    <value>notebookbar_compact.ui</value>
   </prop>
   <prop oor:name="ActiveCalc">
-    <value>notebookbar.ui</value>
+    <value>notebookbar_compact.ui</value>
   </prop>
   <prop oor:name="ActiveImpress">
-    <value>notebookbar.ui</value>
+    <value>notebookbar_compact.ui</value>
   </prop>
   <prop oor:name="ActiveDraw">
-    <value>notebookbar.ui</value>
+    <value>notebookbar_compact.ui</value>
   </prop>
   <node oor:name="Applications">
     <node oor:name="Writer" oor:op="replace">
       <prop oor:name="Active">
-        <value>Tabbed</value>
+        <value>TabbedCompact</value>
       </prop>
       <node oor:name="Modes">
         <node oor:name="Default" oor:op="replace">
@@ -305,7 +306,7 @@
     </node>
     <node oor:name="Calc" oor:op="replace">
       <prop oor:name="Active">
-        <value>Tabbed</value>
+        <value>TabbedCompact</value>
       </prop>
       <node oor:name="Modes">
         <node oor:name="Default" oor:op="replace">
@@ -562,7 +563,7 @@
     </node>
     <node oor:name="Impress" oor:op="replace">
       <prop oor:name="Active">
-        <value>Tabbed</value>
+        <value>TabbedCompact</value>
       </prop>
       <node oor:name="Modes">
         <node oor:name="Default" oor:op="replace">
@@ -825,7 +826,7 @@
     </node>
     <node oor:name="Draw" oor:op="replace">
       <prop oor:name="Active">
-        <value>Default</value>
+        <value>TabbedCompact</value>
       </prop>
       <node oor:name="Modes">
         <node oor:name="Default" oor:op="replace">

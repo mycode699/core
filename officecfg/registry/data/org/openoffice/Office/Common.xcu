@@ -429,6 +429,10 @@
     <prop oor:name="SymbolStyle" oor:type="xs:string">
       <value>colibre_svg</value>
     </prop>
+    <!-- 0=16px dense toolbar icons (WPS-like); sidebar/notebookbar keep small -->
+    <prop oor:name="SymbolSet" oor:type="xs:short">
+      <value>0</value>
+    </prop>
     <prop oor:name="SidebarIconSize" oor:type="xs:short">
       <value>1</value>
     </prop>
