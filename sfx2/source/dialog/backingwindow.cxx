@@ -63,6 +63,7 @@
 #include <vcl/commandinfoprovider.hxx>
 #include <sfx2/styfitem.hxx>
 #include <sfx2/objsh.hxx>
+#include <sfx2/docfac.hxx>
 #include <sfx2/tplpitem.hxx>
 
 #include <svl/itemset.hxx>
@@ -1007,12 +1008,20 @@ IMPL_LINK(BackingWindow, OpenScenarioHdl, weld::Button&, rButton, void)
 
 namespace
 {
-/** Open AI assistant sidebar on the current document frame. */
-void dispatchAiChatDeckOnCurrentFrame()
+/** True for Writer/Calc/Impress factory docs — not StartModule / backing shell. */
+bool isAiDraftTargetFactory(const OUString& rFactoryName)
 {
-    SfxViewFrame* pFrame = SfxViewFrame::Current();
+    return rFactoryName == u"swriter"_ustr || rFactoryName == u"scalc"_ustr
+           || rFactoryName == u"simpress"_ustr || rFactoryName.startsWith(u"swriter/"_ustr)
+           || rFactoryName.startsWith(u"scalc/"_ustr)
+           || rFactoryName.startsWith(u"simpress/"_ustr);
+}
+
+/** Open AI assistant sidebar on the given document frame (once). */
+bool dispatchAiChatDeckOnFrame(SfxViewFrame* pFrame)
+{
     if (!pFrame || !pFrame->GetObjectShell())
-        return;
+        return false;
     try
     {
         css::util::URL aUrl;
@@ -1023,20 +1032,27 @@ void dispatchAiChatDeckOnCurrentFrame()
         css::uno::Reference<css::frame::XDispatchProvider> xProv(
             pFrame->GetFrame().GetFrameInterface(), css::uno::UNO_QUERY);
         if (!xProv.is())
-            return;
+            return false;
         auto xDisp = xProv->queryDispatch(aUrl, u"_self"_ustr, 0);
-        if (xDisp.is())
-            xDisp->dispatch(aUrl, {});
+        if (!xDisp.is())
+            return false;
+        xDisp->dispatch(aUrl, {});
+        return true;
     }
     catch (...)
     {
+        return false;
     }
 }
 
-/** Retries opening the AI deck after async factory-document open from Start Center. */
+/**
+ * After Start Center AI draft, factory open is async. Retry a few times until
+ * Current is a real office doc, open AI deck once, then stop.
+ * (Earlier code re-dispatched up to 40 times and could hit StartModule → crash.)
+ */
 struct DelayedOpenAiDeck
 {
-    sal_Int32 nLeft = 40;
+    sal_Int32 nLeft = 24;
 };
 
 void implDelayedOpenAiDeck(void*, void* pArg)
@@ -1045,17 +1061,27 @@ void implDelayedOpenAiDeck(void*, void* pArg)
     if (!pState)
         return;
 
-    SfxViewFrame* pFrame = SfxViewFrame::Current();
-    // Wait until a real document frame exists (not the start-center shell alone).
-    if (pFrame && pFrame->GetObjectShell())
-        dispatchAiChatDeckOnCurrentFrame();
-
-    if (--pState->nLeft > 0)
+    bool bDone = false;
+    if (SfxViewFrame* pFrame = SfxViewFrame::Current())
     {
-        if (!Application::PostUserEvent(LINK_NONMEMBER(nullptr, implDelayedOpenAiDeck), pState))
-            delete pState;
+        if (SfxObjectShell* pSh = pFrame->GetObjectShell())
+        {
+            const OUString aFact = pSh->GetFactory().GetFactoryName();
+            if (isAiDraftTargetFactory(aFact))
+            {
+                // One successful open attempt is enough — do not thrash the frame.
+                dispatchAiChatDeckOnFrame(pFrame);
+                bDone = true;
+            }
+        }
     }
-    else
+
+    if (bDone || --pState->nLeft <= 0)
+    {
+        delete pState;
+        return;
+    }
+    if (!Application::PostUserEvent(LINK_NONMEMBER(nullptr, implDelayedOpenAiDeck), pState))
         delete pState;
 }
 }
@@ -1065,8 +1091,7 @@ void BackingWindow::openAiDraft(std::u16string_view rScenarioId, const OUString&
     // 1) Queue scenario → AIChatPanel::ConsumePendingScenarioRun prefills prompt
     //    (blank-draft * use autoSubmit=false so user can edit topic then Send).
     // 2) Open blank factory document.
-    // 3) Retry-open AI deck after the async factory dispatch becomes current —
-    //    without this step users only saw a blank doc and no AI interaction.
+    // 3) After async factory open yields swriter/scalc/simpress, open AI deck once.
     kqoffice::ai::chat::DocumentAIScenarioStore::queuePendingRun(OUString(rScenarioId));
     dispatchURL(rFactoryUrl);
 
