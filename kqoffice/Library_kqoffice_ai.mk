@@ -13,9 +13,13 @@ $(eval $(call gb_Library_set_include,kqoffice_ai,\
     -I$(SRCDIR)/kqoffice/source/ai/canvas \
     -I$(SRCDIR)/kqoffice/source/ai/chat \
     -I$(SRCDIR)/kqoffice/source/ai/control \
+    -I$(SRCDIR)/kqoffice/source/ai/cowork \
     -I$(SRCDIR)/kqoffice/source/ai/filemgr \
     -I$(SRCDIR)/kqoffice/source/ai/i18n \
     -I$(SRCDIR)/kqoffice/source/ai/mesh \
+    -I$(SRCDIR)/kqoffice/source/ai/provider \
+    -I$(SRCDIR)/kqoffice/source/ai/workbench \
+    -I$(SRCDIR)/kqoffice/source/ai/notebook \
     $$(INCLUDE) \
 ))
 
@@ -32,7 +36,10 @@ $(eval $(call gb_Library_use_libraries,kqoffice_ai,\
 $(eval $(call gb_Library_set_componentfile,kqoffice_ai,kqoffice/util/kqoffice_ai,services))
 
 $(eval $(call gb_Library_add_exception_objects,kqoffice_ai,\
+    kqoffice/source/ai/provider/AgentStepRunner \
     kqoffice/source/ai/provider/EvidenceRecorder \
+    kqoffice/source/ai/provider/ModelRoles \
+    kqoffice/source/ai/provider/ModelRoutingConfig \
     kqoffice/source/ai/provider/OllamaAdapter \
     kqoffice/source/ai/provider/Provider \
     kqoffice/source/ai/provider/RuntimePlanStub \
@@ -52,6 +59,14 @@ $(eval $(call gb_Library_add_exception_objects,kqoffice_ai,\
     kqoffice/source/ai/chat/AgentChatMentionResolver \
     kqoffice/source/ai/chat/AgentChatSelectionCapture \
     kqoffice/source/ai/chat/AgentChatStreamingClient \
+    kqoffice/source/ai/chat/DocumentAIApply \
+    kqoffice/source/ai/chat/DocumentAIContext \
+    kqoffice/source/ai/chat/DocumentAILocalRag \
+    kqoffice/source/ai/chat/DocumentAIInputPrefs \
+    kqoffice/source/ai/chat/DocumentAIScreenCapture \
+    kqoffice/source/ai/chat/DocumentAIVoiceInput \
+    kqoffice/source/ai/chat/DocumentAIScenarioStore \
+    kqoffice/source/ai/chat/DocumentAIScenarios \
     kqoffice/source/ai/control/ResourceBudgetWatchdog \
     kqoffice/source/ai/control/SafeRestore \
     kqoffice/source/ai/control/SessionStore \
@@ -66,6 +81,9 @@ $(eval $(call gb_Library_add_exception_objects,kqoffice_ai,\
     kqoffice/source/ai/canvas/AICanvasUI \
     kqoffice/source/ai/filemgr/AIFileManager \
     kqoffice/source/ai/filemgr/AIFileSearchUI \
+    kqoffice/source/ai/workbench/WorkTelemetryStore \
+    kqoffice/source/ai/notebook/LocalNotebookStore \
+    kqoffice/source/ai/notebook/NotebookMaterialStore \
 ))
 
 ifeq ($(OS),MACOSX)

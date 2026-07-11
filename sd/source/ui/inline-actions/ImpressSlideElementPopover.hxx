@@ -60,6 +60,7 @@ private:
     std::unique_ptr<weld::Button> m_xAdjustColor;
     std::unique_ptr<weld::Button> m_xRelayout;
     std::unique_ptr<weld::Button> m_xTranslateText;
+    std::unique_ptr<weld::Button> m_xAiInline;
 };
 
 } // namespace sd::inline_actions

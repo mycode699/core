@@ -96,6 +96,37 @@ public:
     /// Serialize ApplyPlan back to JSON string.
     static OUString toJson(const ApplyPlan& plan);
 
+    /// Extract first spreadsheet formula (line starting with '=') from free text.
+    static OUString extractLeadingFormula(const OUString& rText);
+
+    /// Extract all formula lines (each starting with '=') in document order.
+    static std::vector<OUString> extractAllFormulas(const OUString& rText);
+
+    /// Build a single cell replace plan for Calc formula write-back.
+    /// rCellTarget e.g. "cell:B2"; formula must start with '='.
+    static ApplyPlan makeFormulaCellPlan(const OUString& rCellTarget, const OUString& rFormula,
+                                         const OUString& rOldText = OUString());
+
+    /// Build multi-cell plan from formulas + range/cell target.
+    /// - "cell:B2" + N formulas → B2, B3, … (column-major down)
+    /// - "range:A1:B3" + formulas → fill row-major A1,B1,A2… (cap 64 cells)
+    /// - single formula on a range → write only the top-left cell
+    static ApplyPlan makeFormulaRangePlan(const OUString& rPosition,
+                                          const std::vector<OUString>& rFormulas,
+                                          const OUString& rOldText = OUString());
+
+    /// Parse outline-to-slides free text into insert ops with targets slide:1..N.
+    /// Recognizes "## N. Title" / "N. Title" headings and following bullet lines.
+    static ApplyPlan extractOutlineSlidePlan(const OUString& rText);
+
+    /// True if free text / scenario output asks for a chart (Calc).
+    static bool looksLikeChartIntent(const OUString& rText);
+
+    /// Stage-only plan: after human approval, open Insert Chart on current selection.
+    /// opType = "chart_insert"; does not mutate cells itself.
+    static ApplyPlan makeChartInsertPlan(const OUString& rRangeOrCell,
+                                         const OUString& rAdvice = OUString());
+
 private:
     /// Parse a single JSON fragment into a DiffOperation.
     static DiffOperation parseOperation(const OUString& jsonFragment);

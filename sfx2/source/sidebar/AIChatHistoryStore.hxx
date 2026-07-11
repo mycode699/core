@@ -27,6 +27,10 @@ public:
     bool AppendMessage(const OUString& rSpeaker, const OUString& rMessage) const;
     bool Clear() const;
 
+    /// Last N user/assistant turns for multi-turn document-bound prompts (compact).
+    /// Skips System noise; caps total chars. Empty if no usable history.
+    OUString FormatRecentTurns(sal_Int32 nMaxTurns = 6, sal_Int32 nMaxChars = 2800) const;
+
     static OUString ResolveCurrentDocumentIdentity();
     static OUString MakeDocumentHash(const OUString& rDocumentIdentity);
 

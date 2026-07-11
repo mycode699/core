@@ -60,6 +60,7 @@ private:
     std::unique_ptr<weld::Button> m_xGenerateFormula;
     std::unique_ptr<weld::Button> m_xFormatClean;
     std::unique_ptr<weld::Button> m_xFormatChange;
+    std::unique_ptr<weld::Button> m_xAiInline;
 };
 
 } // namespace sc::inline_actions

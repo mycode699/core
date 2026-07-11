@@ -58,6 +58,9 @@
 #define IDM_MATH                    12
 #define IDM_INSTALL                 10
 #define IDM_STARTCENTER             14
+#define IDM_AI_SCREENSHOT           15
+#define IDM_AI_VOICE                16
+#define IDM_AI_PENDANT              17
 
 
 #define ICON_LO_DEFAULT                 1
@@ -192,6 +195,10 @@ static HMENU createSystrayMenu( )
         SfxResId( STR_QUICKSTART_FROMTEMPLATE ), pos, true, "");
     addMenuItem( hMenu, static_cast< UINT >( -1 ), 0, OUString(), pos, false, "" );
     addMenuItem( hMenu, IDM_OPEN,   ICON_OPEN, SfxResId(STR_QUICKSTART_FILEOPEN), pos, true, "SHELL32");
+    addMenuItem( hMenu, static_cast< UINT >( -1 ), 0, OUString(), pos, false, "" );
+    addMenuItem( hMenu, IDM_AI_SCREENSHOT, 0, u"可圈 AI 选区截图"_ustr, pos, false, "" );
+    addMenuItem( hMenu, IDM_AI_VOICE, 0, u"可圈 AI 语音输入"_ustr, pos, false, "" );
+    addMenuItem( hMenu, IDM_AI_PENDANT, 0, u"可圈效率挂坠"_ustr, pos, false, "" );
     addMenuItem( hMenu, static_cast< UINT >( -1 ), 0, OUString(), pos, false, "" );
     addMenuItem( hMenu, IDM_INSTALL,0, SfxResId(STR_QUICKSTART_PRELAUNCH), pos, false, "" );
     addMenuItem( hMenu, static_cast< UINT >( -1 ), 0, OUString(), pos, false, "" );
@@ -412,6 +419,24 @@ static LRESULT CALLBACK executerWndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LP
                 case IDM_INSTALL:
                     ShutdownIcon::SetAutostart( !ShutdownIcon::GetAutostart() );
                     break;
+                case IDM_AI_SCREENSHOT:
+                {
+                    extern "C" void kqoffice_ai_trigger_screenshot_region();
+                    kqoffice_ai_trigger_screenshot_region();
+                    break;
+                }
+                case IDM_AI_VOICE:
+                {
+                    extern "C" void kqoffice_ai_trigger_voice();
+                    kqoffice_ai_trigger_voice();
+                    break;
+                }
+                case IDM_AI_PENDANT:
+                {
+                    extern "C" void kqoffice_work_show_pendant();
+                    kqoffice_work_show_pendant();
+                    break;
+                }
                 case IDM_EXIT:
                     // remove listener and
                     //  terminate office if running in background

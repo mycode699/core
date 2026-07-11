@@ -40,9 +40,10 @@ public:
     ServiceModePolicy();
 
     /// True iff the active mode permits the named capability.
-    /// Day-0 rule:
-    ///   - Offline mode allows: rewrite, summarize, format-fix, intent-to-uno
-    ///   - Other modes deny everything until Day-1 wiring.
+    /// Offline rule (Clavue-aligned multi-role):
+    ///   rewrite, summarize, format-fix, intent-to-uno,
+    ///   plan, review, extract, classify, verify, chat
+    /// Private/cloud: deny until wired.
     bool allows(const OUString& capability) const;
 
     /// Stringified mode for ProviderResponse / evidence.

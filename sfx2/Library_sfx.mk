@@ -41,6 +41,9 @@ $(eval $(call gb_Library_set_include,sfx,\
     -I$(SRCDIR)/kqoffice/source/ai/chat \
     -I$(SRCDIR)/kqoffice/source/ai/canvas \
     -I$(SRCDIR)/kqoffice/source/ai/filemgr \
+    -I$(SRCDIR)/kqoffice/source/ai/provider \
+    -I$(SRCDIR)/kqoffice/source/ai/workbench \
+    -I$(SRCDIR)/kqoffice/source/ai/notebook \
     -I$(WORKDIR)/SdiTarget/sfx2/sdi \
     $$(INCLUDE) \
 ))
@@ -147,6 +150,10 @@ $(eval $(call gb_Library_add_exception_objects,sfx,\
     sfx2/source/bastyp/sfxresid \
     sfx2/source/commandpopup/CommandPopup \
     sfx2/source/dispatch/CommandPaletteDispatcher \
+    sfx2/source/dispatch/AIInlineEditDispatcher \
+    sfx2/source/dispatch/AIInputDispatcher \
+    sfx2/source/dispatch/WorkPendantDispatcher \
+    sfx2/source/appl/WorkTelemetryHub \
     sfx2/source/dispatch/CoworkPanelDispatcher \
     sfx2/source/config/evntconf \
     sfx2/source/control/bindings \
@@ -297,6 +304,11 @@ $(eval $(call gb_Library_add_exception_objects,sfx,\
     sfx2/source/sidebar/AIChatComposer \
     sfx2/source/sidebar/AIChatSlashCommands \
     sfx2/source/sidebar/AIChatPanelFactory \
+    sfx2/source/sidebar/WorkDashboardPanel \
+    sfx2/source/sidebar/LocalNotebookPanel \
+    sfx2/source/sidebar/MaterialTextEnrich \
+    sfx2/source/sidebar/MaterialOcr \
+    sfx2/source/sidebar/WorkbenchPanelFactory \
     sfx2/source/sidebar/AIChatPerfCrashRuntime \
     sfx2/source/sidebar/AIChatPolicyEngineRuntime \
     sfx2/source/sidebar/AIChatPreviewMatrix \
@@ -386,12 +398,18 @@ $(eval $(call gb_Library_add_cxxflags,sfx,\
 ))
 $(eval $(call gb_Library_add_objcxxobjects,sfx,\
     sfx2/source/appl/shutdowniconaqua \
+    sfx2/source/dispatch/AIGlobalHotkeyAqua \
+    sfx2/source/sidebar/MaterialOcrAqua \
 ))
 $(eval $(call gb_Library_add_libs,sfx,\
     -lobjc \
 ))
 $(eval $(call gb_Library_use_system_darwin_frameworks,sfx,\
     Cocoa \
+    Carbon \
+    Vision \
+    ImageIO \
+    CoreGraphics \
 ))
 endif
 

@@ -57,6 +57,7 @@
 #define RID_SVXPAGE_BASICIDE_OPTIONS        (RID_SVX_START + 209)
 #define RID_SVXPAGE_LANGTOOL_OPTIONS        (RID_SVX_START + 210)
 #define RID_SVXPAGE_DEEPL_OPTIONS           (RID_SVX_START + 211)
+#define RID_SVXPAGE_AI_OPTIONS              (RID_SVX_START + 212)
 
 // Resource-Id's ------------------------------------------------------------
 

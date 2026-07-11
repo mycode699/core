@@ -20,6 +20,7 @@
 #include <config_features.h>
 
 #include <sfx2/app.hxx>
+#include <WorkTelemetryHub.hxx>
 #include <com/sun/star/frame/XTerminateListener.hpp>
 #include <com/sun/star/uno/Reference.hxx>
 #include <com/sun/star/frame/theGlobalEventBroadcaster.hpp>
@@ -236,6 +237,9 @@ void SfxApplication::Initialize_Impl()
         // Set special characters callback on vcl edit control
         vcl::SetGetSpecialCharsFunction(&SfxGetSpecialCharsForEdit);
     }
+
+    // Workbench insights: session tick + doc open/save/new local telemetry
+    sfx2::WorkTelemetryHub::Get().EnsureStarted(*this);
 }
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

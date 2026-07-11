@@ -614,6 +614,7 @@ $(eval $(call gb_Library_add_exception_objects,sw,\
     sw/source/filter/indexing/IndexingExport \
     sw/source/filter/indexing/IndexingExportFilter \
     sw/source/uibase/ai/ApplyDiffReviewBridge \
+    sw/source/uibase/ai/ChatWriterApplyBridge \
     sw/source/uibase/inline-actions/InlineActionProviderDispatch \
     sw/source/uibase/inline-actions/InlineActionRequest \
     sw/source/uibase/inline-actions/ParagraphActions \

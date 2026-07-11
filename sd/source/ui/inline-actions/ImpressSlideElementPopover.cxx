@@ -12,6 +12,8 @@
 #include "InlineActionRequest.hxx"
 #include "InlineActionProviderDispatch.hxx"
 
+#include <com/sun/star/beans/PropertyValue.hpp>
+#include <comphelper/dispatchcommand.hxx>
 #include <sal/log.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/weld/Builder.hxx>
@@ -32,11 +34,14 @@ ImpressSlideElementPopover::ImpressSlideElementPopover(weld::Widget* pParent)
     , m_xAdjustColor(m_xBuilder->weld_button(u"btn_adjust_color"_ustr))
     , m_xRelayout(m_xBuilder->weld_button(u"btn_relayout"_ustr))
     , m_xTranslateText(m_xBuilder->weld_button(u"btn_translate_text"_ustr))
+    , m_xAiInline(m_xBuilder->weld_button(u"btn_ai_inline"_ustr))
 {
     m_xRewriteText->connect_clicked(LINK(this, ImpressSlideElementPopover, OnActionClicked));
     m_xAdjustColor->connect_clicked(LINK(this, ImpressSlideElementPopover, OnActionClicked));
     m_xRelayout->connect_clicked(LINK(this, ImpressSlideElementPopover, OnActionClicked));
     m_xTranslateText->connect_clicked(LINK(this, ImpressSlideElementPopover, OnActionClicked));
+    if (m_xAiInline)
+        m_xAiInline->connect_clicked(LINK(this, ImpressSlideElementPopover, OnActionClicked));
     m_xPopover->connect_closed(LINK(this, ImpressSlideElementPopover, OnPopoverClosed));
 }
 
@@ -92,6 +97,12 @@ IMPL_LINK(ImpressSlideElementPopover, OnActionClicked, weld::Button&, rButton, v
         pickAction(SlideElementAction::Relayout);
     else if (&rButton == m_xTranslateText.get())
         pickAction(SlideElementAction::TranslateText);
+    else if (m_xAiInline && &rButton == m_xAiInline.get())
+    {
+        DismissSlideElementPopover();
+        comphelper::dispatchCommand(u".uno:KQAIInlineEdit"_ustr,
+                                    css::uno::Sequence<css::beans::PropertyValue>());
+    }
 }
 
 IMPL_LINK_NOARG(ImpressSlideElementPopover, OnPopoverClosed, weld::Popover&, void)

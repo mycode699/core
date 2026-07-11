@@ -60,6 +60,14 @@
 #define MI_MATH                    7
 #define MI_TEMPLATE                8
 #define MI_STARTMODULE             9
+#define MI_AI_SCREENSHOT          10
+#define MI_AI_VOICE               11
+#define MI_AI_PENDANT             12
+
+// C ABI entry points (AIInputDispatcher / WorkPendantDispatcher).
+extern "C" void kqoffice_ai_trigger_screenshot_region();
+extern "C" void kqoffice_ai_trigger_voice();
+extern "C" void kqoffice_work_show_pendant();
 
 #define UNO_TOGGLECURRENTMODULE_COMMAND ".uno:ToggleCurrentModule"
 
@@ -103,6 +111,15 @@
         break;
     case MI_STARTMODULE:
         ShutdownIcon::OpenURL( STARTMODULE_URL, "_default" );
+        break;
+    case MI_AI_SCREENSHOT:
+        kqoffice_ai_trigger_screenshot_region();
+        break;
+    case MI_AI_VOICE:
+        kqoffice_ai_trigger_voice();
+        break;
+    case MI_AI_PENDANT:
+        kqoffice_work_show_pendant();
         break;
     default:
         break;
@@ -751,6 +768,11 @@ void aqua_init_systray()
             appendMenuItem( pMenu, pDockMenu, aTitle, MI_TEMPLATE, "" );
             aTitle = SfxResId(STR_QUICKSTART_FILEOPEN);
             appendMenuItem( pMenu, pDockMenu, aTitle, MI_OPEN, "" );
+
+            // 可圈 AI efficiency (WeChat-like)
+            appendMenuItem( pMenu, pDockMenu, u"可圈 AI 选区截图"_ustr, MI_AI_SCREENSHOT, "" );
+            appendMenuItem( pMenu, pDockMenu, u"可圈 AI 语音输入"_ustr, MI_AI_VOICE, "" );
+            appendMenuItem( pMenu, pDockMenu, u"可圈效率挂坠"_ustr, MI_AI_PENDANT, "" );
 
             [pDefMenu setSubmenu: pMenu];
             resetMenuBar();

@@ -10,19 +10,32 @@
 #pragma once
 
 #include <sfx2/sidebar/PanelLayout.hxx>
+#include <AgentChatDiffExtractor.hxx>
+#include <DocumentAIVoiceInput.hxx>
 #include <com/sun/star/ai/ProviderResponse.hpp>
 #include <tools/link.hxx>
+#include <vcl/timer.hxx>
 
+#include <array>
 #include <memory>
 #include <vector>
 
 namespace weld
 {
 class Button;
+class CheckButton;
+class ComboBox;
 class Entry;
 class Label;
+class RadioButton;
 class TextView;
+class Toggleable;
 class TreeView;
+}
+
+namespace kqoffice::ai::chat
+{
+struct ScenarioCatalog;
 }
 
 namespace sfx2::sidebar
@@ -88,7 +101,41 @@ private:
     DECL_LINK(OnFilterWorkspaceClicked, weld::Button&, void);
     DECL_LINK(OnSortWorkspaceClicked, weld::Button&, void);
     DECL_LINK(OnRemoveArtifactClicked, weld::Button&, void);
+    DECL_LINK(OnAiSettingsClicked, weld::Button&, void);
+    DECL_LINK(OnRunScenarioClicked, weld::Button&, void);
+    DECL_LINK(OnRefreshScenariosClicked, weld::Button&, void);
+    DECL_LINK(OnScenarioPickerChanged, weld::ComboBox&, void);
+    DECL_LINK(OnScenarioGridClicked, weld::Button&, void);
+    DECL_LINK(OnScenarioPinClicked, weld::Button&, void);
+    DECL_LINK(OnCategoryTabToggled, weld::Toggleable&, void);
+    DECL_LINK(OnFollowDocToggled, weld::Toggleable&, void);
+    DECL_LINK(OnSelectionChipClicked, weld::Button&, void);
+    DECL_LINK(OnRoutingDiagClicked, weld::Button&, void);
+    DECL_LINK(OnVoiceClicked, weld::Button&, void);
+    DECL_LINK(OnVoiceMousePress, const MouseEvent&, bool);
+    DECL_LINK(OnVoiceMouseRelease, const MouseEvent&, bool);
+    DECL_LINK(OnScreenshotClicked, weld::Button&, void);
+    DECL_LINK(OnScreenshotWinClicked, weld::Button&, void);
+    DECL_LINK(OnScreenshotFullClicked, weld::Button&, void);
+    DECL_LINK(OnCtxWorkbenchClicked, weld::Button&, void);
+    DECL_LINK(OnCtxNotebookClicked, weld::Button&, void);
     DECL_LINK(OnPromptInsertText, OUString&, bool);
+    DECL_LINK(OnInjectPollTick, Timer*, void);
+
+    static constexpr sal_Int32 kScenarioGridSlots = 12;
+    static constexpr sal_Int32 kScenarioPinSlots = 4;
+
+    void ReloadScenarioPicker();
+    void UpdateCategoryTabBadges(const kqoffice::ai::chat::ScenarioCatalog& rCatalog);
+    void ReloadPinnedStrip(const kqoffice::ai::chat::ScenarioCatalog& rCatalog);
+    void UpdateSelectionChip();
+    void UpdatePendingPlanChip();
+    void RunScenarioById(const OUString& rScenarioId);
+    OUString CurrentDocumentSurface() const;
+    OUString ActiveCategoryTab() const;
+    void SelectCategoryTab(const OUString& rCategory);
+    void TryShowDiffReviewAfterApply(const OUString& rPlanId, const OUString& rEngine,
+                                     bool bApplied);
 
     void AppendTranscript(const OUString& rSpeaker, const OUString& rMessage);
     void AppendTranscript(const OUString& rSpeaker, const OUString& rMessage,
@@ -141,13 +188,43 @@ private:
     void UpdateActions();
     void SetState(AIChatPanelState eState);
     void SubmitPrompt();
-    css::ai::ProviderResponse CallProvider(const OUString& rPrompt);
+    /// Optional capability override (from scenario capabilityHint / slash). Empty → heuristic.
+    css::ai::ProviderResponse CallProvider(const OUString& rPrompt,
+                                           const OUString& rCapabilityOverride = OUString());
+    void RunRoutingDiagnostics(bool bAppendTranscript);
+    /// Consume KQOFFICE_AI_RUN_SCENARIO / pending-scenario-run queue.
+    void ConsumePendingScenarioRun();
+    /// Visible plan→act→review step bar (Stage B).
+    void SetAgentStepBar(const OUString& rLabel);
+    void UpdateAgentStepBar(sal_Int32 nActiveStep /*0=plan,1=act,2=review*/,
+                            const OUString& rDetail = OUString());
+    /// Consume ~/.config/kqoffice/pending-prompt-inject from workbench/notebook/voice/screenshot.
+    void ConsumePendingPromptInject();
+    void AppendPromptText(const OUString& rText);
+    /// mode: region | window | fullscreen
+    void RunScreenshotMode(const OUString& rMode);
+    void applyVoiceCaptureUi(const kqoffice::ai::chat::VoiceCaptureResult& cap);
     static OUString StateToLabel(AIChatPanelState eState);
 
+    /// Stage provider JSON as a pending ApplyPlan; never mutates the main document.
+    void StagePendingApplyPlan(const OUString& rProviderContent, const OUString& rEvidenceId);
+    /// Apply the staged plan only after explicit human approval.
+    bool ApplyPendingPlanWithApproval();
+    void ClearPendingPlan();
+    bool HasPendingApplyPlan() const { return m_bHasPendingPlan; }
+
     std::unique_ptr<weld::Label> m_xStatusLabel;
+    std::unique_ptr<weld::Label> m_xAgentStepBar;
     std::unique_ptr<weld::TextView> m_xTranscriptView;
     std::unique_ptr<weld::Entry> m_xPromptEntry;
+    std::unique_ptr<weld::Button> m_xVoiceButton;
+    std::unique_ptr<weld::Button> m_xScreenshotButton;
+    std::unique_ptr<weld::Button> m_xScreenshotWinButton;
+    std::unique_ptr<weld::Button> m_xScreenshotFullButton;
+    std::unique_ptr<weld::Button> m_xCtxWorkbenchButton;
+    std::unique_ptr<weld::Button> m_xCtxNotebookButton;
     std::unique_ptr<weld::Button> m_xSendButton;
+    bool m_bVoiceHoldActive = false;
     std::unique_ptr<weld::Button> m_xCancelButton;
     std::unique_ptr<weld::Button> m_xRetryButton;
     std::unique_ptr<weld::Button> m_xClearHistoryButton;
@@ -166,6 +243,31 @@ private:
     std::unique_ptr<weld::Button> m_xFilterWorkspaceButton;
     std::unique_ptr<weld::Button> m_xSortWorkspaceButton;
     std::unique_ptr<weld::Button> m_xRemoveArtifactButton;
+    std::unique_ptr<weld::Button> m_xAiSettingsButton;
+    std::unique_ptr<weld::ComboBox> m_xScenarioPicker;
+    std::unique_ptr<weld::Button> m_xRunScenarioBtn;
+    std::unique_ptr<weld::Button> m_xRefreshScenariosBtn;
+    std::unique_ptr<weld::Label> m_xScenarioSurfaceLabel;
+    std::unique_ptr<weld::CheckButton> m_xOptFollowDoc;
+    std::unique_ptr<weld::RadioButton> m_xTabWriter;
+    std::unique_ptr<weld::RadioButton> m_xTabCalc;
+    std::unique_ptr<weld::RadioButton> m_xTabImpress;
+    std::unique_ptr<weld::RadioButton> m_xTabGeneral;
+    std::unique_ptr<weld::CheckButton> m_xOptAttachSelection;
+    std::unique_ptr<weld::CheckButton> m_xOptAgentPipeline;
+    std::unique_ptr<weld::CheckButton> m_xOptDocContext;
+    std::array<std::unique_ptr<weld::Button>, kScenarioGridSlots> m_xScenarioGridBtns;
+    std::array<OUString, kScenarioGridSlots> m_aScenarioGridIds;
+    std::array<std::unique_ptr<weld::Button>, kScenarioPinSlots> m_xScenarioPinBtns;
+    std::array<OUString, kScenarioPinSlots> m_aScenarioPinIds;
+    std::unique_ptr<weld::Label> m_xScenarioPinnedLabel;
+    std::unique_ptr<weld::Button> m_xSelectionChipBtn;
+    std::unique_ptr<weld::Label> m_xPendingPlanChip;
+    std::unique_ptr<weld::Button> m_xRoutingDiagBtn;
+    std::unique_ptr<weld::Label> m_xRoutingDiagLabel;
+    bool m_bSuppressCategoryReload = false;
+    /// One-shot capability for next CallProvider (scenario / slash); cleared after use.
+    OUString m_sForcedCapability;
     std::unique_ptr<AIChatHistoryStore> m_xHistoryStore;
     std::unique_ptr<AIChatContentObjectStore> m_xContentObjectStore;
     std::unique_ptr<AIChatContentReviewStore> m_xContentReviewStore;
@@ -179,7 +281,12 @@ private:
 
     OUString m_sLastPrompt;
     OUString m_sStreamingBuffer;
+    OUString m_sPendingEvidenceId;
+    kqoffice::ai::chat::ApplyPlan m_aPendingPlan;
+    bool m_bHasPendingPlan = false;
     AIChatPanelState m_eState = AIChatPanelState::Idle;
+    /// Poll pending-prompt-inject while AI panel stays open (workbench/notebook inject).
+    Timer m_aInjectPoll;
 };
 
 } // namespace sfx2::sidebar

@@ -88,6 +88,25 @@
             <property name="position">3</property>
           </packing>
         </child>
+        <child>
+          <object class="GtkButton" id="btn_ai_inline">
+            <property name="label" translatable="yes" context="slideelement|aiinline">AI 编辑…</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="relief">none</property>
+            <property name="tooltip-text" translatable="yes" context="slide-element-popover|btn_ai_inline.tooltip_text">打开 Ctrl/Cmd+K 内联 AI（改写/讲稿/大纲）</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="btn_ai_inline-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="slideelement|aiinline-atk">Open AI inline edit</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
       </object>
     </child>
   </object>

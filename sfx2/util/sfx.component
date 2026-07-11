@@ -97,4 +97,8 @@
       constructor="org_kqoffice_comp_sfx2_sidebar_AIChatPanelFactory_get_implementation">
     <service name="com.sun.star.ui.UIElementFactory"/>
   </implementation>
+  <implementation name="org.kqoffice.comp.sfx2.sidebar.WorkbenchPanelFactory"
+      constructor="org_kqoffice_comp_sfx2_sidebar_WorkbenchPanelFactory_get_implementation">
+    <service name="com.sun.star.ui.UIElementFactory"/>
+  </implementation>
 </component>

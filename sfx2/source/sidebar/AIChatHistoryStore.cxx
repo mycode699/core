@@ -18,6 +18,7 @@
 #include <unotools/pathoptions.hxx>
 #include <tools/urlobj.hxx>
 
+#include <algorithm>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -222,6 +223,68 @@ OUString AIChatHistoryStore::LoadTranscript() const
     }
 
     return aTranscript.makeStringAndClear();
+}
+
+OUString AIChatHistoryStore::FormatRecentTurns(sal_Int32 nMaxTurns, sal_Int32 nMaxChars) const
+{
+    if (nMaxTurns <= 0 || nMaxChars <= 0)
+        return OUString();
+
+    OString sContent;
+    if (!ReadFile(m_sSidecarUrl, sContent) || sContent.isEmpty())
+        return OUString();
+
+    const OUString sUtf16 = OStringToOUString(sContent, RTL_TEXTENCODING_UTF8);
+    struct Turn
+    {
+        OUString speaker;
+        OUString message;
+    };
+    std::vector<Turn> turns;
+    sal_Int32 nIndex = 0;
+    while (nIndex >= 0)
+    {
+        const OUString sLine = sUtf16.getToken(0, '\n', nIndex);
+        if (sLine.isEmpty())
+            continue;
+        const sal_Int32 nSep = sLine.indexOf('\t');
+        if (nSep <= 0)
+            continue;
+        OUString sSpeaker = UnescapeField(sLine.subView(0, nSep));
+        OUString sMessage = UnescapeField(sLine.subView(nSep + 1));
+        // Keep user + assistant dialogue; drop system/route noise.
+        const OUString lower = sSpeaker.toAsciiLowerCase();
+        if (lower == u"system"_ustr || lower == u"route"_ustr)
+            continue;
+        if (sMessage.startsWith(u"route capability="_ustr)
+            || sMessage.startsWith(u"history-loaded"_ustr)
+            || sMessage.startsWith(u"scenario="_ustr)
+            || sMessage.startsWith(u"pending-scenario"_ustr))
+            continue;
+        // Clip long assistant payloads for token budget.
+        if (sMessage.getLength() > 600)
+            sMessage = sMessage.copy(0, 600) + u"…"_ustr;
+        turns.push_back(Turn{ std::move(sSpeaker), std::move(sMessage) });
+    }
+
+    if (turns.empty())
+        return OUString();
+
+    const sal_Int32 nStart = std::max<sal_Int32>(
+        0, static_cast<sal_Int32>(turns.size()) - nMaxTurns);
+    OUStringBuffer out;
+    for (sal_Int32 i = nStart; i < static_cast<sal_Int32>(turns.size()); ++i)
+    {
+        if (!out.isEmpty())
+            out.append(u"\n"_ustr);
+        out.append(turns[static_cast<size_t>(i)].speaker);
+        out.append(u": "_ustr);
+        out.append(turns[static_cast<size_t>(i)].message);
+    }
+    OUString s = out.makeStringAndClear();
+    if (s.getLength() > nMaxChars)
+        s = s.copy(s.getLength() - nMaxChars);
+    return s;
 }
 
 bool AIChatHistoryStore::AppendMessage(const OUString& rSpeaker, const OUString& rMessage) const

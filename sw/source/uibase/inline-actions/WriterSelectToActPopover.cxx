@@ -11,6 +11,8 @@
 #include "SelectToActPopover.hxx"
 #include "InlineActionRequest.hxx"
 
+#include <com/sun/star/beans/PropertyValue.hpp>
+#include <comphelper/dispatchcommand.hxx>
 #include <sal/log.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/weld/Builder.hxx>
@@ -93,7 +95,12 @@ IMPL_LINK(WriterSelectToActPopover, OnActionClicked, weld::Button&, rButton, voi
     else if (&rButton == m_xExplain.get())
         pickAction(ParagraphAction::Explain);
     else if (&rButton == m_xCustom.get())
-        pickAction(ParagraphAction::Custom);
+    {
+        // Cursor-style freeform: hand off to Ctrl+K inline AI edit.
+        DismissSelectToActPopover();
+        comphelper::dispatchCommand(u".uno:KQAIInlineEdit"_ustr,
+                                    css::uno::Sequence<css::beans::PropertyValue>());
+    }
 }
 
 IMPL_LINK_NOARG(WriterSelectToActPopover, OnPopoverClosed, weld::Popover&, void)

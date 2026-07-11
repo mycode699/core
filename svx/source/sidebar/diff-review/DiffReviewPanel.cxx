@@ -11,6 +11,7 @@
 #include "WeldDiffReviewPanel.hxx"
 
 #include <sal/log.hxx>
+#include <sal/types.h>
 #include <vcl/svapp.hxx>
 #include <vcl/vclenum.hxx>
 #include <vcl/weld/Builder.hxx>
@@ -134,5 +135,37 @@ void ShowDiffReviewPanel(weld::Widget* pParent, const rtl::OUString& rPlanId,
 void DismissDiffReviewPanel() { closeActiveDialog(); }
 
 } // namespace svx::sidebar::diff_review
+
+// C ABI for Document AI Fabric (kqoffice/sfx2) — no link to svx required at
+// compile time; resolved via dlsym(RTLD_DEFAULT) after svx is loaded.
+extern "C" SAL_DLLPUBLIC_EXPORT void kqoffice_show_diff_review(
+    void* pParentWidget, const sal_Unicode* pPlanId, sal_Int32 nPlanIdLen,
+    const sal_Unicode* pPatchId, sal_Int32 nPatchIdLen, const sal_Unicode* pKind,
+    sal_Int32 nKindLen, const sal_Unicode* pStatus, sal_Int32 nStatusLen,
+    sal_Bool bApplied)
+{
+    auto* pParent = static_cast<weld::Widget*>(pParentWidget);
+    if (!pParent || !pPlanId || nPlanIdLen <= 0)
+        return;
+
+    const OUString aPlanId(pPlanId, nPlanIdLen);
+    svx::sidebar::diff_review::DiffReviewPatchEntry aEntry;
+    if (pPatchId && nPatchIdLen > 0)
+        aEntry.maPatchId = OUString(pPatchId, nPatchIdLen);
+    else
+        aEntry.maPatchId = u"p1"_ustr;
+    if (pKind && nKindLen > 0)
+        aEntry.maKind = OUString(pKind, nKindLen);
+    else
+        aEntry.maKind = u"replace"_ustr;
+    if (pStatus && nStatusLen > 0)
+        aEntry.maStatus = OUString(pStatus, nStatusLen);
+    else
+        aEntry.maStatus = bApplied ? u"ok"_ustr : u"pending"_ustr;
+    aEntry.mbApplied = bApplied;
+
+    svx::sidebar::diff_review::ShowDiffReviewPanel(pParent, aPlanId, { aEntry }, nullptr,
+                                                   bApplied ? 1 : 0);
+}
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -1,0 +1,690 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 可圈office AI 五槽模型设置 — primary / light / agent / plan / review -->
+<interface domain="cui">
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkBox" id="OptAiPage">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="hexpand">True</property>
+    <property name="vexpand">True</property>
+    <property name="border-width">6</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">8</property>
+    <child>
+      <object class="GtkLabel" id="label_intro">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="halign">start</property>
+        <property name="wrap">True</property>
+        <property name="label" translatable="yes" context="optaipage|intro">配置本地 AI 服务与五个模型槽位。主/兜底用于对话；轻量用于总结与并发；Agent 用于子代理；思考/规划与审核可单独指定更强模型。空槽自动回落到主模型。</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkLabel" id="status_label">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="halign">start</property>
+        <property name="wrap">True</property>
+        <property name="label"> </property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkLabel" id="path_label">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="halign">start</property>
+        <property name="wrap">True</property>
+        <property name="selectable">True</property>
+        <property name="label">配置文件：</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkGrid" id="grid_conn">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="row-spacing">6</property>
+        <property name="column-spacing">12</property>
+        <child>
+          <object class="GtkLabel" id="label_backend">
+            <property name="visible">True</property>
+            <property name="halign">start</property>
+            <property name="label" translatable="yes" context="optaipage|backend">后端：</property>
+            <property name="mnemonic-widget">backend</property>
+          </object>
+          <packing><property name="left-attach">0</property><property name="top-attach">0</property></packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="backend">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="hexpand">True</property>
+            <property name="placeholder-text">ollama</property>
+          </object>
+          <packing><property name="left-attach">1</property><property name="top-attach">0</property></packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label_baseurl">
+            <property name="visible">True</property>
+            <property name="halign">start</property>
+            <property name="label" translatable="yes" context="optaipage|baseurl">服务地址：</property>
+            <property name="mnemonic-widget">baseurl</property>
+          </object>
+          <packing><property name="left-attach">0</property><property name="top-attach">1</property></packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="baseurl">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="hexpand">True</property>
+            <property name="placeholder-text">http://127.0.0.1:11434</property>
+          </object>
+          <packing><property name="left-attach">1</property><property name="top-attach">1</property></packing>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkFrame">
+        <property name="visible">True</property>
+        <property name="label-xalign">0</property>
+        <property name="shadow-type">none</property>
+        <child type="label">
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="optaipage|roles_frame">五个模型槽位</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkGrid" id="grid_roles">
+            <property name="visible">True</property>
+            <property name="margin-start">12</property>
+            <property name="margin-top">6</property>
+            <property name="row-spacing">6</property>
+            <property name="column-spacing">12</property>
+            <child>
+              <object class="GtkLabel" id="label_primary">
+                <property name="visible">True</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes" context="optaipage|primary">主/兜底模型：</property>
+                <property name="mnemonic-widget">primary</property>
+              </object>
+              <packing><property name="left-attach">0</property><property name="top-attach">0</property></packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="primary">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="hexpand">True</property>
+                <property name="placeholder-text">例如 qwen3:0.6b（对话与空槽回落）</property>
+              </object>
+              <packing><property name="left-attach">1</property><property name="top-attach">0</property></packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label_light">
+                <property name="visible">True</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes" context="optaipage|light">轻量/并发模型：</property>
+                <property name="mnemonic-widget">light</property>
+              </object>
+              <packing><property name="left-attach">0</property><property name="top-attach">1</property></packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="light">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="hexpand">True</property>
+                <property name="placeholder-text">总结、抽取、分类、后台任务</property>
+              </object>
+              <packing><property name="left-attach">1</property><property name="top-attach">1</property></packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label_agent">
+                <property name="visible">True</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes" context="optaipage|agent">Agent 模型：</property>
+                <property name="mnemonic-widget">agent</property>
+              </object>
+              <packing><property name="left-attach">0</property><property name="top-attach">2</property></packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="agent">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="hexpand">True</property>
+                <property name="placeholder-text">子代理、协作、探索类任务</property>
+              </object>
+              <packing><property name="left-attach">1</property><property name="top-attach">2</property></packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label_plan">
+                <property name="visible">True</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes" context="optaipage|plan">思考/规划模型：</property>
+                <property name="mnemonic-widget">plan</property>
+              </object>
+              <packing><property name="left-attach">0</property><property name="top-attach">3</property></packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="plan">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="hexpand">True</property>
+                <property name="placeholder-text">规划、裁决（可指定更强模型）</property>
+              </object>
+              <packing><property name="left-attach">1</property><property name="top-attach">3</property></packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label_review">
+                <property name="visible">True</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes" context="optaipage|review">审核/审查模型：</property>
+                <property name="mnemonic-widget">review</property>
+              </object>
+              <packing><property name="left-attach">0</property><property name="top-attach">4</property></packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="review">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="hexpand">True</property>
+                <property name="placeholder-text">独立审查、批判性检查</property>
+              </object>
+              <packing><property name="left-attach">1</property><property name="top-attach">4</property></packing>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox" id="box_actions">
+        <property name="visible">True</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">8</property>
+        <child>
+          <object class="GtkLabel" id="label_models">
+            <property name="mnemonic-widget">installed_models</property>
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="optaipage|models">已安装模型：</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkComboBoxText" id="installed_models">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="hexpand">True</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkFrame">
+        <property name="visible">True</property>
+        <property name="label-xalign">0</property>
+        <property name="shadow-type">none</property>
+        <child type="label">
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="optaipage|input_frame">高效输入（语音 · 截图 · 对齐微信）</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="box_input_prefs">
+            <property name="visible">True</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">6</property>
+            <property name="margin-start">12</property>
+            <property name="margin-top">6</property>
+            <child>
+              <object class="GtkLabel" id="input_hint">
+                <property name="visible">True</property>
+                <property name="halign">start</property>
+                <property name="wrap">True</property>
+                <property name="label" translatable="yes" context="optaipage|input_hint">快捷键：F4 语音 · Ctrl/Cmd+Shift+A 选区截图。macOS 可在「系统设置→键盘」将 Fn 设为听写；本地 STT 命令可用 $AUDIO 表示录音文件。默认不上云。</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkGrid" id="grid_input">
+                <property name="visible">True</property>
+                <property name="row-spacing">6</property>
+                <property name="column-spacing">12</property>
+                <child>
+                  <object class="GtkCheckButton" id="voice_enabled">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes" context="optai|voice_enabled.label">启用语音输入</property>
+                    <property name="active">True</property>
+                  </object>
+                  <packing><property name="left-attach">0</property><property name="top-attach">0</property><property name="width">2</property></packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes" context="optai|voice_enabled.label">语音模式：</property>
+                    <property name="mnemonic-widget">voice_backend</property>
+                  </object>
+                  <packing><property name="left-attach">0</property><property name="top-attach">1</property></packing>
+                </child>
+                <child>
+                  <object class="GtkComboBoxText" id="voice_backend">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="hexpand">True</property>
+                    <items>
+                      <item translatable="yes" context="optai|system-dictation.misc" id="system-dictation">系统听写（Fn / Win+H）</item>
+                      <item translatable="yes" context="optai|local-cmd.misc" id="local-cmd">本地转写命令</item>
+                      <item translatable="yes" context="optai|push-to-talk.misc" id="push-to-talk">按住说话（录音+$AUDIO）</item>
+                    </items>
+                  </object>
+                  <packing><property name="left-attach">1</property><property name="top-attach">1</property></packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes" context="optai|push-to-talk.label">转写命令：</property>
+                    <property name="mnemonic-widget">voice_cmd</property>
+                  </object>
+                  <packing><property name="left-attach">0</property><property name="top-attach">2</property></packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="voice_cmd">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="hexpand">True</property>
+                    <property name="placeholder-text">例如 whisper -f $AUDIO  或  your-stt-cli</property>
+                  </object>
+                  <packing><property name="left-attach">1</property><property name="top-attach">2</property></packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="voice_ptt">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes" context="optai|voice_ptt.label">点按开始/结束（类微信按住说话）</property>
+                    <property name="active">True</property>
+                  </object>
+                  <packing><property name="left-attach">0</property><property name="top-attach">3</property><property name="width">2</property></packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="voice_fn_hint">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes" context="optai|voice_fn_hint.label">显示 Fn 系统听写提示</property>
+                    <property name="active">True</property>
+                  </object>
+                  <packing><property name="left-attach">0</property><property name="top-attach">4</property><property name="width">2</property></packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="screenshot_enabled">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes" context="optai|screenshot_enabled.label">启用截图</property>
+                    <property name="active">True</property>
+                  </object>
+                  <packing><property name="left-attach">0</property><property name="top-attach">5</property><property name="width">2</property></packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes" context="optai|screenshot_enabled.label">默认截图：</property>
+                    <property name="mnemonic-widget">screenshot_mode</property>
+                  </object>
+                  <packing><property name="left-attach">0</property><property name="top-attach">6</property></packing>
+                </child>
+                <child>
+                  <object class="GtkComboBoxText" id="screenshot_mode">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <items>
+                      <item translatable="yes" context="optai|region.misc" id="region">选区（推荐）</item>
+                      <item translatable="yes" context="optai|window.misc" id="window">窗口</item>
+                      <item translatable="yes" context="optai|fullscreen.misc" id="fullscreen">全屏</item>
+                    </items>
+                  </object>
+                  <packing><property name="left-attach">1</property><property name="top-attach">6</property></packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="screenshot_attach">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes" context="optai|screenshot_attach.label">截图后自动附到 AI 输入框</property>
+                    <property name="active">True</property>
+                  </object>
+                  <packing><property name="left-attach">0</property><property name="top-attach">7</property><property name="width">2</property></packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="screenshot_open_ai">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes" context="optai|screenshot_open_ai.label">截图后打开 AI 侧栏</property>
+                    <property name="active">True</property>
+                  </object>
+                  <packing><property name="left-attach">0</property><property name="top-attach">8</property><property name="width">2</property></packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="screenshot_clipboard">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes" context="optai|screenshot_clipboard.label">同时复制到剪贴板</property>
+                    <property name="active">True</property>
+                  </object>
+                  <packing><property name="left-attach">0</property><property name="top-attach">9</property><property name="width">2</property></packing>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkFrame">
+        <property name="visible">True</property>
+        <property name="label-xalign">0</property>
+        <property name="shadow-type">none</property>
+        <child type="label">
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="optaipage|scenarios_frame">AI 方案（按钮执行 · 可增删改查）</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="box_scenarios">
+            <property name="visible">True</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">6</property>
+            <property name="margin-start">12</property>
+            <property name="margin-top">6</property>
+            <child>
+              <object class="GtkBox" id="scenario_list_row">
+                <property name="visible">True</property>
+                <property name="orientation">horizontal</property>
+                <property name="spacing">8</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes" context="optaipage|scenario_list">方案列表：</property>
+                    <property name="mnemonic-widget">scenario_list</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="sc_up_btn">
+                    <property name="label" translatable="yes" context="optaipage|sc_up">↑ 上移</property>
+                    <property name="visible">True</property>
+                    <property name="tooltip-text" translatable="yes" context="optai|sc_up_btn.tooltip_text">调整按钮显示顺序（靠前优先出现在侧栏网格）；也可在列表内拖拽排序</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="sc_down_btn">
+                    <property name="label" translatable="yes" context="optaipage|sc_down">↓ 下移</property>
+                    <property name="visible">True</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkScrolledWindow" id="scenario_list_scroll">
+                <property name="visible">True</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">False</property>
+                <property name="height-request">140</property>
+                <property name="shadow-type">in</property>
+                <child>
+                  <object class="GtkTreeView" id="scenario_list">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="hexpand">True</property>
+                    <property name="headers_visible">False</property>
+                    <property name="show_expanders">False</property>
+                    <property name="enable_search">True</property>
+                    <property name="tooltip-text" translatable="yes" context="optai|scenario_list.tooltip_text">拖拽行可调整顺序；选中后编辑下方字段</property>
+                    <child internal-child="selection">
+                      <object class="GtkTreeSelection" id="scenario_list_selection"/>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="scenario_list_col">
+                        <property name="expand">True</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="scenario_list_cell"/>
+                          <attributes>
+                            <attribute name="text">0</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkGrid" id="grid_scenario_fields">
+                <property name="visible">True</property>
+                <property name="row-spacing">4</property>
+                <property name="column-spacing">8</property>
+                <child>
+                  <object class="GtkLabel"><property name="visible">True</property><property name="halign">start</property>
+                    <property name="label" translatable="yes" context="optaipage|sc_id">ID：</property>
+                    <property name="mnemonic-widget">sc_id</property></object>
+                  <packing><property name="left-attach">0</property><property name="top-attach">0</property></packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="sc_id"><property name="visible">True</property><property name="hexpand">True</property>
+                    <property name="placeholder-text">unique-id</property></object>
+                  <packing><property name="left-attach">1</property><property name="top-attach">0</property></packing>
+                </child>
+                <child>
+                  <object class="GtkLabel"><property name="visible">True</property><property name="halign">start</property>
+                    <property name="label" translatable="yes" context="optaipage|sc_title">标题：</property>
+                    <property name="mnemonic-widget">sc_title</property></object>
+                  <packing><property name="left-attach">0</property><property name="top-attach">1</property></packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="sc_title"><property name="visible">True</property><property name="hexpand">True</property></object>
+                  <packing><property name="left-attach">1</property><property name="top-attach">1</property></packing>
+                </child>
+                <child>
+                  <object class="GtkLabel"><property name="visible">True</property><property name="halign">start</property>
+                    <property name="label" translatable="yes" context="optaipage|sc_cat">分类：</property>
+                    <property name="mnemonic-widget">sc_category</property></object>
+                  <packing><property name="left-attach">0</property><property name="top-attach">2</property></packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="sc_category"><property name="visible">True</property>
+                    <property name="placeholder-text">writer / calc / impress / general</property></object>
+                  <packing><property name="left-attach">1</property><property name="top-attach">2</property></packing>
+                </child>
+                <child>
+                  <object class="GtkLabel"><property name="visible">True</property><property name="halign">start</property>
+                    <property name="label" translatable="yes" context="optaipage|sc_surface">表面：</property>
+                    <property name="mnemonic-widget">sc_surface</property></object>
+                  <packing><property name="left-attach">0</property><property name="top-attach">3</property></packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="sc_surface"><property name="visible">True</property>
+                    <property name="placeholder-text">writer | calc | impress | any</property></object>
+                  <packing><property name="left-attach">1</property><property name="top-attach">3</property></packing>
+                </child>
+                <child>
+                  <object class="GtkLabel"><property name="visible">True</property><property name="halign">start</property>
+                    <property name="label" translatable="yes" context="optaipage|sc_cap">能力：</property>
+                    <property name="mnemonic-widget">sc_capability</property></object>
+                  <packing><property name="left-attach">0</property><property name="top-attach">4</property></packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="sc_capability"><property name="visible">True</property>
+                    <property name="placeholder-text">rewrite / chat / plan / review / agent</property></object>
+                  <packing><property name="left-attach">1</property><property name="top-attach">4</property></packing>
+                </child>
+                <child>
+                  <object class="GtkLabel"><property name="visible">True</property><property name="halign">start</property>
+                    <property name="label" translatable="yes" context="optaipage|sc_slash">斜杠：</property>
+                    <property name="mnemonic-widget">sc_slash</property></object>
+                  <packing><property name="left-attach">0</property><property name="top-attach">5</property></packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="sc_slash"><property name="visible">True</property>
+                    <property name="placeholder-text">/自定义</property></object>
+                  <packing><property name="left-attach">1</property><property name="top-attach">5</property></packing>
+                </child>
+                <child>
+                  <object class="GtkLabel"><property name="visible">True</property><property name="halign">start</property>
+                    <property name="label" translatable="yes" context="optaipage|sc_prompt">提示词：</property>
+                    <property name="mnemonic-widget">sc_prompt</property></object>
+                  <packing><property name="left-attach">0</property><property name="top-attach">6</property></packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="sc_prompt"><property name="visible">True</property><property name="hexpand">True</property>
+                    <property name="placeholder-text">模板可用 {selection}</property></object>
+                  <packing><property name="left-attach">1</property><property name="top-attach">6</property></packing>
+                </child>
+                <child>
+                  <object class="GtkLabel"><property name="visible">True</property><property name="halign">start</property>
+                    <property name="label" translatable="yes" context="optaipage|sc_sort">排序号：</property>
+                    <property name="mnemonic-widget">sc_sort_order</property></object>
+                  <packing><property name="left-attach">0</property><property name="top-attach">7</property></packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="sc_sort_order"><property name="visible">True</property>
+                    <property name="placeholder-text">10 / 20 / 30… 越小越靠前</property>
+                    <property name="width-chars">8</property></object>
+                  <packing><property name="left-attach">1</property><property name="top-attach">7</property></packing>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox" id="scenario_checks">
+                <property name="visible">True</property>
+                <property name="orientation">horizontal</property>
+                <property name="spacing">10</property>
+                <child>
+                  <object class="GtkCheckButton" id="sc_enabled">
+                    <property name="label" translatable="yes" context="optaipage|sc_enabled">启用</property>
+                    <property name="visible">True</property><property name="active">True</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="sc_show_btn">
+                    <property name="label" translatable="yes" context="optaipage|sc_show_btn">显示为按钮</property>
+                    <property name="visible">True</property><property name="active">True</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="sc_pinned">
+                    <property name="label" translatable="yes" context="optaipage|sc_pinned">置顶/常用</property>
+                    <property name="visible">True</property>
+                    <property name="tooltip-text" translatable="yes" context="optai|sc_pinned.tooltip_text">出现在侧栏「常用」条，并在分类网格中靠前</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="sc_attach_sel">
+                    <property name="label" translatable="yes" context="optaipage|sc_attach">附带选区</property>
+                    <property name="visible">True</property><property name="active">True</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="sc_doc_ctx">
+                    <property name="label" translatable="yes" context="optaipage|sc_doc_ctx">文档上下文</property>
+                    <property name="visible">True</property><property name="active">True</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="sc_auto_submit">
+                    <property name="label" translatable="yes" context="optaipage|sc_auto">自动发送</property>
+                    <property name="visible">True</property><property name="active">True</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="sc_agent">
+                    <property name="label" translatable="yes" context="optaipage|sc_agent">多步 Agent</property>
+                    <property name="visible">True</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="sc_approval">
+                    <property name="label" translatable="yes" context="optaipage|sc_approval">需批准写回</property>
+                    <property name="visible">True</property><property name="active">True</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox" id="scenario_crud_btns">
+                <property name="visible">True</property>
+                <property name="orientation">horizontal</property>
+                <property name="spacing">8</property>
+                <child>
+                  <object class="GtkButton" id="sc_new_btn">
+                    <property name="label" translatable="yes" context="optaipage|sc_new">新建</property>
+                    <property name="visible">True</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="sc_save_btn">
+                    <property name="label" translatable="yes" context="optaipage|sc_save">保存方案</property>
+                    <property name="visible">True</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="sc_delete_btn">
+                    <property name="label" translatable="yes" context="optaipage|sc_del">删除</property>
+                    <property name="visible">True</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="sc_reset_btn">
+                    <property name="label" translatable="yes" context="optaipage|sc_reset">恢复内置默认</property>
+                    <property name="visible">True</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="sc_path_label">
+                <property name="visible">True</property>
+                <property name="halign">start</property>
+                <property name="wrap">True</property>
+                <property name="selectable">True</property>
+                <property name="label">方案配置：</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox" id="box_btns">
+        <property name="visible">True</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">8</property>
+        <property name="halign">start</property>
+        <child>
+          <object class="GtkButton" id="probe_btn">
+            <property name="label" translatable="yes" context="optaipage|probe">探测 Ollama</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="apply_primary_btn">
+            <property name="label" translatable="yes" context="optaipage|apply_primary">主模型应用到全部槽位</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="combo_single_btn">
+            <property name="label" translatable="yes" context="optaipage|combo_single">预设：单模型</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="combo_dual_btn">
+            <property name="label" translatable="yes" context="optaipage|combo_dual">预设：主+轻量</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="open_path_btn">
+            <property name="label" translatable="yes" context="optaipage|path">显示配置路径</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

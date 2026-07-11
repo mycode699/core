@@ -9,6 +9,8 @@
 
 #include "Provider.hxx"
 
+#include "ModelRoles.hxx"
+#include "ModelRoutingConfig.hxx"
 #include "OllamaAdapter.hxx"
 #include "RuntimePlanStub.hxx"
 
@@ -83,9 +85,13 @@ Provider::call(const css::ai::ProviderRequest& req)
         return rsp;
     }
 
-    // Day-1: dispatch through OllamaAdapter unless cppunit has set
+    // Day-1+: dispatch through OllamaAdapter unless cppunit has set
     // KQOFFICE_AI_DISABLE_PROBE — pure-logic fixtures must not open
     // sockets to 127.0.0.1:11434 in the build sandbox.
+    //
+    // Clavue-aligned multi-role routing: capability → ModelRole → slot → model.
+    // Users configure slots via ~/.config/kqoffice/model-routing.json or
+    // KQOFFICE_AI_*_MODEL env vars (see docs/product/clavue-aligned-ai-intelligence-upgrade.md).
     OUString providerLabel = u"stub"_ustr;
     if (std::getenv("KQOFFICE_AI_DISABLE_PROBE") != nullptr)
     {
@@ -94,28 +100,39 @@ Provider::call(const css::ai::ProviderRequest& req)
     }
     else
     {
+        ensureDefaultModelRoutingTemplate();
+        const ModelRoutingSnapshot routing = loadModelRoutingSnapshot();
         OllamaAdapter adapter;
         OUString p = adapter.probe();
         if (p == u"reachable"_ustr)
         {
             auto models = adapter.listModels();
-            OUString head = models.empty() ? u"?"_ustr : models.front();
-            providerLabel = u"ollama: " + head;
-            if (models.empty())
+            const ModelRoleResolution resolved
+                = resolveModelForCapability(req.capability, routing, models);
+            const OUString modelId = resolved.model;
+            providerLabel = u"ollama: " + (modelId.isEmpty() ? u"?"_ustr : modelId)
+                            + u" role="_ustr + resolved.roleName + u" slot="_ustr
+                            + resolved.slotName;
+            if (models.empty() && modelId.isEmpty())
             {
-                // Daemon up but no models pulled — nothing to route the
-                // prompt to. Evidence still records the attempt.
                 rsp.status = "provider-error";
-                rsp.content = "ollama reachable but no models installed";
+                rsp.content = "ollama reachable but no models installed "
+                              "and no primaryModel configured";
+            }
+            else if (modelId.isEmpty())
+            {
+                rsp.status = "provider-error";
+                rsp.content = "no model resolved for capability " + req.capability
+                              + " (configure primaryModel in model-routing.json)";
             }
             else
             {
-                OUString text = adapter.generate(head, req.prompt);
+                OUString text = adapter.generate(modelId, req.prompt);
                 if (text.isEmpty())
                 {
                     rsp.status = "provider-error";
-                    rsp.content = "ollama generate failed (timeout, "
-                                  "non-2xx, or empty response)";
+                    rsp.content = "ollama generate failed for model " + modelId
+                                  + " (timeout, non-2xx, or empty response)";
                 }
                 else
                 {

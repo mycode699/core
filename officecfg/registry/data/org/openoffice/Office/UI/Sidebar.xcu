@@ -420,6 +420,60 @@
         </prop>
       </node>
 
+      <!-- 工作中台：日/月/年使用洞察（左侧一级入口） -->
+      <node oor:name="WorkDashboardDeck" oor:op="replace">
+        <prop oor:name="Title" oor:type="xs:string">
+          <value xml:lang="en-US">工作中台</value>
+        </prop>
+        <prop oor:name="Id" oor:type="xs:string">
+          <value>WorkDashboardDeck</value>
+        </prop>
+        <prop oor:name="IconURL" oor:type="xs:string">
+          <value>private:graphicrepository/cmd/lc_databaseranges.png</value>
+        </prop>
+        <prop oor:name="ContextList">
+          <value oor:separator=";">
+            WriterVariants, any, visible ;
+            Calc, any, visible ;
+            DrawImpress, any, visible ;
+            StartModule, any, visible ;
+          </value>
+        </prop>
+        <prop oor:name="OrderIndex" oor:type="xs:int">
+          <value>710</value>
+        </prop>
+        <prop oor:name="HiddenInViewer" oor:type="xs:boolean">
+          <value>true</value>
+        </prop>
+      </node>
+
+      <!-- 本地记事本（NotebookLM 本地化） -->
+      <node oor:name="LocalNotebookDeck" oor:op="replace">
+        <prop oor:name="Title" oor:type="xs:string">
+          <value xml:lang="en-US">记事本</value>
+        </prop>
+        <prop oor:name="Id" oor:type="xs:string">
+          <value>LocalNotebookDeck</value>
+        </prop>
+        <prop oor:name="IconURL" oor:type="xs:string">
+          <value>private:graphicrepository/cmd/lc_insertannotation.png</value>
+        </prop>
+        <prop oor:name="ContextList">
+          <value oor:separator=";">
+            WriterVariants, any, visible ;
+            Calc, any, visible ;
+            DrawImpress, any, visible ;
+            StartModule, any, visible ;
+          </value>
+        </prop>
+        <prop oor:name="OrderIndex" oor:type="xs:int">
+          <value>715</value>
+        </prop>
+        <prop oor:name="HiddenInViewer" oor:type="xs:boolean">
+          <value>true</value>
+        </prop>
+      </node>
+
       <!-- V3 W1: cross-app native AI chat workbench entry. -->
       <node oor:name="AIChatDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
@@ -2392,7 +2446,63 @@
         </prop>
       </node>
 
+      <node oor:name="WorkDashboardPanel" oor:op="replace">
+        <prop oor:name="Title" oor:type="xs:string">
+          <value xml:lang="en-US">工作中台</value>
+        </prop>
+        <prop oor:name="Id" oor:type="xs:string">
+          <value>WorkDashboardPanel</value>
+        </prop>
+        <prop oor:name="DeckId" oor:type="xs:string">
+          <value>WorkDashboardDeck</value>
+        </prop>
+        <prop oor:name="ContextList">
+          <value oor:separator=";">
+            WriterVariants, any, visible ;
+            Calc, any, visible ;
+            DrawImpress, any, visible ;
+            StartModule, any, visible ;
+          </value>
+        </prop>
+        <prop oor:name="ImplementationURL" oor:type="xs:string">
+          <value>private:resource/toolpanel/SfxWorkbenchPanelFactory/WorkDashboardPanel</value>
+        </prop>
+        <prop oor:name="OrderIndex" oor:type="xs:int">
+          <value>100</value>
+        </prop>
+        <prop oor:name="WantsAWT" oor:type="xs:boolean">
+          <value>false</value>
+        </prop>
+      </node>
 
+      <node oor:name="LocalNotebookPanel" oor:op="replace">
+        <prop oor:name="Title" oor:type="xs:string">
+          <value xml:lang="en-US">记事本</value>
+        </prop>
+        <prop oor:name="Id" oor:type="xs:string">
+          <value>LocalNotebookPanel</value>
+        </prop>
+        <prop oor:name="DeckId" oor:type="xs:string">
+          <value>LocalNotebookDeck</value>
+        </prop>
+        <prop oor:name="ContextList">
+          <value oor:separator=";">
+            WriterVariants, any, visible ;
+            Calc, any, visible ;
+            DrawImpress, any, visible ;
+            StartModule, any, visible ;
+          </value>
+        </prop>
+        <prop oor:name="ImplementationURL" oor:type="xs:string">
+          <value>private:resource/toolpanel/SfxWorkbenchPanelFactory/LocalNotebookPanel</value>
+        </prop>
+        <prop oor:name="OrderIndex" oor:type="xs:int">
+          <value>100</value>
+        </prop>
+        <prop oor:name="WantsAWT" oor:type="xs:boolean">
+          <value>false</value>
+        </prop>
+      </node>
 
     </node>
   </node>

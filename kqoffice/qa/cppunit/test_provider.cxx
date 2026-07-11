@@ -1308,7 +1308,9 @@ void ProviderTest::testListCapabilitiesMatchesPolicy()
 {
     kqoffice::ai::ServiceModePolicy policy;
     auto policyCaps = policy.currentAllowlist();
-    CPPUNIT_ASSERT_EQUAL(sal_Int32(4), policyCaps.getLength());
+    // Clavue-aligned offline allowlist: rewrite/summarize/format-fix/intent-to-uno
+    // + chat/plan/review/extract/classify/verify
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(10), policyCaps.getLength());
 
     rtl::Reference<kqoffice::ai::Provider> provider(new kqoffice::ai::Provider());
     auto listed = provider->listCapabilities();

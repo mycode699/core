@@ -110,7 +110,10 @@ void AgentChatTest::testContextBuilderBuild()
 
     CPPUNIT_ASSERT_EQUAL(u"writer"_ustr, ctx.documentType);
     CPPUNIT_ASSERT(!ctx.hasSelection());
-    CPPUNIT_ASSERT(ctx.systemPrompt.indexOf("document editing") >= 0);
+    // Chinese-first 可圈office system prompt for Writer surface
+    CPPUNIT_ASSERT(ctx.systemPrompt.indexOf(u"文字") >= 0
+                   || ctx.systemPrompt.indexOf(u"可圈office") >= 0);
+    CPPUNIT_ASSERT_EQUAL(u"Hello"_ustr, ctx.userQuery);
     CPPUNIT_ASSERT_EQUAL(sal_Int32(2048), ctx.maxTokens);
 }
 
@@ -126,7 +129,9 @@ void AgentChatTest::testContextBuilderBuildWithSelection()
     CPPUNIT_ASSERT_EQUAL(u"calc"_ustr, ctx.documentType);
     CPPUNIT_ASSERT(ctx.hasSelection());
     CPPUNIT_ASSERT_EQUAL(u"A1:B5=42"_ustr, ctx.selectionText);
-    CPPUNIT_ASSERT(ctx.systemPrompt.indexOf("formula") >= 0);
+    CPPUNIT_ASSERT(ctx.systemPrompt.indexOf(u"表格") >= 0
+                   || ctx.systemPrompt.indexOf(u"可圈office") >= 0);
+    CPPUNIT_ASSERT_EQUAL(u"sum these"_ustr, ctx.userQuery);
 }
 
 void AgentChatTest::testContextBuilderToPromptString()
@@ -135,6 +140,7 @@ void AgentChatTest::testContextBuilderToPromptString()
     ctx.documentTitle = u"Report.odt"_ustr;
     ctx.documentType = u"writer"_ustr;
     ctx.selectionText = u"selected paragraph"_ustr;
+    ctx.userQuery = u"please rewrite"_ustr;
     ctx.systemPrompt = u"You are a document editing assistant."_ustr;
 
     OUString prompt = AgentChatContextBuilder::toPromptString(ctx);
@@ -145,6 +151,7 @@ void AgentChatTest::testContextBuilderToPromptString()
     CPPUNIT_ASSERT(prompt.indexOf(u"--- Selection ---") >= 0);
     CPPUNIT_ASSERT(prompt.indexOf(u"selected paragraph") >= 0);
     CPPUNIT_ASSERT(prompt.indexOf(u"--- User Request ---") >= 0);
+    CPPUNIT_ASSERT(prompt.indexOf(u"please rewrite") >= 0);
 }
 
 void AgentChatTest::testContextBuilderExtractUserQuery()

@@ -22,32 +22,30 @@ using namespace kqoffice::ai::chat;
 
 namespace
 {
-/// Build the system prompt based on document type.
+/// Build the system prompt based on document type (可圈office Chinese-first).
 OUString buildSystemPromptImpl(const OUString& docType,
                                const std::vector<MentionContext>& /*mentions*/)
 {
     if (docType.equalsIgnoreAsciiCase("writer"))
     {
-        return u"You are a document editing assistant. You help users write, "
-               u"edit, and format text documents. Respond with clear, "
-               u"actionable suggestions."_ustr;
+        return u"你是可圈office 文字处理助手。根据用户选区与文档上下文，提供改写、"_ustr
+               u"润色、扩写、简写、翻译与结构建议。若建议修改正文，优先输出可解析的"_ustr
+               u"ApplyPlan/段落替换 JSON；否则给出清晰可执行的文案。禁止声称已修改用户主文档。"_ustr;
     }
     if (docType.equalsIgnoreAsciiCase("calc"))
     {
-        return u"You are a spreadsheet formula assistant. You help users "
-               u"analyze data, build formulas, and format spreadsheets. "
-               u"Respond with precise cell references and formulas."_ustr;
+        return u"你是可圈office 表格助手。根据选中单元格/区域，解释数据、给出公式、"_ustr
+               u"清洗与汇总建议。引用单元格请用标准地址（如 B2、A1:C10）。"_ustr
+               u"禁止声称已修改用户工作表。"_ustr;
     }
     if (docType.equalsIgnoreAsciiCase("impress"))
     {
-        return u"You are a presentation design assistant. You help users "
-               u"create and refine slide decks with effective layouts, "
-               u"visuals, and messaging."_ustr;
+        return u"你是可圈office 演示助手。根据当前幻灯/对象文案，优化标题、要点与讲稿，"_ustr
+               u"给出版式与结构建议。禁止声称已修改用户演示文稿。"_ustr;
     }
 
-    // Default: generic office assistant
-    return u"You are a helpful office productivity assistant. You help users "
-           u"with documents, spreadsheets, and presentations."_ustr;
+    return u"你是可圈office 办公助手。结合当前文档类型与选区帮助用户完成编辑任务。"_ustr
+           u"禁止在未获用户批准时声称已修改主文档。"_ustr;
 }
 
 /// Build the document context section for the prompt string.
@@ -60,6 +58,11 @@ OUString buildDocumentSectionImpl(const ChatContext& ctx)
     buf.append(ctx.documentTitle.isEmpty() ? u"(untitled)"_ustr : ctx.documentTitle);
     buf.append(u"\nType: ");
     buf.append(ctx.documentType.isEmpty() ? u"unknown"_ustr : ctx.documentType);
+    if (!ctx.selectionPosition.isEmpty())
+    {
+        buf.append(u"\nPosition: ");
+        buf.append(ctx.selectionPosition);
+    }
 
     if (ctx.hasSelection())
     {
@@ -79,18 +82,14 @@ ChatContext AgentChatContextBuilder::build(const OUString& userInput,
 {
     ChatContext ctx;
 
-    // Extract user query (strip @mention tokens)
     ctx.systemPrompt = AgentChatContextBuilder::buildSystemPrompt(selection.surface, mentions);
-
-    // Set document title and type from selection context
-    ctx.documentTitle = u"Current Document"_ustr; // Day-1: placeholder; real integration picks from model
+    ctx.documentTitle = u"Current Document"_ustr;
     ctx.documentType = selection.surface;
-
-    // Capture selection text
     ctx.selectionText = selection.text;
-
-    // Truncate recentMessages to last 20 (empty for a fresh context)
-    // Caller populates this field before passing to toPromptString.
+    ctx.selectionPosition = selection.position;
+    ctx.userQuery = AgentChatContextBuilder::extractUserQuery(userInput, mentions);
+    if (ctx.userQuery.isEmpty())
+        ctx.userQuery = userInput.trim();
     ctx.recentMessages.clear();
 
     SAL_INFO("kqoffice.ai.chat",
@@ -105,15 +104,12 @@ OUString AgentChatContextBuilder::toPromptString(const ChatContext& ctx)
 {
     OUStringBuffer buf;
 
-    // System prompt
     buf.append(u"=== System Instruction ===\n");
     buf.append(ctx.systemPrompt);
     buf.append(u"\n\n");
 
-    // Document context
     buf.append(buildDocumentSectionImpl(ctx));
 
-    // Conversation history (last 20)
     if (!ctx.recentMessages.empty())
     {
         buf.append(u"--- Conversation History ---\n");
@@ -126,11 +122,12 @@ OUString AgentChatContextBuilder::toPromptString(const ChatContext& ctx)
         }
     }
 
-    // User query placeholder
     buf.append(u"--- User Request ---\n");
+    buf.append(ctx.userQuery);
+    buf.append(u"\n");
 
     SAL_INFO("kqoffice.ai.chat",
-             "Generated prompt string, length=" << buf.toString().getLength());
+             "Generated prompt string, length=" << buf.getLength());
 
     return buf.makeStringAndClear();
 }

@@ -76,6 +76,10 @@ class BackingWindow : public InterimItemWindow
     std::unique_ptr<weld::Button> mxDrawAllButton;
     std::unique_ptr<weld::Button> mxDBAllButton;
     std::unique_ptr<weld::Button> mxMathAllButton;
+    std::unique_ptr<weld::Label> mxAiCreateLabel;
+    std::unique_ptr<weld::Button> mxAiDraftWriterButton;
+    std::unique_ptr<weld::Button> mxAiDraftCalcButton;
+    std::unique_ptr<weld::Button> mxAiDraftImpressButton;
     std::unique_ptr<weld::Container> mxScenarioBox;
     std::unique_ptr<weld::Button> mxScenarioReportButton;
     std::unique_ptr<weld::Button> mxScenarioMinutesButton;
@@ -136,6 +140,7 @@ class BackingWindow : public InterimItemWindow
     DECL_LINK(EditTemplateHdl, const OUString&, void);
     DECL_LINK(OpenScenarioHdl, weld::Button&, void);
     DECL_LINK(OpenCompatibilityHdl, weld::Button&, void);
+    DECL_LINK(AiDraftHdl, weld::Button&, void);
 
     void initControls();
 
@@ -150,6 +155,8 @@ class BackingWindow : public InterimItemWindow
     void openScenarioTemplate(std::u16string_view rTemplateFileName,
                               std::u16string_view rFallbackTitle,
                               FILTER_APPLICATION eFilter);
+    /// Queue AI scenario + open blank factory doc (Writer/Calc/Impress).
+    void openAiDraft(std::u16string_view rScenarioId, const OUString& rFactoryUrl);
 
     void DataChanged(const DataChangedEvent&) override;
 

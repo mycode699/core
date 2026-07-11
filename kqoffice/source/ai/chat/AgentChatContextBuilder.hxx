@@ -27,11 +27,13 @@ namespace kqoffice::ai::chat
 /// Complete context for generating AI chat responses.
 struct ChatContext
 {
-    OUString documentTitle;    ///< Current document title/filename
-    OUString documentType;     ///< "writer", "calc", "impress"
-    OUString selectionText;    ///< Captured selection content (if any)
+    OUString documentTitle; ///< Current document title/filename
+    OUString documentType; ///< "writer", "calc", "impress"
+    OUString selectionText; ///< Captured selection content (if any)
+    OUString selectionPosition; ///< para:/cell:/slide: anchor when available
+    OUString userQuery; ///< User request after @mention strip
     std::vector<OUString> recentMessages; ///< Conversation history (last N messages)
-    OUString systemPrompt;     ///< System instruction for the AI
+    OUString systemPrompt; ///< System instruction for the AI
     sal_Int32 maxTokens = 2048; ///< Max response tokens
 
     /// Check if context has meaningful selection.

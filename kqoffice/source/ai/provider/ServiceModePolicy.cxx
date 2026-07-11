@@ -15,13 +15,21 @@ namespace kqoffice::ai
 {
 namespace
 {
-// Offline-mode allow-list. Mirrors W1 spec §"Service Mode Policy".
+// Offline-mode allow-list. Mirrors W1 spec §"Service Mode Policy",
+// extended for five-slot routing (plan/review/agent/extract…).
 // Order: most-frequent first, for tiny linear-scan locality.
-constexpr std::array<std::u16string_view, 4> kOfflineCapabilities{
+constexpr std::array<std::u16string_view, 11> kOfflineCapabilities{
     u"rewrite",
     u"summarize",
     u"format-fix",
     u"intent-to-uno",
+    u"plan",
+    u"review",
+    u"agent",
+    u"extract",
+    u"classify",
+    u"verify",
+    u"chat",
 };
 } // namespace
 

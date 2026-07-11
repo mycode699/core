@@ -12,6 +12,8 @@
 #include "InlineActionRequest.hxx"
 #include "InlineActionProviderDispatch.hxx"
 
+#include <com/sun/star/beans/PropertyValue.hpp>
+#include <comphelper/dispatchcommand.hxx>
 #include <sal/log.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/weld/Builder.hxx>
@@ -32,12 +34,15 @@ CalcCellRangePopover::CalcCellRangePopover(weld::Widget* pParent)
     , m_xGenerateFormula(m_xBuilder->weld_button(u"btn_generate_formula"_ustr))
     , m_xFormatClean(m_xBuilder->weld_button(u"btn_format_clean"_ustr))
     , m_xFormatChange(m_xBuilder->weld_button(u"btn_format_change"_ustr))
+    , m_xAiInline(m_xBuilder->weld_button(u"btn_ai_inline"_ustr))
 {
     m_xExplainData->connect_clicked(LINK(this, CalcCellRangePopover, OnActionClicked));
     m_xSuggestChart->connect_clicked(LINK(this, CalcCellRangePopover, OnActionClicked));
     m_xGenerateFormula->connect_clicked(LINK(this, CalcCellRangePopover, OnActionClicked));
     m_xFormatClean->connect_clicked(LINK(this, CalcCellRangePopover, OnActionClicked));
     m_xFormatChange->connect_clicked(LINK(this, CalcCellRangePopover, OnActionClicked));
+    if (m_xAiInline)
+        m_xAiInline->connect_clicked(LINK(this, CalcCellRangePopover, OnActionClicked));
     m_xPopover->connect_closed(LINK(this, CalcCellRangePopover, OnPopoverClosed));
 }
 
@@ -99,6 +104,12 @@ IMPL_LINK(CalcCellRangePopover, OnActionClicked, weld::Button&, rButton, void)
         pickAction(CellAction::FormatClean);
     else if (&rButton == m_xFormatChange.get())
         pickAction(CellAction::FormatChange);
+    else if (m_xAiInline && &rButton == m_xAiInline.get())
+    {
+        DismissCellRangePopover();
+        comphelper::dispatchCommand(u".uno:KQAIInlineEdit"_ustr,
+                                    css::uno::Sequence<css::beans::PropertyValue>());
+    }
 }
 
 IMPL_LINK_NOARG(CalcCellRangePopover, OnPopoverClosed, weld::Popover&, void)

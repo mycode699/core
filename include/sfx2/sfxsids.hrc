@@ -304,6 +304,12 @@ class SvxZoomItem;
 #define SID_EXTENSION_MANAGER               TypedWhichId<SfxStringItem>(SID_SFX_START + 1752)
 #define SID_COMMAND_PALETTE                 (SID_SFX_START + 1753)
 #define SID_COWORK_TASK_MANAGER             (SID_SFX_START + 1754)
+#define SID_KQAI_INLINE_EDIT                (SID_SFX_START + 1755)
+#define SID_KQAI_GHOST_COMPLETE             (SID_SFX_START + 1756)
+#define SID_KQAI_VOICE_INPUT                (SID_SFX_START + 1757)
+#define SID_KQAI_SCREENSHOT                 (SID_SFX_START + 1758)
+#define SID_KQAI_SCREENSHOT_REGION          (SID_SFX_START + 1759)
+#define SID_KQAI_WORK_PENDANT               (SID_SFX_START + 1760)
 //      SID_SFX_free_END                    (SID_SFX_START + 3999)
 
 #define SID_OPEN_NEW_VIEW                   TypedWhichId<SfxBoolItem>(SID_SFX_START + 520)

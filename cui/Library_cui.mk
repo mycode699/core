@@ -18,6 +18,8 @@ $(eval $(call gb_Library_set_include,cui,\
     -I$(SRCDIR) \
     -I$(SRCDIR)/kqoffice/source/ai/cowork \
     -I$(SRCDIR)/kqoffice/source/ai/i18n \
+    -I$(SRCDIR)/kqoffice/source/ai/provider \
+    -I$(SRCDIR)/kqoffice/source/ai/chat \
     -I$(SRCDIR)/sfx2/inc \
 ))
 
@@ -196,6 +198,7 @@ $(eval $(call gb_Library_add_exception_objects,cui,\
     cui/source/options/opthtml \
     cui/source/options/optlanguagetool \
     cui/source/options/optdeepl \
+    cui/source/options/optai \
     cui/source/options/optinet2 \
     cui/source/options/optjava \
     cui/source/options/optjsearch \

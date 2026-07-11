@@ -9,6 +9,8 @@
 
 #include "AIChatSlashCommands.hxx"
 
+#include <DocumentAIScenarioStore.hxx>
+
 #include <algorithm>
 
 namespace sfx2::sidebar
@@ -16,9 +18,9 @@ namespace sfx2::sidebar
 namespace
 {
 
-const std::vector<SlashCommand>& GetSlashCommands()
+std::vector<SlashCommand> BuildMergedSlashCommands()
 {
-    static const std::vector<SlashCommand> aCommands = {
+    std::vector<SlashCommand> aCommands = {
         // Editing commands
         { u"/rewrite"_ustr, u"改写"_ustr, u"Rewrite the selected text"_ustr, true },
         { u"/expand"_ustr, u"扩写"_ustr, u"Expand the selected text"_ustr, true },
@@ -44,7 +46,48 @@ const std::vector<SlashCommand>& GetSlashCommands()
         { u"/revise"_ustr, u"修改"_ustr, u"Request revision of current canvas step"_ustr, false },
         { u"/skip"_ustr, u"跳过"_ustr, u"Skip current canvas step"_ustr, false },
     };
+
+    // Merge configurable scenario slash commands (公文润色 / 公式助手 / …).
+    try
+    {
+        const auto cat = kqoffice::ai::chat::DocumentAIScenarioStore::load();
+        for (const auto& s : cat.items)
+        {
+            if (!s.enabled || s.slashCommand.isEmpty())
+                continue;
+            bool exists = false;
+            for (const auto& c : aCommands)
+            {
+                if (c.command == s.slashCommand)
+                {
+                    exists = true;
+                    break;
+                }
+            }
+            if (exists)
+                continue;
+            SlashCommand sc;
+            sc.command = s.slashCommand;
+            sc.label = s.titleZh;
+            sc.description = u"方案 "_ustr + s.id + u" · "_ustr + s.capabilityHint;
+            sc.needsSelection = s.options.attachSelection;
+            aCommands.push_back(sc);
+        }
+    }
+    catch (...)
+    {
+        // Catalog load must never break slash registry.
+    }
     return aCommands;
+}
+
+const std::vector<SlashCommand>& GetSlashCommands()
+{
+    // Rebuild each call so option-page CRUD edits apply without restart.
+    // Cheap vs model inference; not on a hot rendering path.
+    static std::vector<SlashCommand> aCache;
+    aCache = BuildMergedSlashCommands();
+    return aCache;
 }
 
 } // anonymous namespace

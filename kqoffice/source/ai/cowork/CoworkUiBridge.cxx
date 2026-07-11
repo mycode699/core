@@ -14,6 +14,8 @@
 #include "TaskRunner.hxx"
 #include "TaskScheduler.hxx"
 
+#include <AgentStepRunner.hxx>
+
 #include <osl/thread.hxx>
 
 #include <atomic>
@@ -68,6 +70,47 @@ public:
             aDelay.Nanosec = static_cast<sal_Int64>((m_nMinimumRunningMs % 1000) * 1000000);
             osl::Thread::wait(aDelay);
         }
+
+        // Live multi-step via Provider five-slot routing.
+        // Prefer delegated sub-agent roles when present; else Plan→Act→Review.
+        // On provider failure (offline / no Ollama), fall back to stub plan ids
+        // so queue state machine tests and offline UI remain functional.
+        OUString goal = runningTask.userPrompt;
+        if (goal.isEmpty())
+            goal = runningTask.title;
+        if (goal.isEmpty())
+            goal = u"task="_ustr + runningTask.taskId + u" kind="_ustr
+                   + taskKindToken(runningTask.kind);
+
+        kqoffice::ai::AgentPipelineResult pipe;
+        if (!runningTask.subAgentTasks.empty())
+        {
+            std::vector<OUString> roles;
+            std::vector<OUString> instructions;
+            roles.reserve(runningTask.subAgentTasks.size());
+            instructions.reserve(runningTask.subAgentTasks.size());
+            for (const auto& sub : runningTask.subAgentTasks)
+            {
+                roles.push_back(sub.agentRole);
+                instructions.push_back(sub.instruction);
+            }
+            pipe = kqoffice::ai::AgentStepRunner::runRoleSequence(goal, roles, instructions,
+                                                                  /*bContinueOnError*/ false);
+        }
+        else
+        {
+            pipe = kqoffice::ai::AgentStepRunner::runPlanActReview(goal);
+        }
+
+        if (pipe.success)
+        {
+            const OUString planId = planIdForTask(runningTask.taskId + u":live"_ustr);
+            const OUString evidence = !pipe.finalEvidenceId.isEmpty()
+                                          ? pipe.finalEvidenceId
+                                          : evidenceIdForTask(runningTask.taskId);
+            return TaskWorkerResult::awaitingReview(planId, evidence);
+        }
+        // Soft fallback: keep cowork queue progressing offline.
         return TaskWorkerResult::awaitingReview(
             planIdForTask(runningTask.taskId),
             evidenceIdForTask(runningTask.taskId));

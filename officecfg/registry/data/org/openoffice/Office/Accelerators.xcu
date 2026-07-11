@@ -90,17 +90,51 @@ Ctrl+Shift+u aka U_SHIFT_MOD1 under GTK/IBUS is for unicode key input
           <value xml:lang="en-US">.uno:SpellOnline</value>
         </prop>
       </node>
+      <!-- Cursor-style: Ctrl/Cmd+K = 可圈 AI 内联编辑；Cmd+Shift+K = 命令面板 -->
       <node oor:name="K_MOD1" oor:op="replace">
+        <prop oor:name="Command">
+          <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
+          <value xml:lang="en-US">.uno:KQAIInlineEdit</value>
+        </prop>
+      </node>
+      <node oor:name="K_SHIFT_MOD1" oor:op="replace">
+        <prop oor:name="Command">
+          <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
+          <value xml:lang="en-US">.uno:CommandPalette</value>
+        </prop>
+      </node>
+      <!-- 超链接改绑：Ctrl/Cmd+Shift+L（原 Cmd+K） -->
+      <node oor:name="L_SHIFT_MOD1" oor:op="replace">
         <prop oor:name="Command">
           <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
           <value xml:lang="en-US">.uno:HyperlinkDialog</value>
         </prop>
       </node>
-      <!-- V2 W2 Day-1b (B1 option B): Cmd+Shift+K opens Command Palette; Cmd+K stays HyperlinkDialog -->
-      <node oor:name="K_SHIFT_MOD1" oor:op="replace">
+      <!-- Cursor-style 续写补全：Ctrl/Cmd+. → light 槽自动生成，Tab 应用 -->
+      <node oor:name="PERIOD_MOD1" oor:op="replace">
         <prop oor:name="Command">
           <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
-          <value xml:lang="en-US">.uno:CommandPalette</value>
+          <value xml:lang="en-US">.uno:KQAIGhostComplete</value>
+        </prop>
+      </node>
+      <!-- 微信对齐：Ctrl/Cmd+Shift+A 选区截图 → AI；F4 语音输入 -->
+      <node oor:name="A_SHIFT_MOD1" oor:op="replace">
+        <prop oor:name="Command">
+          <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
+          <value xml:lang="en-US">.uno:KQAIScreenshotRegion</value>
+        </prop>
+      </node>
+      <node oor:name="F4" oor:op="replace">
+        <prop oor:name="Command">
+          <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
+          <value xml:lang="en-US">.uno:KQAIVoiceInput</value>
+        </prop>
+      </node>
+      <!-- 效率挂坠：Ctrl/Cmd+Shift+E -->
+      <node oor:name="E_SHIFT_MOD1" oor:op="replace">
+        <prop oor:name="Command">
+          <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
+          <value xml:lang="en-US">.uno:KQAIWorkPendant</value>
         </prop>
       </node>
       <!-- V2 W5 Day-1: Cmd+Shift+T opens async task manager -->
@@ -360,6 +394,20 @@ Ctrl+Shift+u aka U_SHIFT_MOD1 under GTK/IBUS is for unicode key input
         <prop oor:name="Command">
           <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
           <value xml:lang="en-US">.uno:SidebarDeck.PropertyDeck</value>
+        </prop>
+      </node>
+      <!-- 可圈office: open AI Chat deck with selection context (Ctrl/Cmd+Shift+F6) -->
+      <node oor:name="F6_SHIFT_MOD1" oor:op="replace">
+        <prop oor:name="Command">
+          <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
+          <value xml:lang="en-US">.uno:SidebarDeck.AIChatDeck</value>
+        </prop>
+      </node>
+      <!-- 可圈office: alternate — Ctrl+Alt+J / Cmd+Option+J (avoid Ctrl+J = justify) -->
+      <node oor:name="J_MOD1_MOD2" oor:op="replace">
+        <prop oor:name="Command">
+          <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
+          <value xml:lang="en-US">.uno:SidebarDeck.AIChatDeck</value>
         </prop>
       </node>
     </node>
@@ -8589,12 +8637,6 @@ Ctrl+Shift+u aka U_SHIFT_MOD1 under GTK/IBUS is for unicode key input
         <node oor:name="ADD" oor:op="replace">
           <prop oor:name="Command">
             <value xml:lang="en-US">.uno:ExpandSection</value>
-            <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
-          </prop>
-        </node>
-        <node oor:name="A_MOD1_MOD2" oor:op="replace">
-          <prop oor:name="Command">
-            <value xml:lang="en-US">.uno:SidebarDeck.AIChatDeck</value>
             <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
           </prop>
         </node>

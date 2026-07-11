@@ -20,6 +20,7 @@
 #include <AgentChatDiffApplier.hxx>
 
 #include <sal/log.hxx>
+#include <rtl/ustrbuf.hxx>
 #include <comphelper/processfactory.hxx>
 
 #include <com/sun/star/frame/Desktop.hpp>
@@ -39,6 +40,7 @@
 #include <com/sun/star/drawing/XShape.hpp>
 #include <com/sun/star/drawing/XShapes.hpp>
 #include <com/sun/star/drawing/FillStyle.hpp>
+#include <com/sun/star/presentation/XPresentationPage.hpp>
 #include <com/sun/star/beans/XPropertySet.hpp>
 #include <com/sun/star/awt/FontWeight.hpp>
 #include <com/sun/star/awt/FontSlant.hpp>
@@ -46,6 +48,8 @@
 #include <com/sun/star/awt/Point.hpp>
 #include <com/sun/star/lang/XMultiServiceFactory.hpp>
 #include <com/sun/star/container/XIndexAccess.hpp>
+
+#include <vector>
 
 using namespace kqoffice::ai::chat;
 
@@ -80,13 +84,19 @@ css::uno::Reference<css::frame::XModel> getCurrentModel()
     }
 }
 
-/// Try to determine document type from the model URL.
+/// Determine document type via UNO interfaces (works for unsaved docs).
 OUString detectDocumentType(const css::uno::Reference<css::frame::XModel>& model)
 {
     if (!model.is())
         return u""_ustr;
     try
     {
+        if (css::uno::Reference<css::text::XTextDocument>(model, css::uno::UNO_QUERY).is())
+            return u"writer"_ustr;
+        if (css::uno::Reference<css::sheet::XSpreadsheetDocument>(model, css::uno::UNO_QUERY).is())
+            return u"calc"_ustr;
+        if (css::uno::Reference<css::drawing::XDrawPagesSupplier>(model, css::uno::UNO_QUERY).is())
+            return u"impress"_ustr;
         const OUString url = model->getURL();
         if (url.endsWith(u".odt"_ustr) || url.endsWith(u".docx"_ustr) || url.endsWith(u".doc"_ustr))
             return u"writer"_ustr;
@@ -193,7 +203,7 @@ struct SlideShapeTarget
     bool valid = false;
 };
 
-/// Parse "slide:N:shape:M" target into 0-based indices.
+/// Parse "slide:N:shape:M" or bare "slide:N" (whole-slide content) targets.
 SlideShapeTarget parseSlideShapeTarget(const OUString& target)
 {
     SlideShapeTarget result;
@@ -203,7 +213,18 @@ SlideShapeTarget parseSlideShapeTarget(const OUString& target)
     const OUString rest = target.copy(prefix.getLength());
     const sal_Int32 colonPos = rest.indexOf(u":shape:"_ustr);
     if (colonPos < 0)
+    {
+        // Bare slide:N — create/ensure page and fill title+body shapes.
+        if (!isPositiveIntegerString(rest))
+            return result;
+        const sal_Int32 si = rest.toInt32();
+        if (si < 1)
+            return result;
+        result.slideIndex = si - 1;
+        result.shapeIndex = -1; // sentinel: whole-slide content
+        result.valid = true;
         return result;
+    }
     const OUString slideStr = rest.copy(0, colonPos);
     const OUString shapeStr = rest.copy(colonPos + 7);
     if (slideStr.isEmpty() || shapeStr.isEmpty())
@@ -218,6 +239,342 @@ SlideShapeTarget parseSlideShapeTarget(const OUString& target)
     result.shapeIndex = sh - 1;
     result.valid = true;
     return result;
+}
+
+/// Ensure draw pages exist up to (and including) 0-based slideIdx; returns the page.
+css::uno::Reference<css::drawing::XDrawPage> ensureSlide(
+    const css::uno::Reference<css::drawing::XDrawPagesSupplier>& supp, sal_Int32 slideIdx)
+{
+    auto xPages = supp->getDrawPages();
+    if (!xPages.is() || slideIdx < 0)
+        return nullptr;
+    auto xIndex(css::uno::Reference<css::container::XIndexAccess>(xPages, css::uno::UNO_QUERY));
+    if (!xIndex.is())
+        return nullptr;
+    while (xIndex->getCount() <= slideIdx)
+    {
+        // insert at end
+        xPages->insertNewByIndex(xIndex->getCount());
+        xIndex.set(xPages, css::uno::UNO_QUERY);
+        if (!xIndex.is())
+            return nullptr;
+    }
+    return css::uno::Reference<css::drawing::XDrawPage>(xIndex->getByIndex(slideIdx),
+                                                         css::uno::UNO_QUERY);
+}
+
+/// Create title + body text shapes from multi-line content (first line = title).
+/// Lines starting with 讲稿/备注/Notes are written to the notes page when available.
+ApplyResult impressFillSlide(
+    const css::uno::Reference<css::drawing::XDrawPagesSupplier>& supp, sal_Int32 slideIdx,
+    const OUString& text)
+{
+    ApplyResult r;
+    try
+    {
+        auto xPage = ensureSlide(supp, slideIdx);
+        if (!xPage.is())
+        {
+            r.error = u"Impress: cannot ensure slide "_ustr + OUString::number(slideIdx + 1);
+            return r;
+        }
+        auto xSMgr = comphelper::getProcessComponentContext()->getServiceManager();
+        if (!xSMgr.is())
+        {
+            r.error = u"Impress: no service manager"_ustr;
+            return r;
+        }
+        auto xShapes(css::uno::Reference<css::drawing::XShapes>(xPage, css::uno::UNO_QUERY));
+        if (!xShapes.is())
+        {
+            r.error = u"Impress: page has no XShapes"_ustr;
+            return r;
+        }
+
+        // Split body vs speaker notes (讲稿： / 备注： / Notes:)
+        OUStringBuffer bodyBuf;
+        OUStringBuffer notesBuf;
+        sal_Int32 pos = 0;
+        while (pos <= text.getLength())
+        {
+            sal_Int32 nl = text.indexOf(u'\n', pos);
+            if (nl < 0)
+                nl = text.getLength();
+            OUString line = text.copy(pos, nl - pos);
+            if (!line.isEmpty() && line[line.getLength() - 1] == u'\r')
+                line = line.copy(0, line.getLength() - 1);
+            const OUString t = line.trim();
+            const bool isNote = t.startsWith(u"讲稿"_ustr) || t.startsWith(u"备注"_ustr)
+                                || t.startsWith(u"Notes"_ustr) || t.startsWith(u"notes"_ustr)
+                                || t.startsWith(u"Speaker"_ustr);
+            if (isNote)
+            {
+                sal_Int32 c = t.indexOf(u'：');
+                if (c < 0)
+                    c = t.indexOf(u':');
+                OUString note = (c >= 0) ? t.copy(c + 1).trim() : t;
+                if (!note.isEmpty())
+                {
+                    if (!notesBuf.isEmpty())
+                        notesBuf.append(u' ');
+                    notesBuf.append(note);
+                }
+            }
+            else
+            {
+                if (!bodyBuf.isEmpty())
+                    bodyBuf.append(u'\n');
+                bodyBuf.append(line);
+            }
+            if (nl >= text.getLength())
+                break;
+            pos = nl + 1;
+        }
+
+        const OUString notesText = notesBuf.makeStringAndClear().trim();
+
+        // Strip layout / theme / image meta lines from body before layout.
+        // 版式：标题页|标题内容|分栏|章节   主题：商务蓝|简洁灰
+        // 配图：描述 → placeholder box
+        OUString layout = u"title_body"_ustr;
+        OUString theme;
+        std::vector<OUString> imageHints;
+        OUStringBuffer cleanBody;
+        {
+            const OUString rawBody = bodyBuf.makeStringAndClear();
+            sal_Int32 p = 0;
+            while (p <= rawBody.getLength())
+            {
+                sal_Int32 nl2 = rawBody.indexOf(u'\n', p);
+                if (nl2 < 0)
+                    nl2 = rawBody.getLength();
+                OUString line = rawBody.copy(p, nl2 - p).trim();
+                const OUString low = line.toAsciiLowerCase();
+                if (line.startsWith(u"版式"_ustr) || low.startsWith(u"layout"_ustr))
+                {
+                    sal_Int32 c = line.indexOf(u'：');
+                    if (c < 0)
+                        c = line.indexOf(u':');
+                    OUString v = (c >= 0) ? line.copy(c + 1).trim() : OUString();
+                    const OUString vl = v.toAsciiLowerCase();
+                    if (vl.indexOf(u"标题页"_ustr) >= 0 || vl.indexOf(u"title only"_ustr) >= 0
+                        || vl.indexOf(u"cover"_ustr) >= 0)
+                        layout = u"title"_ustr;
+                    else if (vl.indexOf(u"分栏"_ustr) >= 0 || vl.indexOf(u"two"_ustr) >= 0
+                             || vl.indexOf(u"双栏"_ustr) >= 0)
+                        layout = u"two_column"_ustr;
+                    else if (vl.indexOf(u"章节"_ustr) >= 0 || vl.indexOf(u"section"_ustr) >= 0)
+                        layout = u"section"_ustr;
+                    else
+                        layout = u"title_body"_ustr;
+                }
+                else if (line.startsWith(u"主题"_ustr) || low.startsWith(u"theme"_ustr))
+                {
+                    sal_Int32 c = line.indexOf(u'：');
+                    if (c < 0)
+                        c = line.indexOf(u':');
+                    theme = (c >= 0) ? line.copy(c + 1).trim() : line;
+                }
+                else if (line.startsWith(u"配图"_ustr) || low.startsWith(u"image"_ustr)
+                         || line.startsWith(u"插图"_ustr))
+                {
+                    sal_Int32 c = line.indexOf(u'：');
+                    if (c < 0)
+                        c = line.indexOf(u':');
+                    OUString hint = (c >= 0) ? line.copy(c + 1).trim() : line;
+                    if (!hint.isEmpty())
+                        imageHints.push_back(hint);
+                }
+                else if (!line.isEmpty())
+                {
+                    if (!cleanBody.isEmpty())
+                        cleanBody.append(u'\n');
+                    cleanBody.append(line);
+                }
+                if (nl2 >= rawBody.getLength())
+                    break;
+                p = nl2 + 1;
+            }
+        }
+
+        const OUString bodyText = cleanBody.makeStringAndClear().trim();
+        OUString title = bodyText;
+        OUString body;
+        const sal_Int32 nl = bodyText.indexOf(u'\n');
+        if (nl >= 0)
+        {
+            title = bodyText.copy(0, nl).trim();
+            body = bodyText.copy(nl + 1).trim();
+        }
+        title = title.trim();
+
+        auto makeTextShape = [&](const OUString& content, sal_Int32 x, sal_Int32 y, sal_Int32 w,
+                                 sal_Int32 h) {
+            auto xShape(css::uno::Reference<css::drawing::XShape>(
+                xSMgr->createInstanceWithContext(u"com.sun.star.drawing.TextShape"_ustr,
+                                                 comphelper::getProcessComponentContext()),
+                css::uno::UNO_QUERY));
+            if (!xShape.is())
+                return css::uno::Reference<css::drawing::XShape>();
+            xShape->setSize(css::awt::Size(w, h));
+            xShape->setPosition(css::awt::Point(x, y));
+            auto xShapeText(css::uno::Reference<css::text::XText>(xShape, css::uno::UNO_QUERY));
+            if (xShapeText.is())
+                xShapeText->setString(content);
+            xShapes->add(xShape);
+            return xShape;
+        };
+
+        auto applyThemeTint = [&](const css::uno::Reference<css::drawing::XShape>& xShape) {
+            if (!xShape.is() || theme.isEmpty())
+                return;
+            try
+            {
+                css::uno::Reference<css::beans::XPropertySet> xPS(xShape, css::uno::UNO_QUERY);
+                if (!xPS.is())
+                    return;
+                // Soft fill for calm business themes (HMM-independent ARGB via Color)
+                sal_Int32 color = 0x00F5F7FA; // default cool gray
+                const OUString tl = theme.toAsciiLowerCase();
+                if (tl.indexOf(u"蓝"_ustr) >= 0 || tl.indexOf(u"blue"_ustr) >= 0)
+                    color = 0x00E8F1FB;
+                else if (tl.indexOf(u"灰"_ustr) >= 0 || tl.indexOf(u"gray"_ustr) >= 0
+                         || tl.indexOf(u"grey"_ustr) >= 0)
+                    color = 0x00F0F0F0;
+                else if (tl.indexOf(u"绿"_ustr) >= 0 || tl.indexOf(u"green"_ustr) >= 0)
+                    color = 0x00EAF6EE;
+                xPS->setPropertyValue(u"FillStyle"_ustr,
+                                      css::uno::Any(css::drawing::FillStyle_SOLID));
+                xPS->setPropertyValue(u"FillColor"_ustr, css::uno::Any(color));
+            }
+            catch (const css::uno::Exception&)
+            {
+            }
+        };
+
+        // Layouts in HMM (1/100 mm), premium-business calm spacing
+        if (layout == u"title"_ustr)
+        {
+            if (!title.isEmpty())
+            {
+                auto sh = makeTextShape(title, 2000, 7000, 24000, 4000);
+                applyThemeTint(sh);
+            }
+            if (!body.isEmpty())
+                makeTextShape(body, 3000, 12000, 22000, 4000);
+        }
+        else if (layout == u"section"_ustr)
+        {
+            if (!title.isEmpty())
+            {
+                auto sh = makeTextShape(title, 2000, 8000, 24000, 3500);
+                applyThemeTint(sh);
+            }
+        }
+        else if (layout == u"two_column"_ustr)
+        {
+            if (!title.isEmpty())
+                makeTextShape(title, 1000, 800, 25000, 2500);
+            // Split body on blank line or middle
+            OUString left = body;
+            OUString right;
+            const sal_Int32 mid = body.indexOf(u"\n\n");
+            if (mid >= 0)
+            {
+                left = body.copy(0, mid).trim();
+                right = body.copy(mid + 2).trim();
+            }
+            else
+            {
+                const sal_Int32 half = body.getLength() / 2;
+                sal_Int32 split = body.indexOf(u'\n', half > 0 ? half : 0);
+                if (split < 0)
+                    split = half;
+                if (split > 0 && split < body.getLength())
+                {
+                    left = body.copy(0, split).trim();
+                    right = body.copy(split + 1).trim();
+                }
+            }
+            if (!left.isEmpty())
+                makeTextShape(left, 1000, 4000, 12000, 12000);
+            if (!right.isEmpty())
+                makeTextShape(right, 14000, 4000, 12000, 12000);
+        }
+        else
+        {
+            // title_body (default)
+            if (!title.isEmpty())
+            {
+                auto sh = makeTextShape(title, 1000, 800, 25000, 2500);
+                applyThemeTint(sh);
+            }
+            if (!body.isEmpty())
+                makeTextShape(body, 1000, 4000, 25000, 12000);
+        }
+
+        // Image placeholders (local, no network) — text boxes user can replace with media
+        sal_Int32 imgY = 14000;
+        for (size_t ii = 0; ii < imageHints.size() && ii < 3; ++ii)
+        {
+            OUString label = u"【配图占位】"_ustr + imageHints[ii];
+            auto sh = makeTextShape(label, 18000, imgY, 9000, 3500);
+            applyThemeTint(sh);
+            imgY += 3800;
+        }
+
+        // Speaker notes on notes page (best-effort; ignore failure)
+        if (!notesText.isEmpty())
+        {
+            try
+            {
+                css::uno::Reference<css::presentation::XPresentationPage> xPres(xPage,
+                                                                                css::uno::UNO_QUERY);
+                if (xPres.is())
+                {
+                    css::uno::Reference<css::drawing::XDrawPage> xNotes = xPres->getNotesPage();
+                    if (xNotes.is())
+                    {
+                        auto xNoteShapes(
+                            css::uno::Reference<css::drawing::XShapes>(xNotes, css::uno::UNO_QUERY));
+                        if (xNoteShapes.is())
+                        {
+                            auto xShape(css::uno::Reference<css::drawing::XShape>(
+                                xSMgr->createInstanceWithContext(
+                                    u"com.sun.star.drawing.TextShape"_ustr,
+                                    comphelper::getProcessComponentContext()),
+                                css::uno::UNO_QUERY));
+                            if (xShape.is())
+                            {
+                                xShape->setSize(css::awt::Size(25000, 8000));
+                                xShape->setPosition(css::awt::Point(1000, 14000));
+                                auto xShapeText(css::uno::Reference<css::text::XText>(
+                                    xShape, css::uno::UNO_QUERY));
+                                if (xShapeText.is())
+                                    xShapeText->setString(notesText);
+                                xNoteShapes->add(xShape);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (const css::uno::Exception&)
+            {
+            }
+        }
+
+        SAL_INFO("kqoffice.ai.chat",
+                 "Impress fill slide=" << (slideIdx + 1) << " title=\"" << title << "\""
+                                      << " layout=" << layout << " theme=" << theme
+                                      << " images=" << imageHints.size()
+                                      << " notes=" << !notesText.isEmpty());
+        r.success = true;
+    }
+    catch (const css::uno::Exception& e)
+    {
+        r.error = u"Impress fill slide failed: "_ustr + e.Message;
+    }
+    return r;
 }
 
 // ---------------------------------------------------------------------------
@@ -661,11 +1018,17 @@ ApplyResult impressInsert(
         if (!stgt.valid)
         {
             r.error = u"Impress insert: invalid target \""_ustr + target
-                + u"\"; expected slide:N:shape:M"_ustr;
+                + u"\"; expected slide:N or slide:N:shape:M"_ustr;
             return r;
         }
 
+        // Whole-slide content path (outline-to-slides)
+        if (stgt.shapeIndex < 0)
+            return impressFillSlide(supp, stgt.slideIndex, text);
+
         auto xPage = getSlideByIndex(supp, stgt.slideIndex);
+        if (!xPage.is())
+            xPage = ensureSlide(supp, stgt.slideIndex);
         if (!xPage.is())
         {
             r.error = u"Impress insert: slide "_ustr
@@ -787,9 +1150,12 @@ ApplyResult impressReplace(
         if (!stgt.valid)
         {
             r.error = u"Impress replace: invalid target \""_ustr + target
-                + u"\"; expected slide:N:shape:M"_ustr;
+                + u"\"; expected slide:N or slide:N:shape:M"_ustr;
             return r;
         }
+
+        if (stgt.shapeIndex < 0)
+            return impressFillSlide(supp, stgt.slideIndex, newText);
 
         auto xPage = getSlideByIndex(supp, stgt.slideIndex);
         if (!xPage.is())

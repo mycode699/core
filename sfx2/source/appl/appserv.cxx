@@ -78,7 +78,10 @@
 #include <vcl/svapp.hxx>
 
 #include <dispatch/CommandPaletteDispatcher.hxx>
+#include <dispatch/AIInlineEditDispatcher.hxx>
+#include <dispatch/AIInputDispatcher.hxx>
 #include <dispatch/CoworkPanelDispatcher.hxx>
+#include <dispatch/WorkPendantDispatcher.hxx>
 #include <sfx2/viewfrm.hxx>
 
 #include <unotools/moduleoptions.hxx>
@@ -1344,6 +1347,66 @@ void SfxApplication::MiscExec_Impl( SfxRequest& rReq )
                         u"Open a document to use the command palette."_ustr));
                 xBox->run();
             }
+            break;
+        }
+        case SID_KQAI_INLINE_EDIT:
+        {
+            // Cursor-style Ctrl/Cmd+K inline AI edit (select → instruct → apply).
+            if (SfxViewFrame* pFrame = SfxViewFrame::Current())
+            {
+                sfx2::AIInlineEditDispatcher::Get().Show(*pFrame);
+            }
+            else
+            {
+                weld::Window* pParent = rReq.GetFrameWeld();
+                if (!pParent)
+                    pParent = Application::GetDefDialogParent();
+                std::unique_ptr<weld::MessageDialog> xBox(Application::CreateMessageDialog(
+                    pParent, VclMessageType::Info, VclButtonsType::Ok,
+                    u"请先打开文档，再使用 Ctrl/Cmd+K 内联 AI 编辑。"_ustr));
+                xBox->run();
+            }
+            break;
+        }
+        case SID_KQAI_GHOST_COMPLETE:
+        {
+            // Cursor-style light-slot continuation at caret (Ctrl/Cmd+.).
+            if (SfxViewFrame* pFrame = SfxViewFrame::Current())
+            {
+                sfx2::AIInlineEditDispatcher::Get().ShowComplete(*pFrame);
+            }
+            else
+            {
+                weld::Window* pParent = rReq.GetFrameWeld();
+                if (!pParent)
+                    pParent = Application::GetDefDialogParent();
+                std::unique_ptr<weld::MessageDialog> xBox(Application::CreateMessageDialog(
+                    pParent, VclMessageType::Info, VclButtonsType::Ok,
+                    u"请先打开文档，再使用 Ctrl/Cmd+. 续写补全。"_ustr));
+                xBox->run();
+            }
+            break;
+        }
+        case SID_KQAI_VOICE_INPUT:
+        {
+            // WeChat-like voice: push-to-talk / system dictation / local STT.
+            sfx2::AIInputDispatcher::Get().TriggerVoice(SfxViewFrame::Current());
+            break;
+        }
+        case SID_KQAI_SCREENSHOT:
+        case SID_KQAI_SCREENSHOT_REGION:
+        {
+            // WeChat-like region screenshot → attach to AI chat.
+            sfx2::AIInputDispatcher::Get().TriggerScreenshotRegion(SfxViewFrame::Current());
+            break;
+        }
+        case SID_KQAI_WORK_PENDANT:
+        {
+            // Compact always-on efficiency pendant (today stats + quick actions).
+            weld::Window* pParent = rReq.GetFrameWeld();
+            if (!pParent)
+                pParent = Application::GetDefDialogParent();
+            sfx2::WorkPendantDispatcher::Get().Show(pParent);
             break;
         }
         case SID_COWORK_TASK_MANAGER:

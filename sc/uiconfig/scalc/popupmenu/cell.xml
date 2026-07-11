@@ -25,6 +25,14 @@
     </menu:menupopup>
   </menu:menu>
   <menu:menuseparator/>
+  <menu:menu menu:id=".uno:KQAIMenu">
+    <menu:menupopup>
+      <menu:menuitem menu:id=".uno:KQAIInlineEdit"/>
+      <menu:menuitem menu:id=".uno:KQAIGhostComplete"/>
+      <menu:menuitem menu:id=".uno:SidebarDeck.AIChatDeck"/>
+    </menu:menupopup>
+  </menu:menu>
+  <menu:menuseparator/>
   <menu:menuitem menu:id=".uno:DataSelect"/>
   <menu:menuitem menu:id=".uno:CurrentValidation"/>
   <menu:menuitem menu:id=".uno:ClearAutoFilter"/>

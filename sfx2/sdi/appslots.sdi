@@ -240,6 +240,36 @@ interface Application
         ExecMethod = MiscExec_Impl ;
         StateMethod = MiscState_Impl ;
     ]
+    SID_KQAI_INLINE_EDIT
+    [
+        ExecMethod = MiscExec_Impl ;
+        StateMethod = MiscState_Impl ;
+    ]
+    SID_KQAI_GHOST_COMPLETE
+    [
+        ExecMethod = MiscExec_Impl ;
+        StateMethod = MiscState_Impl ;
+    ]
+    SID_KQAI_VOICE_INPUT
+    [
+        ExecMethod = MiscExec_Impl ;
+        StateMethod = MiscState_Impl ;
+    ]
+    SID_KQAI_SCREENSHOT
+    [
+        ExecMethod = MiscExec_Impl ;
+        StateMethod = MiscState_Impl ;
+    ]
+    SID_KQAI_SCREENSHOT_REGION
+    [
+        ExecMethod = MiscExec_Impl ;
+        StateMethod = MiscState_Impl ;
+    ]
+    SID_KQAI_WORK_PENDANT
+    [
+        ExecMethod = MiscExec_Impl ;
+        StateMethod = MiscState_Impl ;
+    ]
     SID_COWORK_TASK_MANAGER
     [
         ExecMethod = MiscExec_Impl ;
