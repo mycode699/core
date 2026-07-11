@@ -1,32 +1,32 @@
 <svg width="720" height="720" viewBox="0 0 720 720" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="bg" x1="120" y1="80" x2="608" y2="640" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#F8FAFD"/>
-      <stop offset="1" stop-color="#E6ECF8"/>
+      <stop offset="0" stop-color="#F7F8FA"/>
+      <stop offset="1" stop-color="#E6F4FF"/>
     </linearGradient>
     <linearGradient id="ring" x1="170" y1="150" x2="394" y2="374" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#7C9EFF"/>
-      <stop offset="1" stop-color="#1E40AF"/>
+      <stop offset="0" stop-color="#69B1FF"/>
+      <stop offset="1" stop-color="#0958D9"/>
     </linearGradient>
     <linearGradient id="spark" x1="294" y1="182" x2="366" y2="250" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#E2E9FF"/>
-      <stop offset="1" stop-color="#89A9FF"/>
+      <stop offset="0" stop-color="#BAE0FF"/>
+      <stop offset="1" stop-color="#91CAFF"/>
     </linearGradient>
   </defs>
   <rect width="720" height="720" rx="96" fill="url(#bg)"/>
   <rect x="58" y="58" width="604" height="604" rx="84" fill="#FFFFFF" opacity=".86"/>
   <g transform="translate(138 120)">
-    <rect x="0" y="0" width="304" height="304" rx="84" fill="#E9EEF9"/>
+    <rect x="0" y="0" width="304" height="304" rx="84" fill="#E6F4FF"/>
     <circle cx="152" cy="152" r="98" fill="none" stroke="url(#ring)" stroke-width="34"/>
     <circle cx="152" cy="152" r="24" fill="#FFFFFF"/>
     <path d="M220 80a98 98 0 0 1 22 56" fill="none" stroke="url(#spark)" stroke-linecap="round" stroke-width="20"/>
-    <circle cx="68" cy="68" r="16" fill="#7C9EFF" opacity=".95"/>
-    <circle cx="236" cy="68" r="16" fill="#7C9EFF" opacity=".72"/>
-    <circle cx="68" cy="236" r="16" fill="#7C9EFF" opacity=".72"/>
-    <circle cx="236" cy="236" r="16" fill="#7C9EFF" opacity=".95"/>
+    <circle cx="68" cy="68" r="16" fill="#69B1FF" opacity=".95"/>
+    <circle cx="236" cy="68" r="16" fill="#69B1FF" opacity=".72"/>
+    <circle cx="68" cy="236" r="16" fill="#69B1FF" opacity=".72"/>
+    <circle cx="236" cy="236" r="16" fill="#69B1FF" opacity=".95"/>
   </g>
-  <g fill="#172033">
-    <text x="124" y="514" font-family="'PingFang SC','Noto Sans SC','Microsoft YaHei',sans-serif" font-size="86" font-weight="700" letter-spacing="4">可圈可点</text>
-    <text x="124" y="602" font-family="'Avenir Next','Helvetica Neue',Arial,sans-serif" font-size="94" font-weight="700" letter-spacing="2">office</text>
+  <g fill="#1F2329">
+    <text x="124" y="514" font-family="'PingFang SC','苹方-简','Microsoft YaHei UI','Microsoft YaHei','微软雅黑','Noto Sans SC',sans-serif" font-size="86" font-weight="700" letter-spacing="4">可圈可点</text>
+    <text x="124" y="602" font-family="'Avenir Next','Helvetica Neue','Segoe UI',Arial,sans-serif" font-size="94" font-weight="700" letter-spacing="2">office</text>
   </g>
 </svg>

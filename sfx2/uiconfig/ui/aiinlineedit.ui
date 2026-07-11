@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  可圈office — Cursor-style Ctrl/Cmd+K inline AI edit popover.
+-->
+<interface domain="sfx">
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkPopover" id="AIInlineEdit">
+    <property name="can-focus">False</property>
+    <property name="position">bottom</property>
+    <property name="constrain-to">none</property>
+    <child>
+      <object class="GtkBox" id="ai_inline_box">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">8</property>
+        <property name="border-width">12</property>
+        <property name="width-request">480</property>
+        <child>
+          <object class="GtkLabel" id="context_label">
+            <property name="visible">True</property>
+            <property name="halign">start</property>
+            <property name="label">选区：—</property>
+            <property name="wrap">True</property>
+            <property name="mnemonic-widget">instruction_entry</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkEntry" id="instruction_entry">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="hexpand">True</property>
+            <property name="placeholder-text" translatable="yes" context="aiinline|ph">描述要做的修改，或选下方快捷…（Enter 生成）</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="instruction_entry-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="aiinline|instr-atk">AI instruction</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="chip_row">
+            <property name="visible">True</property>
+            <property name="orientation">horizontal</property>
+            <property name="spacing">4</property>
+            <property name="homogeneous">True</property>
+            <child>
+              <object class="GtkButton" id="chip_polish"><property name="visible">True</property><property name="label" translatable="yes" context="aiinlineedit|chip_polish.label">润色</property></object>
+            </child>
+            <child>
+              <object class="GtkButton" id="chip_shorten"><property name="visible">True</property><property name="label" translatable="yes" context="aiinlineedit|chip_shorten.label">精简</property></object>
+            </child>
+            <child>
+              <object class="GtkButton" id="chip_expand"><property name="visible">True</property><property name="label" translatable="yes" context="aiinlineedit|chip_expand.label">扩写</property></object>
+            </child>
+            <child>
+              <object class="GtkButton" id="chip_en"><property name="visible">True</property><property name="label" translatable="yes" context="aiinlineedit|chip_en.label">译英</property></object>
+            </child>
+            <child>
+              <object class="GtkButton" id="chip_complete"><property name="visible">True</property><property name="label" translatable="yes" context="aiinlineedit|chip_complete.label">续写</property></object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="ghost_banner">
+            <property name="visible">False</property>
+            <property name="halign">start</property>
+            <property name="wrap">True</property>
+            <property name="label" translatable="yes" context="aiinline|ghost_banner">👻 幽灵续写 · 灰字预览 · Tab 写入正文 · Esc 放弃（未改主文档）</property>
+            <property name="mnemonic-widget">preview_view</property>
+            <attributes>
+              <attribute name="style" value="italic"/>
+              <attribute name="scale" value="0.95"/>
+            </attributes>
+          </object>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="suggest_scroll">
+            <property name="visible">True</property>
+            <property name="height-request">88</property>
+            <property name="shadow-type">in</property>
+            <child>
+              <object class="GtkTreeView" id="suggest_view">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="headers_visible">False</property>
+                <property name="show_expanders">False</property>
+                <property name="activate-on-single-click">True</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="suggest_view-atkobject">
+                    <property name="AtkObject::accessible-name" translatable="yes" context="aiinline|suggest-atk">AI suggestions</property>
+                  </object>
+                </child>
+                <child internal-child="selection">
+                  <object class="GtkTreeSelection"/>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn">
+                    <property name="expand">True</property>
+                    <child>
+                      <object class="GtkCellRendererText"/>
+                      <attributes>
+                        <attribute name="text">0</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="preview_scroll">
+            <property name="visible">True</property>
+            <property name="height-request">120</property>
+            <property name="shadow-type">in</property>
+            <child>
+              <object class="GtkTextView" id="preview_view">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="editable">False</property>
+                <property name="wrap-mode">word-char</property>
+                <child internal-child="accessible">
+                  <object class="AtkObject" id="preview_view-atkobject">
+                    <property name="AtkObject::accessible-name" translatable="yes" context="aiinline|preview-atk">AI ghost preview</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="status_label">
+            <property name="visible">True</property>
+            <property name="halign">start</property>
+            <property name="wrap">True</property>
+            <property name="label">Ctrl/Cmd+K · 生成后点「应用」写回（需确认）</property>
+            <property name="mnemonic-widget">generate_btn</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="action_row">
+            <property name="visible">True</property>
+            <property name="orientation">horizontal</property>
+            <property name="spacing">8</property>
+            <property name="halign">end</property>
+            <child>
+              <object class="GtkButton" id="generate_btn">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="label" translatable="yes" context="aiinline|gen">生成</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="accept_btn">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="sensitive">False</property>
+                <property name="label" translatable="yes" context="aiinline|accept">应用</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="reject_btn">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="label" translatable="yes" context="aiinline|reject">关闭</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

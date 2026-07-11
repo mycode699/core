@@ -1,8 +1,8 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="accent" x1="116" y1="110" x2="178" y2="420" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stop-color="#64D2C8"/>
-              <stop offset="1" stop-color="#0F766E"/>
+              <stop offset="0" stop-color="#36CFC9"/>
+              <stop offset="1" stop-color="#006D75"/>
             </linearGradient>
             <linearGradient id="panel" x1="116" y1="84" x2="360" y2="444" gradientUnits="userSpaceOnUse">
               <stop offset="0" stop-color="#ffffff"/>
@@ -19,7 +19,7 @@
           <path d="M246 84v54c0 11.046 8.954 20 20 20h54z" fill="url(#fold)"/>
 
           <g transform="translate(52 72)"><g transform="scale(.7)"><g>
-  <path d="M228 214h34c0 18 26 18 26 0h34v34c-18 0-18 26 0 26v34h-34c0-18-26-18-26 0h-34v-34c18 0 18-26 0-26z" fill="#C8F3EE" opacity=".24" stroke="#0F766E" stroke-linejoin="round" stroke-width="12"/>
-  <circle cx="275" cy="261" r="14" fill="#0F766E" opacity=".84"/>
+  <path d="M228 214h34c0 18 26 18 26 0h34v34c-18 0-18 26 0 26v34h-34c0-18-26-18-26 0h-34v-34c18 0 18-26 0-26z" fill="#E6FFFB" opacity=".24" stroke="#13C2C2" stroke-linejoin="round" stroke-width="12"/>
+  <circle cx="275" cy="261" r="14" fill="#13C2C2" opacity=".84"/>
 </g></g></g>
         </svg>

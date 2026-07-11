@@ -1,8 +1,8 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="accent" x1="116" y1="110" x2="178" y2="420" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stop-color="#94A3B8"/>
-              <stop offset="1" stop-color="#334155"/>
+              <stop offset="0" stop-color="#8C8C8C"/>
+              <stop offset="1" stop-color="#434343"/>
             </linearGradient>
             <linearGradient id="panel" x1="116" y1="84" x2="360" y2="444" gradientUnits="userSpaceOnUse">
               <stop offset="0" stop-color="#ffffff"/>
@@ -19,9 +19,9 @@
           <path d="M246 84v54c0 11.046 8.954 20 20 20h54z" fill="url(#fold)"/>
 
           <g transform="translate(46 66)"><g transform="scale(.72)"><g>
-  <path d="M220 204h94l42 42v118h-136z" fill="#D8E0EB" opacity=".16" stroke="#475569" stroke-linejoin="round" stroke-width="12"/>
-  <path d="M176 246h94l42 42v118H176z" fill="#D8E0EB" opacity=".28" stroke="#475569" stroke-linejoin="round" stroke-width="12"/>
-  <rect x="204" y="304" width="78" height="14" rx="7" fill="#475569" opacity="0.62"/>
-  <rect x="204" y="338" width="78" height="14" rx="7" fill="#475569" opacity="0.62"/>
+  <path d="M220 204h94l42 42v118h-136z" fill="#F5F5F5" opacity=".16" stroke="#595959" stroke-linejoin="round" stroke-width="12"/>
+  <path d="M176 246h94l42 42v118H176z" fill="#F5F5F5" opacity=".28" stroke="#595959" stroke-linejoin="round" stroke-width="12"/>
+  <rect x="204" y="304" width="78" height="14" rx="7" fill="#595959" opacity="0.62"/>
+  <rect x="204" y="338" width="78" height="14" rx="7" fill="#595959" opacity="0.62"/>
 </g></g></g>
         </svg>

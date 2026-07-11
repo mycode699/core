@@ -1,8 +1,8 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="accent" x1="116" y1="110" x2="178" y2="420" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stop-color="#64D2C8"/>
-              <stop offset="1" stop-color="#0F766E"/>
+              <stop offset="0" stop-color="#36CFC9"/>
+              <stop offset="1" stop-color="#006D75"/>
             </linearGradient>
             <linearGradient id="panel" x1="116" y1="84" x2="360" y2="444" gradientUnits="userSpaceOnUse">
               <stop offset="0" stop-color="#ffffff"/>
@@ -19,8 +19,8 @@
           <path d="M246 84v54c0 11.046 8.954 20 20 20h54z" fill="url(#fold)"/>
 
           <g transform="translate(36 62)"><g transform="scale(.74)"><g>
-  <ellipse cx="256" cy="214" rx="76" ry="28" fill="#C8F3EE" opacity=".22" stroke="#0F766E" stroke-width="12"/>
-  <path d="M180 214v108c0 18 34 32 76 32s76-14 76-32V214" fill="#C8F3EE" opacity=".14" stroke="#0F766E" stroke-width="12"/>
-  <path d="M180 256c0 18 34 32 76 32s76-14 76-32M180 298c0 18 34 32 76 32s76-14 76-32" fill="none" stroke="#0F766E" stroke-width="12" opacity=".8"/>
+  <ellipse cx="256" cy="214" rx="76" ry="28" fill="#E6FFFB" opacity=".22" stroke="#13C2C2" stroke-width="12"/>
+  <path d="M180 214v108c0 18 34 32 76 32s76-14 76-32V214" fill="#E6FFFB" opacity=".14" stroke="#13C2C2" stroke-width="12"/>
+  <path d="M180 256c0 18 34 32 76 32s76-14 76-32M180 298c0 18 34 32 76 32s76-14 76-32" fill="none" stroke="#13C2C2" stroke-width="12" opacity=".8"/>
 </g></g></g>
         </svg>

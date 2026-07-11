@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface domain="sfx">
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkBox" id="WorkDashboardPanel">
+    <property name="visible">True</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">8</property>
+    <property name="border-width">10</property>
+    <child>
+      <object class="GtkLabel" id="title_label">
+        <property name="visible">True</property>
+        <property name="halign">start</property>
+        <property name="label" translatable="yes" context="workdashboard|title_label.label">工作中台</property>
+        <attributes>
+          <attribute name="weight" value="bold"/>
+        </attributes>
+        <property name="mnemonic-widget">period_day</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox" id="glance_row">
+        <property name="visible">True</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">6</property>
+        <child>
+          <object class="GtkLabel" id="glance_label">
+            <property name="visible">True</property>
+            <property name="halign">start</property>
+            <property name="hexpand">True</property>
+            <property name="wrap">True</property>
+            <property name="selectable">True</property>
+            <property name="xalign">0</property>
+            <property name="label">今日速览加载中…</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|glance_label.tooltip_text">今日与近 7 日关键指标速览</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="copy_glance_btn">
+            <property name="visible">True</property>
+            <property name="valign">start</property>
+            <property name="label" translatable="yes" context="workdashboard|copy_glance_btn.label">复制速览</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|copy_glance_btn.tooltip_text">把今日速览复制到剪贴板</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="glance_to_ai_btn">
+            <property name="visible">True</property>
+            <property name="valign">start</property>
+            <property name="label" translatable="yes" context="workdashboard|glance_to_ai_btn.label">速览→AI</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|glance_to_ai_btn.tooltip_text">把工作中台本地上下文注入 AI 助手输入框</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox" id="period_row">
+        <property name="visible">True</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">6</property>
+        <child>
+          <object class="GtkRadioButton" id="period_day">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|period_day.label">今日</property>
+            <property name="active">True</property>
+            <property name="draw-indicator">False</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="period_month">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|period_month.label">本月</property>
+            <property name="draw-indicator">False</property>
+            <property name="group">period_day</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="period_year">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|period_year.label">本年</property>
+            <property name="draw-indicator">False</property>
+            <property name="group">period_day</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="refresh_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|refresh_btn.label">刷新</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="export_day_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|export_day_btn.label">导出日</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|export_day_btn.tooltip_text">导出今日 Markdown 报告</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="export_week_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|export_week_btn.label">导出周</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|export_week_btn.tooltip_text">导出近 7 日报告</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="export_month_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|export_month_btn.label">导出月</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="pendant_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|pendant_btn.label">挂坠</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|pendant_btn.tooltip_text">打开效率挂坠小窗</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="chart_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|chart_btn.label">看图表</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|chart_btn.tooltip_text">导出近 7 日 HTML（内嵌 SVG）并用浏览器打开</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="reports_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|reports_btn.label">报告夹</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|reports_btn.tooltip_text">打开本地报告目录</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="desktop_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|desktop_btn.label">桌面图标</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|desktop_btn.tooltip_text">在桌面创建工作中台/记事本/挂坠快捷方式</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="share_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|share_btn.label">分享路径</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|share_btn.tooltip_text">导出周报并复制 HTML 路径到剪贴板</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="package_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|package_btn.label">打包ZIP</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|package_btn.tooltip_text">导出周报并生成 .zip（含 html/md/svg），便于发送</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="copy_summary_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|copy_summary_btn.label">复制摘要</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|copy_summary_btn.tooltip_text">把当前中台摘要复制到剪贴板</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="email_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|email_btn.label">邮件</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|email_btn.tooltip_text">生成 ZIP 并打开系统邮件（正文含路径，请手动附加 ZIP）</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="open_archive_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|open_archive_btn.label">打开归档</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|open_archive_btn.tooltip_text">打开本周最近一次归档的 ZIP/HTML/文件夹</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="complete_week_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|complete_week_btn.label">完成本周</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|complete_week_btn.tooltip_text">一键：导出周报+ZIP+打开 HTML 并复制路径</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="wow_chart_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|wow_chart_btn.label">环比图</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|wow_chart_btn.tooltip_text">导出并打开本周 vs 上周迷你 SVG</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="open_pinned_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|open_pinned_btn.label">置顶材料</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|open_pinned_btn.tooltip_text">打开记事本并仅显示置顶材料</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkLabel" id="period_label">
+        <property name="visible">True</property>
+        <property name="halign">start</property>
+        <property name="label">—</property>
+        <property name="mnemonic-widget">summary_view</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkScrolledWindow">
+        <property name="visible">True</property>
+        <property name="vexpand">True</property>
+        <property name="shadow-type">none</property>
+        <child>
+          <object class="GtkTextView" id="summary_view">
+            <property name="visible">True</property>
+            <property name="editable">False</property>
+            <property name="wrap-mode">word-char</property>
+            <property name="left-margin">8</property>
+            <property name="right-margin">8</property>
+            <property name="top-margin">8</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="summary_view-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="workdashboard|summary_view-atkobject.accessible_name">Workbench summary</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox" id="archive_history_header">
+        <property name="visible">True</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">6</property>
+        <child>
+          <object class="GtkLabel" id="archive_history_label">
+            <property name="visible">True</property>
+            <property name="halign">start</property>
+            <property name="hexpand">True</property>
+            <property name="label" translatable="yes" context="workdashboard|archive_history_label.label">归档历史（双击打开）</property>
+            <property name="mnemonic-widget">archive_history_list</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="copy_archive_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|copy_archive_btn.label">复制路径</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|copy_archive_btn.tooltip_text">复制选中归档的完整本地路径到剪贴板</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="delete_archive_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|delete_archive_btn.label">删记录</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|delete_archive_btn.tooltip_text">从历史中删除选中项（不删除本地 ZIP/HTML 文件）</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="clear_archive_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|clear_archive_btn.label">清空历史</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|clear_archive_btn.tooltip_text">清空归档历史列表（不删除本地文件）</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="export_archive_csv_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|export_archive_csv_btn.label">导出CSV</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|export_archive_csv_btn.tooltip_text">将归档历史导出为本地 CSV</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox" id="week_goal_row">
+        <property name="visible">True</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">6</property>
+        <child>
+          <object class="GtkLabel" id="week_goal_label">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|week_goal_label.label">本周目标(分)</property>
+            <property name="mnemonic-widget">week_goal_entry</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkEntry" id="week_goal_entry">
+            <property name="visible">True</property>
+            <property name="width-chars">6</property>
+            <property name="placeholder-text" translatable="yes" context="workdashboard|week_goal_entry.placeholder_text">如 480</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|week_goal_entry.tooltip_text">滚动 7 日活跃分钟目标（本地）</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="set_week_goal_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="workdashboard|set_week_goal_btn.label">设目标</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|set_week_goal_btn.tooltip_text">保存本周活跃分钟目标（0 清除）</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkScrolledWindow" id="archive_history_scroll">
+        <property name="visible">True</property>
+        <property name="height-request">88</property>
+        <property name="shadow-type">none</property>
+        <child>
+          <object class="GtkTreeView" id="archive_history_list">
+            <property name="visible">True</property>
+            <property name="headers_visible">False</property>
+            <property name="tooltip-text" translatable="yes" context="workdashboard|archive_history_list.tooltip_text">本地历次 ZIP/HTML 归档；双击打开，可复制路径</property>
+            <child internal-child="selection">
+              <object class="GtkTreeSelection"/>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn">
+                <property name="expand">True</property>
+                <child>
+                  <object class="GtkCellRendererText"/>
+                  <attributes>
+                    <attribute name="text">0</attribute>
+                  </attributes>
+                </child>
+              </object>
+            </child>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="archive_history_list-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="workdashboard|archive_history_list-atkobject.accessible_name">Archive history</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkLabel" id="hint_label">
+        <property name="visible">True</property>
+        <property name="halign">start</property>
+        <property name="wrap">True</property>
+        <property name="label" translatable="yes" context="workdashboard|hint_label.label">本地统计 · 不上传 · Token 为字符估算。使用 AI/截图/语音后点刷新。</property>
+      </object>
+    </child>
+  </object>
+</interface>

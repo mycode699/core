@@ -1,8 +1,8 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="bg" x1="72" y1="48" x2="448" y2="464" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#7C9EFF"/>
-      <stop offset="1" stop-color="#1E40AF"/>
+      <stop offset="0" stop-color="#69B1FF"/>
+      <stop offset="1" stop-color="#0958D9"/>
     </linearGradient>
     <linearGradient id="panel" x1="140" y1="96" x2="372" y2="432" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#ffffff"/>
@@ -13,8 +13,8 @@
       <stop offset="1" stop-color="#ffffff"/>
     </linearGradient>
     <linearGradient id="ring" x1="120" y1="316" x2="216" y2="412" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#7C9EFF"/>
-      <stop offset="1" stop-color="#1E40AF"/>
+      <stop offset="0" stop-color="#69B1FF"/>
+      <stop offset="1" stop-color="#0958D9"/>
     </linearGradient>
   </defs>
   <rect x="40" y="40" width="432" height="432" rx="108" fill="url(#bg)"/>
@@ -22,7 +22,7 @@
   <path d="M164 96h122l74 74v246c0 22.091-17.909 40-40 40H164c-22.091 0-40-17.909-40-40V136c0-22.091 17.909-40 40-40z" fill="url(#panel)"/>
   <path d="M286 96v54c0 11.046 8.954 20 20 20h54z" fill="url(#fold)"/>
   <circle cx="166" cy="364" r="42" fill="none" stroke="url(#ring)" stroke-width="24"/>
-  <circle cx="166" cy="364" r="12" fill="#ECFFF3"/>
-  <path d="M196 333a42 42 0 0 1 9 24" fill="none" stroke="#E0E7FF" stroke-linecap="round" stroke-width="8"/>
+  <circle cx="166" cy="364" r="12" fill="#F0F7FF"/>
+  <path d="M196 333a42 42 0 0 1 9 24" fill="none" stroke="#E6F4FF" stroke-linecap="round" stroke-width="8"/>
 
 </svg>

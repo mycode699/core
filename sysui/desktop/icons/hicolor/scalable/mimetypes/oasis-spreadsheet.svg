@@ -1,8 +1,8 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="accent" x1="116" y1="110" x2="178" y2="420" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stop-color="#86EFAC"/>
-              <stop offset="1" stop-color="#059669"/>
+              <stop offset="0" stop-color="#73D13D"/>
+              <stop offset="1" stop-color="#237804"/>
             </linearGradient>
             <linearGradient id="panel" x1="116" y1="84" x2="360" y2="444" gradientUnits="userSpaceOnUse">
               <stop offset="0" stop-color="#ffffff"/>
@@ -19,8 +19,8 @@
           <path d="M246 84v54c0 11.046 8.954 20 20 20h54z" fill="url(#fold)"/>
 
           <g transform="translate(48 58)"><g transform="scale(.72)"><g>
-  <rect x="184" y="186" width="176" height="176" rx="22" fill="#CFF6BE" opacity=".18" stroke="#15803D" stroke-width="12"/>
-  <rect x="184" y="186" width="176" height="34" rx="22" fill="#15803D" opacity=".16"/>
-  <path d="M242 186v176M301 186v176M184 244h176M184 303h176" fill="none" stroke="#15803D" stroke-width="12" opacity=".74"/>
+  <rect x="184" y="186" width="176" height="176" rx="22" fill="#F6FFED" opacity=".18" stroke="#389E0D" stroke-width="12"/>
+  <rect x="184" y="186" width="176" height="34" rx="22" fill="#389E0D" opacity=".16"/>
+  <path d="M242 186v176M301 186v176M184 244h176M184 303h176" fill="none" stroke="#389E0D" stroke-width="12" opacity=".74"/>
 </g></g></g>
         </svg>

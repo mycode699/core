@@ -1,8 +1,8 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="bg" x1="72" y1="48" x2="448" y2="464" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stop-color="#86EFAC"/>
-              <stop offset="1" stop-color="#059669"/>
+              <stop offset="0" stop-color="#73D13D"/>
+              <stop offset="1" stop-color="#237804"/>
             </linearGradient>
             <linearGradient id="panel" x1="132" y1="112" x2="380" y2="400" gradientUnits="userSpaceOnUse">
               <stop offset="0" stop-color="#ffffff"/>
@@ -12,13 +12,13 @@
           <rect x="40" y="40" width="432" height="432" rx="104" fill="url(#bg)"/>
           <rect x="96" y="96" width="320" height="320" rx="84" fill="#ffffff" opacity=".16"/>
           <rect x="128" y="112" width="256" height="288" rx="52" fill="url(#panel)"/>
-          <rect x="128" y="112" width="256" height="48" rx="52" fill="#15803D" opacity=".14"/>
-          <circle cx="166" cy="136" r="6" fill="#15803D" opacity="0.72"/>
-          <circle cx="188" cy="136" r="6" fill="#15803D" opacity="0.5"/>
-          <circle cx="210" cy="136" r="6" fill="#15803D" opacity="0.34"/>
+          <rect x="128" y="112" width="256" height="48" rx="52" fill="#389E0D" opacity=".14"/>
+          <circle cx="166" cy="136" r="6" fill="#389E0D" opacity="0.72"/>
+          <circle cx="188" cy="136" r="6" fill="#389E0D" opacity="0.5"/>
+          <circle cx="210" cy="136" r="6" fill="#389E0D" opacity="0.34"/>
           <g>
-  <rect x="184" y="186" width="176" height="176" rx="22" fill="#CFF6BE" opacity=".18" stroke="#15803D" stroke-width="12"/>
-  <rect x="184" y="186" width="176" height="34" rx="22" fill="#15803D" opacity=".16"/>
-  <path d="M242 186v176M301 186v176M184 244h176M184 303h176" fill="none" stroke="#15803D" stroke-width="12" opacity=".74"/>
+  <rect x="184" y="186" width="176" height="176" rx="22" fill="#F6FFED" opacity=".18" stroke="#389E0D" stroke-width="12"/>
+  <rect x="184" y="186" width="176" height="34" rx="22" fill="#389E0D" opacity=".16"/>
+  <path d="M242 186v176M301 186v176M184 244h176M184 303h176" fill="none" stroke="#389E0D" stroke-width="12" opacity=".74"/>
 </g>
         </svg>

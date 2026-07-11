@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface domain="sfx">
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkBox" id="LocalNotebookPanel">
+    <property name="visible">True</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">6</property>
+    <property name="border-width">8</property>
+    <child>
+      <object class="GtkLabel" id="title_label">
+        <property name="visible">True</property>
+        <property name="halign">start</property>
+        <property name="label" translatable="yes" context="localnotebook|title_label.label">本地记事本</property>
+        <attributes>
+          <attribute name="weight" value="bold"/>
+        </attributes>
+        <property name="mnemonic-widget">note_list</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkEntry" id="search_entry">
+        <property name="visible">True</property>
+        <property name="placeholder-text" translatable="yes" context="localnotebook|search_entry.placeholder_text">搜索笔记标题或正文…</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox" id="toolbar">
+        <property name="visible">True</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">4</property>
+        <child>
+          <object class="GtkButton" id="new_btn"><property name="visible">True</property><property name="label" translatable="yes" context="localnotebook|new_btn.label">新建</property></object>
+        </child>
+        <child>
+          <object class="GtkButton" id="save_btn"><property name="visible">True</property><property name="label" translatable="yes" context="localnotebook|save_btn.label">保存</property></object>
+        </child>
+        <child>
+          <object class="GtkButton" id="delete_btn"><property name="visible">True</property><property name="label" translatable="yes" context="localnotebook|delete_btn.label">删除</property></object>
+        </child>
+        <child>
+          <object class="GtkButton" id="voice_btn"><property name="visible">True</property><property name="label" translatable="yes" context="localnotebook|voice_btn.label">语音</property></object>
+        </child>
+        <child>
+          <object class="GtkButton" id="send_ai_btn"><property name="visible">True</property><property name="label" translatable="yes" context="localnotebook|send_ai_btn.label">发给 AI</property></object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkScrolledWindow">
+        <property name="visible">True</property>
+        <property name="height-request">90</property>
+        <property name="shadow-type">none</property>
+        <child>
+          <object class="GtkTreeView" id="note_list">
+            <property name="visible">True</property>
+            <property name="headers_visible">False</property>
+            <property name="enable_search">True</property>
+            <child internal-child="selection">
+              <object class="GtkTreeSelection"/>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn">
+                <property name="expand">True</property>
+                <child>
+                  <object class="GtkCellRendererText"/>
+                  <attributes>
+                    <attribute name="text">0</attribute>
+                  </attributes>
+                </child>
+              </object>
+            </child>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="note_list-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="localnotebook|note_list-atkobject.accessible_name">Note list</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkEntry" id="title_entry">
+        <property name="visible">True</property>
+        <property name="placeholder-text" translatable="yes" context="localnotebook|title_entry.placeholder_text">标题</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkScrolledWindow">
+        <property name="visible">True</property>
+        <property name="vexpand">True</property>
+        <property name="height-request">120</property>
+        <property name="shadow-type">none</property>
+        <child>
+          <object class="GtkTextView" id="body_view">
+            <property name="visible">True</property>
+            <property name="wrap-mode">word-char</property>
+            <property name="left-margin">6</property>
+            <property name="right-margin">6</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="body_view-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="localnotebook|body_view-atkobject.accessible_name">Note body</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkLabel" id="mat_title">
+        <property name="visible">True</property>
+        <property name="halign">start</property>
+        <property name="label" translatable="yes" context="localnotebook|mat_title.label">材料库（本地）</property>
+        <attributes>
+          <attribute name="weight" value="bold"/>
+        </attributes>
+        <property name="mnemonic-widget">material_list</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkEntry" id="mat_search_entry">
+        <property name="visible">True</property>
+        <property name="placeholder-text" translatable="yes" context="localnotebook|mat_search_entry.placeholder_text">搜索… #标签 与 · #a | #b 或 · 点标签云筛选</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox" id="mat_toolbar">
+        <property name="visible">True</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">4</property>
+        <child>
+          <object class="GtkButton" id="mat_add_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="localnotebook|mat_add_btn.label">添加文件</property>
+            <property name="tooltip-text" translatable="yes" context="localnotebook|mat_add_btn.tooltip_text">导入本地文件为材料（txt/md/csv/图片/PDF 引用）</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="mat_paste_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="localnotebook|mat_paste_btn.label">正文为材</property>
+            <property name="tooltip-text" translatable="yes" context="localnotebook|mat_paste_btn.tooltip_text">把当前笔记正文存为一条材料</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="mat_attach_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="localnotebook|mat_attach_btn.label">附到笔记</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="mat_send_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="localnotebook|mat_send_btn.label">材料→AI</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="mat_del_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="localnotebook|mat_del_btn.label">删材料</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="mat_reextract_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="localnotebook|mat_reextract_btn.label">重提取</property>
+            <property name="tooltip-text" translatable="yes" context="localnotebook|mat_reextract_btn.tooltip_text">对选中材料重新 OCR/PDF/办公文本提取</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="mat_open_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="localnotebook|mat_open_btn.label">打开源</property>
+            <property name="tooltip-text" translatable="yes" context="localnotebook|mat_open_btn.tooltip_text">用系统默认应用打开材料源文件</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="mat_folder_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="localnotebook|mat_folder_btn.label">材料夹</property>
+            <property name="tooltip-text" translatable="yes" context="localnotebook|mat_folder_btn.tooltip_text">打开本地材料库目录</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="mat_batch_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="localnotebook|mat_batch_btn.label">批提取</property>
+            <property name="tooltip-text" translatable="yes" context="localnotebook|mat_batch_btn.tooltip_text">优先处理多选材料；否则可见列表最多 8 条重提取</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="mat_ask_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="localnotebook|mat_ask_btn.label">搜到→AI</property>
+            <property name="tooltip-text" translatable="yes" context="localnotebook|mat_ask_btn.tooltip_text">将搜索/选中材料作为上下文发给 AI 助手</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="mat_selall_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="localnotebook|mat_selall_btn.label">全选</property>
+            <property name="tooltip-text" translatable="yes" context="localnotebook|mat_selall_btn.tooltip_text">全选当前可见材料列表</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="mat_copypath_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="localnotebook|mat_copypath_btn.label">复制路径</property>
+            <property name="tooltip-text" translatable="yes" context="localnotebook|mat_copypath_btn.tooltip_text">复制选中材料源路径到剪贴板</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="mat_pin_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="localnotebook|mat_pin_btn.label">置顶</property>
+            <property name="tooltip-text" translatable="yes" context="localnotebook|mat_pin_btn.tooltip_text">收藏/置顶选中材料（再点取消）</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="mat_pinned_ai_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="localnotebook|mat_pinned_ai_btn.label">置顶→AI</property>
+            <property name="tooltip-text" translatable="yes" context="localnotebook|mat_pinned_ai_btn.tooltip_text">将全部置顶材料作为上下文发给 AI 助手</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="mat_tag_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="localnotebook|mat_tag_btn.label">打标签</property>
+            <property name="tooltip-text" translatable="yes" context="localnotebook|mat_tag_btn.tooltip_text">用搜索框内容为选中材料加标签（如 项目A 周报 或 #项目A）</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="mat_pinned_only_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="localnotebook|mat_pinned_only_btn.label">仅置顶</property>
+            <property name="tooltip-text" translatable="yes" context="localnotebook|mat_pinned_only_btn.tooltip_text">切换：只显示置顶材料 / 显示全部</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="mat_tagcloud_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="localnotebook|mat_tagcloud_btn.label">标签云</property>
+            <property name="tooltip-text" translatable="yes" context="localnotebook|mat_tagcloud_btn.tooltip_text">显示全部标签及出现次数</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="mat_group_tags_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="localnotebook|mat_group_tags_btn.label">按标签</property>
+            <property name="tooltip-text" translatable="yes" context="localnotebook|mat_group_tags_btn.tooltip_text">切换：按标签分组列表 / 默认排序</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="mat_tag_rename_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="localnotebook|mat_tag_rename_btn.label">标签改名</property>
+            <property name="tooltip-text" translatable="yes" context="localnotebook|mat_tag_rename_btn.tooltip_text">搜索框输入 旧名&gt;新名 批量重命名（空新名=删除该标签）</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="mat_timeline_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="localnotebook|mat_timeline_btn.label">时间线</property>
+            <property name="tooltip-text" translatable="yes" context="localnotebook|mat_timeline_btn.tooltip_text">按最近使用/导入日期分组显示材料</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="mat_stats_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="localnotebook|mat_stats_btn.label">库统计</property>
+            <property name="tooltip-text" translatable="yes" context="localnotebook|mat_stats_btn.tooltip_text">显示材料库条数、置顶、标签、字数统计</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkScrolledWindow">
+        <property name="visible">True</property>
+        <property name="height-request">72</property>
+        <property name="shadow-type">none</property>
+        <child>
+          <object class="GtkTreeView" id="material_list">
+            <property name="visible">True</property>
+            <property name="headers_visible">False</property>
+            <child internal-child="selection">
+              <object class="GtkTreeSelection"/>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn">
+                <property name="expand">True</property>
+                <child>
+                  <object class="GtkCellRendererText"/>
+                  <attributes>
+                    <attribute name="text">0</attribute>
+                  </attributes>
+                </child>
+              </object>
+            </child>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="material_list-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="localnotebook|material_list-atkobject.accessible_name">Material list</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkScrolledWindow">
+        <property name="visible">True</property>
+        <property name="height-request">90</property>
+        <property name="shadow-type">none</property>
+        <child>
+          <object class="GtkTextView" id="material_preview">
+            <property name="visible">True</property>
+            <property name="editable">False</property>
+            <property name="wrap-mode">word-char</property>
+            <property name="left-margin">6</property>
+            <property name="right-margin">6</property>
+            <child internal-child="accessible">
+              <object class="AtkObject" id="material_preview-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="localnotebook|material_preview-atkobject.accessible_name">Material preview</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkLabel" id="status_label">
+        <property name="visible">True</property>
+        <property name="halign">start</property>
+        <property name="wrap">True</property>
+        <property name="label" translatable="yes" context="localnotebook|status_label.label">本地 Markdown · 材料库全本地 · 可发给 AI</property>
+        <property name="mnemonic-widget">body_view</property>
+      </object>
+    </child>
+  </object>
+</interface>

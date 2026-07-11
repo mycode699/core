@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Compact always-on workbench pendant (WeChat-float style efficiency bar) -->
+<interface domain="sfx">
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkDialog" id="WorkPendantDialog">
+    <property name="can-focus">False</property>
+    <property name="title" translatable="yes" context="workpendant|WorkPendantDialog.title">可圈效率挂坠</property>
+    <property name="modal">False</property>
+    <property name="resizable">False</property>
+    <property name="type-hint">utility</property>
+    <property name="decorated">True</property>
+    <property name="keep-above">True</property>
+    <property name="skip-taskbar-hint">True</property>
+    <property name="default-width">280</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="pendant_box">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">6</property>
+        <property name="border-width">10</property>
+        <child>
+          <object class="GtkLabel" id="title_label">
+            <property name="visible">True</property>
+            <property name="halign">start</property>
+            <property name="label" translatable="yes" context="workpendant|title_label.label">今日工作</property>
+            <attributes>
+              <attribute name="weight" value="bold"/>
+            </attributes>
+            <property name="mnemonic-widget">stats_label</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="stats_label">
+            <property name="visible">True</property>
+            <property name="halign">start</property>
+            <property name="wrap">True</property>
+            <property name="label">加载中…</property>
+            <property name="xalign">0</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="btn_row1">
+            <property name="visible">True</property>
+            <property name="orientation">horizontal</property>
+            <property name="spacing">4</property>
+            <property name="homogeneous">True</property>
+            <child>
+              <object class="GtkButton" id="btn_shot">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="workpendant|btn_shot.label">截图</property>
+                <property name="tooltip-text" translatable="yes" context="workpendant|btn_shot.tooltip_text">选区截图 ⌘⇧A</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_voice">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="workpendant|btn_voice.label">语音</property>
+                <property name="tooltip-text" translatable="yes" context="workpendant|btn_voice.tooltip_text">语音输入 F4</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_refresh">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="workpendant|btn_refresh.label">刷新</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="btn_row2">
+            <property name="visible">True</property>
+            <property name="orientation">horizontal</property>
+            <property name="spacing">4</property>
+            <property name="homogeneous">True</property>
+            <child>
+              <object class="GtkButton" id="btn_workbench">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="workpendant|btn_workbench.label">中台</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_notebook">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="workpendant|btn_notebook.label">记事本</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_ai">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="workpendant|btn_ai.label">AI</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="btn_row3">
+            <property name="visible">True</property>
+            <property name="orientation">horizontal</property>
+            <property name="spacing">4</property>
+            <property name="homogeneous">True</property>
+            <child>
+              <object class="GtkButton" id="btn_chart">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="workpendant|btn_chart.label">图表</property>
+                <property name="tooltip-text" translatable="yes" context="workpendant|btn_chart.tooltip_text">导出近 7 日 SVG 并打开</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_reports">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="workpendant|btn_reports.label">报告夹</property>
+                <property name="tooltip-text" translatable="yes" context="workpendant|btn_reports.tooltip_text">打开本地报告目录</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_pack">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="workpendant|btn_pack.label">ZIP</property>
+                <property name="tooltip-text" translatable="yes" context="workpendant|btn_pack.tooltip_text">导出周报 ZIP 分享包</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_mail">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="workpendant|btn_mail.label">邮件</property>
+                <property name="tooltip-text" translatable="yes" context="workpendant|btn_mail.tooltip_text">ZIP 后打开邮件草稿（请手动附加文件）</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="btn_row4">
+            <property name="visible">True</property>
+            <property name="orientation">horizontal</property>
+            <property name="spacing">4</property>
+            <property name="homogeneous">True</property>
+            <child>
+              <object class="GtkButton" id="btn_done_week">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="workpendant|btn_done_week.label">完成本周</property>
+                <property name="tooltip-text" translatable="yes" context="workpendant|btn_done_week.tooltip_text">一键 ZIP 周报、打开 HTML、标记本周已归档</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_wow">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="workpendant|btn_wow.label">环比图</property>
+                <property name="tooltip-text" translatable="yes" context="workpendant|btn_wow.tooltip_text">导出并打开本周 vs 上周迷你 SVG</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="spark_label">
+            <property name="visible">True</property>
+            <property name="halign">start</property>
+            <property name="wrap">True</property>
+            <property name="xalign">0</property>
+            <property name="label">近 7 日…</property>
+            <property name="selectable">True</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="hint_label">
+            <property name="visible">True</property>
+            <property name="halign">start</property>
+            <property name="wrap">True</property>
+            <property name="label" translatable="yes" context="workpendant|hint_label.label">本地统计 · ⌘⇧E 唤起 · 关闭即收起</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

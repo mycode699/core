@@ -109,14 +109,14 @@
                     <property name="can-focus">False</property>
                     <property name="vexpand">True</property>
                     <property name="orientation">vertical</property>
-                    <property name="spacing">8</property>
+                    <property name="spacing">6</property>
                     <child>
                       <object class="GtkButton" id="open_all">
                         <property name="label" translatable="yes" context="startcenter|open_all">打开本地文件</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="height-request">36</property>
+                        <property name="height-request">38</property>
                         <property name="margin-start">16</property>
                         <property name="margin-end">16</property>
                         <property name="margin-top">8</property>
@@ -138,7 +138,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="height-request">36</property>
+                        <property name="height-request">38</property>
                         <property name="margin-start">16</property>
                         <property name="margin-end">16</property>
                         <property name="image">open_all_image2</property>
@@ -173,7 +173,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="height-request">36</property>
+                        <property name="height-request">38</property>
                         <property name="margin-start">16</property>
                         <property name="margin-end">16</property>
                         <property name="image">open_all_image1</property>
@@ -194,7 +194,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="height-request">36</property>
+                        <property name="height-request">38</property>
                         <property name="margin-start">16</property>
                         <property name="margin-end">16</property>
                         <property name="image">templates_all_image</property>
@@ -227,9 +227,9 @@
                       <object class="GtkLabel" id="create_label">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="margin-start">14</property>
-                        <property name="margin-top">14</property>
-                        <property name="margin-bottom">6</property>
+                        <property name="margin-start">16</property>
+                        <property name="margin-top">12</property>
+                        <property name="margin-bottom">4</property>
                         <property name="label" translatable="yes" context="startcenter|create_label">新建文件</property>
                         <property name="xalign">0</property>
                       </object>
@@ -245,7 +245,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="height-request">36</property>
+                        <property name="height-request">38</property>
                         <property name="margin-start">16</property>
                         <property name="margin-end">16</property>
                         <property name="image">writer_all_image</property>
@@ -266,7 +266,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="height-request">36</property>
+                        <property name="height-request">38</property>
                         <property name="margin-start">16</property>
                         <property name="margin-end">16</property>
                         <property name="image">calc_all_image</property>
@@ -287,7 +287,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="height-request">36</property>
+                        <property name="height-request">38</property>
                         <property name="margin-start">16</property>
                         <property name="margin-end">16</property>
                         <property name="image">impress_all_image</property>
@@ -308,7 +308,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="height-request">36</property>
+                        <property name="height-request">38</property>
                         <property name="margin-start">16</property>
                         <property name="margin-end">16</property>
                         <property name="image">draw_all_image</property>
@@ -329,7 +329,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="height-request">36</property>
+                        <property name="height-request">38</property>
                         <property name="margin-start">16</property>
                         <property name="margin-end">16</property>
                         <property name="image">math_all_image</property>
@@ -350,7 +350,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="height-request">36</property>
+                        <property name="height-request">38</property>
                         <property name="margin-start">16</property>
                         <property name="margin-end">16</property>
                         <property name="image">database_all_image</property>
@@ -366,6 +366,88 @@
                       </packing>
                     </child>
                     <child>
+                      <object class="GtkLabel" id="ai_create_label">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="margin-start">16</property>
+                        <property name="margin-top">10</property>
+                        <property name="margin-bottom">4</property>
+                        <property name="label" translatable="yes" context="startcenter|ai_create_label">AI 创作</property>
+                        <property name="mnemonic-widget">ai_draft_writer</property>
+                        <property name="xalign">0</property>
+                        <child>
+                          <object class="AtkObject" id="ai_create_label-atkobject">
+                            <property name="AtkObject::accessible-name" translatable="yes" context="startcenter|ai_create_label|accessible_name">AI 创作</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">13</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="ai_draft_writer">
+                        <property name="label" translatable="yes" context="startcenter|ai_draft_writer">AI 起草文档</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="height-request">38</property>
+                        <property name="margin-start">16</property>
+                        <property name="margin-end">16</property>
+                        <property name="relief">none</property>
+                        <property name="use-underline">True</property>
+                        <property name="xalign">0</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|ai_draft_writer|tool_tip">新建空白文档并打开 AI 起草（可补充主题后发送）。</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">14</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="ai_draft_calc">
+                        <property name="label" translatable="yes" context="startcenter|ai_draft_calc">AI 建表</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="height-request">38</property>
+                        <property name="margin-start">16</property>
+                        <property name="margin-end">16</property>
+                        <property name="relief">none</property>
+                        <property name="use-underline">True</property>
+                        <property name="xalign">0</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|ai_draft_calc|tool_tip">新建空白表格并打开 AI 建表（表头、示例与公式）。</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">15</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="ai_draft_impress">
+                        <property name="label" translatable="yes" context="startcenter|ai_draft_impress">AI 成片</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="height-request">38</property>
+                        <property name="margin-start">16</property>
+                        <property name="margin-end">16</property>
+                        <property name="relief">none</property>
+                        <property name="use-underline">True</property>
+                        <property name="xalign">0</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|ai_draft_impress|tool_tip">新建空白演示并打开 AI 成片（大纲+讲稿结构）。</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">16</property>
+                      </packing>
+                    </child>
+                    <child>
                       <object class="GtkLabel" id="althelplabel">
                         <property name="can-focus">False</property>
                         <property name="no-show-all">True</property>
@@ -375,7 +457,7 @@
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">15</property>
+                        <property name="position">17</property>
                       </packing>
                     </child>
                   </object>

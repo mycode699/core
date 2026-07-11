@@ -43,9 +43,13 @@ INTRO_PACKAGE_DIRS = [
     ROOT / "icon-themes/colibre/brand_dev",
 ]
 
-BRAND_RING_START = "#7C9EFF"
-BRAND_RING_END = "#1E40AF"
-BRAND_SWEEP = "#E0E7FF"
+# WPS-modern Chinese office palette: clean neutrals + vivid module accents.
+# Product brand stays blue (not WPS red) for 可圈 identity.
+BRAND_RING_START = "#69B1FF"
+BRAND_RING_END = "#0958D9"
+BRAND_SWEEP = "#E6F4FF"
+BRAND_ACCENT = "#1677FF"
+BRAND_SOFT_WHITE = "#F0F7FF"
 
 
 @dataclass(frozen=True)
@@ -69,19 +73,20 @@ APP_ICON_NAMES = [
 ]
 
 APP_GENERATED = {
-    "writer": Palette("#60A5FA", "#1D4ED8", "#2563EB", "#BFDBFE"),
-    "calc": Palette("#86EFAC", "#059669", "#15803D", "#CFF6BE"),
-    "impress": Palette("#FBBF6F", "#DC2626", "#EA580C", "#FFDDBB"),
-    "draw": Palette("#FCD65A", "#D97706", "#D97706", "#FFF0BA"),
-    "chart": Palette("#94A3B8", "#334155", "#475569", "#D8E0EB"),
-    "base": Palette("#64D2C8", "#0F766E", "#0F766E", "#C8F3EE"),
-    "math": Palette("#FF9B85", "#D9485F", "#E11D48", "#FFD6CF"),
-    "basic": Palette("#8A9AAF", "#374151", "#4B5563", "#D9E0EA"),
+    # Module colors aligned with common Chinese office suite habits (WPS-like).
+    "writer": Palette("#69B1FF", "#0958D9", "#1677FF", "#E6F4FF"),
+    "calc": Palette("#73D13D", "#237804", "#389E0D", "#F6FFED"),
+    "impress": Palette("#FF9C6E", "#D4380D", "#FA541C", "#FFF2E8"),
+    "draw": Palette("#FFC53D", "#D48806", "#FAAD14", "#FFFBE6"),
+    "chart": Palette("#8C8C8C", "#434343", "#595959", "#F5F5F5"),
+    "base": Palette("#36CFC9", "#006D75", "#13C2C2", "#E6FFFB"),
+    "math": Palette("#FF85C0", "#C41D7F", "#EB2F96", "#FFF0F6"),
+    "basic": Palette("#A6A6A6", "#434343", "#595959", "#FAFAFA"),
 }
 
 APP_SVG_GENERATED = {
-    "main": Palette("#7C9EFF", "#1E40AF", "#1E40AF", "#E0E7FF"),
-    "startcenter": Palette("#7C9EFF", "#1E40AF", "#1E40AF", "#E0E7FF"),
+    "main": Palette("#69B1FF", "#0958D9", "#1677FF", "#E6F4FF"),
+    "startcenter": Palette("#69B1FF", "#0958D9", "#1677FF", "#E6F4FF"),
     **APP_GENERATED,
 }
 
@@ -373,7 +378,7 @@ def build_branded_app_svg(name: str, palette: Palette) -> str:
           <path d="M164 96h122l74 74v246c0 22.091-17.909 40-40 40H164c-22.091 0-40-17.909-40-40V136c0-22.091 17.909-40 40-40z" fill="url(#panel)"/>
           <path d="M286 96v54c0 11.046 8.954 20 20 20h54z" fill="url(#fold)"/>
           <circle cx="166" cy="364" r="42" fill="none" stroke="url(#ring)" stroke-width="24"/>
-          <circle cx="166" cy="364" r="12" fill="#ECFFF3"/>
+          <circle cx="166" cy="364" r="12" fill="{BRAND_SOFT_WHITE}"/>
           <path d="M196 333a42 42 0 0 1 9 24" fill="none" stroke="{BRAND_SWEEP}" stroke-linecap="round" stroke-width="8"/>
           {glyph}
         </svg>
@@ -460,8 +465,8 @@ def build_doc_svg(doc_key: str, palette: Palette, template: bool) -> str:
     if template:
         ribbon = dedent(
             """
-            <path d="M116 84h82l-82 82z" fill="#5B84F1"/>
-            <path d="M150 112l8 15 17 2-12 12 3 17-16-8-15 8 3-17-12-12 17-2z" fill="#ECFFF3"/>
+            <path d="M116 84h82l-82 82z" fill="#1677FF"/>
+            <path d="M150 112l8 15 17 2-12 12 3 17-16-8-15 8 3-17-12-12 17-2z" fill="#F0F7FF"/>
             """
         ).strip()
     return dedent(

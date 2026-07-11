@@ -1,8 +1,8 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="accent" x1="116" y1="110" x2="178" y2="420" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stop-color="#FBBF6F"/>
-              <stop offset="1" stop-color="#DC2626"/>
+              <stop offset="0" stop-color="#FF9C6E"/>
+              <stop offset="1" stop-color="#D4380D"/>
             </linearGradient>
             <linearGradient id="panel" x1="116" y1="84" x2="360" y2="444" gradientUnits="userSpaceOnUse">
               <stop offset="0" stop-color="#ffffff"/>
@@ -17,12 +17,12 @@
           <path d="M116 84h130l74 74v238c0 22-18 40-40 40H116c-22 0-40-18-40-40V124c0-22 18-40 40-40z" fill="url(#panel)"/>
           <rect x="116" y="84" width="58" height="352" rx="22" fill="url(#accent)"/>
           <path d="M246 84v54c0 11.046 8.954 20 20 20h54z" fill="url(#fold)"/>
-          <path d="M116 84h82l-82 82z" fill="#5B84F1"/>
-<path d="M150 112l8 15 17 2-12 12 3 17-16-8-15 8 3-17-12-12 17-2z" fill="#ECFFF3"/>
+          <path d="M116 84h82l-82 82z" fill="#1677FF"/>
+<path d="M150 112l8 15 17 2-12 12 3 17-16-8-15 8 3-17-12-12 17-2z" fill="#F0F7FF"/>
           <g transform="translate(48 58)"><g transform="scale(.72)"><g>
-  <rect x="168" y="188" width="208" height="132" rx="20" fill="#FFDDBB" opacity=".18" stroke="#EA580C" stroke-width="12"/>
-  <rect x="192" y="212" width="160" height="16" rx="8" fill="#EA580C" opacity="0.84"/>
-  <rect x="214" y="246" width="116" height="14" rx="7" fill="#EA580C" opacity="0.56"/>
-  <path d="M272 320v34M236 354h72" fill="none" stroke="#EA580C" stroke-linecap="round" stroke-width="12"/>
+  <rect x="168" y="188" width="208" height="132" rx="20" fill="#FFF2E8" opacity=".18" stroke="#FA541C" stroke-width="12"/>
+  <rect x="192" y="212" width="160" height="16" rx="8" fill="#FA541C" opacity="0.84"/>
+  <rect x="214" y="246" width="116" height="14" rx="7" fill="#FA541C" opacity="0.56"/>
+  <path d="M272 320v34M236 354h72" fill="none" stroke="#FA541C" stroke-linecap="round" stroke-width="12"/>
 </g></g></g>
         </svg>

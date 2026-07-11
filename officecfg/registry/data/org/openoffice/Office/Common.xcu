@@ -36,11 +36,12 @@
       <prop oor:name="InfoURL" oor:type="xs:string">
         <value/>
       </prop>
+      <!-- WPS-modern light tiles: soft blue-gray bg #E8F3FF, near-black text #1F2329 -->
       <prop oor:name="StartCenterThumbnailsBackgroundColor" oor:type="xs:int">
-        <value>1980975</value>
+        <value>15264767</value>
       </prop>
       <prop oor:name="StartCenterThumbnailsTextColor" oor:type="xs:int">
-        <value>15661041</value>
+        <value>2040617</value>
       </prop>
     </node>
     <prop oor:name="System">

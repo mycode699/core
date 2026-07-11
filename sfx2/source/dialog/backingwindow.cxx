@@ -71,6 +71,8 @@
 #include <sfx2/strings.hrc>
 #include <sfx2/sfxresid.hxx>
 
+#include <DocumentAIScenarioStore.hxx>
+
 #include <config_folders.h>
 
 using namespace ::com::sun::star;
@@ -163,7 +165,8 @@ public:
 };
 
 // increase size of the text in the buttons on the left fMultiplier-times
-float const g_fMultiplier = 1.2f;
+// Slightly calmer scale than stock LO — denser, WPS-like office workbench.
+float const g_fMultiplier = 1.12f;
 
 BackingWindow::BackingWindow(vcl::Window* i_pParent)
     : InterimItemWindow(i_pParent, u"sfx/ui/startcenter.ui"_ustr, u"StartCenter"_ustr, false)
@@ -189,6 +192,10 @@ BackingWindow::BackingWindow(vcl::Window* i_pParent)
     , mxDrawAllButton(m_xBuilder->weld_button(u"draw_all"_ustr))
     , mxDBAllButton(m_xBuilder->weld_button(u"database_all"_ustr))
     , mxMathAllButton(m_xBuilder->weld_button(u"math_all"_ustr))
+    , mxAiCreateLabel(m_xBuilder->weld_label(u"ai_create_label"_ustr))
+    , mxAiDraftWriterButton(m_xBuilder->weld_button(u"ai_draft_writer"_ustr))
+    , mxAiDraftCalcButton(m_xBuilder->weld_button(u"ai_draft_calc"_ustr))
+    , mxAiDraftImpressButton(m_xBuilder->weld_button(u"ai_draft_impress"_ustr))
     , mxScenarioBox(m_xBuilder->weld_container(u"scenario_box"_ustr))
     , mxScenarioReportButton(m_xBuilder->weld_button(u"scenario_report"_ustr))
     , mxScenarioMinutesButton(m_xBuilder->weld_button(u"scenario_minutes"_ustr))
@@ -300,6 +307,10 @@ void BackingWindow::dispose()
     mxDrawAllButton.reset();
     mxDBAllButton.reset();
     mxMathAllButton.reset();
+    mxAiCreateLabel.reset();
+    mxAiDraftWriterButton.reset();
+    mxAiDraftCalcButton.reset();
+    mxAiDraftImpressButton.reset();
     mxScenarioBox.reset();
     mxScenarioReportButton.reset();
     mxScenarioMinutesButton.reset();
@@ -377,6 +388,12 @@ void BackingWindow::initControls()
     mxDBAllButton->connect_clicked(LINK(this, BackingWindow, ClickHdl));
     mxImpressAllButton->connect_clicked(LINK(this, BackingWindow, ClickHdl));
     mxMathAllButton->connect_clicked(LINK(this, BackingWindow, ClickHdl));
+    if (mxAiDraftWriterButton)
+        mxAiDraftWriterButton->connect_clicked(LINK(this, BackingWindow, AiDraftHdl));
+    if (mxAiDraftCalcButton)
+        mxAiDraftCalcButton->connect_clicked(LINK(this, BackingWindow, AiDraftHdl));
+    if (mxAiDraftImpressButton)
+        mxAiDraftImpressButton->connect_clicked(LINK(this, BackingWindow, AiDraftHdl));
     for (const auto& rScenario : getScenarioTemplates())
     {
         if (rScenario.pButton)
@@ -434,6 +451,12 @@ void BackingWindow::ApplyStyleSettings()
     setLargerFont(mxDBAllButton, aButtonFont);
     setLargerFont(mxImpressAllButton, aButtonFont);
     setLargerFont(mxMathAllButton, aButtonFont);
+    if (mxAiDraftWriterButton)
+        setLargerFont(mxAiDraftWriterButton, aButtonFont);
+    if (mxAiDraftCalcButton)
+        setLargerFont(mxAiDraftCalcButton, aButtonFont);
+    if (mxAiDraftImpressButton)
+        setLargerFont(mxAiDraftImpressButton, aButtonFont);
     const sal_Int32 nScenarioButtonHeight = mxFilter->get_preferred_size().getHeight() + 8;
     for (const auto& rScenario : getScenarioTemplates())
     {
@@ -449,13 +472,16 @@ void BackingWindow::ApplyStyleSettings()
         mxScenarioCompatOpenButton->set_size_request(-1, nScenarioButtonHeight + 2);
     }
 
+    // Section labels: medium-bold, clear hierarchy without oversized hero type.
     vcl::Font aSectionFont(aLabelFont);
-    aSectionFont.SetWeight(WEIGHT_BOLD);
-    aSectionFont.SetFontSize(Size(0, aSectionFont.GetFontSize().Height() * 1.18f));
+    aSectionFont.SetWeight(WEIGHT_SEMIBOLD);
+    aSectionFont.SetFontSize(Size(0, aSectionFont.GetFontSize().Height() * 1.12f));
     vcl::Font aWorkspaceTitleFont(aLabelFont);
-    aWorkspaceTitleFont.SetWeight(WEIGHT_BOLD);
-    aWorkspaceTitleFont.SetFontSize(Size(0, aWorkspaceTitleFont.GetFontSize().Height() * 1.08f));
+    aWorkspaceTitleFont.SetWeight(WEIGHT_SEMIBOLD);
+    aWorkspaceTitleFont.SetFontSize(Size(0, aWorkspaceTitleFont.GetFontSize().Height() * 1.06f));
     mxCreateLabel->set_font(aSectionFont);
+    if (mxAiCreateLabel)
+        mxAiCreateLabel->set_font(aSectionFont);
     if (mxAllRecentLabel)
         mxAllRecentLabel->set_font(aWorkspaceTitleFont);
     if (mxLocalViewLabel)
@@ -977,6 +1003,24 @@ IMPL_LINK(BackingWindow, OpenScenarioHdl, weld::Button&, rButton, void)
             return;
         }
     }
+}
+
+void BackingWindow::openAiDraft(std::u16string_view rScenarioId, const OUString& rFactoryUrl)
+{
+    // Queue scenario so AIChatPanel::ConsumePendingScenarioRun picks it up when
+    // the AI deck opens on the new document (blank-draft * autoSubmit=false → prefill).
+    kqoffice::ai::chat::DocumentAIScenarioStore::queuePendingRun(OUString(rScenarioId));
+    dispatchURL(rFactoryUrl);
+}
+
+IMPL_LINK(BackingWindow, AiDraftHdl, weld::Button&, rButton, void)
+{
+    if (mxAiDraftWriterButton && &rButton == mxAiDraftWriterButton.get())
+        openAiDraft(u"blank-draft-writer", u"private:factory/swriter"_ustr);
+    else if (mxAiDraftCalcButton && &rButton == mxAiDraftCalcButton.get())
+        openAiDraft(u"blank-draft-calc", u"private:factory/scalc"_ustr);
+    else if (mxAiDraftImpressButton && &rButton == mxAiDraftImpressButton.get())
+        openAiDraft(u"blank-draft-impress", u"private:factory/simpress?slot=6686"_ustr);
 }
 
 IMPL_LINK_NOARG(BackingWindow, OpenCompatibilityHdl, weld::Button&, void)

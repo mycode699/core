@@ -1,8 +1,8 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="bg" x1="72" y1="48" x2="448" y2="464" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stop-color="#FCD65A"/>
-              <stop offset="1" stop-color="#D97706"/>
+              <stop offset="0" stop-color="#FFC53D"/>
+              <stop offset="1" stop-color="#D48806"/>
             </linearGradient>
             <linearGradient id="panel" x1="132" y1="112" x2="380" y2="400" gradientUnits="userSpaceOnUse">
               <stop offset="0" stop-color="#ffffff"/>
@@ -12,13 +12,13 @@
           <rect x="40" y="40" width="432" height="432" rx="104" fill="url(#bg)"/>
           <rect x="96" y="96" width="320" height="320" rx="84" fill="#ffffff" opacity=".16"/>
           <rect x="128" y="112" width="256" height="288" rx="52" fill="url(#panel)"/>
-          <rect x="128" y="112" width="256" height="48" rx="52" fill="#D97706" opacity=".14"/>
-          <circle cx="166" cy="136" r="6" fill="#D97706" opacity="0.72"/>
-          <circle cx="188" cy="136" r="6" fill="#D97706" opacity="0.5"/>
-          <circle cx="210" cy="136" r="6" fill="#D97706" opacity="0.34"/>
+          <rect x="128" y="112" width="256" height="48" rx="52" fill="#FAAD14" opacity=".14"/>
+          <circle cx="166" cy="136" r="6" fill="#FAAD14" opacity="0.72"/>
+          <circle cx="188" cy="136" r="6" fill="#FAAD14" opacity="0.5"/>
+          <circle cx="210" cy="136" r="6" fill="#FAAD14" opacity="0.34"/>
           <g>
-  <circle cx="210" cy="292" r="48" fill="#FFF0BA" opacity=".2" stroke="#D97706" stroke-width="12"/>
-  <rect x="274" y="244" width="102" height="102" rx="18" fill="#FFF0BA" opacity=".16" stroke="#D97706" stroke-width="12"/>
-  <path d="M176 356h94l-47-82z" fill="#D97706" opacity=".72"/>
+  <circle cx="210" cy="292" r="48" fill="#FFFBE6" opacity=".2" stroke="#FAAD14" stroke-width="12"/>
+  <rect x="274" y="244" width="102" height="102" rx="18" fill="#FFFBE6" opacity=".16" stroke="#FAAD14" stroke-width="12"/>
+  <path d="M176 356h94l-47-82z" fill="#FAAD14" opacity=".72"/>
 </g>
         </svg>
