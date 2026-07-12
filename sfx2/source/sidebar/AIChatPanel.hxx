@@ -15,6 +15,7 @@
 #include <com/sun/star/ai/ProviderResponse.hpp>
 #include <tools/link.hxx>
 #include <vcl/timer.hxx>
+#include <vcl/weld/Notebook.hxx>
 
 #include <array>
 #include <memory>
@@ -101,6 +102,10 @@ private:
     DECL_LINK(OnFilterWorkspaceClicked, weld::Button&, void);
     DECL_LINK(OnSortWorkspaceClicked, weld::Button&, void);
     DECL_LINK(OnRemoveArtifactClicked, weld::Button&, void);
+    DECL_LINK(OnAgentRunClicked, weld::Button&, void);
+    DECL_LINK(OnAgentRefreshClicked, weld::Button&, void);
+    DECL_LINK(OnAgentClearClicked, weld::Button&, void);
+    DECL_LINK(OnReviewRefreshClicked, weld::Button&, void);
     DECL_LINK(OnAiSettingsClicked, weld::Button&, void);
     DECL_LINK(OnRunScenarioClicked, weld::Button&, void);
     DECL_LINK(OnRefreshScenariosClicked, weld::Button&, void);
@@ -110,6 +115,17 @@ private:
     DECL_LINK(OnCategoryTabToggled, weld::Toggleable&, void);
     DECL_LINK(OnFollowDocToggled, weld::Toggleable&, void);
     DECL_LINK(OnSelectionChipClicked, weld::Button&, void);
+    DECL_LINK(OnPendingPlanChipClicked, weld::Button&, void);
+    DECL_LINK(OnChatApproveClicked, weld::Button&, void);
+    DECL_LINK(OnChatDiffClicked, weld::Button&, void);
+    DECL_LINK(OnChatRejectClicked, weld::Button&, void);
+    DECL_LINK(OnLocateRagClicked, weld::Button&, void);
+    DECL_LINK(OnIntentRewriteClicked, weld::Button&, void);
+    DECL_LINK(OnIntentShortenClicked, weld::Button&, void);
+    DECL_LINK(OnIntentExpandClicked, weld::Button&, void);
+    DECL_LINK(OnIntentSummarizeClicked, weld::Button&, void);
+    DECL_LINK(OnIntentPlanClicked, weld::Button&, void);
+    DECL_LINK(OnIntentAgentClicked, weld::Button&, void);
     DECL_LINK(OnRoutingDiagClicked, weld::Button&, void);
     DECL_LINK(OnVoiceClicked, weld::Button&, void);
     DECL_LINK(OnVoiceMousePress, const MouseEvent&, bool);
@@ -151,10 +167,20 @@ private:
     static OUString FormatContextMentionSummary(const AIChatContextMentions& rMentions);
     bool MaterializeInsertedContent(OUString& rInsertedText);
     void LoadArtifactNavigator();
+    void LoadAgentSteps();
+    void LoadReviewQueue();
     void UpdateArtifactDetails();
     void OpenSelectedArtifact();
     void ReviewSelectedArtifact();
     void ReviewSelectedFormatting();
+    void PushAgentStepRow(const OUString& rStep, const OUString& rStatus);
+    /// Register AI reply into 内容 registry so 审查/打开 have a real target.
+    void RegisterAssistantArtifact(const OUString& rContent, const OUString& rEvidenceId,
+                                   const OUString& rSourceKind);
+    static OUString LocalizeArtifactType(const OUString& rType);
+    static OUString LocalizeArtifactState(const OUString& rState);
+    static OUString LocalizeReviewState(const OUString& rState);
+    static OUString LocalizeReviewItemType(const OUString& rItemType);
     void InspectSelectedEvidence();
     bool DispatchWorkspaceAction(const OUString& rCommand);
     void SyncReviewState(const OUString& rReviewId, const OUString& rTransitionEvent,
@@ -204,7 +230,22 @@ private:
     /// mode: region | window | fullscreen
     void RunScreenshotMode(const OUString& rMode);
     void applyVoiceCaptureUi(const kqoffice::ai::chat::VoiceCaptureResult& cap);
+    /// Machine token for fixtures (idle/requesting/…).
     static OUString StateToLabel(AIChatPanelState eState);
+    /// Human-readable Chinese status for title bar (Copilot-style narrative).
+    static OUString StateToUserLabel(AIChatPanelState eState);
+    /// Update activity_card process narrative (task-aware workspace).
+    void UpdateActivityCard();
+    /// Intent chips + placeholder (task-aware composer).
+    void UpdateComposerChrome();
+    /// Detect rewrite/summarize/plan/agent/… from prompt text.
+    static OUString DetectComposerIntent(const OUString& rPrompt);
+    /// Apply intent chip: set capability + seed prompt hint.
+    void ApplyComposerIntent(const OUString& rIntentId, const OUString& rSeedPrompt);
+    /// Show/hide + enable chat-tab approval strip (M1.3).
+    void UpdateApprovalChrome();
+    /// Jump notebook to review tab (index 3) for pending plan (M3.2).
+    void ShowReviewTab();
 
     /// Stage provider JSON as a pending ApplyPlan; never mutates the main document.
     void StagePendingApplyPlan(const OUString& rProviderContent, const OUString& rEvidenceId);
@@ -215,8 +256,15 @@ private:
 
     std::unique_ptr<weld::Label> m_xStatusLabel;
     std::unique_ptr<weld::Label> m_xAgentStepBar;
+    std::unique_ptr<weld::Label> m_xActivityCard;
     std::unique_ptr<weld::TextView> m_xTranscriptView;
     std::unique_ptr<weld::Entry> m_xPromptEntry;
+    std::unique_ptr<weld::Button> m_xIntentRewriteBtn;
+    std::unique_ptr<weld::Button> m_xIntentShortenBtn;
+    std::unique_ptr<weld::Button> m_xIntentExpandBtn;
+    std::unique_ptr<weld::Button> m_xIntentSummarizeBtn;
+    std::unique_ptr<weld::Button> m_xIntentPlanBtn;
+    std::unique_ptr<weld::Button> m_xIntentAgentBtn;
     std::unique_ptr<weld::Button> m_xVoiceButton;
     std::unique_ptr<weld::Button> m_xScreenshotButton;
     std::unique_ptr<weld::Button> m_xScreenshotWinButton;
@@ -229,6 +277,14 @@ private:
     std::unique_ptr<weld::Button> m_xRetryButton;
     std::unique_ptr<weld::Button> m_xClearHistoryButton;
     std::unique_ptr<weld::TreeView> m_xArtifactTree;
+    std::unique_ptr<weld::TreeView> m_xAgentTree;
+    std::unique_ptr<weld::Label> m_xAgentEmptyLabel;
+    std::unique_ptr<weld::Button> m_xAgentRunBtn;
+    std::unique_ptr<weld::Button> m_xAgentRefreshBtn;
+    std::unique_ptr<weld::Button> m_xAgentClearBtn;
+    std::unique_ptr<weld::TreeView> m_xReviewTree;
+    std::unique_ptr<weld::Label> m_xReviewEmptyLabel;
+    std::unique_ptr<weld::Button> m_xReviewRefreshBtn;
     std::unique_ptr<weld::Label> m_xArtifactDetailsLabel;
     std::unique_ptr<weld::Button> m_xRefreshArtifactsButton;
     std::unique_ptr<weld::Button> m_xOpenArtifactButton;
@@ -256,13 +312,23 @@ private:
     std::unique_ptr<weld::CheckButton> m_xOptAttachSelection;
     std::unique_ptr<weld::CheckButton> m_xOptAgentPipeline;
     std::unique_ptr<weld::CheckButton> m_xOptDocContext;
+    std::unique_ptr<weld::Button> m_xLocateRagBtn;
+    /// Last ask-document query for locate-first-hit (empty when none).
+    OUString m_sLastRagQuery;
+    OUString m_sLastRagPosition;
     std::array<std::unique_ptr<weld::Button>, kScenarioGridSlots> m_xScenarioGridBtns;
     std::array<OUString, kScenarioGridSlots> m_aScenarioGridIds;
     std::array<std::unique_ptr<weld::Button>, kScenarioPinSlots> m_xScenarioPinBtns;
     std::array<OUString, kScenarioPinSlots> m_aScenarioPinIds;
     std::unique_ptr<weld::Label> m_xScenarioPinnedLabel;
     std::unique_ptr<weld::Button> m_xSelectionChipBtn;
-    std::unique_ptr<weld::Label> m_xPendingPlanChip;
+    std::unique_ptr<weld::Button> m_xPendingPlanChip;
+    std::unique_ptr<weld::Widget> m_xApprovalActionRow;
+    std::unique_ptr<weld::Label> m_xApprovalHintLabel;
+    std::unique_ptr<weld::Button> m_xChatApproveBtn;
+    std::unique_ptr<weld::Button> m_xChatDiffBtn;
+    std::unique_ptr<weld::Button> m_xChatRejectBtn;
+    std::unique_ptr<weld::Notebook> m_xMainNotebook;
     std::unique_ptr<weld::Button> m_xRoutingDiagBtn;
     std::unique_ptr<weld::Label> m_xRoutingDiagLabel;
     bool m_bSuppressCategoryReload = false;
@@ -278,6 +344,8 @@ private:
     std::unique_ptr<AIChatWorkspaceActionBarStore> m_xWorkspaceActionBarStore;
     std::unique_ptr<AIChatWorkspaceSessionStore> m_xSessionStore;
     std::vector<AIChatContentRegistryEntry> m_aArtifacts;
+    /// In-session multi-step rows for the 多步 tab (步骤, 状态).
+    std::vector<std::pair<OUString, OUString>> m_aAgentStepCache;
 
     OUString m_sLastPrompt;
     OUString m_sStreamingBuffer;

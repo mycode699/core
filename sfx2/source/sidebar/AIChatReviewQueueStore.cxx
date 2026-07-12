@@ -202,13 +202,16 @@ bool AIChatReviewQueueStore::IsReviewQueueEntry(const AIChatContentRegistryEntry
 
 OUString AIChatReviewQueueStore::ResolveItemType(const AIChatContentRegistryEntry& rEntry)
 {
-    if (rEntry.Type == u"review-item"_ustr || rEntry.SourceSurface == u"content-review"_ustr)
+    if (rEntry.Type == u"review-item"_ustr || rEntry.SourceSurface == u"content-review"_ustr
+        || rEntry.Type == u"assistant-output"_ustr)
         return u"content-review"_ustr;
     if (rEntry.Type == u"formatting-preview"_ustr
         || rEntry.SourceSurface == u"formatting-review"_ustr)
         return u"formatting-review"_ustr;
     if (rEntry.Type == u"task-step"_ustr)
         return u"task-step"_ustr;
+    if (rEntry.Type == u"apply-plan"_ustr || rEntry.SourceSurface == u"apply-plan"_ustr)
+        return u"apply-plan"_ustr;
     return u"unsupported"_ustr;
 }
 

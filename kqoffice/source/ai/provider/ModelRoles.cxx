@@ -72,7 +72,8 @@ void expandUserSlots(ModelRoutingSnapshot& r)
 ModelRole modelRoleForCapability(const OUString& rCapability)
 {
     const OUString c = rCapability.toAsciiLowerCase();
-    if (c == u"summarize"_ustr || c == u"quick-summary"_ustr || c == u"quicksummary"_ustr)
+    if (c == u"summarize"_ustr || c == u"quick-summary"_ustr || c == u"quicksummary"_ustr
+        || c == u"shorten"_ustr || c == u"condense"_ustr)
         return ModelRole::Summarize;
     if (c == u"extract"_ustr || c == u"session-memory"_ustr)
         return ModelRole::Extract;
@@ -85,7 +86,8 @@ ModelRole modelRoleForCapability(const OUString& rCapability)
     if (c == u"plan"_ustr || c == u"planner"_ustr || c == u"outline"_ustr
         || c == u"agent-plan"_ustr)
         return ModelRole::Planner;
-    if (c == u"review"_ustr || c == u"reviewer"_ustr || c == u"critique"_ustr)
+    if (c == u"review"_ustr || c == u"reviewer"_ustr || c == u"critique"_ustr
+        || c == u"proofread"_ustr)
         return ModelRole::Reviewer;
     if (c == u"judge"_ustr || c == u"arbiter"_ustr)
         return ModelRole::Judge;
@@ -94,7 +96,10 @@ ModelRole modelRoleForCapability(const OUString& rCapability)
     if (c == u"agent"_ustr || c == u"cowork"_ustr || c == u"subagent"_ustr
         || c == u"mesh"_ustr || c == u"fallback"_ustr)
         return ModelRole::Agent;
-    if (c == u"chat"_ustr)
+    // Product edit verbs → primary/mainLoop (rewrite surface).
+    if (c == u"chat"_ustr || c == u"rewrite"_ustr || c == u"polish"_ustr || c == u"edit"_ustr
+        || c == u"expand"_ustr || c == u"expand-write"_ustr || c == u"translate"_ustr
+        || c == u"translation"_ustr || c == u"paraphrase"_ustr || c == u"formula"_ustr)
         return ModelRole::MainLoop;
     return ModelRole::MainLoop;
 }
@@ -243,9 +248,12 @@ OUString normalizeCapabilityHint(const OUString& rHint)
     const OUString c = rHint.toAsciiLowerCase().trim();
     if (c.isEmpty())
         return u"chat"_ustr;
-    if (c == u"rewrite"_ustr || c == u"polish"_ustr || c == u"edit"_ustr)
+    if (c == u"rewrite"_ustr || c == u"polish"_ustr || c == u"edit"_ustr
+        || c == u"expand"_ustr || c == u"expand-write"_ustr || c == u"paraphrase"_ustr
+        || c == u"translate"_ustr || c == u"translation"_ustr)
         return u"rewrite"_ustr;
-    if (c == u"summarize"_ustr || c == u"summary"_ustr || c == u"shorten"_ustr)
+    if (c == u"summarize"_ustr || c == u"summary"_ustr || c == u"shorten"_ustr
+        || c == u"condense"_ustr)
         return u"summarize"_ustr;
     if (c == u"extract"_ustr || c == u"data-clean"_ustr || c == u"clean"_ustr)
         return u"extract"_ustr;

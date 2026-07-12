@@ -8155,7 +8155,7 @@ bit 3 (0x8): #define UICOMMANDDESCRIPTION_PROPERTIES_TOGGLEBUTTON 8
       </node>
       <node oor:name=".uno:SidebarDeck.AIChatDeck" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
-          <value xml:lang="en-US">打开可圈 AI</value>
+          <value xml:lang="en-US">Open the AI Chat Deck</value>
           <value xml:lang="zh-CN">打开可圈 AI</value>
         </prop>
       </node>

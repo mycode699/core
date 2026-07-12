@@ -41,6 +41,7 @@ $(eval $(call gb_Library_add_exception_objects,kqoffice_ai,\
     kqoffice/source/ai/provider/ModelRoles \
     kqoffice/source/ai/provider/ModelRoutingConfig \
     kqoffice/source/ai/provider/OllamaAdapter \
+    kqoffice/source/ai/provider/OpenAICompatibleAdapter \
     kqoffice/source/ai/provider/Provider \
     kqoffice/source/ai/provider/RuntimePlanStub \
     kqoffice/source/ai/provider/ServiceModePolicy \

@@ -409,25 +409,25 @@ void AIInlineEditPopover::updatePreviewDisplay()
         m_xPreview->set_text(OUString());
         return;
     }
-    // Diff-style preview when rewriting a selection
+    // Diff-style preview when rewriting a selection (Codex/Cursor-style split narrative).
     if (m_eMode != InlineMode::Complete && m_aSel.length > 0 && !m_aSel.text.isEmpty())
     {
         OUStringBuffer b;
-        b.append(u"—— 原文 ——\n"_ustr);
+        b.append(u"【原文】\n"_ustr);
         OUString oldP = m_aSel.text;
         if (oldP.getLength() > 800)
             oldP = oldP.copy(0, 800) + u"…"_ustr;
         b.append(oldP);
-        b.append(u"\n\n—— 改写（预览）——\n"_ustr);
+        b.append(u"\n\n【建议 · 未写入主文档】\n"_ustr);
         b.append(m_sPreviewText);
-        b.append(u"\n\n⌘ Tab 应用 · Esc 关闭"_ustr);
+        b.append(u"\n\n── Tab 应用写回 · Esc 关闭 ──"_ustr);
         m_xPreview->set_text(b.makeStringAndClear());
     }
     else
     {
         // Ghost gray-text metaphor: show caret context + muted completion.
         OUStringBuffer b;
-        b.append(u"〔上下文〕"_ustr);
+        b.append(u"【上下文】"_ustr);
         OUString ctx = m_aSel.text;
         if (ctx.getLength() > 120)
             ctx = ctx.copy(ctx.getLength() - 120);
@@ -435,7 +435,7 @@ void AIInlineEditPopover::updatePreviewDisplay()
             b.append(u"（光标处）"_ustr);
         else
             b.append(ctx);
-        b.append(u"\n\n〔幽灵灰字 · 未写入〕\n"_ustr);
+        b.append(u"\n\n【幽灵灰字 · 未写入】\n"_ustr);
         b.append(m_sPreviewText);
         b.append(u"\n\n── Tab 接受写入 · Esc 放弃 ──"_ustr);
         m_xPreview->set_text(b.makeStringAndClear());
@@ -528,7 +528,14 @@ void AIInlineEditPopover::generate()
             cap = u"background"_ustr; // light slot for speed
     }
 
-    m_xStatus->set_label(u"生成中…（"_ustr + cap + u"）"_ustr);
+    // M2.3: multi-phase generating narrative (blocking call; labels bookend the wait).
+    if (m_xGhostBanner)
+    {
+        m_xGhostBanner->set_visible(true);
+        m_xGhostBanner->set_label(
+            u"⏳ 生成中 · 主文档未改 · ①准备提示 → ②调用模型…"_ustr);
+    }
+    m_xStatus->set_label(u"生成中 · ① 组装提示（"_ustr + cap + u"）→ ② 请求模型…"_ustr);
     m_xGenerate->set_sensitive(false);
     m_xAccept->set_sensitive(false);
 
@@ -540,8 +547,17 @@ void AIInlineEditPopover::generate()
         m_bHasPreview = false;
         m_sPreviewText.clear();
         m_xPreview->set_text(OUString());
-        m_xStatus->set_label(u"生成失败："_ustr
-                             + (rsp.content.isEmpty() ? rsp.status : rsp.content.trim()));
+        OUString failZh = u"生成失败"_ustr;
+        if (rsp.status == u"policy-denied"_ustr)
+            failZh = u"策略拒绝（当前服务模式不允许该能力）"_ustr;
+        else if (rsp.status == u"provider-error"_ustr)
+            failZh = u"模型不可用 · 请检查 Ollama/网关与五槽配置"_ustr;
+        const OUString detail
+            = rsp.content.isEmpty() ? rsp.status : rsp.content.trim();
+        if (m_xGhostBanner)
+            m_xGhostBanner->set_label(u"生成失败 · 主文档未改 · 可改指令后重试"_ustr);
+        m_xStatus->set_label(failZh + u"： "_ustr + detail
+                             + u" · 主文档未改 · Esc 关闭"_ustr);
         m_xAccept->set_sensitive(false);
         return;
     }
@@ -559,7 +575,15 @@ void AIInlineEditPopover::generate()
     m_bHasPreview = true;
     m_xAccept->set_sensitive(true);
     updatePreviewDisplay();
-    m_xStatus->set_label(u"就绪 · Tab 应用 · Esc 关闭 · evidence="_ustr
+    if (m_xGhostBanner)
+    {
+        m_xGhostBanner->set_visible(m_eMode == InlineMode::Complete);
+        m_xGhostBanner->set_label(
+            u"✓ 预览就绪 · 灰字未写入 · Tab 应用 · Esc 放弃"_ustr);
+    }
+    m_xStatus->set_label(u"生成完成 · ③ 预览 "_ustr
+                         + OUString::number(m_sPreviewText.getLength())
+                         + u" 字 · Tab 应用写回 · Esc 关闭 · 证据="_ustr
                          + (rsp.evidenceId.isEmpty() ? u"—"_ustr : rsp.evidenceId));
 }
 
@@ -649,12 +673,13 @@ bool AIInlineEditPopover::applyPreview()
         = kqoffice::ai::chat::DocumentAIApply::applyApprovedWithRawFallback(plan, m_sPreviewText);
     if (!result.success)
     {
-        m_xStatus->set_label(u"应用失败："_ustr
-                             + (result.error.isEmpty() ? result.engine : result.error));
+        m_xStatus->set_label(u"写回失败："_ustr
+                             + (result.error.isEmpty() ? result.engine : result.error)
+                             + u" · 主文档未改 · 可改指令后重试"_ustr);
         return false;
     }
-    m_xStatus->set_label(u"已应用 · engine="_ustr + result.engine + u" · surface="_ustr
-                         + m_aSel.surface + u" · 可撤销"_ustr);
+    m_xStatus->set_label(u"已写入正文 · 可撤销（Ctrl/Cmd+Z）· engine="_ustr
+                         + result.engine + u" · surface="_ustr + m_aSel.surface);
     return true;
 }
 

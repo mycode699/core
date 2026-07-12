@@ -14,6 +14,7 @@
 #include <com/sun/star/drawing/XDrawPage.hpp>
 #include <com/sun/star/drawing/XDrawPages.hpp>
 #include <com/sun/star/drawing/XDrawPagesSupplier.hpp>
+#include <com/sun/star/drawing/XDrawView.hpp>
 #include <com/sun/star/drawing/XShape.hpp>
 #include <com/sun/star/drawing/XShapes.hpp>
 #include <com/sun/star/frame/Desktop.hpp>
@@ -22,8 +23,13 @@
 #include <com/sun/star/sheet/XSpreadsheet.hpp>
 #include <com/sun/star/sheet/XSpreadsheetView.hpp>
 #include <com/sun/star/table/XCell.hpp>
+#include <com/sun/star/text/XParagraphCursor.hpp>
 #include <com/sun/star/text/XText.hpp>
+#include <com/sun/star/text/XTextCursor.hpp>
 #include <com/sun/star/text/XTextDocument.hpp>
+#include <com/sun/star/text/XTextViewCursor.hpp>
+#include <com/sun/star/text/XTextViewCursorSupplier.hpp>
+#include <com/sun/star/view/XSelectionSupplier.hpp>
 
 #include <algorithm>
 #include <vector>
@@ -273,6 +279,50 @@ std::vector<LocalRagChunk> DocumentAILocalRag::chunkDocument(sal_Int32 nMaxChunk
                                                              sal_Int32 nMaxChunkChars)
 {
     std::vector<LocalRagChunk> out;
+
+    // Prefer real para:N chunks on Writer for locate-able provenance.
+    try
+    {
+        auto xModel = currentModel();
+        css::uno::Reference<css::text::XTextDocument> xDoc(xModel, css::uno::UNO_QUERY);
+        if (xDoc.is() && xDoc->getText().is())
+        {
+            auto xText = xDoc->getText();
+            auto xCursor = xText->createTextCursor();
+            css::uno::Reference<css::text::XParagraphCursor> xPara(
+                xCursor, css::uno::UNO_QUERY);
+            if (xPara.is())
+            {
+                xPara->gotoStart(false);
+                sal_Int32 paraIdx = 0; // 0-based; UI tokens use 1-based para:N
+                do
+                {
+                    xPara->gotoEndOfParagraph(true);
+                    OUString body = xCursor->getString().trim();
+                    xPara->collapseToEnd();
+                    if (!body.isEmpty())
+                    {
+                        LocalRagChunk c;
+                        c.position = u"para:"_ustr + OUString::number(paraIdx + 1);
+                        c.text = clip(body, nMaxChunkChars);
+                        out.push_back(c);
+                        if (static_cast<sal_Int32>(out.size()) >= nMaxChunks)
+                            return out;
+                    }
+                    ++paraIdx;
+                    if (paraIdx > 5000)
+                        break;
+                } while (xPara->gotoNextParagraph(false));
+                if (!out.empty())
+                    return out;
+            }
+        }
+    }
+    catch (const css::uno::Exception&)
+    {
+    }
+
+    // Fallback: newline-merged chunks (calc/impress/plain capture).
     const OUString full = captureDocumentText(nMaxChunks * nMaxChunkChars);
     if (full.isEmpty())
         return out;
@@ -284,7 +334,6 @@ std::vector<LocalRagChunk> DocumentAILocalRag::chunkDocument(sal_Int32 nMaxChunk
         sal_Int32 nl = full.indexOf(u'\n', pos);
         if (nl < 0)
             nl = full.getLength();
-        // Merge short lines into ~paragraph chunks
         OUStringBuffer chunk;
         while (pos < full.getLength() && chunk.getLength() < nMaxChunkChars)
         {
@@ -370,6 +419,339 @@ OUString DocumentAILocalRag::buildContextBlock(const OUString& rQuery, sal_Int32
     if (out.getLength() > nMaxChars)
         out = out.copy(0, nMaxChars) + u"…"_ustr;
     return out;
+}
+
+OUString DocumentAILocalRag::formatAnswerCard(const OUString& rQuery, const OUString& rAnswer,
+                                              sal_Int32 nTopK)
+{
+    OUStringBuffer card;
+    card.append(u"【问本文档 · 本地检索 · 无外传】\n"_ustr);
+    card.append(u"问题："_ustr);
+    card.append(clip(rQuery, 200));
+    card.append(u"\n\n—— 回答 ——\n"_ustr);
+    card.append(rAnswer.isEmpty() ? u"（模型未返回正文）"_ustr : rAnswer);
+
+    auto hits = retrieve(rQuery, nTopK);
+    if (!hits.empty())
+    {
+        card.append(u"\n\n—— 可定位出处（在文档中查找下列位置）——\n"_ustr);
+        sal_Int32 rank = 1;
+        for (const auto& h : hits)
+        {
+            card.append(u"· ["_ustr);
+            card.append(rank++);
+            card.append(u"] "_ustr);
+            card.append(h.position.isEmpty() ? u"（未知位置）"_ustr : h.position);
+            OUString snippet = h.text;
+            snippet = snippet.replaceAll(u"\n"_ustr, u" "_ustr);
+            if (snippet.getLength() > 72)
+                snippet = snippet.copy(0, 72) + u"…"_ustr;
+            if (!snippet.isEmpty())
+            {
+                card.append(u" — "_ustr);
+                card.append(snippet);
+            }
+            card.append(u"\n"_ustr);
+        }
+        card.append(u"\n提示：复制位置标记，在 Writer/Calc/Impress 中对照查找；"
+                    u"主文档不会被自动改写。"_ustr);
+    }
+    else
+    {
+        card.append(u"\n\n（未命中可定位片段 — 可换关键词再问）"_ustr);
+    }
+    card.append(u"\n\n操作：点侧栏「定位出处」跳到首条命中位置（只选中，不改文档）。"_ustr);
+    return card.makeStringAndClear();
+}
+
+namespace
+{
+bool parseParaToken(const OUString& rPos, sal_Int32& rOut1Based)
+{
+    if (!rPos.startsWith(u"para:"_ustr))
+        return false;
+    rOut1Based = rPos.copy(5).toInt32();
+    return rOut1Based > 0;
+}
+
+bool parseSlideToken(const OUString& rPos, sal_Int32& rOut1Based)
+{
+    if (!rPos.startsWith(u"slide:"_ustr))
+        return false;
+    rOut1Based = rPos.copy(6).toInt32();
+    return rOut1Based > 0;
+}
+
+bool parseCellToken(const OUString& rPos, sal_Int32& rCol, sal_Int32& rRow)
+{
+    // cell:A1 or cell:AB12
+    if (!rPos.startsWith(u"cell:"_ustr))
+        return false;
+    OUString rest = rPos.copy(5).trim().toAsciiUpperCase();
+    if (rest.isEmpty())
+        return false;
+    sal_Int32 i = 0;
+    sal_Int32 col = 0;
+    while (i < rest.getLength() && rest[i] >= u'A' && rest[i] <= u'Z')
+    {
+        col = col * 26 + (rest[i] - u'A' + 1);
+        ++i;
+    }
+    if (col <= 0 || i >= rest.getLength())
+        return false;
+    sal_Int32 row = rest.copy(i).toInt32();
+    if (row <= 0)
+        return false;
+    rCol = col - 1; // 0-based
+    rRow = row - 1;
+    return true;
+}
+
+LocalRagLocateResult locateWriterPara(sal_Int32 para1Based)
+{
+    LocalRagLocateResult r;
+    r.position = u"para:"_ustr + OUString::number(para1Based);
+    try
+    {
+        auto xModel = currentModel();
+        css::uno::Reference<css::text::XTextDocument> xDoc(xModel, css::uno::UNO_QUERY);
+        if (!xDoc.is() || !xDoc->getText().is())
+        {
+            r.message = u"定位失败：当前不是文字文档"_ustr;
+            return r;
+        }
+        auto xText = xDoc->getText();
+        auto xCursor = xText->createTextCursor();
+        css::uno::Reference<css::text::XParagraphCursor> xPara(xCursor, css::uno::UNO_QUERY);
+        if (!xPara.is())
+        {
+            r.message = u"定位失败：无法创建段落游标"_ustr;
+            return r;
+        }
+        xPara->gotoStart(false);
+        for (sal_Int32 i = 1; i < para1Based; ++i)
+        {
+            if (!xPara->gotoNextParagraph(false))
+            {
+                r.message = u"定位失败：段落超出范围 "_ustr + r.position;
+                return r;
+            }
+        }
+        xPara->gotoEndOfParagraph(true);
+
+        // Sync view selection when possible.
+        if (xModel.is())
+        {
+            auto xCtrl = xModel->getCurrentController();
+            css::uno::Reference<css::text::XTextViewCursorSupplier> xSupp(xCtrl,
+                                                                          css::uno::UNO_QUERY);
+            if (xSupp.is())
+            {
+                auto xView = xSupp->getViewCursor();
+                if (xView.is())
+                {
+                    css::uno::Reference<css::text::XTextCursor> xViewCur(xView, css::uno::UNO_QUERY);
+                    if (xViewCur.is())
+                    {
+                        xViewCur->gotoRange(xCursor->getStart(), false);
+                        xViewCur->gotoRange(xCursor->getEnd(), true);
+                    }
+                }
+            }
+            css::uno::Reference<css::view::XSelectionSupplier> xSel(xCtrl, css::uno::UNO_QUERY);
+            if (xSel.is())
+                xSel->select(css::uno::Any(xCursor));
+        }
+        r.success = true;
+        r.message = u"已定位到 "_ustr + r.position + u" · 仅选中，未改文档"_ustr;
+        return r;
+    }
+    catch (const css::uno::Exception& e)
+    {
+        r.message = u"定位失败："_ustr + e.Message;
+        return r;
+    }
+}
+
+LocalRagLocateResult locateCalcCell(sal_Int32 col0, sal_Int32 row0)
+{
+    LocalRagLocateResult r;
+    {
+        OUString col;
+        sal_Int32 c = col0 + 1;
+        while (c > 0)
+        {
+            const sal_Unicode ch = static_cast<sal_Unicode>(u'A' + ((c - 1) % 26));
+            col = OUString(&ch, 1) + col;
+            c = (c - 1) / 26;
+        }
+        r.position = u"cell:"_ustr + col + OUString::number(row0 + 1);
+    }
+    try
+    {
+        auto xModel = currentModel();
+        auto xCtrl = xModel.is() ? xModel->getCurrentController()
+                                 : css::uno::Reference<css::frame::XController>();
+        css::uno::Reference<css::sheet::XSpreadsheetView> xView(xCtrl, css::uno::UNO_QUERY);
+        if (!xView.is())
+        {
+            r.message = u"定位失败：当前不是表格文档"_ustr;
+            return r;
+        }
+        auto xSheet = xView->getActiveSheet();
+        if (!xSheet.is())
+        {
+            r.message = u"定位失败：无活动表"_ustr;
+            return r;
+        }
+        auto xCell = xSheet->getCellByPosition(col0, row0);
+        css::uno::Reference<css::view::XSelectionSupplier> xSel(xCtrl, css::uno::UNO_QUERY);
+        if (xSel.is() && xCell.is())
+            xSel->select(css::uno::Any(xCell));
+        r.success = true;
+        r.message = u"已定位到 "_ustr + r.position + u" · 仅选中，未改文档"_ustr;
+        return r;
+    }
+    catch (const css::uno::Exception& e)
+    {
+        r.message = u"定位失败："_ustr + e.Message;
+        return r;
+    }
+}
+
+LocalRagLocateResult locateImpressSlide(sal_Int32 slide1Based)
+{
+    LocalRagLocateResult r;
+    r.position = u"slide:"_ustr + OUString::number(slide1Based);
+    try
+    {
+        auto xModel = currentModel();
+        css::uno::Reference<css::drawing::XDrawPagesSupplier> xSupp(xModel, css::uno::UNO_QUERY);
+        if (!xSupp.is())
+        {
+            r.message = u"定位失败：当前不是演示文档"_ustr;
+            return r;
+        }
+        auto xPages = xSupp->getDrawPages();
+        css::uno::Reference<css::container::XIndexAccess> xIndex(xPages, css::uno::UNO_QUERY);
+        if (!xIndex.is() || slide1Based < 1 || slide1Based > xIndex->getCount())
+        {
+            r.message = u"定位失败：幻灯页超出范围 "_ustr + r.position;
+            return r;
+        }
+        css::uno::Reference<css::drawing::XDrawPage> xPage(
+            xIndex->getByIndex(slide1Based - 1), css::uno::UNO_QUERY);
+        auto xCtrl = xModel.is() ? xModel->getCurrentController()
+                                 : css::uno::Reference<css::frame::XController>();
+        css::uno::Reference<css::drawing::XDrawView> xDrawView(xCtrl, css::uno::UNO_QUERY);
+        if (xDrawView.is() && xPage.is())
+            xDrawView->setCurrentPage(xPage);
+        r.success = true;
+        r.message = u"已定位到 "_ustr + r.position + u" · 仅切换页，未改文档"_ustr;
+        return r;
+    }
+    catch (const css::uno::Exception& e)
+    {
+        r.message = u"定位失败："_ustr + e.Message;
+        return r;
+    }
+}
+
+LocalRagLocateResult locateBySnippet(const OUString& rSnippet)
+{
+    LocalRagLocateResult r;
+    r.position = u"snippet"_ustr;
+    if (rSnippet.trim().isEmpty())
+    {
+        r.message = u"定位失败：无可用文本片段"_ustr;
+        return r;
+    }
+    try
+    {
+        auto xModel = currentModel();
+        css::uno::Reference<css::text::XTextDocument> xDoc(xModel, css::uno::UNO_QUERY);
+        if (!xDoc.is() || !xDoc->getText().is())
+        {
+            r.message = u"定位失败：片段定位仅支持文字文档"_ustr;
+            return r;
+        }
+        const OUString full = xDoc->getText()->getString();
+        const OUString needle = rSnippet.trim();
+        sal_Int32 found = full.indexOf(needle.copy(0, std::min<sal_Int32>(needle.getLength(), 24)));
+        if (found < 0)
+        {
+            r.message = u"定位失败：文档中未找到该片段"_ustr;
+            return r;
+        }
+        auto xCursor = xDoc->getText()->createTextCursor();
+        xCursor->gotoStart(false);
+        if (found > 0)
+            xCursor->goRight(found, false);
+        const sal_Int32 selLen = std::min<sal_Int32>(needle.getLength(), 80);
+        xCursor->goRight(selLen, true);
+        auto xCtrl = xModel->getCurrentController();
+        css::uno::Reference<css::view::XSelectionSupplier> xSel(xCtrl, css::uno::UNO_QUERY);
+        if (xSel.is())
+            xSel->select(css::uno::Any(xCursor));
+        r.success = true;
+        r.message = u"已按片段选中正文 · 未改文档"_ustr;
+        return r;
+    }
+    catch (const css::uno::Exception& e)
+    {
+        r.message = u"定位失败："_ustr + e.Message;
+        return r;
+    }
+}
+} // namespace
+
+LocalRagLocateResult DocumentAILocalRag::locatePosition(const OUString& rPosition)
+{
+    LocalRagLocateResult r;
+    const OUString pos = rPosition.trim();
+    if (pos.isEmpty())
+    {
+        r.message = u"定位失败：位置为空"_ustr;
+        return r;
+    }
+    sal_Int32 para = 0;
+    if (parseParaToken(pos, para))
+        return locateWriterPara(para);
+    sal_Int32 slide = 0;
+    if (parseSlideToken(pos, slide))
+        return locateImpressSlide(slide);
+    sal_Int32 col = 0, row = 0;
+    if (parseCellToken(pos, col, row))
+        return locateCalcCell(col, row);
+    if (pos.startsWith(u"chunk:"_ustr))
+    {
+        // Resolve chunk ordinal via current chunkDocument order.
+        const sal_Int32 n = pos.copy(6).toInt32();
+        auto chunks = chunkDocument(64, 600);
+        if (n >= 1 && n <= static_cast<sal_Int32>(chunks.size()))
+            return locateBySnippet(chunks[static_cast<size_t>(n - 1)].text);
+        r.message = u"定位失败：chunk 超出范围 "_ustr + pos;
+        return r;
+    }
+    r.message = u"定位失败：无法识别位置标记 "_ustr + pos;
+    return r;
+}
+
+LocalRagLocateResult DocumentAILocalRag::locateFirstHit(const OUString& rQuery)
+{
+    auto hits = retrieve(rQuery, 1);
+    if (hits.empty())
+    {
+        LocalRagLocateResult r;
+        r.message = u"定位失败：当前文档无命中片段"_ustr;
+        return r;
+    }
+    LocalRagLocateResult r = locatePosition(hits.front().position);
+    if (!r.success && !hits.front().text.isEmpty())
+        r = locateBySnippet(hits.front().text);
+    if (r.success && r.position.isEmpty())
+        r.position = hits.front().position;
+    return r;
 }
 
 } // namespace kqoffice::ai::chat

@@ -24,6 +24,13 @@ struct LocalRagChunk
     sal_Int32 score = 0;
 };
 
+struct LocalRagLocateResult
+{
+    bool success = false;
+    OUString position; ///< resolved token e.g. para:3 / cell:A1 / slide:2
+    OUString message; ///< zh-CN status for UI
+};
+
 /// Local document Q&A without vector DB (keyword + structure ranking).
 class SAL_DLLPUBLIC_EXPORT DocumentAILocalRag
 {
@@ -45,6 +52,18 @@ public:
     /// Ready-to-inject prompt block; empty if no document.
     static OUString buildContextBlock(const OUString& rQuery, sal_Int32 nTopK = 6,
                                       sal_Int32 nMaxChars = 4500);
+
+    /// Structure model answer + local provenance positions for transcript cards (M5).
+    /// Positions are searchable in the open document (no silent jump).
+    static OUString formatAnswerCard(const OUString& rQuery, const OUString& rAnswer,
+                                     sal_Int32 nTopK = 4);
+
+    /// Jump view selection to a RAG position token (para:N / cell:A1 / slide:N / chunk:N).
+    /// Does not mutate document content.
+    static LocalRagLocateResult locatePosition(const OUString& rPosition);
+
+    /// Locate the top-ranked hit for a query (best-effort).
+    static LocalRagLocateResult locateFirstHit(const OUString& rQuery);
 };
 
 } // namespace kqoffice::ai::chat

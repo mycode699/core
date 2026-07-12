@@ -196,7 +196,8 @@ bool AIChatContentReviewStore::IsSupportedSourceType(const OUString& rSourceType
     return rSourceType == u"selection"_ustr || rSourceType == u"document-section"_ustr
            || rSourceType == u"connector-result"_ustr
            || rSourceType == u"knowledge-index-result"_ustr
-           || rSourceType == u"evidence-record"_ustr || rSourceType == u"task-step"_ustr;
+           || rSourceType == u"evidence-record"_ustr || rSourceType == u"task-step"_ustr
+           || rSourceType == u"assistant-output"_ustr || rSourceType == u"apply-plan"_ustr;
 }
 
 OUString AIChatContentReviewStore::MakeReviewId(const OUString& rSourceObjectId)

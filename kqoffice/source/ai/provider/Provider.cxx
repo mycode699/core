@@ -12,6 +12,7 @@
 #include "ModelRoles.hxx"
 #include "ModelRoutingConfig.hxx"
 #include "OllamaAdapter.hxx"
+#include "OpenAICompatibleAdapter.hxx"
 #include "RuntimePlanStub.hxx"
 
 #include <com/sun/star/lang/IllegalArgumentException.hpp>
@@ -102,49 +103,105 @@ Provider::call(const css::ai::ProviderRequest& req)
     {
         ensureDefaultModelRoutingTemplate();
         const ModelRoutingSnapshot routing = loadModelRoutingSnapshot();
-        OllamaAdapter adapter;
-        OUString p = adapter.probe();
-        if (p == u"reachable"_ustr)
+        const OUString backend
+            = routing.backend.isEmpty() ? u"ollama"_ustr : routing.backend.toAsciiLowerCase();
+
+        if (OpenAICompatibleAdapter::isOpenAICompatibleBackend(backend))
         {
-            auto models = adapter.listModels();
-            const ModelRoleResolution resolved
-                = resolveModelForCapability(req.capability, routing, models);
-            const OUString modelId = resolved.model;
-            providerLabel = u"ollama: " + (modelId.isEmpty() ? u"?"_ustr : modelId)
-                            + u" role="_ustr + resolved.roleName + u" slot="_ustr
-                            + resolved.slotName;
-            if (models.empty() && modelId.isEmpty())
+            // Private/local OpenAI-compatible gateway (HTTP only; no TLS yet).
+            const OUString baseUrl = routing.baseUrl.isEmpty()
+                                         ? u"http://127.0.0.1:8080"_ustr
+                                         : routing.baseUrl;
+            OpenAICompatibleAdapter adapter(baseUrl,
+                                            OpenAICompatibleAdapter::apiKeyFromEnv());
+            OUString p = adapter.probe();
+            if (p == u"reachable"_ustr)
             {
-                rsp.status = "provider-error";
-                rsp.content = "ollama reachable but no models installed "
-                              "and no primaryModel configured";
-            }
-            else if (modelId.isEmpty())
-            {
-                rsp.status = "provider-error";
-                rsp.content = "no model resolved for capability " + req.capability
-                              + " (configure primaryModel in model-routing.json)";
-            }
-            else
-            {
-                OUString text = adapter.generate(modelId, req.prompt);
-                if (text.isEmpty())
+                auto models = adapter.listModels();
+                const ModelRoleResolution resolved
+                    = resolveModelForCapability(req.capability, routing, models);
+                const OUString modelId = resolved.model.isEmpty() ? routing.primaryModel
+                                                                  : resolved.model;
+                providerLabel = u"openai-compatible: "_ustr
+                                + (modelId.isEmpty() ? u"?"_ustr : modelId)
+                                + u" role="_ustr + resolved.roleName + u" slot="_ustr
+                                + resolved.slotName;
+                if (modelId.isEmpty())
                 {
                     rsp.status = "provider-error";
-                    rsp.content = "ollama generate failed for model " + modelId
-                                  + " (timeout, non-2xx, or empty response)";
+                    rsp.content = "openai-compatible: no model resolved for capability "
+                                  + req.capability
+                                  + " (set primaryModel / list models on gateway)";
                 }
                 else
                 {
-                    rsp.status = "ok";
-                    rsp.content = text;
+                    OUString text = adapter.chat(modelId, req.prompt);
+                    if (text.isEmpty())
+                    {
+                        rsp.status = "provider-error";
+                        rsp.content = "openai-compatible chat failed for model " + modelId
+                                      + " (timeout, non-2xx, empty content, or https URL)";
+                    }
+                    else
+                    {
+                        rsp.status = "ok";
+                        rsp.content = text;
+                    }
                 }
+            }
+            else
+            {
+                rsp.status = "provider-error";
+                rsp.content = "openai-compatible gateway unreachable at " + baseUrl
+                              + " (HTTP only; set baseUrl in model-routing.json)";
             }
         }
         else
         {
-            rsp.status = "provider-error";
-            rsp.content = "ollama unreachable at 127.0.0.1:11434";
+            OllamaAdapter adapter;
+            OUString p = adapter.probe();
+            if (p == u"reachable"_ustr)
+            {
+                auto models = adapter.listModels();
+                const ModelRoleResolution resolved
+                    = resolveModelForCapability(req.capability, routing, models);
+                const OUString modelId = resolved.model;
+                providerLabel = u"ollama: " + (modelId.isEmpty() ? u"?"_ustr : modelId)
+                                + u" role="_ustr + resolved.roleName + u" slot="_ustr
+                                + resolved.slotName;
+                if (models.empty() && modelId.isEmpty())
+                {
+                    rsp.status = "provider-error";
+                    rsp.content = "ollama reachable but no models installed "
+                                  "and no primaryModel configured";
+                }
+                else if (modelId.isEmpty())
+                {
+                    rsp.status = "provider-error";
+                    rsp.content = "no model resolved for capability " + req.capability
+                                  + " (configure primaryModel in model-routing.json)";
+                }
+                else
+                {
+                    OUString text = adapter.generate(modelId, req.prompt);
+                    if (text.isEmpty())
+                    {
+                        rsp.status = "provider-error";
+                        rsp.content = "ollama generate failed for model " + modelId
+                                      + " (timeout, non-2xx, or empty response)";
+                    }
+                    else
+                    {
+                        rsp.status = "ok";
+                        rsp.content = text;
+                    }
+                }
+            }
+            else
+            {
+                rsp.status = "provider-error";
+                rsp.content = "ollama unreachable at 127.0.0.1:11434";
+            }
         }
     }
 

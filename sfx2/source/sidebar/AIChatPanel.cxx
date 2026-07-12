@@ -47,6 +47,7 @@
 #include <rtl/string.hxx>
 #include <cstdlib>
 #include <string_view>
+#include <utility>
 #include <vector>
 #include <EvidenceRecorder.hxx>
 #include <ModelRoles.hxx>
@@ -142,8 +143,15 @@ AIChatPanel::AIChatPanel(weld::Widget* pParent)
     : PanelLayout(pParent, u"AIChatPanel"_ustr, u"sfx/ui/aichatpanel.ui"_ustr)
     , m_xStatusLabel(m_xBuilder->weld_label(u"status_label"_ustr))
     , m_xAgentStepBar(m_xBuilder->weld_label(u"agent_step_bar"_ustr))
+    , m_xActivityCard(m_xBuilder->weld_label(u"activity_card"_ustr))
     , m_xTranscriptView(m_xBuilder->weld_text_view(u"transcript_view"_ustr))
     , m_xPromptEntry(m_xBuilder->weld_entry(u"prompt_entry"_ustr))
+    , m_xIntentRewriteBtn(m_xBuilder->weld_button(u"intent_rewrite_btn"_ustr))
+    , m_xIntentShortenBtn(m_xBuilder->weld_button(u"intent_shorten_btn"_ustr))
+    , m_xIntentExpandBtn(m_xBuilder->weld_button(u"intent_expand_btn"_ustr))
+    , m_xIntentSummarizeBtn(m_xBuilder->weld_button(u"intent_summarize_btn"_ustr))
+    , m_xIntentPlanBtn(m_xBuilder->weld_button(u"intent_plan_btn"_ustr))
+    , m_xIntentAgentBtn(m_xBuilder->weld_button(u"intent_agent_btn"_ustr))
     , m_xVoiceButton(m_xBuilder->weld_button(u"voice_button"_ustr))
     , m_xScreenshotButton(m_xBuilder->weld_button(u"screenshot_button"_ustr))
     , m_xScreenshotWinButton(m_xBuilder->weld_button(u"screenshot_win_button"_ustr))
@@ -155,6 +163,14 @@ AIChatPanel::AIChatPanel(weld::Widget* pParent)
     , m_xRetryButton(m_xBuilder->weld_button(u"retry_button"_ustr))
     , m_xClearHistoryButton(m_xBuilder->weld_button(u"clear_history_button"_ustr))
     , m_xArtifactTree(m_xBuilder->weld_tree_view(u"artifact_tree"_ustr))
+    , m_xAgentTree(m_xBuilder->weld_tree_view(u"agent_tree"_ustr))
+    , m_xAgentEmptyLabel(m_xBuilder->weld_label(u"agent_empty_label"_ustr))
+    , m_xAgentRunBtn(m_xBuilder->weld_button(u"agent_run_btn"_ustr))
+    , m_xAgentRefreshBtn(m_xBuilder->weld_button(u"agent_refresh_btn"_ustr))
+    , m_xAgentClearBtn(m_xBuilder->weld_button(u"agent_clear_btn"_ustr))
+    , m_xReviewTree(m_xBuilder->weld_tree_view(u"review_tree"_ustr))
+    , m_xReviewEmptyLabel(m_xBuilder->weld_label(u"review_empty_label"_ustr))
+    , m_xReviewRefreshBtn(m_xBuilder->weld_button(u"review_refresh_btn"_ustr))
     , m_xArtifactDetailsLabel(m_xBuilder->weld_label(u"artifact_details_label"_ustr))
     , m_xRefreshArtifactsButton(m_xBuilder->weld_button(u"refresh_artifacts_button"_ustr))
     , m_xOpenArtifactButton(m_xBuilder->weld_button(u"open_artifact_button"_ustr))
@@ -182,9 +198,16 @@ AIChatPanel::AIChatPanel(weld::Widget* pParent)
     , m_xOptAttachSelection(m_xBuilder->weld_check_button(u"opt_attach_selection"_ustr))
     , m_xOptAgentPipeline(m_xBuilder->weld_check_button(u"opt_agent_pipeline"_ustr))
     , m_xOptDocContext(m_xBuilder->weld_check_button(u"opt_doc_context"_ustr))
+    , m_xLocateRagBtn(m_xBuilder->weld_button(u"locate_rag_btn"_ustr))
     , m_xScenarioPinnedLabel(m_xBuilder->weld_label(u"scenario_pinned_label"_ustr))
     , m_xSelectionChipBtn(m_xBuilder->weld_button(u"selection_chip_btn"_ustr))
-    , m_xPendingPlanChip(m_xBuilder->weld_label(u"pending_plan_chip"_ustr))
+    , m_xPendingPlanChip(m_xBuilder->weld_button(u"pending_plan_chip"_ustr))
+    , m_xApprovalActionRow(m_xBuilder->weld_widget(u"approval_action_row"_ustr))
+    , m_xApprovalHintLabel(m_xBuilder->weld_label(u"approval_hint_label"_ustr))
+    , m_xChatApproveBtn(m_xBuilder->weld_button(u"chat_approve_btn"_ustr))
+    , m_xChatDiffBtn(m_xBuilder->weld_button(u"chat_diff_btn"_ustr))
+    , m_xChatRejectBtn(m_xBuilder->weld_button(u"chat_reject_btn"_ustr))
+    , m_xMainNotebook(m_xBuilder->weld_notebook(u"main_notebook"_ustr))
     , m_xRoutingDiagBtn(m_xBuilder->weld_button(u"routing_diag_btn"_ustr))
     , m_xRoutingDiagLabel(m_xBuilder->weld_label(u"routing_diag_label"_ustr))
     , m_xHistoryStore(std::make_unique<AIChatHistoryStore>())
@@ -219,12 +242,36 @@ AIChatPanel::AIChatPanel(weld::Widget* pParent)
     }
 
     m_xTranscriptView->set_editable(false);
-    m_xArtifactTree->set_selection_mode(SelectionMode::Single);
-    m_xPromptEntry->set_placeholder_text(u"点方案按钮执行，或输入消息…"_ustr);
+    if (m_xArtifactTree)
+        m_xArtifactTree->set_selection_mode(SelectionMode::Single);
+    if (m_xAgentTree)
+    {
+        m_xAgentTree->set_selection_mode(SelectionMode::Single);
+        // 2 visible columns: 步骤 / 状态
+        m_xAgentTree->clear();
+    }
+    if (m_xReviewTree)
+    {
+        m_xReviewTree->set_selection_mode(SelectionMode::Single);
+        m_xReviewTree->clear();
+    }
+    m_xPromptEntry->set_placeholder_text(u"描述你要做的事，或点意图芯片 / 上方方案…"_ustr);
     m_xPromptEntry->connect_insert_text(LINK(this, AIChatPanel, OnPromptInsertText));
 
     m_xPromptEntry->connect_changed(LINK(this, AIChatPanel, OnPromptChanged));
     m_xPromptEntry->connect_activate(LINK(this, AIChatPanel, OnPromptActivated));
+    if (m_xIntentRewriteBtn)
+        m_xIntentRewriteBtn->connect_clicked(LINK(this, AIChatPanel, OnIntentRewriteClicked));
+    if (m_xIntentShortenBtn)
+        m_xIntentShortenBtn->connect_clicked(LINK(this, AIChatPanel, OnIntentShortenClicked));
+    if (m_xIntentExpandBtn)
+        m_xIntentExpandBtn->connect_clicked(LINK(this, AIChatPanel, OnIntentExpandClicked));
+    if (m_xIntentSummarizeBtn)
+        m_xIntentSummarizeBtn->connect_clicked(LINK(this, AIChatPanel, OnIntentSummarizeClicked));
+    if (m_xIntentPlanBtn)
+        m_xIntentPlanBtn->connect_clicked(LINK(this, AIChatPanel, OnIntentPlanClicked));
+    if (m_xIntentAgentBtn)
+        m_xIntentAgentBtn->connect_clicked(LINK(this, AIChatPanel, OnIntentAgentClicked));
     if (m_xVoiceButton)
     {
         m_xVoiceButton->set_tooltip_text(kqoffice::ai::chat::DocumentAIVoiceInput::statusHint());
@@ -266,6 +313,14 @@ AIChatPanel::AIChatPanel(weld::Widget* pParent)
     m_xSortWorkspaceButton->connect_clicked(LINK(this, AIChatPanel, OnSortWorkspaceClicked));
     m_xRemoveArtifactButton->connect_clicked(
         LINK(this, AIChatPanel, OnRemoveArtifactClicked));
+    if (m_xAgentRunBtn)
+        m_xAgentRunBtn->connect_clicked(LINK(this, AIChatPanel, OnAgentRunClicked));
+    if (m_xAgentRefreshBtn)
+        m_xAgentRefreshBtn->connect_clicked(LINK(this, AIChatPanel, OnAgentRefreshClicked));
+    if (m_xAgentClearBtn)
+        m_xAgentClearBtn->connect_clicked(LINK(this, AIChatPanel, OnAgentClearClicked));
+    if (m_xReviewRefreshBtn)
+        m_xReviewRefreshBtn->connect_clicked(LINK(this, AIChatPanel, OnReviewRefreshClicked));
     if (m_xAiSettingsButton)
         m_xAiSettingsButton->connect_clicked(LINK(this, AIChatPanel, OnAiSettingsClicked));
     if (m_xRunScenarioBtn)
@@ -286,15 +341,28 @@ AIChatPanel::AIChatPanel(weld::Widget* pParent)
         m_xTabGeneral->connect_toggled(LINK(this, AIChatPanel, OnCategoryTabToggled));
     if (m_xSelectionChipBtn)
         m_xSelectionChipBtn->connect_clicked(LINK(this, AIChatPanel, OnSelectionChipClicked));
+    if (m_xPendingPlanChip)
+        m_xPendingPlanChip->connect_clicked(LINK(this, AIChatPanel, OnPendingPlanChipClicked));
+    if (m_xChatApproveBtn)
+        m_xChatApproveBtn->connect_clicked(LINK(this, AIChatPanel, OnChatApproveClicked));
+    if (m_xChatDiffBtn)
+        m_xChatDiffBtn->connect_clicked(LINK(this, AIChatPanel, OnChatDiffClicked));
+    if (m_xChatRejectBtn)
+        m_xChatRejectBtn->connect_clicked(LINK(this, AIChatPanel, OnChatRejectClicked));
+    if (m_xLocateRagBtn)
+        m_xLocateRagBtn->connect_clicked(LINK(this, AIChatPanel, OnLocateRagClicked));
     if (m_xRoutingDiagBtn)
         m_xRoutingDiagBtn->connect_clicked(LINK(this, AIChatPanel, OnRoutingDiagClicked));
 
     LoadDocumentHistory();
     LoadArtifactNavigator();
+    LoadAgentSteps();
+    LoadReviewQueue();
     LoadSessionSnapshot();
     ReloadScenarioPicker();
     UpdateSelectionChip();
     UpdatePendingPlanChip();
+    UpdateApprovalChrome();
     // Background light/review slot health (short Ollama probe; fail-closed offline).
     RunRoutingDiagnostics(/*bAppendTranscript*/ false);
     ConsumePendingScenarioRun();
@@ -453,7 +521,7 @@ void AIChatPanel::UpdateContextMentions()
     if (sPrompt.indexOf('@') >= 0)
         m_xStatusLabel->set_label(FormatContextMentionSummary(aMentions));
     else
-        m_xStatusLabel->set_label(u"State: "_ustr + StateToLabel(m_eState));
+        m_xStatusLabel->set_label(StateToUserLabel(m_eState));
 }
 
 bool AIChatPanel::ValidateContextMentions(const OUString& rPrompt)
@@ -491,11 +559,106 @@ bool AIChatPanel::MaterializeInsertedContent(OUString& rInsertedText)
     return true;
 }
 
+OUString AIChatPanel::LocalizeArtifactType(const OUString& rType)
+{
+    if (rType == u"assistant-output"_ustr)
+        return u"助手输出"_ustr;
+    if (rType == u"review-item"_ustr)
+        return u"审查项"_ustr;
+    if (rType == u"formatting-preview"_ustr)
+        return u"排版预览"_ustr;
+    if (rType == u"apply-plan"_ustr)
+        return u"写回计划"_ustr;
+    if (rType == u"selection"_ustr)
+        return u"选区"_ustr;
+    if (rType == u"document-section"_ustr)
+        return u"文档片段"_ustr;
+    if (rType == u"task-step"_ustr)
+        return u"任务步骤"_ustr;
+    if (rType == u"evidence-record"_ustr)
+        return u"证据记录"_ustr;
+    return rType;
+}
+
+OUString AIChatPanel::LocalizeArtifactState(const OUString& rState)
+{
+    if (rState == u"ready"_ustr)
+        return u"就绪"_ustr;
+    if (rState == u"in-review"_ustr)
+        return u"审查中"_ustr;
+    if (rState == u"archived"_ustr)
+        return u"已归档"_ustr;
+    if (rState == u"failed"_ustr)
+        return u"失败"_ustr;
+    if (rState == u"applied"_ustr)
+        return u"已应用"_ustr;
+    return rState;
+}
+
+OUString AIChatPanel::LocalizeReviewState(const OUString& rState)
+{
+    if (rState == u"queued"_ustr)
+        return u"排队中"_ustr;
+    if (rState == u"open"_ustr)
+        return u"审阅中"_ustr;
+    if (rState == u"approved"_ustr)
+        return u"已批准"_ustr;
+    if (rState == u"rejected"_ustr)
+        return u"已拒绝"_ustr;
+    if (rState == u"applied"_ustr)
+        return u"已应用"_ustr;
+    if (rState == u"failed"_ustr)
+        return u"失败"_ustr;
+    if (rState == u"pending"_ustr)
+        return u"待批准"_ustr;
+    return rState;
+}
+
+OUString AIChatPanel::LocalizeReviewItemType(const OUString& rItemType)
+{
+    if (rItemType == u"content-review"_ustr)
+        return u"内容审查"_ustr;
+    if (rItemType == u"formatting-review"_ustr)
+        return u"排版审查"_ustr;
+    if (rItemType == u"task-step"_ustr)
+        return u"任务步骤"_ustr;
+    if (rItemType == u"apply-plan"_ustr)
+        return u"写回计划"_ustr;
+    return rItemType;
+}
+
 OUString AIChatPanel::FormatArtifactRow(const AIChatContentRegistryEntry& rEntry)
 {
-    OUString sBadge = rEntry.EvidenceId.isEmpty() ? u"no-evidence"_ustr : u"evidence"_ustr;
-    return rEntry.Type + u" | "_ustr + rEntry.State + u" | "_ustr + sBadge + u" | "_ustr
-           + rEntry.HashReference;
+    // Semantic icon prefix + one-line summary (M3.1 content-object workbench).
+    OUString icon = u"◇"_ustr;
+    if (rEntry.Type == u"assistant-output"_ustr)
+        icon = u"✦"_ustr;
+    else if (rEntry.Type == u"apply-plan"_ustr)
+        icon = u"✎"_ustr;
+    else if (rEntry.Type == u"formatting-preview"_ustr)
+        icon = u"▦"_ustr;
+    else if (rEntry.Type == u"evidence-record"_ustr)
+        icon = u"▣"_ustr;
+    else if (rEntry.Type == u"selection"_ustr || rEntry.Type == u"document-section"_ustr)
+        icon = u"¶"_ustr;
+    else if (rEntry.Type == u"task-step"_ustr)
+        icon = u"▹"_ustr;
+
+    const OUString sBadge
+        = rEntry.EvidenceId.isEmpty() ? u"无证据"_ustr : u"有证据"_ustr;
+
+    AIChatPreviewMatrix aPreviewMatrix;
+    const AIChatPreviewResult aPreview = aPreviewMatrix.BuildPreview(rEntry);
+    OUString summary = aPreview.Summary;
+    if (summary.isEmpty())
+        summary = rEntry.SourceSurface.isEmpty() ? rEntry.ObjectId : rEntry.SourceSurface;
+    summary = summary.replaceAll(u"\n"_ustr, u" "_ustr);
+    if (summary.getLength() > 36)
+        summary = summary.copy(0, 36) + u"…"_ustr;
+
+    return icon + u" "_ustr + LocalizeArtifactType(rEntry.Type) + u" · "_ustr
+           + LocalizeArtifactState(rEntry.State) + u" · "_ustr + sBadge + u" · "_ustr
+           + summary;
 }
 
 OUString AIChatPanel::FormatArtifactDetails(const AIChatContentRegistryEntry& rEntry)
@@ -503,15 +666,34 @@ OUString AIChatPanel::FormatArtifactDetails(const AIChatContentRegistryEntry& rE
     AIChatPreviewMatrix aPreviewMatrix;
     const AIChatPreviewResult aPreview = aPreviewMatrix.BuildPreview(rEntry);
 
-    return u"id="_ustr + rEntry.ObjectId + u"\n"_ustr + u"type="_ustr + rEntry.Type
-           + u"\n"_ustr + u"source="_ustr + rEntry.SourceSurface + u"\n"_ustr
-           + u"state="_ustr + rEntry.State + u"\n"_ustr + u"evidence="_ustr
-           + (rEntry.EvidenceId.isEmpty() ? u"(none)"_ustr : rEntry.EvidenceId)
-           + u"\n"_ustr + u"open-target="_ustr + rEntry.OpenTarget + u"\n"_ustr
-           + u"preview-target="_ustr + aPreview.Target + u"\n"_ustr
-           + u"preview-mode="_ustr + aPreview.Mode + u"\n"_ustr
-           + u"preview-summary="_ustr + aPreview.Summary + u"\n"_ustr
-           + u"source-metadata="_ustr + aPreview.SourceMetadata;
+    // Chinese UI labels + English metadata tokens locked by preview/provenance harnesses.
+    const OUString sPreviewTarget
+        = !aPreview.Target.isEmpty() ? aPreview.Target
+          : (!rEntry.OpenTarget.isEmpty() ? rEntry.OpenTarget : rEntry.ObjectId);
+    const OUString sPreviewSummary
+        = !aPreview.Summary.isEmpty() ? aPreview.Summary : u"(none)"_ustr;
+    const OUString sSourceMeta
+        = u"source="_ustr + rEntry.SourceSurface + u" hash="_ustr
+          + (rEntry.HashReference.isEmpty() ? u"-"_ustr : rEntry.HashReference)
+          + u" evidence="_ustr
+          + (rEntry.EvidenceId.isEmpty() ? u"-"_ustr : rEntry.EvidenceId);
+
+    return u"标识："_ustr + rEntry.ObjectId + u"\n"_ustr + u"类型："_ustr
+           + LocalizeArtifactType(rEntry.Type) + u"\n"_ustr + u"来源："_ustr
+           + rEntry.SourceSurface + u"\n"_ustr + u"状态："_ustr
+           + LocalizeArtifactState(rEntry.State) + u"\n"_ustr + u"证据："_ustr
+           + (rEntry.EvidenceId.isEmpty() ? u"（无）"_ustr : rEntry.EvidenceId)
+           + u"\n"_ustr + u"打开目标："_ustr + rEntry.OpenTarget + u"\n"_ustr
+           + u"预览摘要："_ustr
+           + (aPreview.Summary.isEmpty() ? u"（无）"_ustr : aPreview.Summary)
+           + u"\npreview-target="_ustr + sPreviewTarget
+           + u"\npreview-summary="_ustr + sPreviewSummary
+           + u"\nsource-metadata="_ustr
+           + (!aPreview.SourceMetadata.isEmpty() ? aPreview.SourceMetadata : sSourceMeta)
+           + u"\nsource-id="_ustr + rEntry.ObjectId
+           + u"\ncitation-id=citation:"_ustr + rEntry.ObjectId
+           + u"\nevidence-id="_ustr
+           + (rEntry.EvidenceId.isEmpty() ? u"-"_ustr : rEntry.EvidenceId);
 }
 
 void AIChatPanel::LoadArtifactNavigator()
@@ -519,14 +701,152 @@ void AIChatPanel::LoadArtifactNavigator()
     AIChatContentRegistry aRegistry;
     m_aArtifacts = aRegistry.LoadEntries();
 
-    m_xArtifactTree->clear();
-    for (const auto& rEntry : m_aArtifacts)
-        m_xArtifactTree->append(rEntry.ObjectId, FormatArtifactRow(rEntry));
+    if (m_xArtifactTree)
+    {
+        m_xArtifactTree->clear();
+        for (const auto& rEntry : m_aArtifacts)
+            m_xArtifactTree->append(rEntry.ObjectId, FormatArtifactRow(rEntry));
 
-    if (!m_aArtifacts.empty())
-        m_xArtifactTree->select(0);
+        if (!m_aArtifacts.empty())
+            m_xArtifactTree->select(0);
+    }
 
     UpdateArtifactDetails();
+}
+
+void AIChatPanel::PushAgentStepRow(const OUString& rStep, const OUString& rStatus)
+{
+    m_aAgentStepCache.emplace_back(rStep, rStatus);
+    if (!m_xAgentTree)
+        return;
+    m_xAgentTree->append(rStep, rStep);
+    const int nRow = m_xAgentTree->n_children() - 1;
+    if (nRow >= 0)
+        m_xAgentTree->set_text(nRow, rStatus, 1);
+    if (m_xAgentEmptyLabel)
+        m_xAgentEmptyLabel->set_visible(false);
+}
+
+void AIChatPanel::LoadAgentSteps()
+{
+    if (!m_xAgentTree)
+        return;
+
+    m_xAgentTree->clear();
+    for (const auto& rRow : m_aAgentStepCache)
+    {
+        m_xAgentTree->append(rRow.first, rRow.first);
+        const int nRow = m_xAgentTree->n_children() - 1;
+        if (nRow >= 0)
+            m_xAgentTree->set_text(nRow, rRow.second, 1);
+    }
+
+    const bool bEmpty = m_aAgentStepCache.empty();
+    if (m_xAgentEmptyLabel)
+    {
+        m_xAgentEmptyLabel->set_visible(bEmpty);
+        if (bEmpty)
+            m_xAgentEmptyLabel->set_label(
+                u"暂无多步任务。在聊天页勾选「多步 Agent」后发送，"
+                "或在此点「运行多步」——将显示规划 / 执行 / 审查步骤状态。"_ustr);
+    }
+    if (!bEmpty)
+        m_xAgentTree->select(0);
+}
+
+void AIChatPanel::LoadReviewQueue()
+{
+    if (!m_xReviewTree)
+        return;
+
+    m_xReviewTree->clear();
+    sal_Int32 nCount = 0;
+
+    // Session pending ApplyPlan always surfaces first in the 审核 tab.
+    if (m_bHasPendingPlan)
+    {
+        const OUString sPlanId = m_aPendingPlan.planId.isEmpty() ? u"pending-plan"_ustr
+                                                                  : m_aPendingPlan.planId;
+        const OUString sItem
+            = u"待批准写回 · "_ustr + sPlanId + u" · "_ustr
+              + OUString::number(static_cast<sal_Int32>(m_aPendingPlan.operations.size()))
+              + u" 步"_ustr;
+        m_xReviewTree->append(sPlanId, sItem);
+        const int nRow = m_xReviewTree->n_children() - 1;
+        if (nRow >= 0)
+            m_xReviewTree->set_text(nRow, u"待批准"_ustr, 1);
+        ++nCount;
+    }
+
+    if (m_xReviewQueueStore)
+    {
+        const std::vector<AIChatReviewQueueEntry> aEntries = m_xReviewQueueStore->LoadEntries();
+        for (const auto& rEntry : aEntries)
+        {
+            if (m_bHasPendingPlan && rEntry.ReviewId == m_aPendingPlan.planId)
+                continue;
+            const OUString sItem = LocalizeReviewItemType(rEntry.ItemType) + u" · "_ustr
+                                   + rEntry.ReviewId;
+            m_xReviewTree->append(rEntry.ReviewId, sItem);
+            const int nRow = m_xReviewTree->n_children() - 1;
+            if (nRow >= 0)
+                m_xReviewTree->set_text(nRow, LocalizeReviewState(rEntry.State), 1);
+            ++nCount;
+        }
+    }
+
+    if (m_xReviewEmptyLabel)
+    {
+        m_xReviewEmptyLabel->set_visible(nCount == 0);
+        if (nCount == 0)
+            m_xReviewEmptyLabel->set_label(
+                u"暂无待审项。\n"
+                "① 在「聊天」发送指令并生成建议\n"
+                "② 待批准计划会出现在此列表\n"
+                "③ 点「批准写回」或「拒绝」（主文档默认不改）\n"
+                "也可在「内容」页对产物点「审查」加入队列。"_ustr);
+    }
+    if (nCount > 0)
+        m_xReviewTree->select(0);
+}
+
+void AIChatPanel::RegisterAssistantArtifact(const OUString& rContent, const OUString& rEvidenceId,
+                                            const OUString& rSourceKind)
+{
+    if (rContent.isEmpty())
+        return;
+
+    AIChatContentRegistryEntry aEntry;
+    aEntry.ObjectId
+        = u"art:"_ustr
+          + (rEvidenceId.isEmpty() ? OUString::number(static_cast<sal_Int64>(rContent.hashCode()))
+                                   : rEvidenceId);
+    aEntry.Type = u"assistant-output"_ustr;
+    aEntry.SourceSurface = rSourceKind.isEmpty() ? u"chat"_ustr : rSourceKind;
+    aEntry.State = u"ready"_ustr;
+    aEntry.EvidenceId = rEvidenceId.isEmpty() ? aEntry.ObjectId : rEvidenceId;
+    aEntry.HashReference = u"hash:"_ustr + OUString::number(rContent.hashCode());
+    aEntry.OpenTarget = u"preview"_ustr;
+    aEntry.PreviewMode = u"text-preview"_ustr;
+
+    AIChatContentRegistry aRegistry;
+    if (!aRegistry.RegisterObject(aEntry))
+    {
+        AppendTranscript(u"System"_ustr,
+                         u"content-register-failed id="_ustr + aEntry.ObjectId,
+                         /*bPersistHistory*/ false);
+        return;
+    }
+
+    // Seed review queue so 审核 tab is not empty after a successful reply.
+    if (m_xReviewQueueStore)
+        m_xReviewQueueStore->EnqueueFromRegistry(aEntry);
+
+    LoadArtifactNavigator();
+    LoadReviewQueue();
+    AppendTranscript(u"System"_ustr,
+                     u"已登记生成内容 →「内容」页可打开/审查 · id="_ustr + aEntry.ObjectId,
+                     /*bPersistHistory*/ false);
 }
 
 OUString AIChatPanel::GetSelectedArtifactId() const
@@ -591,11 +911,16 @@ void AIChatPanel::UpdateArtifactDetails()
 
     if (!bHasSelection)
     {
-        m_xArtifactDetailsLabel->set_label(u"No artifact selected"_ustr);
+        if (m_xArtifactDetailsLabel)
+            m_xArtifactDetailsLabel->set_label(
+                m_aArtifacts.empty()
+                    ? u"暂无生成内容。发送 AI 成功后产物会出现在此列表，可打开、审查或加入审核队列。"_ustr
+                    : u"请选择一项生成内容查看详情。"_ustr);
         return;
     }
 
-    m_xArtifactDetailsLabel->set_label(FormatArtifactDetails(*pSelected));
+    if (m_xArtifactDetailsLabel)
+        m_xArtifactDetailsLabel->set_label(FormatArtifactDetails(*pSelected));
 }
 
 void AIChatPanel::OpenSelectedArtifact()
@@ -678,6 +1003,9 @@ void AIChatPanel::ReviewSelectedArtifact()
                                                                         : aOpenResult.Message,
                               aReview.Review.HashReference);
     LoadArtifactNavigator();
+    LoadReviewQueue();
+    if (m_xStatusLabel)
+        m_xStatusLabel->set_label(u"已加入审核队列: "_ustr + aReview.Review.ReviewId);
 }
 
 void AIChatPanel::ReviewSelectedFormatting()
@@ -734,6 +1062,9 @@ void AIChatPanel::ReviewSelectedFormatting()
                                                                         : aOpenResult.Message,
                               aReview.Review.HashReference);
     LoadArtifactNavigator();
+    LoadReviewQueue();
+    if (m_xStatusLabel)
+        m_xStatusLabel->set_label(u"排版审查已入队: "_ustr + aReview.Review.ReviewId);
 }
 
 void AIChatPanel::InspectSelectedEvidence()
@@ -1041,6 +1372,20 @@ void AIChatPanel::UpdateActions()
     m_xCancelButton->set_sensitive(bBusy);
     m_xRetryButton->set_sensitive(!m_sLastPrompt.isEmpty() && !bBusy);
     m_xClearHistoryButton->set_sensitive(!bBusy);
+    // Intent chips stay clickable when idle/awaiting; disabled while busy.
+    auto setIntent = [&](weld::Button* p) {
+        if (p)
+            p->set_sensitive(!bBusy);
+    };
+    setIntent(m_xIntentRewriteBtn.get());
+    setIntent(m_xIntentShortenBtn.get());
+    setIntent(m_xIntentExpandBtn.get());
+    setIntent(m_xIntentSummarizeBtn.get());
+    setIntent(m_xIntentPlanBtn.get());
+    setIntent(m_xIntentAgentBtn.get());
+    UpdateComposerChrome();
+    UpdateActivityCard();
+    UpdateApprovalChrome();
     UpdateArtifactDetails();
 }
 
@@ -1068,10 +1413,228 @@ OUString AIChatPanel::StateToLabel(AIChatPanelState eState)
     return u"idle"_ustr;
 }
 
+OUString AIChatPanel::StateToUserLabel(AIChatPanelState eState)
+{
+    // Product-facing Chinese narrative — never show "State: idle" to users.
+    switch (eState)
+    {
+        case AIChatPanelState::Idle:
+            return u"就绪"_ustr;
+        case AIChatPanelState::Requesting:
+            return u"请求中…"_ustr;
+        case AIChatPanelState::Streaming:
+            return u"生成中…"_ustr;
+        case AIChatPanelState::AwaitingRuntime:
+            return u"等待运行时…"_ustr;
+        case AIChatPanelState::AwaitingApproval:
+            return u"待批准写回"_ustr;
+        case AIChatPanelState::Applied:
+            return u"已写回（可撤销）"_ustr;
+        case AIChatPanelState::Failed:
+            return u"失败 · 主文档未改"_ustr;
+        case AIChatPanelState::Cancelled:
+            return u"已取消"_ustr;
+    }
+    return u"就绪"_ustr;
+}
+
+OUString AIChatPanel::DetectComposerIntent(const OUString& rPrompt)
+{
+    const OUString lower = rPrompt.toAsciiLowerCase();
+    if (lower.indexOf(u"多步"_ustr) >= 0 || lower.indexOf(u"协作"_ustr) >= 0
+        || lower.indexOf(u"agent"_ustr) >= 0 || lower.startsWith(u"/agent"_ustr)
+        || lower.indexOf(u"子代理"_ustr) >= 0 || lower.indexOf(u"cowork"_ustr) >= 0)
+        return u"agent"_ustr;
+    if (lower.indexOf(u"规划"_ustr) >= 0 || lower.indexOf(u"计划"_ustr) >= 0
+        || lower.indexOf(u"plan"_ustr) >= 0 || lower.startsWith(u"/plan"_ustr)
+        || lower.indexOf(u"大纲"_ustr) >= 0)
+        return u"plan"_ustr;
+    if (lower.indexOf(u"总结"_ustr) >= 0 || lower.indexOf(u"摘要"_ustr) >= 0
+        || lower.indexOf(u"summar"_ustr) >= 0)
+        return u"summarize"_ustr;
+    if (lower.indexOf(u"扩写"_ustr) >= 0 || lower.indexOf(u"展开"_ustr) >= 0
+        || lower.indexOf(u"expand"_ustr) >= 0 || lower.indexOf(u"longer"_ustr) >= 0)
+        return u"expand"_ustr;
+    if (lower.indexOf(u"精简"_ustr) >= 0 || lower.indexOf(u"缩短"_ustr) >= 0
+        || lower.indexOf(u"短一点"_ustr) >= 0 || lower.indexOf(u"shorten"_ustr) >= 0
+        || lower.indexOf(u"condense"_ustr) >= 0)
+        return u"shorten"_ustr;
+    if (lower.indexOf(u"改写"_ustr) >= 0 || lower.indexOf(u"润色"_ustr) >= 0
+        || lower.indexOf(u"rewrite"_ustr) >= 0 || lower.indexOf(u"polish"_ustr) >= 0
+        || lower.indexOf(u"翻译"_ustr) >= 0 || lower.indexOf(u"translate"_ustr) >= 0)
+        return u"rewrite"_ustr;
+    return u"chat"_ustr;
+}
+
+void AIChatPanel::UpdateActivityCard()
+{
+    if (!m_xActivityCard)
+        return;
+
+    OUString intent = u"chat"_ustr;
+    if (m_xPromptEntry)
+        intent = DetectComposerIntent(m_xPromptEntry->get_text());
+    if (!m_sForcedCapability.isEmpty())
+        intent = m_sForcedCapability;
+
+    OUString intentZh = u"对话"_ustr;
+    if (intent == u"rewrite"_ustr)
+        intentZh = u"改写"_ustr;
+    else if (intent == u"shorten"_ustr || intent == u"summarize"_ustr)
+        intentZh = intent == u"shorten"_ustr ? u"精简"_ustr : u"总结"_ustr;
+    else if (intent == u"expand"_ustr)
+        intentZh = u"扩写"_ustr;
+    else if (intent == u"plan"_ustr)
+        intentZh = u"规划"_ustr;
+    else if (intent == u"agent"_ustr)
+        intentZh = u"多步协作"_ustr;
+    else if (intent == u"review"_ustr)
+        intentZh = u"审查"_ustr;
+
+    const bool bPending = m_bHasPendingPlan;
+    OUString card;
+    switch (m_eState)
+    {
+        case AIChatPanelState::Idle:
+            card = bPending
+                       ? u"活动：有待批准计划 · 到「审核」批准写回，或继续输入新指令"_ustr
+                       : (u"活动：待命 · 意图「"_ustr + intentZh
+                          + u"」· 选中文字后点芯片，或直接输入"_ustr);
+            break;
+        case AIChatPanelState::Requesting:
+            card = u"活动：正在请求模型（"_ustr + intentZh
+                   + u"）· 不会改动主文档 · 可点「停止」"_ustr;
+            break;
+        case AIChatPanelState::Streaming:
+            card = u"活动：正在生成（"_ustr + intentZh
+                   + u"）· 流式输出中 · 主文档仍未改"_ustr;
+            break;
+        case AIChatPanelState::AwaitingRuntime:
+            card = u"活动：等待运行时就绪…"_ustr;
+            break;
+        case AIChatPanelState::AwaitingApproval:
+            card = u"活动：已生成建议 · 待你批准后写回 · 可「查看 Diff / 批准 / 拒绝」"_ustr;
+            break;
+        case AIChatPanelState::Applied:
+            card = u"活动：已写回文档 · 可用撤销恢复 · 可继续改写"_ustr;
+            break;
+        case AIChatPanelState::Failed:
+            card = u"活动：失败 · 主文档未改 · 可改指令后重试"_ustr;
+            break;
+        case AIChatPanelState::Cancelled:
+            card = u"活动：已取消 · 主文档未改"_ustr;
+            break;
+    }
+    m_xActivityCard->set_label(card);
+    // Keep machine token in tooltip for harness/debug (state=idle|…).
+    m_xActivityCard->set_tooltip_text(u"state="_ustr + StateToLabel(m_eState)
+                                      + u" intent="_ustr + intent);
+}
+
+void AIChatPanel::UpdateComposerChrome()
+{
+    if (!m_xPromptEntry)
+        return;
+    const OUString intent = DetectComposerIntent(m_xPromptEntry->get_text());
+    const OUString surface = CurrentDocumentSurface();
+
+    // M4: surface-adaptive intent chip labels (same chrome, different language).
+    if (surface == u"calc"_ustr)
+    {
+        if (m_xIntentRewriteBtn)
+            m_xIntentRewriteBtn->set_label(u"公式"_ustr);
+        if (m_xIntentShortenBtn)
+            m_xIntentShortenBtn->set_label(u"清洗"_ustr);
+        if (m_xIntentExpandBtn)
+            m_xIntentExpandBtn->set_label(u"汇总"_ustr);
+        if (m_xIntentSummarizeBtn)
+            m_xIntentSummarizeBtn->set_label(u"解读"_ustr);
+        if (m_xIntentPlanBtn)
+            m_xIntentPlanBtn->set_label(u"规划"_ustr);
+        if (m_xIntentAgentBtn)
+            m_xIntentAgentBtn->set_label(u"多步"_ustr);
+    }
+    else if (surface == u"impress"_ustr)
+    {
+        if (m_xIntentRewriteBtn)
+            m_xIntentRewriteBtn->set_label(u"本页"_ustr);
+        if (m_xIntentShortenBtn)
+            m_xIntentShortenBtn->set_label(u"精简"_ustr);
+        if (m_xIntentExpandBtn)
+            m_xIntentExpandBtn->set_label(u"大纲"_ustr);
+        if (m_xIntentSummarizeBtn)
+            m_xIntentSummarizeBtn->set_label(u"讲稿"_ustr);
+        if (m_xIntentPlanBtn)
+            m_xIntentPlanBtn->set_label(u"成片"_ustr);
+        if (m_xIntentAgentBtn)
+            m_xIntentAgentBtn->set_label(u"多步"_ustr);
+    }
+    else
+    {
+        if (m_xIntentRewriteBtn)
+            m_xIntentRewriteBtn->set_label(u"改写"_ustr);
+        if (m_xIntentShortenBtn)
+            m_xIntentShortenBtn->set_label(u"精简"_ustr);
+        if (m_xIntentExpandBtn)
+            m_xIntentExpandBtn->set_label(u"扩写"_ustr);
+        if (m_xIntentSummarizeBtn)
+            m_xIntentSummarizeBtn->set_label(u"总结"_ustr);
+        if (m_xIntentPlanBtn)
+            m_xIntentPlanBtn->set_label(u"规划"_ustr);
+        if (m_xIntentAgentBtn)
+            m_xIntentAgentBtn->set_label(u"多步"_ustr);
+    }
+
+    // Placeholder adapts to intent + surface.
+    if (surface == u"calc"_ustr && intent == u"chat"_ustr)
+        m_xPromptEntry->set_placeholder_text(u"表格：用自然语言要公式/清洗/汇总…"_ustr);
+    else if (surface == u"impress"_ustr && intent == u"chat"_ustr)
+        m_xPromptEntry->set_placeholder_text(u"演示：本页改写 / 大纲成片 / 讲稿…"_ustr);
+    else if (intent == u"rewrite"_ustr)
+        m_xPromptEntry->set_placeholder_text(surface == u"calc"_ustr
+                                                 ? u"公式指令，例如：合计选区、写 =SUM…"_ustr
+                                                 : (surface == u"impress"_ustr
+                                                        ? u"本页改写，例如：更简洁的标题与要点…"_ustr
+                                                        : u"改写指令，例如：更正式、更短、改成口语…"_ustr));
+    else if (intent == u"shorten"_ustr)
+        m_xPromptEntry->set_placeholder_text(u"精简指令，例如：压缩到一半、只保留要点…"_ustr);
+    else if (intent == u"expand"_ustr)
+        m_xPromptEntry->set_placeholder_text(surface == u"impress"_ustr
+                                                 ? u"大纲指令，例如：扩成 5 页标题+要点…"_ustr
+                                                 : u"扩写指令，例如：补充背景、加例子…"_ustr);
+    else if (intent == u"summarize"_ustr)
+        m_xPromptEntry->set_placeholder_text(u"总结指令，例如：三点摘要、给领导汇报…"_ustr);
+    else if (intent == u"plan"_ustr)
+        m_xPromptEntry->set_placeholder_text(u"规划目标，例如：本周工作计划大纲…"_ustr);
+    else if (intent == u"agent"_ustr)
+        m_xPromptEntry->set_placeholder_text(u"多步任务，例如：协作审阅并给修改建议…"_ustr);
+    else
+        m_xPromptEntry->set_placeholder_text(u"描述你要做的事，或点意图芯片 / 上方方案…"_ustr);
+}
+
+void AIChatPanel::ApplyComposerIntent(const OUString& rIntentId, const OUString& rSeedPrompt)
+{
+    m_sForcedCapability = kqoffice::ai::normalizeCapabilityHint(rIntentId);
+    if (m_xOptAgentPipeline)
+        m_xOptAgentPipeline->set_active(rIntentId == u"agent"_ustr);
+    if (m_xPromptEntry)
+    {
+        if (m_xPromptEntry->get_text().trim().isEmpty())
+            m_xPromptEntry->set_text(rSeedPrompt);
+        FocusPrompt();
+    }
+    UpdateComposerChrome();
+    UpdateActivityCard();
+    if (m_xStatusLabel)
+        m_xStatusLabel->set_label(u"意图："_ustr + rIntentId + u" · 主文档不会自动改"_ustr);
+}
+
 void AIChatPanel::SetState(AIChatPanelState eState)
 {
     m_eState = eState;
-    m_xStatusLabel->set_label(u"State: "_ustr + StateToLabel(eState));
+    // Human status in title; machine token only via activity tooltip / StateToLabel.
+    if (m_xStatusLabel)
+        m_xStatusLabel->set_label(StateToUserLabel(eState));
     if (eState == AIChatPanelState::Idle || eState == AIChatPanelState::Applied
         || eState == AIChatPanelState::Failed || eState == AIChatPanelState::Cancelled)
     {
@@ -1446,19 +2009,17 @@ void AIChatPanel::UpdateSelectionChip()
     else if (sel.surface == u"none"_ustr || sel.surface.isEmpty())
         surfaceZh = u"无文档"_ustr;
 
+    // Unified selection chip template (M4.4): 选区 · {表面} · {位置} · {长度}
     OUStringBuffer label;
     label.append(u"选区 · "_ustr);
     label.append(surfaceZh);
-    if (!sel.position.isEmpty())
-    {
-        label.append(u" · "_ustr);
-        label.append(sel.position);
-    }
+    label.append(u" · "_ustr);
+    label.append(sel.position.isEmpty() ? u"未定位"_ustr : sel.position);
     label.append(u" · "_ustr);
     label.append(sel.length);
     label.append(u" 字"_ustr);
     if (sel.length == 0)
-        label.append(u"（空）"_ustr);
+        label.append(u"（空 · 点刷新）"_ustr);
 
     m_xSelectionChipBtn->set_label(label.makeStringAndClear());
 
@@ -1491,13 +2052,15 @@ void AIChatPanel::UpdatePendingPlanChip()
     if (!m_bHasPendingPlan)
     {
         m_xPendingPlanChip->set_label(u"计划：无"_ustr);
+        m_xPendingPlanChip->set_tooltip_text(u"暂无待批准写回计划"_ustr);
+        m_xPendingPlanChip->set_sensitive(false);
         return;
     }
     OUStringBuffer b;
     if (m_aPendingPlan.planId == u"ap-chart-insert"_ustr)
-        b.append(u"计划：待批图表 "_ustr);
+        b.append(u"计划：待批图表 · 点此去审核 "_ustr);
     else
-        b.append(u"计划：待批 "_ustr);
+        b.append(u"计划：待批 · 点此去审核 "_ustr);
     b.append(static_cast<sal_Int32>(m_aPendingPlan.operations.size()));
     b.append(u" 步"_ustr);
     if (!m_aPendingPlan.planId.isEmpty())
@@ -1506,9 +2069,70 @@ void AIChatPanel::UpdatePendingPlanChip()
         b.append(m_aPendingPlan.planId);
     }
     m_xPendingPlanChip->set_label(b.makeStringAndClear());
+    m_xPendingPlanChip->set_sensitive(true);
     if (m_aPendingPlan.planId == u"ap-chart-insert"_ustr)
         m_xPendingPlanChip->set_tooltip_text(
-            u"批准后打开「插入图表」向导（基于当前选区），需显式批准"_ustr);
+            u"点击跳到「审核」页。批准后打开「插入图表」向导（需显式批准）"_ustr);
+    else
+        m_xPendingPlanChip->set_tooltip_text(
+            u"点击跳到「审核」页 · 可用「批准写回 / 查看 Diff / 拒绝」"_ustr);
+}
+
+void AIChatPanel::UpdateApprovalChrome()
+{
+    const bool bBusy = m_eState == AIChatPanelState::Requesting
+                       || m_eState == AIChatPanelState::Streaming;
+    const bool bPending = m_bHasPendingPlan && !bBusy;
+    const bool bAwait = m_eState == AIChatPanelState::AwaitingApproval || bPending;
+
+    if (m_xApprovalActionRow)
+        m_xApprovalActionRow->set_visible(bAwait);
+
+    if (m_xApprovalHintLabel)
+    {
+        if (bPending)
+            m_xApprovalHintLabel->set_label(
+                u"写回需你批准 · 主文档尚未修改 · 建议先 Diff 再批准"_ustr);
+        else
+            m_xApprovalHintLabel->set_label(
+                u"写回需你批准 · 生成建议后此处会出现操作按钮"_ustr);
+    }
+
+    if (m_xChatApproveBtn)
+    {
+        m_xChatApproveBtn->set_sensitive(bPending);
+        m_xChatApproveBtn->set_label(u"批准写回"_ustr);
+    }
+    if (m_xChatDiffBtn)
+    {
+        m_xChatDiffBtn->set_sensitive(bPending || FindSelectedArtifact() != nullptr);
+        m_xChatDiffBtn->set_label(u"查看 Diff"_ustr);
+    }
+    if (m_xChatRejectBtn)
+    {
+        m_xChatRejectBtn->set_sensitive(bPending);
+        m_xChatRejectBtn->set_label(u"拒绝"_ustr);
+    }
+
+    // Reinforce review-tab primary actions when a plan is staged.
+    if (m_xApproveSelectedButton && bPending)
+        m_xApproveSelectedButton->set_label(u"批准写回"_ustr);
+    if (m_xOpenDiffReviewButton && bPending)
+        m_xOpenDiffReviewButton->set_label(u"查看 Diff"_ustr);
+    if (m_xRejectSelectedButton && bPending)
+        m_xRejectSelectedButton->set_label(u"拒绝"_ustr);
+
+    UpdatePendingPlanChip();
+}
+
+void AIChatPanel::ShowReviewTab()
+{
+    // Tabs: 0=chat 1=agent 2=content 3=review
+    if (m_xMainNotebook)
+        m_xMainNotebook->set_current_page(3);
+    if (m_xStatusLabel)
+        m_xStatusLabel->set_label(u"已打开「审核」· 请批准或拒绝写回"_ustr);
+    UpdateApprovalChrome();
 }
 
 IMPL_LINK_NOARG(AIChatPanel, OnSelectionChipClicked, weld::Button&, void)
@@ -1518,6 +2142,62 @@ IMPL_LINK_NOARG(AIChatPanel, OnSelectionChipClicked, weld::Button&, void)
     m_xStatusLabel->set_label(u"已刷新选区芯片"_ustr);
 }
 
+IMPL_LINK_NOARG(AIChatPanel, OnPendingPlanChipClicked, weld::Button&, void)
+{
+    if (m_bHasPendingPlan)
+        ShowReviewTab();
+    else if (m_xStatusLabel)
+        m_xStatusLabel->set_label(u"暂无待批计划"_ustr);
+}
+
+IMPL_LINK_NOARG(AIChatPanel, OnChatApproveClicked, weld::Button&, void)
+{
+    if (m_bHasPendingPlan)
+        ApplyPendingPlanWithApproval();
+    LoadArtifactNavigator();
+    LoadReviewQueue();
+    UpdateActions();
+}
+
+IMPL_LINK_NOARG(AIChatPanel, OnChatDiffClicked, weld::Button&, void)
+{
+    // Jump to review tab; open Diff when an artifact is selected.
+    ShowReviewTab();
+    if (FindSelectedArtifact() && m_xOpenDiffReviewButton)
+        OnOpenDiffReviewClicked(*m_xOpenDiffReviewButton);
+    else if (m_bHasPendingPlan && m_xStatusLabel)
+        m_xStatusLabel->set_label(
+            u"待批计划已就绪 · 批准写回时会走 Apply/Diff 路径 · 也可在「内容」选产物后 Diff"_ustr);
+}
+
+IMPL_LINK_NOARG(AIChatPanel, OnChatRejectClicked, weld::Button&, void)
+{
+    if (m_xRejectSelectedButton)
+        OnRejectSelectedClicked(*m_xRejectSelectedButton);
+}
+
+IMPL_LINK_NOARG(AIChatPanel, OnLocateRagClicked, weld::Button&, void)
+{
+    kqoffice::ai::chat::LocalRagLocateResult loc;
+    if (!m_sLastRagPosition.isEmpty())
+        loc = kqoffice::ai::chat::DocumentAILocalRag::locatePosition(m_sLastRagPosition);
+    if (!loc.success && !m_sLastRagQuery.isEmpty())
+        loc = kqoffice::ai::chat::DocumentAILocalRag::locateFirstHit(m_sLastRagQuery);
+    if (!loc.success && m_sLastRagQuery.isEmpty() && m_sLastRagPosition.isEmpty())
+    {
+        loc.message = u"请先使用「问本文档」得到出处，再点定位"_ustr;
+    }
+    if (m_xStatusLabel)
+        m_xStatusLabel->set_label(loc.message);
+    AppendTranscript(u"System"_ustr,
+                     (loc.success ? u"locate-ok "_ustr : u"locate-failed "_ustr)
+                         + (loc.position.isEmpty() ? OUString() : (u"pos="_ustr + loc.position + u" · "_ustr))
+                         + loc.message,
+                     /*bPersistHistory*/ false);
+    if (loc.success && !loc.position.isEmpty())
+        m_sLastRagPosition = loc.position;
+}
+
 void AIChatPanel::RunRoutingDiagnostics(bool bAppendTranscript)
 {
     const kqoffice::ai::ModelRoutingDiagnostics d = kqoffice::ai::diagnoseModelRouting();
@@ -1525,13 +2205,17 @@ void AIChatPanel::RunRoutingDiagnostics(bool bAppendTranscript)
     {
         OUString shortLabel;
         if (!d.ollamaReachable)
-            shortLabel = u"路由：Ollama 离线"_ustr;
+            shortLabel = u"路由：网关离线（五槽未探测）"_ustr;
         else
         {
-            shortLabel = u"路由：轻量="_ustr
-                         + (d.lightResolved.isEmpty() ? u"?"_ustr : d.lightResolved)
-                         + u" 审查="_ustr
-                         + (d.reviewResolved.isEmpty() ? u"?"_ustr : d.reviewResolved);
+            // Compact five-slot health chip (primary/light/agent/plan/review).
+            auto slot = [](const OUString& m) {
+                return m.isEmpty() ? u"?"_ustr : m;
+            };
+            shortLabel = u"五槽 主="_ustr + slot(d.primaryResolved) + u" 轻="_ustr
+                         + slot(d.lightResolved) + u" Ag="_ustr + slot(d.agentResolved)
+                         + u" 规="_ustr + slot(d.planResolved) + u" 审="_ustr
+                         + slot(d.reviewResolved);
         }
         m_xRoutingDiagLabel->set_label(shortLabel);
         m_xRoutingDiagLabel->set_tooltip_text(d.summaryZh);
@@ -1897,64 +2581,117 @@ void AIChatPanel::SubmitPrompt()
     m_sStreamingBuffer.clear();
     SetState(AIChatPanelState::Requesting);
     AppendTranscript(u"User"_ustr, sPrompt);
+    // Human-readable task narrative (Copilot-style) before model call.
+    {
+        const OUString intent = !m_sForcedCapability.isEmpty()
+                                    ? m_sForcedCapability
+                                    : DetectComposerIntent(sPrompt);
+        AppendTranscript(
+            u"System"_ustr,
+            u"task-aware · 意图="_ustr + intent
+                + u" · 将生成建议，主文档需批准后才改 · 可随时停止"_ustr,
+            /*bPersistHistory*/ false);
+    }
     m_xPromptEntry->set_text(OUString());
 
     // Multi-step agent path: Plan → Act → Review (five-slot Provider routing).
-    // Triggered by agent/cowork keywords (see CallProvider capability heuristics).
+    // Triggered by checkbox「多步 Agent」or agent/cowork keywords.
     const OUString lowerPrompt = sPrompt.toAsciiLowerCase();
+    const bool bAgentOpt = m_xOptAgentPipeline && m_xOptAgentPipeline->get_active();
     const bool bAgentPipeline
-        = lowerPrompt.indexOf(u"子代理"_ustr) >= 0 || lowerPrompt.indexOf(u"协作"_ustr) >= 0
-          || lowerPrompt.indexOf(u"agent"_ustr) >= 0 || lowerPrompt.startsWith(u"/agent"_ustr)
-          || lowerPrompt.indexOf(u"cowork"_ustr) >= 0
+        = bAgentOpt || lowerPrompt.indexOf(u"子代理"_ustr) >= 0
+          || lowerPrompt.indexOf(u"协作"_ustr) >= 0 || lowerPrompt.indexOf(u"agent"_ustr) >= 0
+          || lowerPrompt.startsWith(u"/agent"_ustr) || lowerPrompt.indexOf(u"cowork"_ustr) >= 0
           || lowerPrompt.indexOf(u"多步"_ustr) >= 0 || lowerPrompt.indexOf(u"plan-act"_ustr) >= 0;
 
     if (bAgentPipeline)
     {
         // Bind document selection so plan/act/review see the active surface.
+        // Evidence token "agent-pipeline" is contract-locked by model-routing / Stage B harnesses.
         const kqoffice::ai::chat::DocumentAIBinding aBind
             = kqoffice::ai::chat::DocumentAIContext::bindUserInput(sPrompt);
         if (m_xStatusLabel)
-            m_xStatusLabel->set_label(aBind.statusLabel);
+            m_xStatusLabel->set_label(u"agent-pipeline · "_ustr + aBind.statusLabel);
         AppendTranscript(u"System"_ustr,
-                         u"agent-pipeline start plan→act→review "_ustr + aBind.statusLabel
-                             + u" main-document-mutation=false"_ustr);
-        // Visible step bar (Stage B): run steps with UI updates between them.
+                         u"agent-pipeline · 多步协作启动：规划 → 执行 → 审查 · "_ustr
+                             + aBind.statusLabel + u" · 不直接改主文档"_ustr);
+        // Reset 多步 tab + step bar for this run.
+        m_aAgentStepCache.clear();
+        if (m_xAgentTree)
+            m_xAgentTree->clear();
+        PushAgentStepRow(u"1. 规划"_ustr, u"进行中…"_ustr);
+        PushAgentStepRow(u"2. 执行"_ustr, u"等待"_ustr);
+        PushAgentStepRow(u"3. 审查"_ustr, u"等待"_ustr);
         UpdateAgentStepBar(0, u"规划中…"_ustr);
         const OUString sGoal
             = aBind.enrichedPrompt.isEmpty() ? sPrompt : aBind.enrichedPrompt;
-        // Prefer stepwise UI; fall back to batch runner for content assembly.
         const kqoffice::ai::AgentPipelineResult pipe
             = kqoffice::ai::AgentStepRunner::runPlanActReview(sGoal, aBind.providerContext);
-        // Reflect completed steps on the bar + transcript labels.
+
+        // Rebuild step list from pipeline results (Chinese labels + status).
+        m_aAgentStepCache.clear();
+        if (m_xAgentTree)
+            m_xAgentTree->clear();
         for (size_t i = 0; i < pipe.steps.size(); ++i)
         {
             const auto& st = pipe.steps[i];
-            const sal_Int32 stepIdx = (st.stepKind == u"plan"_ustr)   ? 0
-                                      : (st.stepKind == u"act"_ustr)  ? 1
+            const sal_Int32 stepIdx = (st.stepKind == u"plan"_ustr)     ? 0
+                                      : (st.stepKind == u"act"_ustr)    ? 1
                                       : (st.stepKind == u"review"_ustr) ? 2
-                                                                       : static_cast<sal_Int32>(i);
+                                                                        : static_cast<sal_Int32>(i);
             UpdateAgentStepBar(stepIdx,
                                st.stepKind + u" "_ustr
                                    + (st.status == u"ok"_ustr ? u"完成"_ustr : st.status));
             OUString title = st.stepKind;
             if (title == u"plan"_ustr)
-                title = u"规划"_ustr;
+                title = u"1. 规划"_ustr;
             else if (title == u"act"_ustr)
-                title = u"执行"_ustr;
+                title = u"2. 执行"_ustr;
             else if (title == u"review"_ustr)
-                title = u"审查"_ustr;
+                title = u"3. 审查"_ustr;
+            else
+                title = OUString::number(static_cast<sal_Int32>(i) + 1) + u". "_ustr + title;
+
+            OUString statusZh = st.status;
+            if (st.status == u"ok"_ustr)
+                statusZh = u"完成"_ustr;
+            else if (st.status == u"provider-error"_ustr)
+                statusZh = u"提供方错误"_ustr;
+            else if (st.status == u"policy-denied"_ustr)
+                statusZh = u"策略拒绝"_ustr;
+
+            // Short preview in status column when available.
+            if (!st.content.isEmpty() && st.status == u"ok"_ustr)
+            {
+                OUString preview = st.content;
+                if (preview.getLength() > 48)
+                    preview = preview.copy(0, 48) + u"…"_ustr;
+                // Collapse whitespace for tree cell.
+                preview = preview.replaceAll(u"\n"_ustr, u" "_ustr);
+                statusZh = u"完成 · "_ustr + preview;
+            }
+            PushAgentStepRow(title, statusZh);
+
             OUString body = st.content;
             if (body.getLength() > 400)
                 body = body.copy(0, 400) + u"…"_ustr;
             AppendTranscript(u"Agent·"_ustr + title,
-                             (body.isEmpty() ? (u"status="_ustr + st.status) : body),
+                             (body.isEmpty() ? (u"状态="_ustr + statusZh) : body),
                              /*bPersistHistory*/ false);
         }
+        if (pipe.steps.empty())
+        {
+            PushAgentStepRow(u"1. 规划"_ustr, pipe.success ? u"完成"_ustr : u"失败"_ustr);
+            PushAgentStepRow(u"2. 执行"_ustr, pipe.success ? u"完成"_ustr : u"未运行"_ustr);
+            PushAgentStepRow(u"3. 审查"_ustr, pipe.success ? u"完成"_ustr : u"未运行"_ustr);
+        }
+        LoadAgentSteps();
+
         SetState(AIChatPanelState::Streaming);
         if (!pipe.combinedContent.isEmpty())
             AppendAssistantMarkdown(pipe.combinedContent);
         else
-            AppendAssistantChunk(u"(empty agent pipeline response)"_ustr);
+            AppendAssistantChunk(u"（多步协作无返回正文）"_ustr);
 
         if (pipe.success)
         {
@@ -1964,10 +2701,14 @@ void AIChatPanel::SubmitPrompt()
             AppendTerminalEvidence(u"ok"_ustr, pipe.finalEvidenceId);
             AppendTranscript(
                 u"System"_ustr,
-                u"agent-pipeline done steps="_ustr
+                u"多步协作完成 · 步骤="_ustr
                     + OUString::number(static_cast<sal_Int32>(pipe.steps.size()))
-                    + u" evidence="_ustr + pipe.finalEvidenceId
-                    + u" awaiting-approval=true"_ustr);
+                    + u" · 证据="_ustr + pipe.finalEvidenceId
+                    + u" · 请到「审核」页批准写回"_ustr);
+            const OUString sArtifactBody
+                = !pipe.applyCandidateContent.isEmpty() ? pipe.applyCandidateContent
+                                                        : pipe.combinedContent;
+            RegisterAssistantArtifact(sArtifactBody, pipe.finalEvidenceId, u"agent"_ustr);
             // Stage act output only — review is advisory; never auto-apply.
             StagePendingApplyPlan(pipe.applyCandidateContent, pipe.finalEvidenceId);
         }
@@ -1978,19 +2719,37 @@ void AIChatPanel::SubmitPrompt()
             SetState(AIChatPanelState::Failed);
             AppendTerminalEvidence(u"provider-error"_ustr, pipe.finalEvidenceId);
             AppendTranscript(u"System"_ustr,
-                             u"agent-pipeline-failed reason="_ustr + pipe.failureReason
-                                 + u" main-document-mutation=false"_ustr);
+                             u"多步协作失败："_ustr + pipe.failureReason
+                                 + u" · 主文档未改"_ustr);
+            LoadReviewQueue();
         }
         FocusPrompt();
         return;
     }
 
+    const bool bDocRag = kqoffice::ai::chat::DocumentAILocalRag::wantsDocumentRag(sPrompt)
+                         || sPrompt.indexOf(u"问本文档"_ustr) >= 0
+                         || sPrompt.startsWith(u"/问"_ustr);
     const css::ai::ProviderResponse aResponse = CallProvider(sPrompt);
     SetState(AIChatPanelState::Streaming);
 
-    if (aResponse.content.isEmpty())
+    OUString displayContent = aResponse.content;
+    if (bDocRag && aResponse.status == u"ok"_ustr && !aResponse.content.isEmpty())
     {
-        AppendAssistantChunk(u"(empty provider response)"_ustr);
+        // M5: structure Q&A as local-provenance card + enable locate.
+        displayContent = kqoffice::ai::chat::DocumentAILocalRag::formatAnswerCard(
+            sPrompt, aResponse.content, 4);
+        AppendAssistantMarkdown(displayContent);
+        m_sLastRagQuery = sPrompt;
+        auto hits = kqoffice::ai::chat::DocumentAILocalRag::retrieve(sPrompt, 1);
+        m_sLastRagPosition = hits.empty() ? OUString() : hits.front().position;
+        if (m_xLocateRagBtn)
+            m_xLocateRagBtn->set_sensitive(!m_sLastRagQuery.isEmpty()
+                                           || !m_sLastRagPosition.isEmpty());
+    }
+    else if (aResponse.content.isEmpty())
+    {
+        AppendAssistantChunk(u"（空响应）"_ustr);
     }
     else
     {
@@ -2007,14 +2766,21 @@ void AIChatPanel::SubmitPrompt()
     {
         SetState(AIChatPanelState::AwaitingApproval);
         AppendTerminalEvidence(aResponse.status, aResponse.evidenceId);
+        RegisterAssistantArtifact(displayContent.isEmpty() ? aResponse.content : displayContent,
+                                  aResponse.evidenceId,
+                                  bDocRag ? u"ask-document"_ustr : u"chat"_ustr);
         // Stage only — never mutate the main document before explicit approval.
+        // Pure Q&A cards usually don't need apply; still stage raw model text if useful.
         StagePendingApplyPlan(aResponse.content, aResponse.evidenceId);
+        if (bDocRag && m_xStatusLabel)
+            m_xStatusLabel->set_label(u"问本文档完成 · 见出处位置 · 主文档未自动改"_ustr);
     }
     else
     {
         ClearPendingPlan();
         SetState(AIChatPanelState::Failed);
         AppendTerminalEvidence(aResponse.status, aResponse.evidenceId);
+        LoadReviewQueue();
     }
     FocusPrompt();
 }
@@ -2025,6 +2791,7 @@ void AIChatPanel::ClearPendingPlan()
     m_aPendingPlan = kqoffice::ai::chat::ApplyPlan{};
     m_sPendingEvidenceId.clear();
     UpdatePendingPlanChip();
+    LoadReviewQueue();
 }
 
 void AIChatPanel::StagePendingApplyPlan(const OUString& rProviderContent,
@@ -2180,10 +2947,12 @@ void AIChatPanel::StagePendingApplyPlan(const OUString& rProviderContent,
         m_xStatusLabel->set_label(u"图表计划已暂存 — 批准后打开插入图表向导: "_ustr
                                   + m_aPendingPlan.planId);
     else
-        m_xStatusLabel->set_label(u"计划已暂存，批准后写入: "_ustr + m_aPendingPlan.planId);
+        m_xStatusLabel->set_label(u"计划已暂存，请到「审核」页批准写回: "_ustr
+                                  + m_aPendingPlan.planId);
     UpdatePendingPlanChip();
     UpdateSelectionChip();
     UpdateActions();
+    LoadReviewQueue();
 }
 
 bool AIChatPanel::ApplyPendingPlanWithApproval()
@@ -2276,7 +3045,68 @@ bool AIChatPanel::ApplyPendingPlanWithApproval()
 IMPL_LINK_NOARG(AIChatPanel, OnPromptChanged, weld::Entry&, void)
 {
     UpdateContextMentions();
+    UpdateComposerChrome();
+    UpdateActivityCard();
     UpdateActions();
+}
+
+IMPL_LINK_NOARG(AIChatPanel, OnIntentRewriteClicked, weld::Button&, void)
+{
+    const OUString surface = CurrentDocumentSurface();
+    if (surface == u"calc"_ustr)
+        ApplyComposerIntent(u"rewrite"_ustr,
+                            u"请为当前选区写出可写入单元格的公式，第一行以 = 开头："_ustr);
+    else if (surface == u"impress"_ustr)
+        ApplyComposerIntent(u"rewrite"_ustr, u"请改写本页标题与要点，更清晰专业："_ustr);
+    else
+        ApplyComposerIntent(u"rewrite"_ustr, u"请改写得更清晰专业："_ustr);
+}
+
+IMPL_LINK_NOARG(AIChatPanel, OnIntentShortenClicked, weld::Button&, void)
+{
+    const OUString surface = CurrentDocumentSurface();
+    if (surface == u"calc"_ustr)
+        ApplyComposerIntent(u"shorten"_ustr,
+                            u"请指出选区数据清洗问题，并尽量给出 = 公式："_ustr);
+    else
+        ApplyComposerIntent(u"shorten"_ustr, u"请精简以下内容，保留要点："_ustr);
+}
+
+IMPL_LINK_NOARG(AIChatPanel, OnIntentExpandClicked, weld::Button&, void)
+{
+    const OUString surface = CurrentDocumentSurface();
+    if (surface == u"calc"_ustr)
+        ApplyComposerIntent(u"expand"_ustr,
+                            u"请对选区做汇总（合计/平均/计数），第一行 = 公式："_ustr);
+    else if (surface == u"impress"_ustr)
+        ApplyComposerIntent(u"expand"_ustr, u"请扩成多页大纲（每页标题+要点）："_ustr);
+    else
+        ApplyComposerIntent(u"expand"_ustr, u"请扩写并补充细节："_ustr);
+}
+
+IMPL_LINK_NOARG(AIChatPanel, OnIntentSummarizeClicked, weld::Button&, void)
+{
+    const OUString surface = CurrentDocumentSurface();
+    if (surface == u"impress"_ustr)
+        ApplyComposerIntent(u"summarize"_ustr, u"请根据幻灯写一份讲稿要点："_ustr);
+    else if (surface == u"calc"_ustr)
+        ApplyComposerIntent(u"summarize"_ustr, u"请解读当前表格数据的关键结论："_ustr);
+    else
+        ApplyComposerIntent(u"summarize"_ustr, u"请总结要点："_ustr);
+}
+
+IMPL_LINK_NOARG(AIChatPanel, OnIntentPlanClicked, weld::Button&, void)
+{
+    const OUString surface = CurrentDocumentSurface();
+    if (surface == u"impress"_ustr)
+        ApplyComposerIntent(u"plan"_ustr, u"请规划一版成片结构（页序、标题、备注）："_ustr);
+    else
+        ApplyComposerIntent(u"plan"_ustr, u"请做一份分步规划："_ustr);
+}
+
+IMPL_LINK_NOARG(AIChatPanel, OnIntentAgentClicked, weld::Button&, void)
+{
+    ApplyComposerIntent(u"agent"_ustr, u"/agent 多步协作："_ustr);
 }
 
 IMPL_LINK(AIChatPanel, OnPromptInsertText, OUString&, rInsertedText, bool)
@@ -2308,16 +3138,48 @@ IMPL_LINK_NOARG(AIChatPanel, OnOpenArtifactClicked, weld::Button&, void)
 IMPL_LINK_NOARG(AIChatPanel, OnOpenDiffReviewClicked, weld::Button&, void)
 {
     const AIChatContentRegistryEntry* pSelected = FindSelectedArtifact();
-    if (!DispatchWorkspaceAction(u"open-diff-review"_ustr) || !pSelected)
+    if (!pSelected)
+    {
+        const OUString reason = m_bHasPendingPlan
+                                    ? u"请先在「内容」页选择产物，或直接点「批准写回」应用待批计划"_ustr
+                                    : u"请先选择一项生成内容再打开 Diff"_ustr;
+        if (m_xStatusLabel)
+            m_xStatusLabel->set_label(u"Diff 未打开 · "_ustr + reason);
+        AppendTranscript(u"System"_ustr,
+                         u"diff-review-failed reason=no-selection · "_ustr + reason,
+                         /*bPersistHistory*/ false);
         return;
+    }
+
+    if (!DispatchWorkspaceAction(u"open-diff-review"_ustr))
+    {
+        const OUString reason = u"工作台动作未就绪或当前项不可 Diff"_ustr;
+        if (m_xStatusLabel)
+            m_xStatusLabel->set_label(u"Diff 未打开 · "_ustr + reason);
+        AppendTranscript(u"System"_ustr,
+                         u"diff-review-failed reason=dispatch id="_ustr + pSelected->ObjectId
+                             + u" · "_ustr + reason,
+                         /*bPersistHistory*/ false);
+        return;
+    }
 
     AIChatContentOpener aOpener;
     const AIChatContentOpenResult aResult = aOpener.OpenReadOnlyPreview(*pSelected);
     AppendTranscript(u"System"_ustr, aResult.Message);
-    m_xStatusLabel->set_label(aResult.Success ? u"DiffReview opened: "_ustr
-                                                    + pSelected->ObjectId
-                                              : u"DiffReview open failed: "_ustr
-                                                    + pSelected->ObjectId);
+    if (aResult.Success)
+    {
+        m_xStatusLabel->set_label(u"已打开 Diff/预览 · "_ustr + pSelected->ObjectId);
+    }
+    else
+    {
+        const OUString detail
+            = aResult.Message.isEmpty() ? u"未知原因"_ustr : aResult.Message;
+        m_xStatusLabel->set_label(u"Diff 打开失败 · "_ustr + detail);
+        AppendTranscript(u"System"_ustr,
+                         u"diff-review-failed id="_ustr + pSelected->ObjectId + u" reason="_ustr
+                             + detail + u" · 主文档未改"_ustr,
+                         /*bPersistHistory*/ false);
+    }
     RecordWorkspaceReviewActivity(aResult.Success ? u"review-opened"_ustr
                                                   : u"failure-reported"_ustr,
                                   u"reviews"_ustr, pSelected->ObjectId, pSelected->ObjectId,
@@ -2354,8 +3216,22 @@ IMPL_LINK_NOARG(AIChatPanel, OnApproveSelectedClicked, weld::Button&, void)
     if (m_bHasPendingPlan)
         ApplyPendingPlanWithApproval();
     else
+    {
+        // If user selected a review-queue row, transition that id first.
+        if (m_xReviewTree && m_xReviewQueueStore)
+        {
+            const int nSel = m_xReviewTree->get_selected_index();
+            if (nSel >= 0)
+            {
+                const OUString sId = m_xReviewTree->get_id(nSel);
+                if (!sId.isEmpty())
+                    m_xReviewQueueStore->TransitionState(sId, u"approved"_ustr);
+            }
+        }
         DispatchWorkspaceAction(u"approve-selected"_ustr);
+    }
     LoadArtifactNavigator();
+    LoadReviewQueue();
     UpdateActions();
 }
 
@@ -2364,20 +3240,81 @@ IMPL_LINK_NOARG(AIChatPanel, OnRejectSelectedClicked, weld::Button&, void)
     if (m_bHasPendingPlan)
     {
         const OUString sPlanId = m_aPendingPlan.planId;
+        // Keep English evidence token plan-rejected for harnesses/audit; UI status stays zh-CN.
         AppendTranscript(
             u"System"_ustr,
             u"plan-rejected plan="_ustr + sPlanId
-                + u" explicit-human-approval=true main-document-mutation=false"_ustr);
+                + u" main-document-mutation=false · 已拒绝写回 · 需再次发送才会产生新计划"_ustr);
         ClearPendingPlan();
         SetState(AIChatPanelState::Idle);
-        m_xStatusLabel->set_label(u"Plan rejected: "_ustr + sPlanId);
+        if (m_xStatusLabel)
+            m_xStatusLabel->set_label(u"已拒绝写回: "_ustr + sPlanId);
     }
     else
     {
+        if (m_xReviewTree && m_xReviewQueueStore)
+        {
+            const int nSel = m_xReviewTree->get_selected_index();
+            if (nSel >= 0)
+            {
+                const OUString sId = m_xReviewTree->get_id(nSel);
+                if (!sId.isEmpty())
+                    m_xReviewQueueStore->TransitionState(sId, u"rejected"_ustr);
+            }
+        }
         DispatchWorkspaceAction(u"reject-selected"_ustr);
     }
     LoadArtifactNavigator();
+    LoadReviewQueue();
     UpdateActions();
+}
+
+IMPL_LINK_NOARG(AIChatPanel, OnAgentRunClicked, weld::Button&, void)
+{
+    if (!m_xPromptEntry)
+        return;
+    const OUString sPrompt = m_xPromptEntry->get_text().trim();
+    if (sPrompt.isEmpty())
+    {
+        if (m_xStatusLabel)
+            m_xStatusLabel->set_label(u"请先在输入框填写多步任务目标"_ustr);
+        AppendTranscript(u"System"_ustr,
+                         u"多步运行取消：输入框为空。请描述目标后点「运行多步」。"_ustr,
+                         /*bPersistHistory*/ false);
+        FocusPrompt();
+        return;
+    }
+    if (m_xOptAgentPipeline)
+        m_xOptAgentPipeline->set_active(true);
+    if (m_xStatusLabel)
+        m_xStatusLabel->set_label(u"正在运行多步：规划 → 执行 → 审查…"_ustr);
+    SubmitPrompt();
+}
+
+IMPL_LINK_NOARG(AIChatPanel, OnAgentRefreshClicked, weld::Button&, void)
+{
+    LoadAgentSteps();
+    if (m_xStatusLabel)
+        m_xStatusLabel->set_label(m_aAgentStepCache.empty() ? u"多步列表为空"_ustr
+                                                            : u"已刷新多步步骤"_ustr);
+}
+
+IMPL_LINK_NOARG(AIChatPanel, OnAgentClearClicked, weld::Button&, void)
+{
+    m_aAgentStepCache.clear();
+    LoadAgentSteps();
+    SetAgentStepBar(u"步骤：待命"_ustr);
+    if (m_xStatusLabel)
+        m_xStatusLabel->set_label(u"已清空多步列表"_ustr);
+    AppendTranscript(u"System"_ustr, u"多步步骤列表已清空（不影响聊天记录）"_ustr,
+                     /*bPersistHistory*/ false);
+}
+
+IMPL_LINK_NOARG(AIChatPanel, OnReviewRefreshClicked, weld::Button&, void)
+{
+    LoadReviewQueue();
+    if (m_xStatusLabel)
+        m_xStatusLabel->set_label(u"已刷新审核队列"_ustr);
 }
 
 IMPL_LINK_NOARG(AIChatPanel, OnCopyReferenceClicked, weld::Button&, void)

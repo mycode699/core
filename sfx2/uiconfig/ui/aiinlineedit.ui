@@ -109,9 +109,20 @@
           </object>
         </child>
         <child>
+          <object class="GtkLabel" id="preview_section_label">
+            <property name="visible">True</property>
+            <property name="halign">start</property>
+            <property name="label" translatable="yes" context="aiinline|preview_section">对照预览 · 原文 / 建议</property>
+            <attributes>
+              <attribute name="weight" value="bold"/>
+              <attribute name="scale" value="0.95"/>
+            </attributes>
+          </object>
+        </child>
+        <child>
           <object class="GtkScrolledWindow" id="preview_scroll">
             <property name="visible">True</property>
-            <property name="height-request">120</property>
+            <property name="height-request">140</property>
             <property name="shadow-type">in</property>
             <child>
               <object class="GtkTextView" id="preview_view">
@@ -129,11 +140,23 @@
           </object>
         </child>
         <child>
+          <object class="GtkLabel" id="keyboard_hint_label">
+            <property name="visible">True</property>
+            <property name="halign">start</property>
+            <property name="wrap">True</property>
+            <property name="label" translatable="yes" context="aiinline|kbd_hint">快捷键：Enter 生成 · Tab 应用写回 · Esc 关闭（未批准不改主文档）</property>
+            <attributes>
+              <attribute name="style" value="italic"/>
+              <attribute name="scale" value="0.92"/>
+            </attributes>
+          </object>
+        </child>
+        <child>
           <object class="GtkLabel" id="status_label">
             <property name="visible">True</property>
             <property name="halign">start</property>
             <property name="wrap">True</property>
-            <property name="label">Ctrl/Cmd+K · 生成后点「应用」写回（需确认）</property>
+            <property name="label">Ctrl/Cmd+K · 生成后 Tab 应用写回（需确认）</property>
             <property name="mnemonic-widget">generate_btn</property>
           </object>
         </child>
@@ -155,14 +178,14 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="sensitive">False</property>
-                <property name="label" translatable="yes" context="aiinline|accept">应用</property>
+                <property name="label" translatable="yes" context="aiinline|accept">应用 (Tab)</property>
               </object>
             </child>
             <child>
               <object class="GtkButton" id="reject_btn">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
-                <property name="label" translatable="yes" context="aiinline|reject">关闭</property>
+                <property name="label" translatable="yes" context="aiinline|reject">关闭 (Esc)</property>
               </object>
             </child>
           </object>

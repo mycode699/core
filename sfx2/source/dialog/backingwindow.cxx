@@ -1092,10 +1092,26 @@ bool tryOpenAiChatDeck(SfxViewFrame* pFrame)
 /**
  * Timer-based opener: factory document open is async.
  * Scan ALL view frames every 250ms; open AI deck once when controller is ready.
+ * Singleton — prevents open-storm if user clicks AI 创作 repeatedly.
  */
 class AiDraftDeckOpener final
 {
 public:
+    static void ArmOnce()
+    {
+        if (s_pActive)
+        {
+            // Refresh budget; do not spawn a second opener (that multi-opens factories).
+            s_pActive->m_nLeft = 48;
+            if (!s_pActive->m_aTimer.IsActive())
+                s_pActive->m_aTimer.Start();
+            return;
+        }
+        s_pActive = new AiDraftDeckOpener;
+        s_pActive->m_aTimer.Start();
+    }
+
+private:
     AiDraftDeckOpener()
         : m_aTimer("AiDraftDeckOpener")
         , m_nLeft(48) // ~12s
@@ -1104,14 +1120,14 @@ public:
         m_aTimer.SetInvokeHandler(LINK(this, AiDraftDeckOpener, OnTick));
     }
 
-    void Start() { m_aTimer.Start(); }
-
-private:
     DECL_LINK(OnTick, Timer*, void);
 
     Timer m_aTimer;
     sal_Int32 m_nLeft;
+    static AiDraftDeckOpener* s_pActive;
 };
+
+AiDraftDeckOpener* AiDraftDeckOpener::s_pActive = nullptr;
 
 IMPL_LINK_NOARG(AiDraftDeckOpener, OnTick, Timer*, void)
 {
@@ -1121,6 +1137,7 @@ IMPL_LINK_NOARG(AiDraftDeckOpener, OnTick, Timer*, void)
         if (tryOpenAiChatDeck(pFrame))
         {
             m_aTimer.Stop();
+            s_pActive = nullptr;
             delete this;
             return;
         }
@@ -1129,6 +1146,7 @@ IMPL_LINK_NOARG(AiDraftDeckOpener, OnTick, Timer*, void)
     if (--m_nLeft <= 0)
     {
         m_aTimer.Stop();
+        s_pActive = nullptr;
         delete this;
     }
 }
@@ -1168,11 +1186,28 @@ void BackingWindow::openAiDraft(std::u16string_view rScenarioId, const OUString&
     // 2) Also write Chinese pending-prompt-inject — panel polls this every 500ms when open
     //    (covers cases where scenario consume races or user opens AI manually).
     writePendingPromptInjectZh(buildAiDraftInjectText(aId));
-    // 3) Open blank factory document (async).
-    dispatchURL(rFactoryUrl);
-    // 4) Timer: wait for real doc frame, open sidebar + AI deck once.
-    auto* pOpener = new AiDraftDeckOpener;
-    pOpener->Start();
+
+    // If a Writer/Calc/Impress frame already exists, only open AI deck — do not
+    // open another factory document (open-storm was a crash trigger).
+    bool bHasTargetDoc = false;
+    for (SfxViewFrame* pFrame = SfxViewFrame::GetFirst(); pFrame;
+         pFrame = SfxViewFrame::GetNext(*pFrame))
+    {
+        if (pFrame->GetObjectShell()
+            && isAiDraftTargetFactory(pFrame->GetObjectShell()->GetFactory().GetFactoryName()))
+        {
+            bHasTargetDoc = true;
+            tryOpenAiChatDeck(pFrame);
+            break;
+        }
+    }
+    if (!bHasTargetDoc)
+    {
+        // 3) Open blank factory document (async) — single path only.
+        dispatchURL(rFactoryUrl);
+    }
+    // 4) Timer: wait for real doc frame, open sidebar + AI deck once (singleton).
+    AiDraftDeckOpener::ArmOnce();
 }
 
 IMPL_LINK(BackingWindow, AiDraftHdl, weld::Button&, rButton, void)
