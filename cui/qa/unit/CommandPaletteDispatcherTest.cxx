@@ -111,7 +111,10 @@ void CommandPaletteDispatcherTest::testChatFallbackCommandRegistered()
     const OString body = readFile(
         SRCDIR "/officecfg/registry/data/org/openoffice/Office/UI/GenericCommands.xcu");
     CPPUNIT_ASSERT(body.indexOf(".uno:SidebarDeck.AIChatDeck") >= 0);
-    CPPUNIT_ASSERT(body.indexOf("Open the AI Chat Deck") >= 0);
+    // zh-CN-first product label after L10N scrub; keep legacy en-US string accepted.
+    const bool bZh = body.indexOf("打开可圈 AI") >= 0;
+    const bool bEn = body.indexOf("Open the AI Chat Deck") >= 0;
+    CPPUNIT_ASSERT(bZh || bEn);
 }
 
 CPPUNIT_TEST_SUITE_REGISTRATION(CommandPaletteDispatcherTest);
