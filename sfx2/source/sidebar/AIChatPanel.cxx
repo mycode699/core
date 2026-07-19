@@ -2946,7 +2946,7 @@ void AIChatPanel::UpdatePendingPlanChip()
             = kqoffice::ai::chat::AgentChatSelectionCapture::captureCurrent().surface;
         OUString tip = u"点击跳到「审核」页 · 可用「批准写回 / 查看 Diff / 拒绝」"_ustr;
         if (surface == u"calc"_ustr)
-            tip += u"\n表格：UNO 轻量写回（单元格/公式/图表向导；无原生 ApplyEngine）"_ustr;
+            tip += u"\n表格：Calc 原生骨架（cell-replace/cell-formula）优先，失败回退 UNO 轻量写回；图表向导"_ustr;
         else if (surface == u"impress"_ustr)
             tip += u"\n演示：UNO 轻量写回（大纲成片/形状文案；无原生 ApplyEngine）"_ustr;
         else if (surface == u"writer"_ustr)
@@ -4130,7 +4130,8 @@ void AIChatPanel::StagePendingApplyPlan(const OUString& rProviderContent,
     m_sPendingEvidenceId = rEvidenceId;
     const bool bWriterEngine
         = kqoffice::ai::chat::DocumentAIApply::hasWriterApplyEngineHook();
-    // Honest engine path by surface (Writer native vs Calc/Impress UNO-only).
+    const bool bCalcEngine = kqoffice::ai::chat::DocumentAIApply::hasCalcApplyEngineHook();
+    // Honest engine path by surface (Writer native; Calc C1 skeleton; Impress UNO-only).
     OUString enginePathToken;
     OUString enginePathZh;
     if (m_aPendingPlan.planId == u"ap-chart-insert"_ustr
@@ -4142,8 +4143,18 @@ void AIChatPanel::StagePendingApplyPlan(const OUString& rProviderContent,
     }
     else if (sel.surface == u"calc"_ustr)
     {
-        enginePathToken = u"uno-diff-applier"_ustr;
-        enginePathZh = u"表格 · UNO 轻量写回（无原生 Calc ApplyEngine；公式/单元格/图表）"_ustr;
+        if (bCalcEngine)
+        {
+            enginePathToken = u"calc-apply-engine"_ustr;
+            enginePathZh = u"表格 · Calc 原生骨架写回（cell-replace / cell-formula；"
+                           "失败回退 UNO 轻量；图表仍走向导）"_ustr;
+        }
+        else
+        {
+            enginePathToken = u"uno-diff-applier"_ustr;
+            enginePathZh
+                = u"表格 · UNO 轻量写回（无原生 Calc ApplyEngine；公式/单元格/图表）"_ustr;
+        }
     }
     else if (sel.surface == u"impress"_ustr)
     {
@@ -4164,6 +4175,8 @@ void AIChatPanel::StagePendingApplyPlan(const OUString& rProviderContent,
                          + u" surface="_ustr + sel.surface + u" apply-path="_ustr
                          + enginePathToken + u" writer-engine="_ustr
                          + (bWriterEngine ? u"ready"_ustr : u"fallback-uno"_ustr)
+                         + u" calc-engine="_ustr
+                         + (bCalcEngine ? u"skeleton-ready"_ustr : u"fallback-uno"_ustr)
                          + u" awaiting-approval=true main-document-mutation=false "
                            "explicit-human-approval-required=true · "_ustr
                          + enginePathZh);

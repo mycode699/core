@@ -455,12 +455,14 @@ $(eval $(call gb_Library_add_exception_objects,sc,\
     sc/source/ui/dialogs/SparklineDataRangeDialog \
     sc/source/ui/docshell/arealink \
     sc/source/ui/docshell/autostyl \
+    sc/source/ui/docshell/ChatCalcApplyBridge \
     sc/source/ui/docshell/datastream \
     sc/source/ui/docshell/dbdocfun \
     sc/source/ui/docshell/dbdocimp \
     sc/source/ui/docshell/docfunc \
     sc/source/ui/docshell/docfuncutil \
     sc/source/ui/docshell/docsh \
+    sc/source/ui/docshell/IntelligentCalcApplyEngine \
     sc/source/ui/docshell/docsh2 \
     sc/source/ui/docshell/docsh3 \
     sc/source/ui/docshell/docsh4 \

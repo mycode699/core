@@ -27,6 +27,7 @@ namespace kqoffice::ai::chat
 namespace
 {
 WriterApplyEngineHook g_writerHook = nullptr;
+CalcApplyEngineHook g_calcHook = nullptr;
 
 void appendJsonEscaped(OUStringBuffer& b, const OUString& s)
 {
@@ -92,21 +93,63 @@ bool looksLikeWriterRuntimeJson(const OUString& s)
            && (s.indexOf(u"\"patches\""_ustr) >= 0 || s.indexOf(u"paragraph-replace"_ustr) >= 0);
 }
 
-using CWriterApplyFn = sal_Bool (*)(const sal_Unicode*, sal_Int32, sal_Unicode*, sal_Int32,
-                                    sal_Int32*);
+bool looksLikeCalcRuntimeJson(const OUString& s)
+{
+    return s.indexOf(u"v1-calc-runtime-1"_ustr) >= 0
+           && (s.indexOf(u"\"patches\""_ustr) >= 0 || s.indexOf(u"cell-replace"_ustr) >= 0
+               || s.indexOf(u"cell-formula"_ustr) >= 0);
+}
 
-bool tryWriterApplyViaDlsym(const OUString& rRuntimeJson, OUString& rErrorOut,
-                            sal_Int32& rAppliedCount)
+OUString toCalcCellRef(const OUString& rTarget)
+{
+    OUString s = rTarget.trim();
+    if (s.startsWith(u"cell:"_ustr))
+        s = s.copy(5).trim();
+    else if (s.startsWith(u"range:"_ustr))
+    {
+        // range:A1:B2 or range:A1 → take top-left token
+        OUString rest = s.copy(6);
+        const sal_Int32 colon = rest.indexOf(u':');
+        s = (colon > 0 ? rest.copy(0, colon) : rest).trim();
+    }
+    // Reject multi-sheet / invalid tokens for C1 skeleton.
+    if (s.isEmpty() || s.indexOf(u'!') >= 0 || s.indexOf(u'[') >= 0)
+        return OUString();
+    // Drop trailing :end if still present
+    const sal_Int32 colon = s.indexOf(u':');
+    if (colon > 0)
+        s = s.copy(0, colon);
+    return s;
+}
+
+OUString calcPatchKindForOp(const DiffOperation& op)
+{
+    // Prefer formula when content looks like a formula.
+    const OUString text = op.newText.trim();
+    if (text.startsWith(u"="))
+        return u"cell-formula"_ustr;
+    if (op.opType == u"insert"_ustr || op.opType == u"replace"_ustr || op.opType.isEmpty())
+        return u"cell-replace"_ustr;
+    // delete → clear cell via replace empty
+    if (op.opType == u"delete"_ustr)
+        return u"cell-replace"_ustr;
+    return OUString();
+}
+
+using CApplyFn = sal_Bool (*)(const sal_Unicode*, sal_Int32, sal_Unicode*, sal_Int32, sal_Int32*);
+
+bool tryApplyViaDlsym(const char* pSymbol, const OUString& rRuntimeJson, OUString& rErrorOut,
+                      sal_Int32& rAppliedCount, const OUString& rNotLoadedToken,
+                      const OUString& rFailedToken)
 {
 #if KQOFFICE_HAVE_DLSYM
-    // libsw exports this when Writer has been loaded in-process.
-    void* pSym = dlsym(RTLD_DEFAULT, "kqoffice_writer_apply_runtime_json");
+    void* pSym = dlsym(RTLD_DEFAULT, pSymbol);
     if (!pSym)
     {
-        rErrorOut = u"writer-apply-symbol-not-loaded"_ustr;
+        rErrorOut = rNotLoadedToken;
         return false;
     }
-    auto pFn = reinterpret_cast<CWriterApplyFn>(pSym);
+    auto pFn = reinterpret_cast<CApplyFn>(pSym);
     sal_Unicode aErr[512] = {};
     sal_Int32 nApplied = 0;
     const sal_Bool ok
@@ -116,16 +159,35 @@ bool tryWriterApplyViaDlsym(const OUString& rRuntimeJson, OUString& rErrorOut,
     {
         rErrorOut = OUString(aErr);
         if (rErrorOut.isEmpty())
-            rErrorOut = u"writer-apply-failed"_ustr;
+            rErrorOut = rFailedToken;
         return false;
     }
     return true;
 #else
+    (void)pSymbol;
     (void)rRuntimeJson;
-    rErrorOut = u"writer-apply-dlsym-unavailable"_ustr;
+    (void)rNotLoadedToken;
+    (void)rFailedToken;
+    rErrorOut = u"apply-dlsym-unavailable"_ustr;
     rAppliedCount = 0;
     return false;
 #endif
+}
+
+bool tryWriterApplyViaDlsym(const OUString& rRuntimeJson, OUString& rErrorOut,
+                            sal_Int32& rAppliedCount)
+{
+    return tryApplyViaDlsym("kqoffice_writer_apply_runtime_json", rRuntimeJson, rErrorOut,
+                            rAppliedCount, u"writer-apply-symbol-not-loaded"_ustr,
+                            u"writer-apply-failed"_ustr);
+}
+
+bool tryCalcApplyViaDlsym(const OUString& rRuntimeJson, OUString& rErrorOut,
+                          sal_Int32& rAppliedCount)
+{
+    return tryApplyViaDlsym("kqoffice_calc_apply_runtime_json", rRuntimeJson, rErrorOut,
+                            rAppliedCount, u"calc-apply-symbol-not-loaded"_ustr,
+                            u"calc-apply-failed"_ustr);
 }
 
 bool callWriterApply(const OUString& rRuntimeJson, OUString& rErrorOut, sal_Int32& rAppliedCount)
@@ -133,6 +195,13 @@ bool callWriterApply(const OUString& rRuntimeJson, OUString& rErrorOut, sal_Int3
     if (g_writerHook)
         return g_writerHook(rRuntimeJson, rErrorOut, rAppliedCount);
     return tryWriterApplyViaDlsym(rRuntimeJson, rErrorOut, rAppliedCount);
+}
+
+bool callCalcApply(const OUString& rRuntimeJson, OUString& rErrorOut, sal_Int32& rAppliedCount)
+{
+    if (g_calcHook)
+        return g_calcHook(rRuntimeJson, rErrorOut, rAppliedCount);
+    return tryCalcApplyViaDlsym(rRuntimeJson, rErrorOut, rAppliedCount);
 }
 } // namespace
 
@@ -147,6 +216,22 @@ bool DocumentAIApply::hasWriterApplyEngineHook()
         return true;
 #if KQOFFICE_HAVE_DLSYM
     return dlsym(RTLD_DEFAULT, "kqoffice_writer_apply_runtime_json") != nullptr;
+#else
+    return false;
+#endif
+}
+
+void DocumentAIApply::registerCalcApplyEngineHook(CalcApplyEngineHook pHook)
+{
+    g_calcHook = pHook;
+}
+
+bool DocumentAIApply::hasCalcApplyEngineHook()
+{
+    if (g_calcHook)
+        return true;
+#if KQOFFICE_HAVE_DLSYM
+    return dlsym(RTLD_DEFAULT, "kqoffice_calc_apply_runtime_json") != nullptr;
 #else
     return false;
 #endif
@@ -236,10 +321,77 @@ OUString DocumentAIApply::chatPlanToWriterRuntimeJson(const ApplyPlan& rPlan)
     return b.makeStringAndClear();
 }
 
+OUString DocumentAIApply::chatPlanToCalcRuntimeJson(const ApplyPlan& rPlan)
+{
+    if (rPlan.operations.empty())
+        return OUString();
+
+    const OUString planId
+        = rPlan.planId.isEmpty() ? u"ap-chat-calc-apply"_ustr : rPlan.planId;
+
+    OUStringBuffer b;
+    b.append(u"{\n");
+    b.append(u"  \"schema_version\": \"v1-calc-runtime-1\",\n");
+    b.append(u"  \"plan_id\": \"");
+    appendJsonEscaped(b, planId);
+    b.append(u"\",\n");
+    b.append(u"  \"preview_only\": false,\n");
+    b.append(u"  \"patches\": [\n");
+
+    sal_Int32 nPatch = 0;
+    for (sal_Int32 i = 0; i < static_cast<sal_Int32>(rPlan.operations.size()); ++i)
+    {
+        const DiffOperation& op = rPlan.operations[static_cast<size_t>(i)];
+        if (op.opType == u"chart_insert"_ustr || op.opType == u"format"_ustr)
+            continue;
+
+        const OUString kind = calcPatchKindForOp(op);
+        if (kind.isEmpty())
+            continue;
+
+        OUString cell = toCalcCellRef(op.target);
+        if (cell.isEmpty())
+            cell = u"A1"_ustr;
+
+        if (nPatch > 0)
+            b.append(u",\n");
+
+        b.append(u"    {\n");
+        b.append(u"      \"patch_id\": \"p");
+        b.append(nPatch + 1);
+        b.append(u"\",\n");
+        b.append(u"      \"kind\": \"");
+        b.append(kind);
+        b.append(u"\",\n");
+        b.append(u"      \"cell\": \"");
+        appendJsonEscaped(b, cell);
+        b.append(u"\",\n");
+        if (!op.oldText.isEmpty())
+        {
+            b.append(u"      \"before\": \"");
+            appendJsonEscaped(b, op.oldText);
+            b.append(u"\",\n");
+        }
+        b.append(u"      \"after\": \"");
+        appendJsonEscaped(b, op.newText);
+        b.append(u"\"\n");
+        b.append(u"    }");
+        ++nPatch;
+    }
+
+    if (nPatch == 0)
+        return OUString();
+
+    b.append(u"\n  ]\n}\n");
+    return b.makeStringAndClear();
+}
+
 OUString DocumentAIApply::userFacingEngineZh(const OUString& rEngine)
 {
     if (rEngine == u"writer-apply-engine"_ustr)
         return u"Writer 原生写回"_ustr;
+    if (rEngine == u"calc-apply-engine"_ustr)
+        return u"Calc 原生骨架写回"_ustr;
     if (rEngine == u"uno-diff-applier"_ustr)
         return u"UNO 轻量写回"_ustr;
     if (rEngine == u"calc-chart-dispatch"_ustr)
@@ -276,7 +428,9 @@ OUString DocumentAIApply::userFacingErrorZh(const OUString& rError, const OUStri
     const OUString s = rError;
     if (s.isEmpty())
     {
-        if (rSurface == u"calc"_ustr || rSurface == u"impress"_ustr)
+        if (rSurface == u"calc"_ustr)
+            return u"写回失败 · 表格优先 Calc 原生骨架（cell-replace/cell-formula），否则 UNO 轻量写回"_ustr;
+        if (rSurface == u"impress"_ustr)
             return u"写回失败 · 当前应用仅支持 UNO 轻量写回（无原生 ApplyEngine）"_ustr;
         if (rEngine == u"uno-diff-applier"_ustr)
             return u"UNO 写回失败 · 主文档未改"_ustr;
@@ -285,14 +439,23 @@ OUString DocumentAIApply::userFacingErrorZh(const OUString& rError, const OUStri
 
     if (s.indexOf(u"writer-apply-symbol-not-loaded"_ustr) >= 0)
         return u"Writer 写回引擎未加载 · 将尝试 UNO 回退"_ustr;
-    if (s.indexOf(u"writer-apply-dlsym-unavailable"_ustr) >= 0)
-        return u"当前平台无法加载 Writer 写回引擎"_ustr;
+    if (s.indexOf(u"writer-apply-dlsym-unavailable"_ustr) >= 0
+        || s.indexOf(u"apply-dlsym-unavailable"_ustr) >= 0)
+        return u"当前平台无法加载原生写回引擎"_ustr;
     if (s.indexOf(u"writer-apply-failed"_ustr) >= 0
         || s.indexOf(u"writer-apply-status="_ustr) >= 0)
         return u"Writer 原生写回失败 · 已尝试或将尝试其他路径"_ustr;
     if (s.indexOf(u"no-active-writer-docshell"_ustr) >= 0)
         return u"当前不是 Writer 文档 · 无法使用原生写回引擎"_ustr;
-    if (s.indexOf(u"writer-runtime-json-parse-failed"_ustr) >= 0
+    if (s.indexOf(u"calc-apply-symbol-not-loaded"_ustr) >= 0)
+        return u"Calc 原生骨架未加载 · 将尝试 UNO 轻量写回"_ustr;
+    if (s.indexOf(u"calc-apply-failed"_ustr) >= 0
+        || s.indexOf(u"calc-apply-status="_ustr) >= 0)
+        return u"Calc 原生骨架写回失败 · 已尝试或将尝试 UNO 轻量写回"_ustr;
+    if (s.indexOf(u"no-active-calc-docshell"_ustr) >= 0)
+        return u"当前不是表格文档 · 无法使用 Calc 原生写回骨架"_ustr;
+    if (s.indexOf(u"calc-runtime-json-parse-failed"_ustr) >= 0
+        || s.indexOf(u"writer-runtime-json-parse-failed"_ustr) >= 0
         || s.indexOf(u"empty-runtime-json"_ustr) >= 0)
         return u"写回计划解析失败"_ustr;
     if (s.indexOf(u"preview-only-plan-blocked"_ustr) >= 0)
@@ -309,8 +472,9 @@ OUString DocumentAIApply::userFacingErrorZh(const OUString& rError, const OUStri
         return u"当前应用不支持该写回操作类型"_ustr;
     if (s.indexOf(u"Empty opType"_ustr) >= 0 || s.indexOf(u"Empty target"_ustr) >= 0)
         return u"写回计划不完整（缺少操作或目标）"_ustr;
+    // Keep legacy UNO fail copy for contract tests; still honest that native is skeleton-only.
     if (s.indexOf(u"expected cell:"_ustr) >= 0 || s.indexOf(u"Calc "_ustr) >= 0)
-        return u"表格写回失败 · 目标须为单元格（如 cell:A1）；暂无原生 Calc ApplyEngine"_ustr;
+        return u"表格写回失败 · 目标须为单元格（如 cell:A1）；暂无原生 Calc ApplyEngine 全量能力（C1 仅 cell-replace/cell-formula 骨架）"_ustr;
     if (s.indexOf(u"expected slide:"_ustr) >= 0 || s.indexOf(u"Impress "_ustr) >= 0)
         return u"演示写回失败 · 目标须为幻灯/形状；暂无原生 Impress ApplyEngine"_ustr;
     if (s.indexOf(u"Writer "_ustr) >= 0 || s.indexOf(u"para:"_ustr) >= 0)
@@ -401,6 +565,40 @@ DocumentAIApplyResult DocumentAIApply::applyApprovedWithRawFallback(
             }
             SAL_WARN("kqoffice.ai.chat",
                      "DocumentAIApply: writer engine failed: " << err
+                     << " — falling back to UNO DiffApplier");
+            out.error = err;
+        }
+    }
+
+    // Calc: prefer native C1 skeleton (cell-replace / cell-formula) via C ABI.
+    if (out.surface == u"calc"_ustr)
+    {
+        OUString runtimeJson;
+        if (looksLikeCalcRuntimeJson(rRawProviderContent))
+            runtimeJson = rRawProviderContent;
+        else if (looksLikeCalcRuntimeJson(rPlan.rawOutput))
+            runtimeJson = rPlan.rawOutput;
+        else
+            runtimeJson = chatPlanToCalcRuntimeJson(rPlan);
+
+        if (!runtimeJson.isEmpty())
+        {
+            OUString err;
+            sal_Int32 applied = 0;
+            if (callCalcApply(runtimeJson, err, applied))
+            {
+                out.success = true;
+                out.engine = u"calc-apply-engine"_ustr;
+                out.appliedCount = applied;
+                out.error.clear();
+                out.evidenceNote = u"calc-apply-engine plan="_ustr + out.planId
+                                   + u" applied="_ustr + OUString::number(applied)
+                                   + u" schema=v1-calc-runtime-1"_ustr;
+                SAL_INFO("kqoffice.ai.chat", out.evidenceNote);
+                return out;
+            }
+            SAL_WARN("kqoffice.ai.chat",
+                     "DocumentAIApply: calc engine failed: " << err
                      << " — falling back to UNO DiffApplier");
             out.error = err;
         }
