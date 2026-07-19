@@ -41,6 +41,7 @@ $(eval $(call gb_Package_add_files_with_dir,extras_kq_cn_hf,$(LIBO_SHARE_FOLDER)
 	zh-CN/kq/hf/hf_s08_weekly_deck.otp \
 	zh-CN/kq/hf/hf_s09_notice.ott \
 	zh-CN/kq/hf/hf_s10_quote.ott \
+	zh-CN/kq/hf/hf_s11_outline.ott \
 ))
 
 # vim: set noet sw=4 ts=4:

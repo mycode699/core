@@ -9,10 +9,10 @@
     "expand_later": true
   },
   "counts": {
-    "ott": 13,
+    "ott": 14,
     "ots": 12,
     "otp": 8,
-    "total": 33
+    "total": 34
   },
   "items": [
     {
@@ -196,6 +196,20 @@
       "file": "hf/hf_a16_resume.ott",
       "kind": "ott",
       "freq": "A"
+    },
+    {
+      "id": "hf_s11_outline",
+      "title": "演示提纲（深度）",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "S",
+        "文字"
+      ],
+      "summary": "先写结构再做片：听众、目录、页要点、时长与收尾",
+      "file": "hf/hf_s11_outline.ott",
+      "kind": "ott",
+      "freq": "S"
     },
     {
       "id": "hf_s03_todo",

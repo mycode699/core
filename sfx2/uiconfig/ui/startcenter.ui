@@ -1032,7 +1032,7 @@
                         <property name="receives-default">True</property>
                         <property name="hexpand">True</property>
                         <property name="halign">fill</property>
-                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_outline|tool_tip">先整理演示结构和要点，再制作正式演示文稿。</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_outline|tool_tip">打开高频精选「演示提纲（深度）」：先写结构再做片。</property>
                       </object>
                       <packing>
                         <property name="left-attach">2</property>
