@@ -118,6 +118,10 @@
 #include <cstdlib>
 #include <functional>
 #include <optional>
+#include <sstream>
+#include <fstream>
+#include <boost/property_tree/json_parser.hpp>
+#include <boost/property_tree/ptree.hpp>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -604,9 +608,9 @@ void BackingWindow::initControls()
     if (mxTemplateCategory)
     {
         static constexpr std::u16string_view kCats[] = {
-            u"推荐",       u"热门",       u"AI 场景",   u"信息收集", u"数据分析",
-            u"销售管理",   u"行政财务",   u"人力资源",   u"项目管理", u"协作效率",
-            u"个人成长",   u"演示文稿",   u"公文信函",   u"PDF"};
+            u"推荐",     u"热门",     u"合同文档", u"表格预设", u"演示文稿",
+            u"AI 场景",  u"信息收集", u"数据分析", u"销售管理", u"行政财务",
+            u"人力资源", u"项目管理", u"协作效率", u"个人成长", u"公文信函", u"PDF"};
         mxTemplateCategory->clear();
         for (const auto& c : kCats)
             mxTemplateCategory->append_text(OUString(c));
@@ -1490,6 +1494,37 @@ OUString lcl_brandCommonTemplateURL(std::u16string_view rRelativeUnderCommon)
     rtl::Bootstrap::expandMacros(aBrandPath);
     return lcl_existingTemplateFileURL(aBrandPath);
 }
+
+/** User hub installed by bin/kqoffice-install-cn-template-library.sh */
+OUString lcl_userKqTemplateHubURL(std::u16string_view rRelativeUnderHub)
+{
+    if (rRelativeUnderHub.empty())
+        return {};
+    const char* home = std::getenv("HOME");
+    if (!home || !*home)
+        return {};
+    OUString aPath = OUString::createFromAscii(home) + u"/可圈办公空间/模板库/"_ustr
+                     + OUString(rRelativeUnderHub);
+    return lcl_existingTemplateFileURL(aPath);
+}
+
+OUString lcl_resolveKqLibraryTemplateURL(std::u16string_view rRel)
+{
+    // Accept "zh-CN/kq/合同文档/x.ott" or "合同文档/x.ott"
+    OUString aRel(rRel);
+    OUString aUnderKq = aRel;
+    if (aRel.startsWith("zh-CN/kq/"))
+        aUnderKq = aRel.copy(9);
+    // brand share first
+    const OUString aUnderCommon = u"zh-CN/kq/"_ustr + aUnderKq;
+    OUString aBrand = lcl_brandCommonTemplateURL(std::u16string_view(aUnderCommon));
+    if (!aBrand.isEmpty())
+        return aBrand;
+    aBrand = lcl_brandCommonTemplateURL(std::u16string_view(aRel));
+    if (!aBrand.isEmpty())
+        return aBrand;
+    return lcl_userKqTemplateHubURL(std::u16string_view(aUnderKq));
+}
 }
 
 IMPL_LINK(BackingWindow, CreateContextMenuHdl, TemplateViewItem*, pItem, void)
@@ -1574,10 +1609,107 @@ struct TemplateMarketEntry
     FILTER_APPLICATION filter = FILTER_APPLICATION::NONE;
 };
 
-// Office catalog: Feishu-like categories, only real ODF templates or AI blank+prefill.
+void lcl_appendKqCnLibraryCatalog(std::vector<TemplateMarketEntry>& rOut)
+{
+    std::vector<OUString> candidates;
+    {
+        OUString brand = u"$BRAND_BASE_DIR/"_ustr + OUString::createFromAscii(LIBO_SHARE_FOLDER)
+                         + u"/template/common/zh-CN/kq/catalog.json"_ustr;
+        rtl::Bootstrap::expandMacros(brand);
+        candidates.push_back(brand);
+    }
+    if (const char* home = std::getenv("HOME"); home && *home)
+    {
+        candidates.push_back(OUString::createFromAscii(home)
+                             + u"/可圈办公空间/模板库/catalog.json"_ustr);
+    }
+
+    OUString aSysPath;
+    for (const auto& c : candidates)
+    {
+        OUString url = c;
+        if (!url.startsWith("file://"))
+        {
+            OUString converted;
+            if (osl::FileBase::getFileURLFromSystemPath(url, converted) == osl::FileBase::E_None)
+                url = converted;
+        }
+        if (!comphelper::DirectoryHelper::fileExists(url))
+            continue;
+        if (osl::FileBase::getSystemPathFromFileURL(url, aSysPath) == osl::FileBase::E_None
+            && !aSysPath.isEmpty())
+            break;
+        aSysPath.clear();
+    }
+    if (aSysPath.isEmpty())
+        return;
+
+    try
+    {
+        std::ifstream ifs(aSysPath.toUtf8().getStr());
+        if (!ifs)
+            return;
+        boost::property_tree::ptree root;
+        boost::property_tree::read_json(ifs, root);
+        auto itemsOpt = root.get_child_optional("items");
+        if (!itemsOpt)
+            return;
+        const auto& items = *itemsOpt;
+        int nAdded = 0;
+        for (const auto& node : items)
+        {
+            const auto& it = node.second;
+            const std::string title = it.get<std::string>("title", "");
+            const std::string category = it.get<std::string>("category", "");
+            const std::string summary = it.get<std::string>("summary", "");
+            const std::string file = it.get<std::string>("file", "");
+            const std::string kind = it.get<std::string>("kind", "");
+            if (title.empty() || file.empty() || category.empty())
+                continue;
+
+            OUString typeLabel = u"文字"_ustr;
+            FILTER_APPLICATION filter = FILTER_APPLICATION::WRITER;
+            if (kind == "ots")
+            {
+                typeLabel = u"表格"_ustr;
+                filter = FILTER_APPLICATION::CALC;
+            }
+            else if (kind == "otp")
+            {
+                typeLabel = u"演示"_ustr;
+                filter = FILTER_APPLICATION::IMPRESS;
+            }
+
+            const OUString aRel = u"zh-CN/kq/"_ustr + OUString::fromUtf8(file.c_str());
+            rOut.push_back({ OUString::fromUtf8(category.c_str()),
+                             OUString::fromUtf8(title.c_str()), typeLabel,
+                             OUString::fromUtf8(summary.c_str()), aRel, {}, filter });
+            ++nAdded;
+
+            // First slice also surfaces under 推荐/热门 for discovery.
+            if (nAdded <= 12)
+            {
+                rOut.push_back({ u"推荐"_ustr, OUString::fromUtf8(title.c_str()), typeLabel,
+                                 OUString::fromUtf8(summary.c_str()), aRel, {}, filter });
+            }
+            else if (nAdded <= 24)
+            {
+                rOut.push_back({ u"热门"_ustr, OUString::fromUtf8(title.c_str()), typeLabel,
+                                 OUString::fromUtf8(summary.c_str()), aRel, {}, filter });
+            }
+        }
+    }
+    catch (...)
+    {
+        SAL_WARN("sfx", "lcl_appendKqCnLibraryCatalog: failed to parse catalog.json");
+    }
+}
+
+// Office catalog: Feishu-like categories + kq 640 library from catalog.json
 const std::vector<TemplateMarketEntry>& lcl_templateMarketCatalog()
 {
-    static const std::vector<TemplateMarketEntry> kCatalog = {
+    static const std::vector<TemplateMarketEntry> kCatalog = [] {
+        std::vector<TemplateMarketEntry> cat = {
         // 推荐 / 热门 — core CN office
         { u"推荐"_ustr, u"工作汇报"_ustr, u"文字"_ustr,
           u"结构化周报/月报，开箱即写关键结论与进展。"_ustr, u"offimisc/Work_Report_CN.ott"_ustr,
@@ -1925,7 +2057,10 @@ const std::vector<TemplateMarketEntry>& lcl_templateMarketCatalog()
         { u"热门"_ustr, u"合并 PDF"_ustr, u"工具"_ustr,
           u"本地一键合并（图像页；非完整 Acrobat / 非云端矢量引擎）。"_ustr, {},
           u"tool:pdf-merge"_ustr, FILTER_APPLICATION::NONE },
-    };
+        };
+        lcl_appendKqCnLibraryCatalog(cat);
+        return cat;
+    }();
     return kCatalog;
 }
 }
@@ -2989,6 +3124,27 @@ void BackingWindow::openScenarioTemplate(std::u16string_view rTemplateFileName,
                                          std::u16string_view rFallbackTitle,
                                          FILTER_APPLICATION eFilter)
 {
+    const OUString aName(rTemplateFileName);
+
+    // Absolute path or user hub absolute file
+    if (aName.startsWith("file://") || aName.startsWith("/"))
+    {
+        OpenTemplateHdl(aName);
+        return;
+    }
+
+    // 可圈 640 模板库：zh-CN/kq/… under brand share or ~/可圈办公空间/模板库
+    if (aName.startsWith("zh-CN/kq/") || aName.indexOf(u"合同文档/"_ustr) >= 0
+        || aName.indexOf(u"表格预设/"_ustr) >= 0 || aName.indexOf(u"演示文稿/"_ustr) >= 0)
+    {
+        const OUString aKq = lcl_resolveKqLibraryTemplateURL(aName);
+        if (!aKq.isEmpty())
+        {
+            OpenTemplateHdl(aKq);
+            return;
+        }
+    }
+
     SfxDocumentTemplates aTemplates;
     aTemplates.Update();
 
@@ -3016,6 +3172,14 @@ void BackingWindow::openScenarioTemplate(std::u16string_view rTemplateFileName,
     if (!aBrandUrl.isEmpty())
     {
         OpenTemplateHdl(aBrandUrl);
+        return;
+    }
+
+    // Last chance: kq library by basename under hub
+    const OUString aKq2 = lcl_resolveKqLibraryTemplateURL(aName);
+    if (!aKq2.isEmpty())
+    {
+        OpenTemplateHdl(aKq2);
         return;
     }
 
