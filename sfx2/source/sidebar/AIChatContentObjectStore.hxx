@@ -38,6 +38,10 @@ public:
     bool ShouldMaterializeText(const OUString& rText) const;
     AIChatMaterializedContent MaterializeText(const OUString& rText) const;
 
+    /// Wave D5: resolve sidecar URL / read UTF-8 body for sidebar text preview.
+    OUString MakeSidecarUrl(const OUString& rObjectId) const;
+    bool ReadObjectText(const OUString& rObjectId, OUString& rText) const;
+
     static OUString DetectTypeLabel(AIChatContentObjectType eType);
 
 private:

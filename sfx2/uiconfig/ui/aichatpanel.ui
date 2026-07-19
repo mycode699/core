@@ -16,19 +16,23 @@
         <property name="can-focus">False</property>
         <property name="orientation">horizontal</property>
         <property name="spacing">6</property>
+        <property name="margin-start">8</property>
+        <property name="margin-end">8</property>
+        <property name="margin-top">8</property>
+        <property name="margin-bottom">4</property>
         <child>
           <object class="GtkLabel" id="panel_title_label">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="hexpand">True</property>
             <property name="halign">start</property>
-            <property name="label" translatable="yes" context="aichat|panel_title">AI 工作区</property>
+            <property name="label" translatable="yes" context="aichat|panel_title">可圈 AI</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
             <child internal-child="accessible">
               <object class="AtkObject" id="panel_title_label-atkobject">
-                <property name="AtkObject::accessible-name" translatable="yes" context="aichat|panel_title">AI Workspace</property>
+                <property name="AtkObject::accessible-name" translatable="yes" context="aichat|panel_title">可圈 AI</property>
                 <property name="AtkObject::accessible-role">static</property>
               </object>
             </child>
@@ -44,7 +48,7 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">end</property>
-            <property name="label" translatable="yes" context="aichat|status_ready">就绪 — 可输入或点方案按钮</property>
+            <property name="label" translatable="yes" context="aichat|status_ready">就绪</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -93,7 +97,7 @@
         <property name="xalign">0</property>
         <child>
           <object class="AtkObject" id="agent_step_bar-atkobject">
-            <property name="AtkObject::accessible-name" translatable="yes" context="aichat|agent_step_bar">Agent steps</property>
+            <property name="AtkObject::accessible-name" translatable="yes" context="aichat|agent_step_bar">步骤状态</property>
             <property name="AtkObject::accessible-role">static</property>
           </object>
         </child>
@@ -113,12 +117,12 @@
         <property name="margin-start">8</property>
         <property name="margin-end">8</property>
         <property name="margin-bottom">4</property>
-        <property name="label" translatable="yes" context="aichat|activity_card">活动：待命 · 选中文字后可改写，或直接输入指令</property>
+        <property name="label" translatable="yes" context="aichat|activity_card">活动：待命 · 选中文字可改写，或直接输入</property>
         <property name="wrap">True</property>
         <property name="xalign">0</property>
         <child>
           <object class="AtkObject" id="activity_card-atkobject">
-            <property name="AtkObject::accessible-name" translatable="yes" context="aichat|activity_card">AI activity</property>
+            <property name="AtkObject::accessible-name" translatable="yes" context="aichat|activity_card">活动状态</property>
             <property name="AtkObject::accessible-role">static</property>
           </object>
         </child>
@@ -127,6 +131,89 @@
         <property name="expand">False</property>
         <property name="fill">True</property>
         <property name="position">2</property>
+      </packing>
+    </child>
+    <!-- Wave UI-4: 演示设计流（墨刀/Claude Design）大纲→多方案→选一→导出 -->
+    <child>
+      <object class="GtkBox" id="design_flow_box">
+        <property name="visible">False</property>
+        <property name="can-focus">False</property>
+        <property name="no-show-all">True</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">4</property>
+        <property name="margin-start">8</property>
+        <property name="margin-end">8</property>
+        <property name="margin-bottom">6</property>
+        <child>
+          <object class="GtkLabel" id="design_flow_label">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="label" translatable="yes" context="aichat|design_flow_label">设计流</property>
+            <property name="halign">start</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="design_step_outline">
+            <property name="label" translatable="yes" context="aichat|design_step_outline">①大纲</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="tooltip-text" translatable="yes" context="aichat|design_step_outline_tip">只出可评审大纲，不写回幻灯（禁止黑盒成片）</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="design_step_variants">
+            <property name="label" translatable="yes" context="aichat|design_step_variants">②多方案</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="tooltip-text" translatable="yes" context="aichat|design_step_variants_tip">并列 方案A/B/C，选定后再写回</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="design_step_apply">
+            <property name="label" translatable="yes" context="aichat|design_step_apply">③选一写回</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="tooltip-text" translatable="yes" context="aichat|design_step_apply_tip">展开选定方案为幻灯结构；须点批准写回</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="design_step_export">
+            <property name="label" translatable="yes" context="aichat|design_step_export">④导出</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="tooltip-text" translatable="yes" context="aichat|design_step_export_tip">说明如何导出 PPTX（用户确认路径）</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">3</property>
       </packing>
     </child>
     <!-- 4-tab notebook -->
@@ -164,8 +251,8 @@
                     <property name="bottom-margin">6</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="transcript_view-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="aichat|transcript">AI chat transcript</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="aichat|extended_tip|transcript">Shows the current AI chat messages.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="aichat|transcript">对话记录</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="aichat|extended_tip|transcript">显示当前可圈 AI 对话消息（建议只读，不直接改文档）。</property>
                       </object>
                     </child>
                   </object>
@@ -491,7 +578,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="opt_agent_pipeline">
-                        <property name="label" translatable="yes" context="aichat|opt_agent">多步 Agent</property>
+                        <property name="label" translatable="yes" context="aichat|opt_agent">多步任务</property>
                         <property name="visible">True</property>
                         <property name="active">False</property>
                       </object>
@@ -604,7 +691,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="intent_agent_btn">
-                    <property name="label" translatable="yes" context="aichat|intent_agent">多步</property>
+                    <property name="label" translatable="yes" context="aichat|intent_agent">任务</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="tooltip-text" translatable="yes" context="aichat|intent_agent_tip">规划→执行→审查，不直接改主文档</property>
@@ -630,8 +717,8 @@
                 <property name="placeholder-text" translatable="yes" context="aichat|prompt">描述你要做的事，或点意图芯片 / 上方方案…</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="prompt_entry-atkobject">
-                    <property name="AtkObject::accessible-name" translatable="yes" context="aichat|prompt_entry">AI chat prompt</property>
-                    <property name="AtkObject::accessible-description" translatable="yes" context="aichat|extended_tip|prompt_entry">Enter a prompt or use @mentions and /slash commands.</property>
+                    <property name="AtkObject::accessible-name" translatable="yes" context="aichat|prompt_entry">输入框</property>
+                    <property name="AtkObject::accessible-description" translatable="yes" context="aichat|extended_tip|prompt_entry">输入指令，或使用 @ 提及与 / 斜杠命令。</property>
                   </object>
                 </child>
               </object>
@@ -656,7 +743,7 @@
                     <property name="receives-default">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="filter_workspace_button-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|filter_workspace">Filters workspace artifacts, reviews, and evidence by metadata only.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|filter_workspace">仅按元数据筛选工作区产物、审核项与证据。</property>
                       </object>
                     </child>
                   </object>
@@ -674,7 +761,7 @@
                     <property name="receives-default">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="sort_workspace_button-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|sort_workspace">Sorts workspace lists by recent, type, or state metadata.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|sort_workspace">按最近、类型或状态元数据排序工作区列表。</property>
                       </object>
                     </child>
                   </object>
@@ -689,11 +776,11 @@
                     <property name="label" translatable="yes" context="aichat|voice">语音</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
-                    <property name="tooltip-text" translatable="yes" context="aichat|voice_tip">微信式语音：点按开始/结束；F4 快捷键；系统听写（Fn）或本地 STT（设置可配）</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|voice_tip">按住说话 / 点按开始结束；本地录音转写或系统听写（设置→可圈 AI）。不上传云端。</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="voice_button-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="aichat|voice">Voice input</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="aichat|extended_tip|voice">Push-to-talk or system dictation for the AI prompt.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="aichat|voice">语音输入</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="aichat|extended_tip|voice">按住说话或系统听写，把文字填入可圈 AI 输入框，发送前可再编辑。</property>
                       </object>
                     </child>
                   </object>
@@ -704,14 +791,14 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="screenshot_button">
-                    <property name="label" translatable="yes" context="aichat|screenshot">截图</property>
+                  <object class="GtkButton" id="attach_file_button">
+                    <property name="label" translatable="yes" context="aichat|attach_file">附件</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
-                    <property name="tooltip-text" translatable="yes" context="aichat|screenshot_tip">选区截图（Ctrl/Cmd+Shift+A），保存并附到对话</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|attach_file_tip">选择本地文件附到对话（@文件:路径）。也可将文件拖到开始中心直接打开。</property>
                     <child internal-child="accessible">
-                      <object class="AtkObject" id="screenshot_button-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="aichat|screenshot">Screenshot region</property>
+                      <object class="AtkObject" id="attach_file_button-atkobject">
+                        <property name="AtkObject::accessible-name" translatable="yes" context="aichat|attach_file">附加文件</property>
                       </object>
                     </child>
                   </object>
@@ -722,16 +809,34 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="screenshot_win_button">
-                    <property name="label" translatable="yes" context="aichat|screenshot_win">窗</property>
+                  <object class="GtkButton" id="screenshot_button">
+                    <property name="label" translatable="yes" context="aichat|screenshot">截图</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
-                    <property name="tooltip-text" translatable="yes" context="aichatpanel|screenshot_win_button.tooltip_text">窗口截图</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|screenshot_tip">选区截图：保存本地 PNG 并附到对话（@截图:路径）。窗/全=窗口或全屏。</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="screenshot_button-atkobject">
+                        <property name="AtkObject::accessible-name" translatable="yes" context="aichat|screenshot">选区截图</property>
+                      </object>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
                     <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="screenshot_win_button">
+                    <property name="label" translatable="yes" context="aichat|screenshot_win">窗</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="tooltip-text" translatable="yes" context="aichatpanel|screenshot_win_button.tooltip_text">窗口截图（点击目标窗口）</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">5</property>
                   </packing>
                 </child>
                 <child>
@@ -744,20 +849,21 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">5</property>
+                    <property name="position">6</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkButton" id="ctx_workbench_btn">
                     <property name="label" translatable="yes" context="aichat|ctx_workbench">中台</property>
-                    <property name="visible">True</property>
+                    <property name="visible">False</property>
+                    <property name="no-show-all">True</property>
                     <property name="can-focus">True</property>
                     <property name="tooltip-text" translatable="yes" context="aichatpanel|ctx_workbench_btn.tooltip_text">注入工作中台本地速览/目标/环比上下文</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">6</property>
+                    <property name="position">7</property>
                   </packing>
                 </child>
                 <child>
@@ -770,7 +876,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">7</property>
+                    <property name="position">8</property>
                   </packing>
                 </child>
                 <child>
@@ -781,14 +887,14 @@
                     <property name="receives-default">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="send_button-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="aichat|extended_tip|send">Sends the prompt to the AI chat runtime.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="aichat|extended_tip|send">发送指令到可圈 AI。</property>
                       </object>
                     </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">8</property>
+                    <property name="position">9</property>
                   </packing>
                 </child>
                 <child>
@@ -799,14 +905,14 @@
                     <property name="receives-default">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="cancel_button-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="aichat|extended_tip|cancel">Stops the current AI chat request.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="aichat|extended_tip|cancel">停止当前 AI 请求与正在运行的任务。</property>
                       </object>
                     </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">9</property>
+                    <property name="position">10</property>
                   </packing>
                 </child>
                 <child>
@@ -817,14 +923,14 @@
                     <property name="receives-default">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="retry_button-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="aichat|extended_tip|retry">Restores the last prompt for another attempt.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="aichat|extended_tip|retry">恢复上一条指令以便重试。</property>
                       </object>
                     </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">8</property>
+                    <property name="position">11</property>
                   </packing>
                 </child>
                 <child>
@@ -835,14 +941,14 @@
                     <property name="receives-default">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="clear_history_button-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="aichat|extended_tip|clear_history">Clears local AI chat history for the current document.</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="aichat|extended_tip|clear_history">清除当前文档的本地可圈 AI 对话记录。</property>
                       </object>
                     </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">9</property>
+                    <property name="position">12</property>
                   </packing>
                 </child>
               </object>
@@ -861,7 +967,7 @@
           <object class="GtkLabel" id="chat_tab_label">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="aichat|tab_chat">聊天</property>
+            <property name="label" translatable="yes" context="aichat|tab_chat">对话</property>
           </object>
           <packing>
             <property name="position">0</property>
@@ -882,7 +988,7 @@
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
                 <property name="wrap">True</property>
-                <property name="label" translatable="yes" context="aichat|agent_hint">多步协作：规划 → 执行 → 审查。勾选聊天页「多步 Agent」后发送，或点下方「运行多步」。</property>
+                <property name="label" translatable="yes" context="aichat|agent_hint">任务：规划 → 执行 → 待你审批。主文档默认不变，批准后才写回。可在「对话」勾选「多步任务」后发送，或点「运行任务」。</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -897,10 +1003,10 @@
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkButton" id="agent_run_btn">
-                    <property name="label" translatable="yes" context="aichat|agent_run">运行多步</property>
+                    <property name="label" translatable="yes" context="aichat|agent_run">运行任务</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
-                    <property name="tooltip-text" translatable="yes" context="aichat|agent_run_tip">使用输入框内容启动规划→执行→审查（不直接改主文档）</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|agent_run_tip">使用输入框内容启动规划→执行→待批（不直接改主文档）</property>
                   </object>
                 </child>
                 <child>
@@ -938,7 +1044,7 @@
                     <property name="headers-visible">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="agent_tree-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="aichat|agent_tree">多步任务步骤</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="aichat|agent_tree">任务步骤列表</property>
                       </object>
                     </child>
                     <child>
@@ -980,12 +1086,454 @@
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
                 <property name="wrap">True</property>
-                <property name="label" translatable="yes" context="aichat|agent_empty">暂无多步任务。运行后将显示：规划 / 执行 / 审查 三步状态与摘要。</property>
+                <property name="label" translatable="yes" context="aichat|agent_empty">暂无任务。
+① 在「对话」勾选「多步任务」后发送，或点「运行任务」
+② 步骤状态六态：排队中 · 运行中 · 待批 · 完成 · 失败 · 已停止
+③ 失败或停止时主文档不变，可改指令后重试</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">3</property>
+              </packing>
+            </child>
+            <!-- DuMate-style 定时任务 ledger -->
+            <child>
+              <object class="GtkLabel" id="schedule_section_label">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="halign">start</property>
+                <property name="margin-top">8</property>
+                <property name="label" translatable="yes" context="aichat|schedule_section">定时任务</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox" id="schedule_toolbar">
+                <property name="visible">True</property>
+                <property name="orientation">horizontal</property>
+                <property name="spacing">4</property>
+                <property name="homogeneous">False</property>
+                <child>
+                  <object class="GtkButton" id="schedule_refresh_btn">
+                    <property name="label" translatable="yes" context="aichat|schedule_refresh">刷新</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|schedule_refresh_tip">重新加载本地定时任务列表</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="schedule_toggle_btn">
+                    <property name="label" translatable="yes" context="aichat|schedule_toggle">启用/禁用</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|schedule_toggle_tip">切换所选定时任务的启用状态</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="schedule_run_now_btn">
+                    <property name="label" translatable="yes" context="aichat|schedule_run_now">立即执行</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|schedule_run_now_tip">将任务提示注入可圈 AI 并标记为已触发</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="schedule_add_btn">
+                    <property name="label" translatable="yes" context="aichat|schedule_add">从输入创建</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|schedule_add_tip">用输入框内容创建定时任务；计划类型与时间见下方编辑区（单次默认约 60 秒后）</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="schedule_remove_btn">
+                    <property name="label" translatable="yes" context="aichat|schedule_remove">删除</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|schedule_remove_tip">删除所选定时任务</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkScrolledWindow" id="schedule_scroller">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">False</property>
+                <property name="height-request">120</property>
+                <property name="shadow-type">none</property>
+                <child>
+                  <object class="GtkTreeView" id="schedule_tree">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="headers-visible">True</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="schedule_tree-atkobject">
+                        <property name="AtkObject::accessible-name" translatable="yes" context="aichat|schedule_tree">定时任务列表</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="schedule_title_column">
+                        <property name="title" translatable="yes" context="aichat|schedule_title">标题</property>
+                        <property name="resizable">True</property>
+                        <property name="expand">True</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="schedule_title_cell"/>
+                          <attributes>
+                            <attribute name="text">0</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="schedule_plan_column">
+                        <property name="title" translatable="yes" context="aichat|schedule_plan">计划</property>
+                        <property name="resizable">True</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="schedule_plan_cell"/>
+                          <attributes>
+                            <attribute name="text">1</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="schedule_status_column">
+                        <property name="title" translatable="yes" context="aichat|schedule_status">状态</property>
+                        <property name="resizable">True</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="schedule_status_cell"/>
+                          <attributes>
+                            <attribute name="text">2</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="schedule_result_column">
+                        <property name="title" translatable="yes" context="aichat|schedule_result">上次结果</property>
+                        <property name="resizable">True</property>
+                        <property name="expand">True</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="schedule_result_cell"/>
+                          <attributes>
+                            <attribute name="text">3</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">6</property>
+              </packing>
+            </child>
+            <!-- Schedule editor: kind + interval / daily time + save + optional auto-send -->
+            <child>
+              <object class="GtkBox" id="schedule_edit_row">
+                <property name="visible">True</property>
+                <property name="orientation">horizontal</property>
+                <property name="spacing">4</property>
+                <property name="margin-top">4</property>
+                <child>
+                  <object class="GtkLabel" id="schedule_kind_label">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes" context="aichat|schedule_kind">类型</property>
+                    <property name="mnemonic-widget">schedule_kind</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkComboBoxText" id="schedule_kind">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|schedule_kind_tip">单次 / 按间隔 / 每日固定时间</property>
+                    <items>
+                      <item translatable="yes" context="aichat|schedule_once" id="once">单次</item>
+                      <item translatable="yes" context="aichat|schedule_interval" id="interval">间隔</item>
+                      <item translatable="yes" context="aichat|schedule_daily" id="daily">每日</item>
+                    </items>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="schedule_interval_label">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes" context="aichat|schedule_interval">分钟</property>
+                    <property name="mnemonic-widget">schedule_interval</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="schedule_interval">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="width-chars">4</property>
+                    <property name="text">1</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|schedule_interval_tip">单次=N 分钟后触发；间隔=每 N 分钟（1–10080）</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="schedule_daily_label">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes" context="aichat|schedule_daily_time">每日</property>
+                    <property name="mnemonic-widget">schedule_hour</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="schedule_hour">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="width-chars">2</property>
+                    <property name="text">9</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|schedule_hour_tip">时（0–23）</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="schedule_colon_label">
+                    <property name="visible">True</property>
+                    <property name="label">:</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">6</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="schedule_minute">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="width-chars">2</property>
+                    <property name="text">0</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|schedule_minute_tip">分（0–59）</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">7</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="schedule_save_btn">
+                    <property name="label" translatable="yes" context="aichat|schedule_save">保存计划</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|schedule_save_tip">将类型与时间应用到所选定时任务</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">8</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">7</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkCheckButton" id="schedule_auto_send">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="active">False</property>
+                <property name="label" translatable="yes" context="aichat|schedule_auto_send">到期后自动发送（默认关，仅注入输入框）</property>
+                <property name="tooltip-text" translatable="yes" context="aichat|schedule_auto_send_tip">开启后，定时任务到期注入提示时自动发送；默认关闭，需人工确认后发送更安全</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">8</property>
+              </packing>
+            </child>
+            <!-- Batch convert/archive ledger (Wave D6 status surface) -->
+            <child>
+              <object class="GtkLabel" id="batch_section_label">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="halign">start</property>
+                <property name="margin-top">8</property>
+                <property name="label" translatable="yes" context="aichat|batch_section">批量任务</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">9</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox" id="batch_toolbar">
+                <property name="visible">True</property>
+                <property name="orientation">horizontal</property>
+                <property name="spacing">4</property>
+                <child>
+                  <object class="GtkButton" id="batch_refresh_btn">
+                    <property name="label" translatable="yes" context="aichat|batch_refresh">刷新</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|batch_refresh_tip">重新加载本地批量转换/归档账本</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="batch_hint_label">
+                    <property name="visible">True</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes" context="aichat|batch_hint">开始中心「本地文件」可批量导出；此处只读最近结果</property>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">10</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkScrolledWindow" id="batch_scroller">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">False</property>
+                <property name="height-request">96</property>
+                <property name="shadow-type">none</property>
+                <child>
+                  <object class="GtkTreeView" id="batch_tree">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="headers-visible">True</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="batch_tree-atkobject">
+                        <property name="AtkObject::accessible-name" translatable="yes" context="aichat|batch_tree">批量任务列表</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="batch_kind_column">
+                        <property name="title" translatable="yes" context="aichat|batch_kind">类型</property>
+                        <property name="resizable">True</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="batch_kind_cell"/>
+                          <attributes>
+                            <attribute name="text">0</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="batch_state_column">
+                        <property name="title" translatable="yes" context="aichat|batch_state">状态</property>
+                        <property name="resizable">True</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="batch_state_cell"/>
+                          <attributes>
+                            <attribute name="text">1</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="batch_result_column">
+                        <property name="title" translatable="yes" context="aichat|batch_result">结果</property>
+                        <property name="resizable">True</property>
+                        <property name="expand">True</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="batch_result_cell"/>
+                          <attributes>
+                            <attribute name="text">2</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">11</property>
               </packing>
             </child>
           </object>
@@ -997,7 +1545,7 @@
           <object class="GtkLabel" id="agent_tab_label">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="aichat|tab_agent">多步</property>
+            <property name="label" translatable="yes" context="aichat|tab_agent">任务</property>
           </object>
           <packing>
             <property name="position">1</property>
@@ -1038,8 +1586,8 @@
                         </attributes>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="artifact_title_label-atkobject">
-                            <property name="AtkObject::accessible-name" translatable="yes" context="aichatpanel|artifact_title">AI workspace artifacts</property>
-                            <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|artifact_title">Section title for registered AI workspace artifacts.</property>
+                            <property name="AtkObject::accessible-name" translatable="yes" context="aichatpanel|artifact_title">生成产物</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|artifact_title">当前工作区登记的 AI 生成内容列表标题。</property>
                             <property name="AtkObject::accessible-role">static</property>
                           </object>
                         </child>
@@ -1119,8 +1667,8 @@
                     <property name="label">未选择内容。发送 AI 并生成产物后将列在此处。</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="artifact_details_label-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes" context="aichatpanel|artifact_details">Selected artifact details</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|artifact_details">Shows redacted metadata and route status for the selected AI workspace artifact.</property>
+                        <property name="AtkObject::accessible-name" translatable="yes" context="aichatpanel|artifact_details">产物详情</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|artifact_details">所选产物的摘要元数据与路由状态。</property>
                         <property name="AtkObject::accessible-role">static</property>
                       </object>
                     </child>
@@ -1153,13 +1701,14 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="open_diff_review_button">
-                        <property name="label" translatable="yes" context="aichatpanel|open_diff_review">差异审阅</property>
+                        <property name="label" translatable="yes" context="aichatpanel|open_diff_review">查看 Diff</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
+                        <property name="tooltip-text" translatable="yes" context="aichatpanel|open_diff_review_tip">打开差异审阅预览（不自动写回）</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="open_diff_review_button-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|open_diff_review">Opens the selected review through DiffReview metadata without applying changes.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|open_diff_review">通过差异审阅打开所选项预览，不会自动写入主文档。</property>
                           </object>
                         </child>
                       </object>
@@ -1177,7 +1726,7 @@
                         <property name="receives-default">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="review_artifact_button-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|review_artifact">Creates an evidence-linked content review item for the selected artifact.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|review_artifact">为所选产物创建带证据链接的内容审查项。</property>
                           </object>
                         </child>
                       </object>
@@ -1195,7 +1744,7 @@
                         <property name="receives-default">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="format_artifact_button-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|format_artifact">Creates an evidence-linked formatting and layout review item for the selected artifact.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|format_artifact">为所选产物创建带证据链接的排版与布局审查项。</property>
                           </object>
                         </child>
                       </object>
@@ -1213,7 +1762,7 @@
                         <property name="receives-default">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="inspect_evidence_button-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|inspect_evidence">Opens redacted metadata for the selected artifact's evidence and citation links.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|inspect_evidence">打开所选产物的脱敏证据与引用链接元数据。</property>
                           </object>
                         </child>
                       </object>
@@ -1231,7 +1780,7 @@
                         <property name="receives-default">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="copy_reference_button-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|copy_reference">Copies a metadata reference for the selected artifact, review, or evidence item.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|copy_reference">复制所选产物、审核项或证据的元数据引用。</property>
                           </object>
                         </child>
                       </object>
@@ -1249,7 +1798,7 @@
                         <property name="receives-default">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="export_evidence_button-atkobject">
-                            <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|export_evidence">Exports redacted metadata and hash-only evidence references for the selected item.</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|export_evidence">导出所选项目的脱敏元数据与仅哈希的证据引用。</property>
                           </object>
                         </child>
                       </object>
@@ -1295,7 +1844,7 @@
           <object class="GtkLabel" id="content_tab_label">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="aichat|tab_content">内容</property>
+            <property name="label" translatable="yes" context="aichat|tab_content">产物</property>
           </object>
           <packing>
             <property name="position">2</property>
@@ -1316,7 +1865,7 @@
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
                 <property name="wrap">True</property>
-                <property name="label" translatable="yes" context="aichat|review_hint">审核队列：发送后待批准写回会出现在此。流程：聊天生成 → 本页批准/拒绝 → 主文档才改动。也可从「内容」页加入审查。</property>
+                <property name="label" translatable="yes" context="aichat|review_hint">审核队列：生成后待批计划会出现在此。流程：对话生成 → 查看 Diff → 批准写回/拒绝 → 主文档才改动。也可从「产物」页加入审查。</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1358,7 +1907,7 @@
                     <child internal-child="accessible">
                       <object class="AtkObject" id="review_tree-atkobject">
                         <property name="AtkObject::accessible-name" translatable="yes" context="aichat|review_tree">审核队列</property>
-                        <property name="AtkObject::accessible-description" translatable="yes" context="aichat|extended_tip|review_tree">列出待批准写回与内容审查项，可批准或拒绝。</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="aichat|extended_tip|review_tree">列出待批写回与内容审查项，可「批准写回」或「拒绝」。</property>
                       </object>
                     </child>
                     <child>
@@ -1400,7 +1949,7 @@
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
                 <property name="wrap">True</property>
-                <property name="label" translatable="yes" context="aichat|review_empty">暂无待审项。发送 AI 结果后若产生待批准写回，或对「内容」产物点「审查」，将出现在此列表。</property>
+                <property name="label" translatable="yes" context="aichat|review_empty">暂无待审项。发送 AI 结果后若产生待批写回，或对「产物」点「审查」，将出现在此列表。</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1457,7 +2006,7 @@
       <packing>
         <property name="expand">True</property>
         <property name="fill">True</property>
-        <property name="position">3</property>
+        <property name="position">4</property>
       </packing>
     </child>
   </object>

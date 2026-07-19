@@ -28,7 +28,7 @@
         <text:sequence-decl text:display-outline-level="0" text:name="Text"/>
         <text:sequence-decl text:display-outline-level="0" text:name="Drawing"/>
       </text:sequence-decls>
-      <text:h text:style-name="Heading_20_1" text:outline-level="1">Curriculum Vitae</text:h>
+      <text:h text:style-name="Heading_20_1" text:outline-level="1">个人简历</text:h>
       <text:p text:style-name="Standard">
         <text:s/>
       </text:p>
@@ -38,7 +38,7 @@
         <table:table-row>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
             <text:p text:style-name="Standard">
-              <text:span text:style-name="Strong_20_Emphasis">About me</text:span>
+              <text:span text:style-name="Strong_20_Emphasis">基本信息</text:span>
             </text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
@@ -47,18 +47,18 @@
         </table:table-row>
         <table:table-row>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Table_20_Contents">Name</text:p>
+            <text:p text:style-name="Table_20_Contents">姓名</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Table_20_Contents">Joe Bloggs</text:p>
+            <text:p text:style-name="Table_20_Contents">张明</text:p>
           </table:table-cell>
         </table:table-row>
         <table:table-row>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Table_20_Contents">Address</text:p>
+            <text:p text:style-name="Table_20_Contents">地址</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Table_20_Contents">42 Main Street</text:p>
+            <text:p text:style-name="Table_20_Contents">示例市示例区示例路 88 号</text:p>
           </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -66,39 +66,39 @@
             <text:p text:style-name="Table_20_Contents"/>
           </table:table-cell>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Table_20_Contents">258348 Anytown</text:p>
+            <text:p text:style-name="Table_20_Contents">邮编 100000</text:p>
           </table:table-cell>
         </table:table-row>
         <table:table-row>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Table_20_Contents">Phone</text:p>
+            <text:p text:style-name="Table_20_Contents">电话</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Table_20_Contents">3208578573</text:p>
-          </table:table-cell>
-        </table:table-row>
-        <table:table-row>
-          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Table_20_Contents">Email</text:p>
-          </table:table-cell>
-          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Table_20_Contents">j.bloggs@localhost.com</text:p>
+            <text:p text:style-name="Table_20_Contents">138-0000-0000</text:p>
           </table:table-cell>
         </table:table-row>
         <table:table-row>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Table_20_Contents">Date of Birth</text:p>
+            <text:p text:style-name="Table_20_Contents">邮箱</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Table_20_Contents">15th August 1991</text:p>
+            <text:p text:style-name="Table_20_Contents">zhangming@example.com</text:p>
           </table:table-cell>
         </table:table-row>
         <table:table-row>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Table_20_Contents">Nationality</text:p>
+            <text:p text:style-name="Table_20_Contents">出生日期</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Table_20_Contents">British</text:p>
+            <text:p text:style-name="Table_20_Contents">1991-08-15</text:p>
+          </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
+            <text:p text:style-name="Table_20_Contents">籍贯</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
+            <text:p text:style-name="Table_20_Contents">示例省示例市</text:p>
           </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -112,7 +112,7 @@
         <table:table-row>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
             <text:p text:style-name="Standard">
-              <text:span text:style-name="Strong_20_Emphasis">Experience</text:span>
+              <text:span text:style-name="Strong_20_Emphasis">工作经历</text:span>
             </text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
@@ -121,18 +121,18 @@
         </table:table-row>
         <table:table-row>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard">Jun. 2008 -present</text:p>
+            <text:p text:style-name="Standard">2020-03 至今</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt</text:p>
+            <text:p text:style-name="Standard">负责业务汇报与跨部门协作，主导周报与项目复盘。</text:p>
           </table:table-cell>
         </table:table-row>
         <table:table-row>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard">Feb. 2004 – Nov. 2006</text:p>
+            <text:p text:style-name="Standard">2017-07 – 2020-02</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard">At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</text:p>
+            <text:p text:style-name="Standard">参与产品运营与客户跟进，完成季度目标复盘与改进建议。</text:p>
           </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -146,7 +146,7 @@
         <table:table-row>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
             <text:p text:style-name="Standard">
-              <text:span text:style-name="Strong_20_Emphasis">Education</text:span>
+              <text:span text:style-name="Strong_20_Emphasis">教育背景</text:span>
             </text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
@@ -155,60 +155,26 @@
         </table:table-row>
         <table:table-row>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard">2010 - present</text:p>
+            <text:p text:style-name="Standard">2013 – 2017</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard">Msc. Lorem Ipsum at LID University of Applied Sciences</text:p>
-          </table:table-cell>
-        </table:table-row>
-        <table:table-row>
-          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard">2007 - 2010</text:p>
-          </table:table-cell>
-          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam, 97%</text:p>
+            <text:p text:style-name="Standard">示例大学 · 工商管理 · 本科</text:p>
           </table:table-cell>
         </table:table-row>
         <table:table-row>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard">2005 – 2007</text:p>
+            <text:p text:style-name="Standard">2010 – 2013</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard">Hec prodere movens adipiscur esse</text:p>
-          </table:table-cell>
-        </table:table-row>
-        <table:table-row>
-          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard"/>
-          </table:table-cell>
-          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard"/>
+            <text:p text:style-name="Standard">示例高中</text:p>
           </table:table-cell>
         </table:table-row>
         <table:table-row>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard">
-              <text:span text:style-name="Strong_20_Emphasis">Skills</text:span>
-            </text:p>
+            <text:p text:style-name="Standard">—</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard"/>
-          </table:table-cell>
-        </table:table-row>
-        <table:table-row>
-          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard">Software</text:p>
-          </table:table-cell>
-          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard">LibreOffice, LaTeX, Git</text:p>
-          </table:table-cell>
-        </table:table-row>
-        <table:table-row>
-          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard">Programming</text:p>
-          </table:table-cell>
-          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard">C, C++</text:p>
+            <text:p text:style-name="Standard">（可删除此行）</text:p>
           </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -222,7 +188,7 @@
         <table:table-row>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
             <text:p text:style-name="Standard">
-              <text:span text:style-name="Strong_20_Emphasis">Languages</text:span>
+              <text:span text:style-name="Strong_20_Emphasis">技能专长</text:span>
             </text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
@@ -231,26 +197,60 @@
         </table:table-row>
         <table:table-row>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard">English</text:p>
+            <text:p text:style-name="Standard">办公软件</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard">Mother tongue</text:p>
-          </table:table-cell>
-        </table:table-row>
-        <table:table-row>
-          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard">French</text:p>
-          </table:table-cell>
-          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard">Fluent (DELF 2010)</text:p>
+            <text:p text:style-name="Standard">可圈办公、表格透视、演示路演</text:p>
           </table:table-cell>
         </table:table-row>
         <table:table-row>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard">Japanese</text:p>
+            <text:p text:style-name="Standard">工具能力</text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="Standard">Fair</text:p>
+            <text:p text:style-name="Standard">数据整理、文档协作</text:p>
+          </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
+            <text:p text:style-name="Standard"/>
+          </table:table-cell>
+          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
+            <text:p text:style-name="Standard"/>
+          </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
+            <text:p text:style-name="Standard">
+              <text:span text:style-name="Strong_20_Emphasis">语言</text:span>
+            </text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
+            <text:p text:style-name="Standard"/>
+          </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
+            <text:p text:style-name="Standard">普通话</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
+            <text:p text:style-name="Standard">母语</text:p>
+          </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
+            <text:p text:style-name="Standard">英语</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
+            <text:p text:style-name="Standard">商务读写</text:p>
+          </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
+            <text:p text:style-name="Standard">其他</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="Table1.A1" office:value-type="string">
+            <text:p text:style-name="Standard">按需补充</text:p>
           </table:table-cell>
         </table:table-row>
       </table:table>

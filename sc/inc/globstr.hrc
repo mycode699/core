@@ -149,7 +149,7 @@
 #define STR_UNDO_SPELLING                       NC_("STR_UNDO_SPELLING", "Spellcheck")
 #define STR_TABLE_AND                           NC_("STR_TABLE_AND", "AND")
 #define STR_TABLE_OR                            NC_("STR_TABLE_OR", "OR")
-#define STR_TABLE_DEF                           NC_("STR_TABLE_DEF", "Sheet")
+#define STR_TABLE_DEF                           NC_("STR_TABLE_DEF", "工作表")
 #define STR_MOVE_TO_END                         NC_("STR_MOVE_TO_END", "- move to end position -")
 #define STR_NO_REF_TABLE                        NC_("STR_NO_REF_TABLE", "#REF!")
 #define STR_PIVOT_NODATA                        NC_("STR_PIVOT_NODATA", "The pivot table must contain at least one entry.")

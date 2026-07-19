@@ -40,6 +40,8 @@ $(eval $(call gb_Library_set_include,sfx,\
     -I$(SRCDIR)/sfx2/source/inc \
     -I$(SRCDIR)/kqoffice/source/ai/chat \
     -I$(SRCDIR)/kqoffice/source/ai/canvas \
+    -I$(SRCDIR)/kqoffice/source/ai/control \
+    -I$(SRCDIR)/kqoffice/source/ai/cowork \
     -I$(SRCDIR)/kqoffice/source/ai/filemgr \
     -I$(SRCDIR)/kqoffice/source/ai/provider \
     -I$(SRCDIR)/kqoffice/source/ai/workbench \
@@ -200,6 +202,7 @@ $(eval $(call gb_Library_add_exception_objects,sfx,\
     sfx2/source/dialog/filtergrouping \
     sfx2/source/dialog/infobar \
     sfx2/source/dialog/inputdlg \
+    sfx2/source/dialog/kq_permission_prompt \
     sfx2/source/dialog/mailmodel \
     sfx2/source/dialog/bluthsnd \
     sfx2/source/dialog/mgetempl \

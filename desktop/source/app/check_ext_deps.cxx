@@ -417,10 +417,13 @@ void Desktop::SynchronizeExtensionRepositories(bool bCleanedExtensionCache, Desk
     } else {
         // reinstallDeployedExtensions above already calls syncRepositories internally
 
-        // Force syncing repositories on startup. There are cases where the extension
-        // registration becomes invalid which leads to extensions not starting up, although
-        // installed and active. Syncing extension repos on startup fixes that.
-        dp_misc::syncRepositories(/*force=*/true, silent);
+        // Cold-start (可圈办公): do not force a full synchronize every launch.
+        // needToSyncRepository() still runs when bundled/shared stamps change
+        // (see dp_misc::syncRepositories). Force remains available via
+        // cleaned extension cache (branch above) or DISABLE_EXTENSION_SYNCHRONIZATION.
+        // Stock LO used force=true to heal rare broken registrations; that cost
+        // dominates first paint when many bundled dict extensions are present.
+        dp_misc::syncRepositories(/*force=*/false, silent);
     }
 }
 

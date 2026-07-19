@@ -5620,12 +5620,18 @@ bit 3 (0x8): #define UICOMMANDDESCRIPTION_PROPERTIES_TOGGLEBUTTON 8
       <node oor:name=".uno:ExportToPDF" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
           <value xml:lang="en-US">Export as PDF</value>
+          <value xml:lang="zh-CN">导出为 PDF</value>
+          <value xml:lang="zh-TW">匯出為 PDF</value>
         </prop>
         <prop oor:name="ContextLabel" oor:type="xs:string">
           <value xml:lang="en-US">~Export as PDF...</value>
+          <value xml:lang="zh-CN">导出为 PDF(~E)...</value>
+          <value xml:lang="zh-TW">匯出為 PDF(~E)...</value>
         </prop>
         <prop oor:name="TooltipLabel" oor:type="xs:string">
           <value xml:lang="en-US">Export as PDF</value>
+          <value xml:lang="zh-CN">导出为 PDF（可选项：书签、标签、PDF/A）</value>
+          <value xml:lang="zh-TW">匯出為 PDF</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>
@@ -5634,12 +5640,18 @@ bit 3 (0x8): #define UICOMMANDDESCRIPTION_PROPERTIES_TOGGLEBUTTON 8
       <node oor:name=".uno:ExportDirectToPDF" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
           <value xml:lang="en-US">Export Directly as PDF</value>
+          <value xml:lang="zh-CN">直接导出为 PDF</value>
+          <value xml:lang="zh-TW">直接匯出為 PDF</value>
         </prop>
         <prop oor:name="ContextLabel" oor:type="xs:string">
           <value xml:lang="en-US">Export Directly as PDF</value>
+          <value xml:lang="zh-CN">直接导出为 PDF</value>
+          <value xml:lang="zh-TW">直接匯出為 PDF</value>
         </prop>
         <prop oor:name="TooltipLabel" oor:type="xs:string">
           <value xml:lang="en-US">Export Directly as PDF</value>
+          <value xml:lang="zh-CN">使用上次选项直接导出 PDF（无对话框）</value>
+          <value xml:lang="zh-TW">使用上次選項直接匯出 PDF</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>
@@ -8155,7 +8167,7 @@ bit 3 (0x8): #define UICOMMANDDESCRIPTION_PROPERTIES_TOGGLEBUTTON 8
       </node>
       <node oor:name=".uno:SidebarDeck.AIChatDeck" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
-          <value xml:lang="en-US">Open the AI Chat Deck</value>
+          <value xml:lang="en-US">打开可圈 AI</value>
           <value xml:lang="zh-CN">打开可圈 AI</value>
         </prop>
       </node>

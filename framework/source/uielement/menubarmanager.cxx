@@ -1193,6 +1193,11 @@ void MenuBarManager::RetrieveShortcuts( std::vector< std::unique_ptr<MenuItemHan
             SAL_WARN("fwk.uielement", "GlobalAcceleratorConfiguration"
                     " not available. This should happen only on mobile platforms.");
         }
+        catch ( const css::uno::Exception& rException )
+        {
+            SAL_WARN("fwk.uielement", "Unable to load global accelerator configuration: "
+                                        << rException.Message);
+        }
     }
 
     vcl::KeyCode aEmptyKeyCode;

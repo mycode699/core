@@ -382,7 +382,8 @@
           <desc>Indicates the Office language selected by the user.</desc>
           <label>Locale</label>
         </info>
-        <value/>
+        <!-- 可圈办公 product default. -->
+        <value>zh-CN</value>
       </prop>
       <prop oor:name="ooSetupSystemLocale" oor:type="xs:string" oor:nillable="false">
         <!-- UIHints: Tools - Options - Languages and Locales - General - Language

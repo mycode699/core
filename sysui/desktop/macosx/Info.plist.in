@@ -20,7 +20,7 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleDevelopmentRegion</key>
-    <string>English</string>
+    <string>zh-CN</string>
     <key>UTExportedTypeDeclarations</key>
     <array>
         <!-- Writer documents -->
@@ -28,7 +28,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.openoffice.text</string>
             <key>UTTypeDescription</key>
-            <string>可圈office 经典文本文档</string>
+            <string>可圈办公 经典文本文档</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -102,7 +102,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.openoffice.spreadsheet</string>
             <key>UTTypeDescription</key>
-            <string>可圈office 经典电子表格</string>
+            <string>可圈办公 经典电子表格</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -179,7 +179,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.openoffice.presentation</string>
             <key>UTTypeDescription</key>
-            <string>可圈office 经典演示文稿</string>
+            <string>可圈办公 经典演示文稿</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -253,7 +253,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.openoffice.graphics</string>
             <key>UTTypeDescription</key>
-            <string>可圈office 经典绘图文档</string>
+            <string>可圈办公 经典绘图文档</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -351,7 +351,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.openoffice.text-master</string>
             <key>UTTypeDescription</key>
-            <string>可圈office 经典主控文档</string>
+            <string>可圈办公 经典主控文档</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -401,7 +401,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.openoffice.formula</string>
             <key>UTTypeDescription</key>
-            <string>可圈office 经典公式文档</string>
+            <string>可圈办公 经典公式文档</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -451,7 +451,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.openoffice.text-template</string>
             <key>UTTypeDescription</key>
-            <string>可圈office 经典文本模板</string>
+            <string>可圈办公 经典文本模板</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -527,7 +527,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.openoffice.spreadsheet-template</string>
             <key>UTTypeDescription</key>
-            <string>可圈office 经典电子表格模板</string>
+            <string>可圈办公 经典电子表格模板</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -579,7 +579,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.openoffice.presentation-template</string>
             <key>UTTypeDescription</key>
-            <string>可圈office 经典演示模板</string>
+            <string>可圈办公 经典演示模板</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -629,7 +629,7 @@
             <key>UTTypeIdentifier</key>
             <string>org.openoffice.graphics-template</string>
             <key>UTTypeDescription</key>
-            <string>可圈office 经典绘图模板</string>
+            <string>可圈办公 经典绘图模板</string>
             <key>UTTypeConformsTo</key>
             <array>
                 <string>public.data</string>
@@ -1560,7 +1560,7 @@
     <array>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>可圈office 经典文本文档</string>
+            <string>可圈办公 经典文本文档</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1584,7 +1584,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>可圈office 经典电子表格</string>
+            <string>可圈办公 经典电子表格</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1608,7 +1608,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>可圈office 经典演示文稿</string>
+            <string>可圈办公 经典演示文稿</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1632,7 +1632,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>可圈office 经典绘图文档</string>
+            <string>可圈办公 经典绘图文档</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1668,7 +1668,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>可圈office 经典主控文档</string>
+            <string>可圈办公 经典主控文档</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1692,7 +1692,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>可圈office 经典公式文档</string>
+            <string>可圈办公 经典公式文档</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1716,7 +1716,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>可圈office 经典文本模板</string>
+            <string>可圈办公 经典文本模板</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1752,7 +1752,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>可圈office 经典电子表格模板</string>
+            <string>可圈办公 经典电子表格模板</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1776,7 +1776,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>可圈office 经典演示模板</string>
+            <string>可圈办公 经典演示模板</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1800,7 +1800,7 @@
         </dict>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>可圈office 经典绘图模板</string>
+            <string>可圈办公 经典绘图模板</string>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>LSHandlerRank</key>
@@ -1953,7 +1953,7 @@
     <key>CFBundleName</key>
     <string>@PRODUCTNAME@</string>
     <key>CFBundleDisplayName</key>
-    <string>KQOffice</string>
+    <string>@PRODUCTNAME@</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleSignature</key>
@@ -1970,8 +1970,19 @@
     <string>@MACOSX_DEPLOYMENT_TARGET@.0</string>
     <key>NSHighResolutionCapable</key>
     <true/>
+    <!-- Privacy usage descriptions: only requested at first feature use; settings must allow revoke. -->
     <key>NSContactsUsageDescription</key>
-    <string>You can add your contacts as a data source for mail merge or similar operations.</string>
+    <string>可圈办公仅在您主动使用邮件合并或通讯录数据源时访问联系人，不会静默扫描或上传。</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>可圈办公仅在您主动使用语音输入时访问麦克风，音频仅用于本次识别且默认不上传。</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>可圈办公仅在您主动启用语音转写时使用语音识别，识别结果仅用于当前输入框。</string>
+    <key>NSCameraUsageDescription</key>
+    <string>可圈办公仅在您主动插入摄像头拍摄内容时访问相机，不会后台录像或上传。</string>
+    <key>NSScreenCaptureDescription</key>
+    <string>可圈办公仅在您主动截取屏幕内容并注入 AI/文档时访问屏幕，截图默认保存在本地且需您确认后才可外发。</string>
+    <key>NSAppleEventsUsageDescription</key>
+    <string>可圈办公在自动化或无障碍辅助场景下可能请求系统事件权限，仅限您主动启用的功能。</string>
     <key>DTXcodeBuild</key>
     <string>@MACOSX_XCODE_BUILD_VERSION@</string>
     <key>DTSDKBuild</key>

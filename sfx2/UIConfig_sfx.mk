@@ -48,6 +48,7 @@ $(eval $(call gb_UIConfig_add_uifiles,sfx,\
 	sfx2/uiconfig/ui/helpwindow \
 	sfx2/uiconfig/ui/infobar \
 	sfx2/uiconfig/ui/inputdialog \
+	sfx2/uiconfig/ui/kq_permission_prompt \
 	sfx2/uiconfig/ui/licensedialog \
 	sfx2/uiconfig/ui/linefragment \
 	sfx2/uiconfig/ui/linkeditdialog \
@@ -59,6 +60,8 @@ $(eval $(call gb_UIConfig_add_uifiles,sfx,\
 	sfx2/uiconfig/ui/optprintpage \
 	sfx2/uiconfig/ui/panel \
 	sfx2/uiconfig/ui/password \
+	sfx2/uiconfig/ui/pdfpagerange \
+	sfx2/uiconfig/ui/pdfprogress \
 	sfx2/uiconfig/ui/notebookbarpopup \
 	sfx2/uiconfig/ui/printeroptionsdialog \
 	sfx2/uiconfig/ui/propertychip \

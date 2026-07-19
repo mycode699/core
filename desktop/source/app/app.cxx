@@ -18,6 +18,7 @@
  */
 
 #include <memory>
+#include <chrono>
 #include <config_emscripten.h>
 #include <config_features.h>
 #include <config_feature_desktop.h>
@@ -29,6 +30,7 @@
 
 #include <sal/config.h>
 
+#include <cstdio>
 #include <cstdlib>
 #include <iostream>
 #include <string_view>
@@ -1299,22 +1301,29 @@ int Desktop::Main()
 {
     std::chrono::high_resolution_clock::time_point startT;
 
-#ifdef SAL_LOG_INFO
     startFuncTp = std::chrono::high_resolution_clock::now();
     startT = std::chrono::high_resolution_clock::now();
+    // Always-available wall clock when KQOFFICE_STARTUP_TIMING=1 (release builds
+    // strip SAL_LOG_INFO, so SAL_INFO desktop.startuptime is silent otherwise).
+    const bool bKqStartupTiming = (std::getenv("KQOFFICE_STARTUP_TIMING") != nullptr);
 
-    auto recordTime = [](std::chrono::high_resolution_clock::time_point& startTp, const char* message)
+    auto recordTime
+        = [bKqStartupTiming](std::chrono::high_resolution_clock::time_point& startTp,
+                             const char* message)
     {
         const auto endTp = std::chrono::high_resolution_clock::now();
         auto tMs = std::chrono::duration_cast<std::chrono::milliseconds>(endTp - startTp);
+#ifdef SAL_LOG_INFO
         SAL_INFO("desktop.startuptime", message << tMs.count() << " ms");
+#endif
+        if (bKqStartupTiming)
+        {
+            fprintf(stderr, "kqoffice.startuptime %s%lld ms\n", message,
+                    static_cast<long long>(tMs.count()));
+            fflush(stderr);
+        }
         startTp = std::chrono::high_resolution_clock::now();
     };
-#else
-    auto recordTime = [](...)
-    {
-    };
-#endif
 
 
     pExecGlobals = new ExecuteGlobals();
@@ -1602,11 +1611,10 @@ int Desktop::Main()
     SetSplashScreenProgress(55);
     recordTime(startT, "SetSplashScreenProgress(55): time = ");
 
-    svtools::ApplyFontSubstitutionsToVcl();
-
+    // Mark appearance cfg ready; heavy ApplyFontSubstitutions / defaults /
+    // a11y VCL settings run after first paint (DeferredVclAppearance_Impl).
     SvtTabAppearanceCfg::SetInitialized();
-    SvtTabAppearanceCfg::SetApplicationDefaults( this );
-    SvtAccessibilityOptions::SetVCLSettings();
+    Application::PostUserEvent(LINK(this, Desktop, DeferredVclAppearance_Impl));
     SetSplashScreenProgress(60);
     recordTime(startT, "SetSplashScreenProgress(60): time = ");
 
@@ -1632,11 +1640,6 @@ int Desktop::Main()
             xDesktop->addTerminateListener( new RequestHandlerController );
         SetSplashScreenProgress(100);
         recordTime(startT, "SetSplashScreenProgress(100): time = ");
-
-        // FIXME: move this somewhere sensible.
-#if HAVE_FEATURE_OPENCL
-        CheckOpenCLCompute(xDesktop);
-#endif
 
 #if defined(DBG_UTIL) && !defined(EMSCRIPTEN)
         //Running the VCL graphics rendering tests
@@ -1955,6 +1958,38 @@ class ExitTimer : public Timer
 
 }
 
+IMPL_LINK_NOARG(Desktop, CheckOpenCL_Impl, void*, void)
+{
+#if HAVE_FEATURE_OPENCL
+    try
+    {
+        css::uno::Reference<css::frame::XDesktop2> xDesktop
+            = css::frame::Desktop::create(comphelper::getProcessComponentContext());
+        CheckOpenCLCompute(xDesktop);
+    }
+    catch (const css::uno::Exception&)
+    {
+        TOOLS_WARN_EXCEPTION("desktop.app", "CheckOpenCL_Impl");
+    }
+#endif
+}
+
+IMPL_LINK_NOARG(Desktop, DeferredVclAppearance_Impl, void*, void)
+{
+    // Applied after Start Center path is posted; keeps first interactive paint
+    // free of font-substitution table load + appearance config I/O.
+    try
+    {
+        svtools::ApplyFontSubstitutionsToVcl();
+        SvtTabAppearanceCfg::SetApplicationDefaults(this);
+        SvtAccessibilityOptions::SetVCLSettings();
+    }
+    catch (const css::uno::Exception&)
+    {
+        TOOLS_WARN_EXCEPTION("desktop.app", "DeferredVclAppearance_Impl");
+    }
+}
+
 IMPL_LINK_NOARG(Desktop, OpenClients_Impl, void*, void)
 {
     // #i114963#
@@ -1975,6 +2010,11 @@ IMPL_LINK_NOARG(Desktop, OpenClients_Impl, void*, void)
 
     CloseSplashScreen();
     CheckFirstRun( );
+
+    // After Start Center / recovery UI is up: OpenCL self-test can take hundreds
+    // of ms (helper process + sample ods). Keep it off the cold-start critical path.
+    Application::PostUserEvent(LINK(this, Desktop, CheckOpenCL_Impl));
+
 #ifdef _WIN32
     bool bDontShowDialogs
         = Application::IsHeadlessModeEnabled(); // uitest.uicheck fails when the dialog is open
@@ -2618,8 +2658,30 @@ void Desktop::ShowBackingComponent(Desktop * progress)
     {
         return;
     }
+
+    // Fine-grained cold-start segments (KQOFFICE_STARTUP_TIMING=1).
+    // Keys are stable English identifiers for W5-B / gui-smoke parsing.
+    const bool bKqStartupTiming = (std::getenv("KQOFFICE_STARTUP_TIMING") != nullptr);
+    auto kqSeg
+        = [bKqStartupTiming](std::chrono::high_resolution_clock::time_point& startTp,
+                             const char* message)
+    {
+        const auto endTp = std::chrono::high_resolution_clock::now();
+        auto tMs = std::chrono::duration_cast<std::chrono::milliseconds>(endTp - startTp);
+        if (bKqStartupTiming)
+        {
+            fprintf(stderr, "kqoffice.startuptime %s%lld ms\n", message,
+                    static_cast<long long>(tMs.count()));
+            fflush(stderr);
+        }
+        startTp = std::chrono::high_resolution_clock::now();
+    };
+    auto tShow = std::chrono::high_resolution_clock::now();
+    auto tSeg = tShow;
+
     const Reference< XComponentContext >& xContext = comphelper::getProcessComponentContext();
     Reference< XDesktop2 > xDesktop = css::frame::Desktop::create(xContext);
+    kqSeg(tSeg, "ShowBacking.Desktop.create: ");
     if (progress != nullptr)
     {
         progress->SetSplashScreenProgress(60);
@@ -2629,6 +2691,7 @@ void Desktop::ShowBackingComponent(Desktop * progress)
 
     if (xBackingFrame.is())
         xContainerWindow = xBackingFrame->getContainerWindow();
+    kqSeg(tSeg, "ShowBacking.findFrame: ");
     if (!xContainerWindow.is())
         return;
 
@@ -2643,21 +2706,29 @@ void Desktop::ShowBackingComponent(Desktop * progress)
         progress->SetSplashScreenProgress(75);
     }
 
+    // Creates BackingComp + BackingWindow (startcenter.ui weld) — often the bulk.
     Reference< XController > xStartModule = StartModule::createWithParentWindow( xContext, xContainerWindow);
+    kqSeg(tSeg, "ShowBacking.StartModule.create: ");
     // Attention: You MUST(!) call setComponent() before you call attachFrame().
     // Because the backing component set the property "IsBackingMode" of the frame
     // to true inside attachFrame(). But setComponent() reset this state everytimes ...
     xBackingFrame->setComponent(Reference< XWindow >(xStartModule, UNO_QUERY), xStartModule);
+    kqSeg(tSeg, "ShowBacking.setComponent: ");
     if (progress != nullptr)
     {
         progress->SetSplashScreenProgress(100);
     }
+    // attachFrame → setOwningFrame → initControls (critical-path UI wire-up).
     xStartModule->attachFrame(xBackingFrame);
+    kqSeg(tSeg, "ShowBacking.attachFrame: ");
     if (progress != nullptr)
     {
         progress->CloseSplashScreen();
     }
+    kqSeg(tSeg, "ShowBacking.CloseSplash: ");
     xContainerWindow->setVisible(true);
+    kqSeg(tSeg, "ShowBacking.setVisible: ");
+    kqSeg(tShow, "ShowBacking.total: ");
 }
 
 

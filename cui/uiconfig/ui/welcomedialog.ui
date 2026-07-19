@@ -128,7 +128,7 @@
             <property name="margin-bottom">2</property>
             <property name="xalign">0</property>
             <property name="wrap">True</property>
-            <property name="label" translatable="yes" context="welcomedialog|v2_intro">可圈office V2 正在升级为任务优先的办公工作台：从报告、预算、排期、演示和兼容文档开始，基础编辑和离线可用保持不变。</property>
+            <property name="label" translatable="yes" context="welcomedialog|v2_intro">可圈办公正在升级为任务优先的办公工作台：从报告、预算、排期、演示和兼容文档开始，基础编辑和离线可用保持不变。</property>
             <accessibility>
               <relation type="label-for" target="tabcontrol"/>
             </accessibility>

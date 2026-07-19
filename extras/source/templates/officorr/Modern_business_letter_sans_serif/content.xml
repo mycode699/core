@@ -41,53 +41,53 @@
         <draw:frame text:anchor-type="paragraph" draw:z-index="0" draw:style-name="gr1" svg:width="2.502cm" svg:height="2.922cm" svg:x="14.422cm" svg:y="0cm">
           <draw:text-box>
             <text:p text:style-name="P4">
-              <text:span text:style-name="T3">Put your </text:span>
-              <text:span text:style-name="T4">LOGO</text:span>
-              <text:span text:style-name="T3"> here</text:span>
+              <text:span text:style-name="T3">在此放置 </text:span>
+              <text:span text:style-name="T4">徽标</text:span>
+              <text:span text:style-name="T3"> 位置</text:span>
             </text:p>
           </draw:text-box>
         </draw:frame>
         <text:tab/>
         <text:span text:style-name="T1">
-          <text:placeholder text:placeholder-type="text">&lt;Sender's name&gt;</text:placeholder>
+          <text:placeholder text:placeholder-type="text">发件人姓名</text:placeholder>
         </text:span>
         <text:span text:style-name="T1">
           <text:line-break/>
         </text:span>
         <text:tab/>
-        <text:placeholder text:placeholder-type="text">&lt;Company Name&gt;</text:placeholder>
+        <text:placeholder text:placeholder-type="text">公司名称</text:placeholder>
         <text:line-break/>
         <text:tab/>
-        <text:placeholder text:placeholder-type="text">&lt;address street&gt;</text:placeholder>
+        <text:placeholder text:placeholder-type="text">地址：示例路 1 号</text:placeholder>
         <text:line-break/>
         <text:tab/>
-        <text:placeholder text:placeholder-type="text">&lt;address postal code&gt;</text:placeholder>
-        <text:placeholder text:placeholder-type="text">&lt;address city&gt;</text:placeholder>
+        <text:placeholder text:placeholder-type="text">邮编 100000</text:placeholder>
+        <text:placeholder text:placeholder-type="text">示例市</text:placeholder>
         <text:line-break/>
         <text:tab/>
-        <text:placeholder text:placeholder-type="text">&lt;state&gt;</text:placeholder>
+        <text:placeholder text:placeholder-type="text">示例省</text:placeholder>
       </text:p>
       <text:p text:style-name="Addressee">
-        <text:placeholder text:placeholder-type="text">&lt;Title&gt;</text:placeholder>
-        <text:placeholder text:placeholder-type="text">&lt;Recipient's name&gt;</text:placeholder>
+        <text:placeholder text:placeholder-type="text">称谓</text:placeholder>
+        <text:placeholder text:placeholder-type="text">收件人姓名</text:placeholder>
         <text:line-break/>
-        <text:placeholder text:placeholder-type="text">&lt;address street&gt;</text:placeholder>
+        <text:placeholder text:placeholder-type="text">地址：示例路 1 号</text:placeholder>
         <text:line-break/>
-        <text:placeholder text:placeholder-type="text">&lt;address postal code&gt;</text:placeholder>
-        <text:placeholder text:placeholder-type="text">&lt;address city&gt;</text:placeholder>
+        <text:placeholder text:placeholder-type="text">邮编 100000</text:placeholder>
+        <text:placeholder text:placeholder-type="text">示例市</text:placeholder>
         <text:line-break/>
-        <text:placeholder text:placeholder-type="text">&lt;state&gt;</text:placeholder>
+        <text:placeholder text:placeholder-type="text">示例省</text:placeholder>
       </text:p>
       <text:p text:style-name="Text_20_body">
         <text:date style:data-style-name="N112" text:fixed="true"></text:date>
       </text:p>
-      <text:p text:style-name="Text_20_body">Dear <text:placeholder text:placeholder-type="text">&lt;Title&gt;</text:placeholder> <text:placeholder text:placeholder-type="text">&lt;Recipient's name&gt;</text:placeholder>, </text:p>
-      <text:p text:style-name="Text_20_body">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</text:p>
-      <text:p text:style-name="Text_20_body">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </text:p>
-      <text:p text:style-name="Text_20_body">We are looking forward to hearing from you soon.</text:p>
-      <text:p text:style-name="Text_20_body">Yours sincerely,</text:p>
+      <text:p text:style-name="Text_20_body">尊敬的 <text:placeholder text:placeholder-type="text">称谓</text:placeholder> <text:placeholder text:placeholder-type="text">收件人姓名</text:placeholder>, </text:p>
+      <text:p text:style-name="Text_20_body">事由：业务沟通函。正文请说明背景、关键结论与下一步行动；可附数据或案例。本样张仅供版式参考，请替换为真实内容。</text:p>
+      <text:p text:style-name="Text_20_body">如需补充附件、日程或联系人，请在此说明。 </text:p>
+      <text:p text:style-name="Text_20_body">期待您的回复。</text:p>
+      <text:p text:style-name="Text_20_body">此致</text:p>
       <text:p text:style-name="Text_20_body">
-        <text:placeholder text:placeholder-type="text">&lt;Sender's name&gt;</text:placeholder>
+        <text:placeholder text:placeholder-type="text">发件人姓名</text:placeholder>
       </text:p>
     </office:text>
   </office:body>

@@ -33,6 +33,8 @@
 #include <vcl/weld/MessageDialog.hxx>
 #include <vcl/weld/weld.hxx>
 #include <vcl/svapp.hxx>
+#include <vcl/settings.hxx>
+#include <i18nlangtag/languagetag.hxx>
 
 #include <com/sun/star/util/URL.hpp>
 #include <com/sun/star/util/XURLTransformer.hpp>
@@ -417,6 +419,14 @@ void SAL_CALL RecoveryCore::statusChanged(const css::frame::FeatureStateEvent& a
         INetURLObject aOrgURL(aNew.OrgURL);
         aNew.DisplayName = aOrgURL.getName(INetURLObject::LAST_SEGMENT, true,
                                            INetURLObject::DecodeMechanism::WithCharset);
+    }
+
+    // Legacy recovery titles may still say "Untitled N" even under zh-CN UI.
+    if (aNew.DisplayName.startsWith(u"Untitled"_ustr))
+    {
+        const LanguageTag aUI = Application::GetSettings().GetUILanguageTag();
+        if (aUI.getLanguage() == u"zh"_ustr)
+            aNew.DisplayName = u"未命名"_ustr + aNew.DisplayName.subView(8);
     }
 
     // search for already existing items and update her nState value ...

@@ -8,7 +8,7 @@ Globals
             UREPACKAGEVERSION @LIBO_VERSION_MAJOR@.@LIBO_VERSION_MINOR@.@LIBO_VERSION_MICRO@.@LIBO_VERSION_PATCH@@LIBO_VERSION_SUFFIX@
             URELAYERVERSION 1
             REFERENCEOOOMAJORMINOR 4.1
-            WINDOWSBASISROOTNAME 可圈office
+            WINDOWSBASISROOTNAME kequanoffice
             UNIXBASISROOTNAME kequanoffice@LIBO_VERSION_MAJOR@.@LIBO_VERSION_MINOR@
             HIDELICENSEDIALOG 1
             PACKAGEPREFIX
@@ -51,7 +51,7 @@ Globals
             BRANDPACKAGEVERSION @LIBO_VERSION_MAJOR@.@LIBO_VERSION_MINOR@
             USERDIRPRODUCTVERSION 4
             BASEPRODUCTVERSION @LIBO_VERSION_MAJOR@.@LIBO_VERSION_MINOR@
-            UPDATEURL https://update.libreoffice.org/check.php
+            UPDATEURL
             ADD_INCLUDE_FILES cli_ure/version/version.txt,unoil/climaker/version.txt
             ADDSYSTEMINTEGRATION 1
             PACKAGEVERSION @LIBO_VERSION_MAJOR@.@LIBO_VERSION_MINOR@.@LIBO_VERSION_MICRO@.@LIBO_VERSION_PATCH@@LIBO_VERSION_SUFFIX@
@@ -66,9 +66,9 @@ Globals
         active          1
         compression     5
         script          setup_osl
-        downloadname    可圈office_{productversion}_{os}_install_{languages}
-        langpackdownloadname    可圈office_{productversion}_languagepack_{os}_install_{languages}
-        helppackdownloadname    可圈office_{productversion}_helppack_{os}_install_{languages}
+        downloadname    kequanoffice_{productversion}_{os}_install_{languages}
+        langpackdownloadname    kequanoffice_{productversion}_languagepack_{os}_install_{languages}
+        helppackdownloadname    kequanoffice_{productversion}_helppack_{os}_install_{languages}
         include         {installscriptdir},{customtargetpath}/readlicense_oo/readme,{customtargetpath}/sysui/{pkgtype},{customtargetpath}/setup_native,{filelistpath}/PackageSet,{filelistpath}/GeneratedPackage,{filelistpath}/Package,{filelistpath}/ExtensionPackage,{filelistpath}/CustomTarget/helpcontent2/help3xsl/filelists,{extensionsdir},{licensepath},{packinfopath}
     }
 }
@@ -122,10 +122,10 @@ LibreOfficeDev
 {
     Settings
     {
-        downloadname LibreOffice-SDK_{packageversion}_{os}_install_{languages}
+        downloadname kequanoffice-SDK_{packageversion}_{os}_install_{languages}
         variables
         {
-            PRODUCTNAME 可圈office
+            PRODUCTNAME 可圈办公
             PRODUCTVERSION @LIBO_VERSION_MAJOR@.@LIBO_VERSION_MINOR@
             PRODUCTEXTENSION .@LIBO_VERSION_MICRO@.@LIBO_VERSION_PATCH@@LIBO_VERSION_SUFFIX@
             POSTVERSIONEXTENSION SDK

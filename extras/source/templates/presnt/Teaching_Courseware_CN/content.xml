@@ -21,9 +21,7 @@
         <draw:frame presentation:style-name="Focus-subtitle" draw:layer="layout" svg:width="7.116cm" svg:height="5.149cm" svg:x="10.404cm" svg:y="5.309cm" presentation:class="subtitle" presentation:placeholder="true" presentation:user-transformed="true">
           <draw:text-box/>
         </draw:frame>
-        <draw:frame presentation:style-name="Focus-title" draw:layer="layout" svg:width="11.221cm" svg:height="2.63cm" svg:x="1.4cm" svg:y="0.627cm" presentation:class="title" presentation:placeholder="true" presentation:user-transformed="true">
-          <draw:text-box/>
-        </draw:frame>
+        <draw:frame presentation:style-name="Focus-title" draw:layer="layout" svg:width="11.221cm" svg:height="2.63cm" svg:x="1.4cm" svg:y="0.627cm" presentation:class="title" presentation:user-transformed="true"><draw:text-box><text:p>培训课件 · 主题</text:p></draw:text-box></draw:frame>
         <presentation:notes draw:style-name="dp2">
           <draw:page-thumbnail draw:style-name="gr1" draw:layer="layout" svg:width="17cm" svg:height="9.562cm" svg:x="2cm" svg:y="2.5cm" draw:page-number="1" presentation:class="page"/>
           <draw:frame presentation:style-name="Focus-notes" draw:layer="layout" svg:width="17cm" svg:height="14cm" svg:x="2cm" svg:y="13cm" presentation:class="notes" presentation:placeholder="true">
@@ -33,11 +31,9 @@
       </draw:page>
       <draw:page draw:name="page2" draw:style-name="dp3" draw:master-page-name="Focus1" presentation:presentation-page-layout-name="AL2T1">
         <office:forms form:automatic-focus="false" form:apply-design-mode="false"/>
-        <draw:frame presentation:style-name="Focus1-title" draw:layer="layout" svg:width="12cm" svg:height="3cm" svg:x="8cm" svg:y="2.5cm" presentation:class="title" presentation:placeholder="true">
-          <draw:text-box/>
-        </draw:frame>
-        <draw:frame presentation:style-name="Focus1-outline1" draw:layer="layout" svg:width="12cm" svg:height="7cm" svg:x="8cm" svg:y="6cm" presentation:class="outline" presentation:placeholder="true">
-          <draw:text-box/>
+        <draw:frame presentation:style-name="Focus1-title" draw:layer="layout" svg:width="12cm" svg:height="3cm" svg:x="8cm" svg:y="2.5cm" presentation:class="title"><draw:text-box><text:p>要点提纲</text:p></draw:text-box></draw:frame>
+        <draw:frame presentation:style-name="Focus1-outline1" draw:layer="layout" svg:width="12cm" svg:height="7cm" svg:x="8cm" svg:y="6cm" presentation:class="outline">
+          <draw:text-box><text:p>学习目标</text:p><text:p>核心概念</text:p><text:p>操作步骤</text:p><text:p>练习与小结</text:p></draw:text-box>
         </draw:frame>
         <presentation:notes draw:style-name="dp2">
           <draw:page-thumbnail draw:style-name="gr1" draw:layer="layout" svg:width="17cm" svg:height="9.562cm" svg:x="2cm" svg:y="2.5cm" draw:page-number="2" presentation:class="page"/>
@@ -48,11 +44,9 @@
       </draw:page>
       <draw:page draw:name="page3" draw:style-name="dp3" draw:master-page-name="Focus2" presentation:presentation-page-layout-name="AL2T1">
         <office:forms form:automatic-focus="false" form:apply-design-mode="false"/>
-        <draw:frame presentation:style-name="Focus2-title" draw:layer="layout" svg:width="18.313cm" svg:height="2.63cm" svg:x="4.903cm" svg:y="0.627cm" presentation:class="title" presentation:placeholder="true" presentation:user-transformed="true">
-          <draw:text-box/>
-        </draw:frame>
-        <draw:frame presentation:style-name="Focus2-outline1" draw:layer="layout" svg:width="18.313cm" svg:height="10.147cm" svg:x="4.903cm" svg:y="3.685cm" presentation:class="outline" presentation:placeholder="true" presentation:user-transformed="true">
-          <draw:text-box/>
+        <draw:frame presentation:style-name="Focus2-title" draw:layer="layout" svg:width="18.313cm" svg:height="2.63cm" svg:x="4.903cm" svg:y="0.627cm" presentation:class="title" presentation:user-transformed="true"><draw:text-box><text:p>要点提纲</text:p></draw:text-box></draw:frame>
+        <draw:frame presentation:style-name="Focus2-outline1" draw:layer="layout" svg:width="18.313cm" svg:height="10.147cm" svg:x="4.903cm" svg:y="3.685cm" presentation:class="outline" presentation:user-transformed="true">
+          <draw:text-box><text:p>学习目标</text:p><text:p>核心概念</text:p><text:p>操作步骤</text:p><text:p>练习与小结</text:p></draw:text-box>
         </draw:frame>
         <presentation:notes draw:style-name="dp2">
           <draw:page-thumbnail draw:style-name="gr1" draw:layer="layout" svg:width="17cm" svg:height="9.562cm" svg:x="2cm" svg:y="2.5cm" draw:page-number="3" presentation:class="page"/>
@@ -63,11 +57,9 @@
       </draw:page>
       <draw:page draw:name="page4" draw:style-name="dp3" draw:master-page-name="Focus3" presentation:presentation-page-layout-name="AL2T1">
         <office:forms form:automatic-focus="false" form:apply-design-mode="false"/>
-        <draw:frame presentation:style-name="Focus3-title" draw:layer="layout" svg:width="24cm" svg:height="2.5cm" svg:x="2cm" svg:y="1cm" presentation:class="title" presentation:placeholder="true">
-          <draw:text-box/>
-        </draw:frame>
-        <draw:frame presentation:style-name="Focus3-outline1" draw:layer="layout" svg:width="24cm" svg:height="10cm" svg:x="2cm" svg:y="4cm" presentation:class="outline" presentation:placeholder="true">
-          <draw:text-box/>
+        <draw:frame presentation:style-name="Focus3-title" draw:layer="layout" svg:width="24cm" svg:height="2.5cm" svg:x="2cm" svg:y="1cm" presentation:class="title"><draw:text-box><text:p>要点提纲</text:p></draw:text-box></draw:frame>
+        <draw:frame presentation:style-name="Focus3-outline1" draw:layer="layout" svg:width="24cm" svg:height="10cm" svg:x="2cm" svg:y="4cm" presentation:class="outline">
+          <draw:text-box><text:p>学习目标</text:p><text:p>核心概念</text:p><text:p>操作步骤</text:p><text:p>练习与小结</text:p></draw:text-box>
         </draw:frame>
         <presentation:notes draw:style-name="dp2">
           <draw:page-thumbnail draw:style-name="gr1" draw:layer="layout" svg:width="17cm" svg:height="9.562cm" svg:x="2cm" svg:y="2.5cm" draw:page-number="4" presentation:class="page"/>

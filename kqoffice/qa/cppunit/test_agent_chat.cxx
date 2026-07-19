@@ -26,6 +26,7 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/plugin/TestPlugIn.h>
 
+#include <rtl/string.hxx>
 #include <rtl/ustring.hxx>
 
 #include <vector>
@@ -33,6 +34,12 @@
 #include "AgentChatContextBuilder.hxx"
 #include "AgentChatDiffExtractor.hxx"
 #include "AgentChatDiffApplier.hxx"
+#include "DocumentAIMaterialReader.hxx"
+
+#include <osl/file.hxx>
+#include <cstdio>
+#include <cstdlib>
+#include <unistd.h>
 
 using namespace kqoffice::ai::chat;
 
@@ -68,6 +75,7 @@ public:
     void testDiffApplierCanApplyEmptyFields();
     void testDiffApplierCanApplyUnknownOpType();
     void testDiffApplierCanApplyInsertNoNewText();
+    void testMaterialReaderDetectKindAndExpand();
 
     CPPUNIT_TEST_SUITE(AgentChatTest);
     CPPUNIT_TEST(testContextBuilderBuild);
@@ -96,6 +104,7 @@ public:
     CPPUNIT_TEST(testDiffApplierCanApplyEmptyFields);
     CPPUNIT_TEST(testDiffApplierCanApplyUnknownOpType);
     CPPUNIT_TEST(testDiffApplierCanApplyInsertNoNewText);
+    CPPUNIT_TEST(testMaterialReaderDetectKindAndExpand);
     CPPUNIT_TEST_SUITE_END();
 };
 
@@ -416,6 +425,58 @@ void AgentChatTest::testDiffApplierCanApplyInsertNoNewText()
     op.target = u"end"_ustr;
     // newText intentionally empty
     CPPUNIT_ASSERT(!AgentChatDiffApplier::canApply(op));
+}
+
+void AgentChatTest::testMaterialReaderDetectKindAndExpand()
+{
+    CPPUNIT_ASSERT_EQUAL(MaterialKind::Markdown,
+                         DocumentAIMaterialReader::detectKind(u"/tmp/a.md"_ustr));
+    CPPUNIT_ASSERT_EQUAL(MaterialKind::Pdf,
+                         DocumentAIMaterialReader::detectKind(u"/tmp/b.PDF"_ustr));
+    CPPUNIT_ASSERT_EQUAL(MaterialKind::Image,
+                         DocumentAIMaterialReader::detectKind(u"/tmp/c.png"_ustr));
+    CPPUNIT_ASSERT_EQUAL(MaterialKind::Office,
+                         DocumentAIMaterialReader::detectKind(u"/tmp/d.docx"_ustr));
+    CPPUNIT_ASSERT(DocumentAIMaterialReader::isMaterialMentionPrefix(
+        u"@文件:/tmp/x.txt"_ustr));
+    CPPUNIT_ASSERT(DocumentAIMaterialReader::isMaterialMentionPrefix(
+        u"@截图:/tmp/s.png"_ustr));
+    CPPUNIT_ASSERT(DocumentAIMaterialReader::isMaterialMentionPrefix(
+        u"@文件夹:/tmp/dir"_ustr));
+
+    // Write a tiny text file and expand mention into prompt context.
+    char tmpl[] = "/tmp/kqoffice-mat-XXXXXX";
+    char* dir = ::mkdtemp(tmpl);
+    CPPUNIT_ASSERT(dir != nullptr);
+    const OUString dirPath = OUString::createFromAscii(dir);
+    const OUString filePath = dirPath + u"/note.txt"_ustr;
+    {
+        const OString sys = OUStringToOString(filePath, RTL_TEXTENCODING_UTF8);
+        FILE* f = std::fopen(sys.getStr(), "wb");
+        CPPUNIT_ASSERT(f != nullptr);
+        std::fwrite("hello material closed-loop", 1, 26, f);
+        std::fclose(f);
+    }
+
+    const MaterialExtractResult ex = DocumentAIMaterialReader::extractPath(filePath, 1000);
+    CPPUNIT_ASSERT(ex.success);
+    CPPUNIT_ASSERT(ex.text.indexOf(u"hello material"_ustr) >= 0);
+    CPPUNIT_ASSERT_EQUAL(u"utf8"_ustr, ex.method);
+
+    const OUString prompt = u"总结这个文件\n@文件:"_ustr + filePath + u"\n谢谢"_ustr;
+    OUString summary;
+    const OUString expanded
+        = DocumentAIMaterialReader::expandMentionsInPrompt(prompt, summary);
+    CPPUNIT_ASSERT(expanded.indexOf(u"本地材料上下文"_ustr) >= 0);
+    CPPUNIT_ASSERT(expanded.indexOf(u"hello material"_ustr) >= 0);
+    CPPUNIT_ASSERT(expanded.indexOf(u"用户指令"_ustr) >= 0);
+    CPPUNIT_ASSERT(!summary.isEmpty());
+
+    // Folder extract should inventory the file.
+    const MaterialExtractResult folder = DocumentAIMaterialReader::extractFolder(dirPath, 10, 2, 4000);
+    CPPUNIT_ASSERT(folder.success);
+    CPPUNIT_ASSERT(folder.fileCount >= 1);
+    CPPUNIT_ASSERT(folder.text.indexOf(u"文件夹清单"_ustr) >= 0);
 }
 
 CPPUNIT_TEST_SUITE_REGISTRATION(AgentChatTest);

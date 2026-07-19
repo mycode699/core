@@ -140,6 +140,19 @@ bool prepareLocale() {
     LanguageTag docTag(LANGUAGE_SYSTEM);
     setMsLangIdFallback(docTag.getBcp47());
 
+    // 可圈办公 (Chinese-first product, WPS/Office CN parity): when the UI is
+    // Chinese, keep Western *and* Asian document-language fallbacks on zh-*,
+    // so Calc status bar does not show "英语(美国)" merely because the host OS
+    // is English. Standard LO maps zh-* DefaultLocale to the Asian slot only;
+    // Western then falls back to en-US. We do not invent UI — we match the
+    // Chinese suite default that both document scripts use Chinese.
+    if (tag.getLanguage() == u"zh")
+    {
+        const LanguageType eZh = tag.getLanguageType(false);
+        MsLangId::setConfiguredWesternFallback(eZh);
+        MsLangId::setConfiguredAsianFallback(eZh);
+    }
+
     return true;
 }
 

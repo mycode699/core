@@ -47,6 +47,8 @@ $(eval $(call gb_Library_add_exception_objects,kqoffice_ai,\
     kqoffice/source/ai/provider/ServiceModePolicy \
     kqoffice/source/ai/cowork/AgentDelegation \
     kqoffice/source/ai/cowork/CoworkUiBridge \
+    kqoffice/source/ai/cowork/ScheduledTask \
+    kqoffice/source/ai/cowork/ScheduledTaskDispatcher \
     kqoffice/source/ai/cowork/TaskNativeOsNotificationBackend \
     kqoffice/source/ai/cowork/TaskQueue \
     kqoffice/source/ai/cowork/TaskOsNotificationBridge \
@@ -63,11 +65,14 @@ $(eval $(call gb_Library_add_exception_objects,kqoffice_ai,\
     kqoffice/source/ai/chat/DocumentAIApply \
     kqoffice/source/ai/chat/DocumentAIContext \
     kqoffice/source/ai/chat/DocumentAILocalRag \
+    kqoffice/source/ai/chat/DocumentAIMaterialReader \
     kqoffice/source/ai/chat/DocumentAIInputPrefs \
     kqoffice/source/ai/chat/DocumentAIScreenCapture \
     kqoffice/source/ai/chat/DocumentAIVoiceInput \
     kqoffice/source/ai/chat/DocumentAIScenarioStore \
     kqoffice/source/ai/chat/DocumentAIScenarios \
+    kqoffice/source/ai/control/PermissionCenter \
+    kqoffice/source/ai/control/PermissionGrant \
     kqoffice/source/ai/control/ResourceBudgetWatchdog \
     kqoffice/source/ai/control/SafeRestore \
     kqoffice/source/ai/control/SessionStore \
@@ -82,6 +87,7 @@ $(eval $(call gb_Library_add_exception_objects,kqoffice_ai,\
     kqoffice/source/ai/canvas/AICanvasUI \
     kqoffice/source/ai/filemgr/AIFileManager \
     kqoffice/source/ai/filemgr/AIFileSearchUI \
+    kqoffice/source/ai/filemgr/BatchJob \
     kqoffice/source/ai/workbench/WorkTelemetryStore \
     kqoffice/source/ai/notebook/LocalNotebookStore \
     kqoffice/source/ai/notebook/NotebookMaterialStore \

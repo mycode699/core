@@ -17,6 +17,7 @@ $(eval $(call gb_Library_set_include,cui,\
     -I$(SRCDIR)/cui/source/inc \
     -I$(SRCDIR) \
     -I$(SRCDIR)/kqoffice/source/ai/cowork \
+    -I$(SRCDIR)/kqoffice/source/ai/control \
     -I$(SRCDIR)/kqoffice/source/ai/i18n \
     -I$(SRCDIR)/kqoffice/source/ai/provider \
     -I$(SRCDIR)/kqoffice/source/ai/chat \

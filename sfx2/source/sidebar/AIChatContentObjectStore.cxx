@@ -124,6 +124,49 @@ AIChatMaterializedContent AIChatContentObjectStore::MaterializeText(const OUStri
     return aContent;
 }
 
+OUString AIChatContentObjectStore::MakeSidecarUrl(const OUString& rObjectId) const
+{
+    if (rObjectId.isEmpty())
+        return {};
+    return m_sStorageRootUrl + u"/"_ustr + rObjectId + CONTENT_OBJECT_SUFFIX;
+}
+
+bool AIChatContentObjectStore::ReadObjectText(const OUString& rObjectId, OUString& rText) const
+{
+    rText.clear();
+    const OUString sUrl = MakeSidecarUrl(rObjectId);
+    if (sUrl.isEmpty())
+        return false;
+
+    osl::File aFile(sUrl);
+    if (aFile.open(osl_File_OpenFlag_Read) != osl::FileBase::E_None)
+        return false;
+
+    sal_uInt64 nSize = 0;
+    if (aFile.getSize(nSize) != osl::FileBase::E_None || nSize == 0)
+    {
+        aFile.close();
+        return false;
+    }
+    // Cap sidecar preview at 1 MiB to keep the side panel responsive.
+    constexpr sal_uInt64 MAX_BYTES = 1024 * 1024;
+    if (nSize > MAX_BYTES)
+        nSize = MAX_BYTES;
+
+    std::vector<char> aBuffer(static_cast<size_t>(nSize));
+    sal_uInt64 nRead = 0;
+    if (aFile.read(aBuffer.data(), nSize, nRead) != osl::FileBase::E_None || nRead == 0)
+    {
+        aFile.close();
+        return false;
+    }
+    aFile.close();
+
+    rText = OStringToOUString(OString(aBuffer.data(), static_cast<sal_Int32>(nRead)),
+                              RTL_TEXTENCODING_UTF8);
+    return !rText.isEmpty();
+}
+
 OUString AIChatContentObjectStore::DetectTypeLabel(AIChatContentObjectType eType)
 {
     switch (eType)

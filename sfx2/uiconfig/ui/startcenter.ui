@@ -96,6 +96,7 @@
           <object class="GtkFrame" id="frame1">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
+            <property name="width-request">210</property>
             <property name="label-xalign">0</property>
             <property name="shadow-type">none</property>
             <child>
@@ -109,17 +110,17 @@
                     <property name="can-focus">False</property>
                     <property name="vexpand">True</property>
                     <property name="orientation">vertical</property>
-                    <property name="spacing">6</property>
+                    <property name="spacing">4</property>
                     <child>
                       <object class="GtkButton" id="open_all">
-                        <property name="label" translatable="yes" context="startcenter|open_all">打开本地文件</property>
+                        <property name="label" translatable="yes" context="startcenter|open_all">打开文件</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="height-request">38</property>
+                        <property name="height-request">40</property>
                         <property name="margin-start">16</property>
                         <property name="margin-end">16</property>
-                        <property name="margin-top">8</property>
+                        <property name="margin-top">12</property>
                         <property name="image">open_all_image</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
@@ -135,7 +136,8 @@
                     <child>
                       <object class="GtkButton" id="open_remote">
                         <property name="label" translatable="yes" context="startcenter|open_remote">云端文件</property>
-                        <property name="visible">True</property>
+                        <!-- Wave α: hide half-built cloud entry until a real connector ships -->
+                        <property name="visible">False</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
                         <property name="height-request">38</property>
@@ -169,11 +171,11 @@
                     </child>
                     <child>
                       <object class="GtkToggleButton" id="open_recent">
-                        <property name="label" translatable="yes" context="startcenter|open_recent">最近文件</property>
+                        <property name="label" translatable="yes" context="startcenter|open_recent">继续工作</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="height-request">38</property>
+                        <property name="height-request">40</property>
                         <property name="margin-start">16</property>
                         <property name="margin-end">16</property>
                         <property name="image">open_all_image1</property>
@@ -190,11 +192,11 @@
                     </child>
                     <child>
                       <object class="GtkToggleButton" id="templates_all">
-                        <property name="label" translatable="yes" context="startcenter|templates_all">任务模板</property>
+                        <property name="label" translatable="yes" context="startcenter|templates_all">模板中心</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="height-request">38</property>
+                        <property name="height-request">40</property>
                         <property name="margin-start">16</property>
                         <property name="margin-end">16</property>
                         <property name="image">templates_all_image</property>
@@ -207,6 +209,27 @@
                         <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="position">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToggleButton" id="file_workbench">
+                        <property name="label" translatable="yes" context="startcenter|file_workbench">本地文件</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="height-request">40</property>
+                        <property name="margin-start">16</property>
+                        <property name="margin-end">16</property>
+                        <property name="image">open_all_image1</property>
+                        <property name="relief">none</property>
+                        <property name="use-underline">True</property>
+                        <property name="xalign">0</property>
+                        <property name="always-show-image">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">5</property>
                       </packing>
                     </child>
                     <child>
@@ -230,7 +253,7 @@
                         <property name="margin-start">16</property>
                         <property name="margin-top">12</property>
                         <property name="margin-bottom">4</property>
-                        <property name="label" translatable="yes" context="startcenter|create_label">新建文件</property>
+                        <property name="label" translatable="yes" context="startcenter|create_label">新建</property>
                         <property name="xalign">0</property>
                       </object>
                       <packing>
@@ -245,7 +268,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="height-request">38</property>
+                        <property name="height-request">40</property>
                         <property name="margin-start">16</property>
                         <property name="margin-end">16</property>
                         <property name="image">writer_all_image</property>
@@ -266,7 +289,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="height-request">38</property>
+                        <property name="height-request">40</property>
                         <property name="margin-start">16</property>
                         <property name="margin-end">16</property>
                         <property name="image">calc_all_image</property>
@@ -287,7 +310,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="height-request">38</property>
+                        <property name="height-request">40</property>
                         <property name="margin-start">16</property>
                         <property name="margin-end">16</property>
                         <property name="image">impress_all_image</property>
@@ -304,11 +327,11 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="draw_all">
-                        <property name="label" translatable="yes" context="startcenter|draw_all">绘图</property>
+                        <property name="label" translatable="yes" context="startcenter|draw_all">打开 PDF</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="height-request">38</property>
+                        <property name="height-request">40</property>
                         <property name="margin-start">16</property>
                         <property name="margin-end">16</property>
                         <property name="image">draw_all_image</property>
@@ -316,6 +339,7 @@
                         <property name="use-underline">True</property>
                         <property name="xalign">0</property>
                         <property name="always-show-image">True</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|draw_all_tooltip">打开 PDF 文件（基于绘图模块导入；非完整 Acrobat 编辑器）</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -370,14 +394,14 @@
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="margin-start">16</property>
-                        <property name="margin-top">10</property>
+                        <property name="margin-top">12</property>
                         <property name="margin-bottom">4</property>
-                        <property name="label" translatable="yes" context="startcenter|ai_create_label">AI 创作</property>
+                        <property name="label" translatable="yes" context="startcenter|ai_create_label">可圈 AI</property>
                         <property name="mnemonic-widget">ai_draft_writer</property>
                         <property name="xalign">0</property>
                         <child>
                           <object class="AtkObject" id="ai_create_label-atkobject">
-                            <property name="AtkObject::accessible-name" translatable="yes" context="startcenter|ai_create_label|accessible_name">AI 创作</property>
+                            <property name="AtkObject::accessible-name" translatable="yes" context="startcenter|ai_create_label|accessible_name">可圈 AI</property>
                           </object>
                         </child>
                       </object>
@@ -389,17 +413,17 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="ai_draft_writer">
-                        <property name="label" translatable="yes" context="startcenter|ai_draft_writer">AI 起草文档</property>
+                        <property name="label" translatable="yes" context="startcenter|ai_draft_writer">空白文档 + AI</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="height-request">38</property>
+                        <property name="height-request">40</property>
                         <property name="margin-start">16</property>
                         <property name="margin-end">16</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
                         <property name="xalign">0</property>
-                        <property name="tooltip-text" translatable="yes" context="startcenter|ai_draft_writer|tool_tip">新建空白文档并打开 AI 起草（可补充主题后发送）。</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|ai_draft_writer|tool_tip">新建空白文档并打开可圈 AI 侧栏（预填起草意图）。</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -409,17 +433,17 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="ai_draft_calc">
-                        <property name="label" translatable="yes" context="startcenter|ai_draft_calc">AI 建表</property>
+                        <property name="label" translatable="yes" context="startcenter|ai_draft_calc">空白表格 + AI</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="height-request">38</property>
+                        <property name="height-request">40</property>
                         <property name="margin-start">16</property>
                         <property name="margin-end">16</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
                         <property name="xalign">0</property>
-                        <property name="tooltip-text" translatable="yes" context="startcenter|ai_draft_calc|tool_tip">新建空白表格并打开 AI 建表（表头、示例与公式）。</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|ai_draft_calc|tool_tip">新建空白表格并打开可圈 AI 侧栏（预填建表意图）。</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -429,17 +453,17 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="ai_draft_impress">
-                        <property name="label" translatable="yes" context="startcenter|ai_draft_impress">AI 成片</property>
+                        <property name="label" translatable="yes" context="startcenter|ai_draft_impress">空白演示 + AI</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
-                        <property name="height-request">38</property>
+                        <property name="height-request">40</property>
                         <property name="margin-start">16</property>
                         <property name="margin-end">16</property>
                         <property name="relief">none</property>
                         <property name="use-underline">True</property>
                         <property name="xalign">0</property>
-                        <property name="tooltip-text" translatable="yes" context="startcenter|ai_draft_impress|tool_tip">新建空白演示并打开 AI 成片（大纲+讲稿结构）。</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|ai_draft_impress|tool_tip">新建空白演示并打开可圈 AI：①大纲 → ②多方案 → ③选一写回 → ④导出（禁止黑盒成片）。</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -548,7 +572,7 @@
             <child type="label">
               <object class="GtkLabel" id="label1">
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes" context="startcenter|label1">可圈office</property>
+                <property name="label" translatable="yes" context="startcenter|label1">可圈办公</property>
               </object>
             </child>
           </object>
@@ -566,18 +590,61 @@
             <property name="vexpand">True</property>
             <property name="orientation">vertical</property>
             <child>
+              <object class="GtkBox" id="trust_header_box">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">4</property>
+                <property name="margin-start">20</property>
+                <property name="margin-end">20</property>
+                <property name="margin-top">16</property>
+                <property name="margin-bottom">8</property>
+                <child>
+                  <object class="GtkLabel" id="trust_header_title">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes" context="startcenter|trust_header_title">工作台</property>
+                    <property name="mnemonic-widget">file_workbench</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                      <attribute name="scale" value="1.15"/>
+                    </attributes>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="trust_header_subtitle">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes" context="startcenter|trust_header_subtitle">本地优先 · 无需登录 · 云端调用前确认</property>
+                    <property name="mnemonic-widget">open_recent</property>
+                    <attributes>
+                      <attribute name="scale" value="0.92"/>
+                      <attribute name="foreground-alpha" value="72%"/>
+                    </attributes>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkLabel" id="all_recent_label">
                 <property name="visible">False</property>
                 <property name="can-focus">False</property>
                 <property name="no-show-all">True</property>
-                <property name="margin-start">18</property>
-                <property name="margin-end">18</property>
-                <property name="margin-top">16</property>
-                <property name="margin-bottom">10</property>
+                <property name="margin-start">20</property>
+                <property name="margin-end">20</property>
+                <property name="margin-top">12</property>
+                <property name="margin-bottom">8</property>
                 <property name="xalign">0</property>
                 <property name="yalign">0</property>
                 <property name="wrap">False</property>
-                <property name="label" translatable="yes" context="startcenter|all_recent_label">最近文件</property>
+                <property name="label" translatable="yes" context="startcenter|all_recent_label">继续工作</property>
                 <property name="use-underline">False</property>
                 <property name="mnemonic-widget">all_recent</property>
                 <attributes>
@@ -595,14 +662,14 @@
               <object class="GtkLabel" id="local_view_label">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="margin-start">18</property>
-                <property name="margin-end">18</property>
-                <property name="margin-top">16</property>
-                <property name="margin-bottom">10</property>
+                <property name="margin-start">20</property>
+                <property name="margin-end">20</property>
+                <property name="margin-top">12</property>
+                <property name="margin-bottom">8</property>
                 <property name="xalign">0</property>
                 <property name="yalign">0</property>
                 <property name="wrap">False</property>
-                <property name="label" translatable="yes" context="startcenter|local_view_label">工作台</property>
+                <property name="label" translatable="yes" context="startcenter|local_view_label">模板</property>
                 <property name="use-underline">False</property>
                 <property name="mnemonic-widget">local_view</property>
                 <attributes>
@@ -621,9 +688,9 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="orientation">vertical</property>
-                <property name="spacing">10</property>
-                <property name="margin-start">18</property>
-                <property name="margin-end">18</property>
+                <property name="spacing">8</property>
+                <property name="margin-start">20</property>
+                <property name="margin-end">20</property>
                 <property name="margin-top">0</property>
                 <property name="margin-bottom">12</property>
                 <child>
@@ -632,8 +699,8 @@
                     <property name="can-focus">False</property>
                     <property name="margin-bottom">2</property>
                     <property name="xalign">0</property>
-                    <property name="label" translatable="yes" context="startcenter|scenario_label">常用任务</property>
-                    <property name="mnemonic-widget">scenario_report</property>
+                    <property name="label" translatable="yes" context="startcenter|scenario_label">浏览模板</property>
+                    <property name="mnemonic-widget">template_market_tree</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -643,13 +710,12 @@
                 </child>
                 <child>
                   <object class="GtkLabel" id="scenario_subtitle">
-                    <property name="visible">False</property>
+                    <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="no-show-all">True</property>
-                    <property name="margin-bottom">4</property>
+                    <property name="margin-bottom">8</property>
                     <property name="xalign">0</property>
                     <property name="wrap">True</property>
-                    <property name="label" translatable="yes" context="startcenter|scenario_subtitle">选择任务模板。</property>
+                    <property name="label" translatable="yes" context="startcenter|scenario_subtitle">搜索或按分类浏览（文字 / 表格 / 演示）</property>
                     <attributes>
                       <attribute name="scale" value="0.92"/>
                       <attribute name="foreground-alpha" value="75%"/>
@@ -664,6 +730,141 @@
                     <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox" id="template_market_toolbar">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="spacing">10</property>
+                    <property name="orientation">horizontal</property>
+                    <property name="margin-bottom">8</property>
+                    <child>
+                      <object class="GtkEntry" id="template_search">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="placeholder-text" translatable="yes" context="startcenter|template_search">搜索模板（如：汇报、预算、路演、报销）</property>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="template_search-atkobject">
+                            <property name="AtkObject::accessible-name" translatable="yes" context="startcenter|template_search">搜索模板</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBoxText" id="template_category">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="width-request">160</property>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="template_category-atkobject">
+                            <property name="AtkObject::accessible-name" translatable="yes" context="startcenter|template_category">模板分类</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow" id="template_market_scroll">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">False</property>
+                    <property name="height-request">220</property>
+                    <property name="shadow-type">in</property>
+                    <property name="margin-bottom">10</property>
+                    <child>
+                      <object class="GtkTreeView" id="template_market_tree">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="headers-visible">True</property>
+                        <property name="enable-search">True</property>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="template_market_tree-atkobject">
+                            <property name="AtkObject::accessible-name" translatable="yes" context="startcenter|template_market_tree">模板列表</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="tm_col_title">
+                            <property name="title" translatable="yes" context="startcenter|tm_col_title">模板</property>
+                            <property name="expand">True</property>
+                            <property name="resizable">True</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="tm_cell_title"/>
+                              <attributes>
+                                <attribute name="text">0</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="tm_col_type">
+                            <property name="title" translatable="yes" context="startcenter|tm_col_type">类型</property>
+                            <property name="resizable">True</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="tm_cell_type"/>
+                              <attributes>
+                                <attribute name="text">1</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="tm_col_desc">
+                            <property name="title" translatable="yes" context="startcenter|tm_col_desc">说明</property>
+                            <property name="expand">True</property>
+                            <property name="resizable">True</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="tm_cell_desc"/>
+                              <attributes>
+                                <attribute name="text">2</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="template_market_hint">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="margin-bottom">6</property>
+                    <property name="label" translatable="yes" context="startcenter|template_market_hint">办公模板快捷入口（本地文档骨架，非业务系统）</property>
+                    <property name="mnemonic-widget">scenario_report</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                      <attribute name="scale" value="0.9"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">4</property>
                   </packing>
                 </child>
                 <child>
@@ -951,7 +1152,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">2</property>
+                    <property name="position">5</property>
                   </packing>
                 </child>
                 <child>
@@ -1111,6 +1312,457 @@
                 <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="position">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox" id="file_workbench_box">
+                <property name="visible">False</property>
+                <property name="can-focus">False</property>
+                <property name="no-show-all">True</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">8</property>
+                <property name="margin-start">26</property>
+                <property name="margin-end">26</property>
+                <property name="margin-top">14</property>
+                <property name="margin-bottom">18</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <child>
+                  <object class="GtkLabel" id="file_workbench_label">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes" context="startcenter|file_workbench_label">本地文件</property>
+                    <property name="mnemonic-widget">file_workbench_tree</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                      <attribute name="scale" value="1.08"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="file_workbench_hint">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="wrap">True</property>
+                    <property name="label" translatable="yes" context="startcenter|file_workbench_hint">仅索引您授权的目录；默认不联网、不扫描全盘。网络发送需另行确认（对标安全办公）。</property>
+                    <property name="mnemonic-widget">file_workbench_search</property>
+                    <attributes>
+                      <attribute name="scale" value="0.92"/>
+                      <attribute name="foreground-alpha" value="75%"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox" id="file_workbench_toolbar">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="spacing">8</property>
+                    <property name="orientation">horizontal</property>
+                    <child>
+                      <object class="GtkEntry" id="file_workbench_search">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="placeholder-text" translatable="yes" context="startcenter|file_workbench_search">搜索文件名、路径或类型…</property>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="file_workbench_authorize">
+                        <property name="label" translatable="yes" context="startcenter|file_workbench_authorize">授权目录…</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="file_workbench_revoke">
+                        <property name="label" translatable="yes" context="startcenter|file_workbench_revoke">撤销所选目录</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|file_workbench_revoke_tip">从下方「已授权目录」列表撤销选中项；不会删除磁盘文件</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="file_workbench_network_revoke">
+                        <property name="label" translatable="yes" context="startcenter|file_workbench_network_revoke">关闭网络授权</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|file_workbench_network_revoke_tip">撤销 AI 外发网络权限；默认关闭，发送前仍会确认</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="file_workbench_refresh">
+                        <property name="label" translatable="yes" context="startcenter|file_workbench_refresh">刷新</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="file_workbench_pin">
+                        <property name="label" translatable="yes" context="startcenter|file_workbench_pin">置顶</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="file_workbench_tag">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="width-chars">10</property>
+                        <property name="placeholder-text" translatable="yes" context="startcenter|file_workbench_tag_ph">标签，如 项目A</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|file_workbench_tag_tip">为选中文件设置本地标签；搜索可用 tag:标签 或 project:项目名</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">6</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="file_workbench_tag_btn">
+                        <property name="label" translatable="yes" context="startcenter|file_workbench_tag_btn">打标签</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|file_workbench_tag_btn_tip">将左侧标签写入选中文件（本地元数据，不改文件内容）</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">7</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="file_workbench_open">
+                        <property name="label" translatable="yes" context="startcenter|file_workbench_open">打开</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">8</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="file_workbench_delete">
+                        <property name="label" translatable="yes" context="startcenter|file_workbench_delete">移入回收站</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|file_workbench_delete_tip">将选中文件移入产品回收站（软删除，需确认权限）</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">9</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="file_workbench_export_pdf">
+                        <property name="label" translatable="yes" context="startcenter|file_workbench_export_pdf">导出 PDF</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|file_workbench_export_pdf_tip">将选中文件批量导出为 PDF（本地转换，需确认权限；单次≤20 个）</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">10</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="file_workbench_export_office">
+                        <property name="label" translatable="yes" context="startcenter|file_workbench_export_office">批量转 Office</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|file_workbench_export_office_tip">将选中文件批量转为 DOCX/XLSX/PPTX（按类型推断，需确认权限；单次≤20 个）</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">11</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="file_workbench_status">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes" context="startcenter|file_workbench_status">尚未授权目录</property>
+                    <property name="mnemonic-widget">file_workbench_refresh</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox" id="file_workbench_perms_box">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">4</property>
+                    <child>
+                      <object class="GtkLabel" id="file_workbench_perms_label">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes" context="startcenter|file_workbench_perms_label">权限中心 · 已授权目录 / 网络 / 麦克风 / 截图</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                          <attribute name="scale" value="0.95"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="file_workbench_network_status">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="xalign">0</property>
+                        <property name="wrap">True</property>
+                        <property name="label" translatable="yes" context="startcenter|file_workbench_network_status">网络外发：未请求 · 默认关闭，发送前会确认并披露</property>
+                        <attributes>
+                          <attribute name="scale" value="0.92"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="file_workbench_cap_status">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="xalign">0</property>
+                        <property name="wrap">True</property>
+                        <property name="label" translatable="yes" context="startcenter|file_workbench_cap_status">麦克风：使用时系统会询问 · 屏幕截图：使用时系统会询问</property>
+                        <attributes>
+                          <attribute name="scale" value="0.92"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="file_workbench_risk_hint">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="xalign">0</property>
+                        <property name="wrap">True</property>
+                        <property name="label" translatable="yes" context="startcenter|file_workbench_risk_hint">删除/覆盖仍须确认：拒绝 / 仅本次 / 本轮对话均允许</property>
+                        <attributes>
+                          <attribute name="scale" value="0.90"/>
+                          <attribute name="foreground-alpha" value="80%"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkScrolledWindow" id="file_workbench_auth_scroll">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">False</property>
+                        <property name="height-request">96</property>
+                        <property name="shadow-type">in</property>
+                        <child>
+                          <object class="GtkTreeView" id="file_workbench_auth_tree">
+                            <property name="visible">True</property>
+                            <property name="can-focus">True</property>
+                            <property name="hexpand">True</property>
+                            <property name="headers-visible">True</property>
+                            <child internal-child="accessible">
+                              <object class="AtkObject" id="file_workbench_auth_tree-atkobject">
+                                <property name="AtkObject::accessible-name" translatable="yes" context="startcenter|file_workbench_auth_tree">已授权目录列表</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkTreeViewColumn" id="fw_auth_col_path">
+                                <property name="title" translatable="yes" context="startcenter|fw_auth_col_path">目录</property>
+                                <property name="resizable">True</property>
+                                <property name="expand">True</property>
+                                <child>
+                                  <object class="GtkCellRendererText" id="fw_auth_cell_path"/>
+                                  <attributes>
+                                    <attribute name="text">0</attribute>
+                                  </attributes>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkTreeViewColumn" id="fw_auth_col_scope">
+                                <property name="title" translatable="yes" context="startcenter|fw_auth_col_scope">范围</property>
+                                <property name="resizable">True</property>
+                                <child>
+                                  <object class="GtkCellRendererText" id="fw_auth_cell_scope"/>
+                                  <attributes>
+                                    <attribute name="text">1</attribute>
+                                  </attributes>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">4</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow" id="file_workbench_scroll">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                    <property name="shadow-type">in</property>
+                    <child>
+                      <object class="GtkTreeView" id="file_workbench_tree">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="headers-visible">True</property>
+                        <property name="enable-search">True</property>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="file_workbench_tree-atkobject">
+                            <property name="AtkObject::accessible-name" translatable="yes" context="startcenter|file_workbench_tree">授权目录文件列表</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="fw_col_name">
+                            <property name="title" translatable="yes" context="startcenter|fw_col_name">名称</property>
+                            <property name="resizable">True</property>
+                            <property name="expand">True</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="fw_cell_name"/>
+                              <attributes>
+                                <attribute name="text">0</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="fw_col_type">
+                            <property name="title" translatable="yes" context="startcenter|fw_col_type">类型</property>
+                            <property name="resizable">True</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="fw_cell_type"/>
+                              <attributes>
+                                <attribute name="text">1</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="fw_col_meta">
+                            <property name="title" translatable="yes" context="startcenter|fw_col_meta">标记</property>
+                            <property name="resizable">True</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="fw_cell_meta"/>
+                              <attributes>
+                                <attribute name="text">2</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="fw_col_path">
+                            <property name="title" translatable="yes" context="startcenter|fw_col_path">路径</property>
+                            <property name="resizable">True</property>
+                            <property name="expand">True</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="fw_cell_path"/>
+                              <attributes>
+                                <attribute name="text">3</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">5</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">6</property>
               </packing>
             </child>
           </object>

@@ -37,6 +37,11 @@
 #include <memory>
 #include <vector>
 
+#if defined(MACOSX) || defined(LINUX) || defined(FREEBSD) || defined(NETBSD) || defined(OPENBSD) \
+    || defined(DRAGONFLY) || defined(ANDROID) || defined(EMSCRIPTEN)
+#include <dlfcn.h>
+#endif
+
 namespace sfx2
 {
 namespace
@@ -113,8 +118,9 @@ public:
 
         m_xPreview->set_editable(false);
         m_xAccept->set_sensitive(false);
-        m_xAccept->set_label(u"应用 (Tab)"_ustr);
-        m_xReject->set_label(u"关闭 (Esc)"_ustr);
+        // Align with sidebar 审核 chain vocabulary (批准写回 / 拒绝).
+        m_xAccept->set_label(u"批准写回 (Tab)"_ustr);
+        m_xReject->set_label(u"拒绝 (Esc)"_ustr);
         configureSurfaceChips();
 
         if (m_eMode == InlineMode::Complete)
@@ -133,9 +139,9 @@ public:
             m_xInstruction->set_text(u"自然续写当前段落，只输出续写正文。"_ustr);
             m_sCapability = u"background"_ustr; // light slot
             m_xStatus->set_label(
-                u"👻 幽灵灰字预览 · light 槽生成中… · Tab 写入 · Esc 放弃（批准前不改主文档）"_ustr);
-            m_xAccept->set_label(u"Tab 接受"_ustr);
-            m_xReject->set_label(u"Esc 放弃"_ustr);
+                u"👻 幽灵灰字预览 · light 槽生成中… · Tab 批准写回 · Esc 拒绝（批准前不改主文档）"_ustr);
+            m_xAccept->set_label(u"批准写回 (Tab)"_ustr);
+            m_xReject->set_label(u"拒绝 (Esc)"_ustr);
             m_aAutoGen.SetTimeout(180);
             m_aAutoGen.SetInvokeHandler(LINK(this, AIInlineEditPopover, OnAutoGenerate));
         }
@@ -144,7 +150,7 @@ public:
             if (m_xGhostBanner)
                 m_xGhostBanner->set_visible(false);
             m_xStatus->set_label(
-                u"Ctrl/Cmd+K · Enter 生成 · Tab 应用 · Esc 关闭 · 下方可自动补全方案"_ustr);
+                u"Ctrl/Cmd+K · Enter 生成 · Tab 批准写回 · Esc 拒绝 · 与侧栏同一审批语义"_ustr);
         }
     }
 
@@ -247,7 +253,7 @@ void AIInlineEditPopover::configureSurfaceChips()
         m_xChipEn->set_label(u"译英"_ustr);
         m_xChipComplete->set_label(u"续写"_ustr);
         m_xInstruction->set_placeholder_text(
-            u"演示：本页改写 / 讲稿 / 大纲成片… 或点芯片（Enter 生成）"_ustr);
+            u"演示：本页改写 / 讲稿 / 大纲…（禁止一键黑盒成片；Enter 生成）"_ustr);
     }
     else
     {
@@ -257,7 +263,7 @@ void AIInlineEditPopover::configureSurfaceChips()
         m_xChipEn->set_label(u"译英"_ustr);
         m_xChipComplete->set_label(u"续写"_ustr);
         m_xInstruction->set_placeholder_text(
-            u"文字：描述修改，或选芯片/方案…（Enter 生成 · Tab 应用）"_ustr);
+            u"文字：描述修改，或选芯片/方案…（Enter 生成 · Tab 批准写回）"_ustr);
     }
 }
 
@@ -420,7 +426,7 @@ void AIInlineEditPopover::updatePreviewDisplay()
         b.append(oldP);
         b.append(u"\n\n【建议 · 未写入主文档】\n"_ustr);
         b.append(m_sPreviewText);
-        b.append(u"\n\n── Tab 应用写回 · Esc 关闭 ──"_ustr);
+        b.append(u"\n\n── Tab 批准写回 · Esc 拒绝 ──"_ustr);
         m_xPreview->set_text(b.makeStringAndClear());
     }
     else
@@ -437,7 +443,7 @@ void AIInlineEditPopover::updatePreviewDisplay()
             b.append(ctx);
         b.append(u"\n\n【幽灵灰字 · 未写入】\n"_ustr);
         b.append(m_sPreviewText);
-        b.append(u"\n\n── Tab 接受写入 · Esc 放弃 ──"_ustr);
+        b.append(u"\n\n── Tab 批准写回 · Esc 拒绝 ──"_ustr);
         m_xPreview->set_text(b.makeStringAndClear());
     }
 }
@@ -579,11 +585,11 @@ void AIInlineEditPopover::generate()
     {
         m_xGhostBanner->set_visible(m_eMode == InlineMode::Complete);
         m_xGhostBanner->set_label(
-            u"✓ 预览就绪 · 灰字未写入 · Tab 应用 · Esc 放弃"_ustr);
+            u"✓ 预览就绪 · 灰字未写入 · Tab 批准写回 · Esc 拒绝"_ustr);
     }
     m_xStatus->set_label(u"生成完成 · ③ 预览 "_ustr
                          + OUString::number(m_sPreviewText.getLength())
-                         + u" 字 · Tab 应用写回 · Esc 关闭 · 证据="_ustr
+                         + u" 字 · Tab 批准写回 · Esc 拒绝 · 证据="_ustr
                          + (rsp.evidenceId.isEmpty() ? u"—"_ustr : rsp.evidenceId));
 }
 
@@ -668,7 +674,7 @@ bool AIInlineEditPopover::applyPreview()
         plan.operations.push_back(op);
     }
 
-    // Tab / 应用 = explicit human approval
+    // Tab / 批准写回 = explicit human approval (same chain as sidebar DiffReview).
     const auto result
         = kqoffice::ai::chat::DocumentAIApply::applyApprovedWithRawFallback(plan, m_sPreviewText);
     if (!result.success)
@@ -678,8 +684,27 @@ bool AIInlineEditPopover::applyPreview()
                              + u" · 主文档未改 · 可改指令后重试"_ustr);
         return false;
     }
-    m_xStatus->set_label(u"已写入正文 · 可撤销（Ctrl/Cmd+Z）· engine="_ustr
-                         + result.engine + u" · surface="_ustr + m_aSel.surface);
+    // Open shared DiffReview deck when available (writer-apply-engine opens its own).
+    if (result.engine != u"writer-apply-engine"_ustr && m_xPreview)
+    {
+#if defined(MACOSX) || defined(LINUX) || defined(FREEBSD) || defined(NETBSD) || defined(OPENBSD) \
+    || defined(DRAGONFLY) || defined(ANDROID) || defined(EMSCRIPTEN)
+        using ShowFn = void (*)(void*, const sal_Unicode*, sal_Int32, const sal_Unicode*, sal_Int32,
+                                const sal_Unicode*, sal_Int32, const sal_Unicode*, sal_Int32, sal_Bool);
+        if (void* pSym = dlsym(RTLD_DEFAULT, "kqoffice_show_diff_review"))
+        {
+            auto pFn = reinterpret_cast<ShowFn>(pSym);
+            const OUString patchId = u"p1"_ustr;
+            const OUString kind = u"replace"_ustr;
+            const OUString status = u"ok"_ustr;
+            pFn(m_xPreview.get(), plan.planId.getStr(), plan.planId.getLength(), patchId.getStr(),
+                patchId.getLength(), kind.getStr(), kind.getLength(), status.getStr(),
+                status.getLength(), sal_True);
+        }
+#endif
+    }
+    m_xStatus->set_label(u"已批准写回 · 可撤销（Ctrl/Cmd+Z）· 差异审阅已打开 · "_ustr
+                         + result.engine + u" · "_ustr + m_aSel.surface);
     return true;
 }
 

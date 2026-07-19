@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="DocRecoveryProgressDialog">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
-    <property name="title" translatable="yes" context="docrecoveryprogressdialog|DocRecoveryProgressDialog">Documents Are Being Saved</property>
+    <property name="title" translatable="yes" context="docrecoveryprogressdialog|DocRecoveryProgressDialog">正在保存文档</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="default_width">0</property>
@@ -45,7 +45,7 @@
               <object class="GtkLabel" id="label2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes" context="docrecoveryprogressdialog|label2">Progress of saving:</property>
+                <property name="label" translatable="yes" context="docrecoveryprogressdialog|label2">保存进度：</property>
                 <property name="use_underline">True</property>
                 <property name="xalign">0</property>
               </object>

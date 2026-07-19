@@ -28,12 +28,16 @@
 #include <osl/thread.hxx>
 
 #include <atomic>
+#include <cstdio>
 #include <cstdlib>
 #include <memory>
+#include <string_view>
 #include <unistd.h>
 
 #include "AsyncTask.hxx"
 #include "CoworkUiBridge.hxx"
+#include "ScheduledTask.hxx"
+#include "ScheduledTaskDispatcher.hxx"
 #include "TaskNativeOsNotificationBackend.hxx"
 #include "TaskOsNotificationBridge.hxx"
 #include "TaskQueue.hxx"
@@ -68,6 +72,35 @@ public:
     }
 
     const OString& path() const { return m_dir; }
+
+private:
+    OString m_dir;
+};
+
+// RAII: pin KQOFFICE_AI_SCHEDULED_TASKS_DIR to a fresh mkdtemp dir.
+class ScopedScheduledTasksDir
+{
+public:
+    ScopedScheduledTasksDir()
+    {
+        char templ[] = "/tmp/kqoffice-st-XXXXXX";
+        const char* dir = ::mkdtemp(templ);
+        if (dir)
+        {
+            m_dir = OString(dir);
+            ::setenv("KQOFFICE_AI_SCHEDULED_TASKS_DIR", dir, 1);
+        }
+    }
+    ~ScopedScheduledTasksDir()
+    {
+        ::unsetenv("KQOFFICE_AI_SCHEDULED_TASKS_DIR");
+    }
+
+    const OString& path() const { return m_dir; }
+    OUString pathOu() const
+    {
+        return OUString::fromUtf8(m_dir);
+    }
 
 private:
     OString m_dir;
@@ -135,6 +168,13 @@ public:
     void testRunnerCancellationToken();
     void testRunnerThreadIdTracking();
     void testCoworkParallelismOptimalCount();
+    void testScheduledTaskKindAndStatusLabelsZh();
+    void testScheduledTaskComputeNextRun();
+    void testScheduledTaskUpsertListRemove();
+    void testScheduledTaskDueAndMarkRun();
+    void testScheduledTaskTickHeadless();
+    void testScheduledTaskDispatcherProcessDue();
+    void testScheduledTaskDispatcherDispatchNow();
 
     CPPUNIT_TEST_SUITE(CowoekTest);
     CPPUNIT_TEST(testTaskKindRoundTrip);
@@ -193,6 +233,13 @@ public:
     CPPUNIT_TEST(testRunnerCancellationToken);
     CPPUNIT_TEST(testRunnerThreadIdTracking);
     CPPUNIT_TEST(testCoworkParallelismOptimalCount);
+    CPPUNIT_TEST(testScheduledTaskKindAndStatusLabelsZh);
+    CPPUNIT_TEST(testScheduledTaskComputeNextRun);
+    CPPUNIT_TEST(testScheduledTaskUpsertListRemove);
+    CPPUNIT_TEST(testScheduledTaskDueAndMarkRun);
+    CPPUNIT_TEST(testScheduledTaskTickHeadless);
+    CPPUNIT_TEST(testScheduledTaskDispatcherProcessDue);
+    CPPUNIT_TEST(testScheduledTaskDispatcherDispatchNow);
     CPPUNIT_TEST_SUITE_END();
 };
 
@@ -2217,6 +2264,345 @@ void CowoekTest::testCoworkParallelismOptimalCount()
     sal_Int32 n = optimalCoworkParallelism();
     CPPUNIT_ASSERT(n >= 1);
     CPPUNIT_ASSERT(n <= 4);
+}
+
+void CowoekTest::testScheduledTaskKindAndStatusLabelsZh()
+{
+    CPPUNIT_ASSERT_EQUAL(u"单次"_ustr, ScheduledTaskStore::kindLabelZh(ScheduleKind::Once));
+    CPPUNIT_ASSERT_EQUAL(u"间隔"_ustr,
+                         ScheduledTaskStore::kindLabelZh(ScheduleKind::IntervalMinutes));
+    CPPUNIT_ASSERT_EQUAL(u"每日"_ustr, ScheduledTaskStore::kindLabelZh(ScheduleKind::DailyAt));
+
+    ScheduledTask t;
+    t.enabled = false;
+    t.kind = ScheduleKind::Once;
+    t.lastRunAtMs = 1000;
+    CPPUNIT_ASSERT_EQUAL(u"已完成(单次)"_ustr, ScheduledTaskStore::statusLabelZh(t, 2000));
+
+    t.enabled = false;
+    t.lastRunAtMs = 0;
+    CPPUNIT_ASSERT_EQUAL(u"已禁用"_ustr, ScheduledTaskStore::statusLabelZh(t, 2000));
+
+    t.enabled = true;
+    t.nextRunAtMs = 0;
+    CPPUNIT_ASSERT_EQUAL(u"未排程"_ustr, ScheduledTaskStore::statusLabelZh(t, 2000));
+
+    t.nextRunAtMs = 1500;
+    CPPUNIT_ASSERT_EQUAL(u"已到期"_ustr, ScheduledTaskStore::statusLabelZh(t, 2000));
+
+    t.nextRunAtMs = 3000;
+    CPPUNIT_ASSERT_EQUAL(u"待执行"_ustr, ScheduledTaskStore::statusLabelZh(t, 2000));
+}
+
+void CowoekTest::testScheduledTaskComputeNextRun()
+{
+    ScheduledTask once;
+    once.kind = ScheduleKind::Once;
+    once.nextRunAtMs = 5000;
+    CPPUNIT_ASSERT_EQUAL(sal_Int64(5000), ScheduledTaskStore::computeNextRun(once, 1000));
+    CPPUNIT_ASSERT_EQUAL(sal_Int64(0), ScheduledTaskStore::computeNextRun(once, 5000));
+    CPPUNIT_ASSERT_EQUAL(sal_Int64(0), ScheduledTaskStore::computeNextRun(once, 6000));
+
+    ScheduledTask interval;
+    interval.kind = ScheduleKind::IntervalMinutes;
+    interval.intervalMinutes = 30;
+    interval.nextRunAtMs = 0;
+    const sal_Int64 now = 1'000'000;
+    CPPUNIT_ASSERT_EQUAL(now + 30 * 60 * 1000,
+                         ScheduledTaskStore::computeNextRun(interval, now));
+    interval.nextRunAtMs = now + 1000;
+    CPPUNIT_ASSERT_EQUAL(now + 1000, ScheduledTaskStore::computeNextRun(interval, now));
+
+    interval.intervalMinutes = 0;
+    interval.nextRunAtMs = 0;
+    CPPUNIT_ASSERT_EQUAL(sal_Int64(0), ScheduledTaskStore::computeNextRun(interval, now));
+
+    ScheduledTask daily;
+    daily.kind = ScheduleKind::DailyAt;
+    daily.dailyHour = 9;
+    daily.dailyMinute = 30;
+    const sal_Int64 next = ScheduledTaskStore::computeNextRun(daily, now);
+    CPPUNIT_ASSERT(next >= now);
+    // Next daily slot should be within ~25h of now.
+    CPPUNIT_ASSERT(next - now <= sal_Int64(25) * 60 * 60 * 1000);
+}
+
+void CowoekTest::testScheduledTaskUpsertListRemove()
+{
+    ScopedScheduledTasksDir scope;
+    ScheduledTaskStore store(scope.pathOu());
+
+    ScheduledTask t;
+    t.id = u"st-demo-001"_ustr;
+    t.titleZh = u"每日晨会摘要"_ustr;
+    t.promptOrScenarioId = u"scenario-morning-brief"_ustr;
+    t.kind = ScheduleKind::IntervalMinutes;
+    t.intervalMinutes = 15;
+    t.enabled = true;
+    t.nextRunAtMs = 0;
+
+    CPPUNIT_ASSERT(store.upsert(t));
+    CPPUNIT_ASSERT(!t.id.isEmpty());
+    // Interval with next=0 should get a computed next on upsert.
+    CPPUNIT_ASSERT(t.nextRunAtMs > 0);
+
+    auto all = store.list();
+    CPPUNIT_ASSERT_EQUAL(size_t(1), all.size());
+    CPPUNIT_ASSERT_EQUAL(u"st-demo-001"_ustr, all[0].id);
+    CPPUNIT_ASSERT_EQUAL(u"每日晨会摘要"_ustr, all[0].titleZh);
+    CPPUNIT_ASSERT(all[0].kind == ScheduleKind::IntervalMinutes);
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(15), all[0].intervalMinutes);
+
+    ScheduledTask loaded;
+    CPPUNIT_ASSERT(store.get(u"st-demo-001"_ustr, loaded));
+    CPPUNIT_ASSERT_EQUAL(u"scenario-morning-brief"_ustr, loaded.promptOrScenarioId);
+
+    // Update title via upsert
+    loaded.titleZh = u"晨会改名"_ustr;
+    CPPUNIT_ASSERT(store.upsert(loaded));
+    ScheduledTask loaded2;
+    CPPUNIT_ASSERT(store.get(u"st-demo-001"_ustr, loaded2));
+    CPPUNIT_ASSERT_EQUAL(u"晨会改名"_ustr, loaded2.titleZh);
+
+    CPPUNIT_ASSERT(store.setEnabled(u"st-demo-001"_ustr, false));
+    CPPUNIT_ASSERT(store.get(u"st-demo-001"_ustr, loaded2));
+    CPPUNIT_ASSERT(!loaded2.enabled);
+
+    CPPUNIT_ASSERT(store.remove(u"st-demo-001"_ustr));
+    CPPUNIT_ASSERT_EQUAL(size_t(0), store.list().size());
+    CPPUNIT_ASSERT(!store.get(u"st-demo-001"_ustr, loaded2));
+}
+
+void CowoekTest::testScheduledTaskDueAndMarkRun()
+{
+    ScopedScheduledTasksDir scope;
+    ScheduledTaskStore store(scope.pathOu());
+
+    const sal_Int64 now = 1'700'000'000'000LL;
+
+    ScheduledTask once;
+    once.id = u"st-once-due"_ustr;
+    once.titleZh = u"单次任务"_ustr;
+    once.promptOrScenarioId = u"do-once"_ustr;
+    once.kind = ScheduleKind::Once;
+    once.nextRunAtMs = now - 1000;
+    once.enabled = true;
+    CPPUNIT_ASSERT(store.upsert(once));
+
+    ScheduledTask future;
+    future.id = u"st-future"_ustr;
+    future.titleZh = u"未到期"_ustr;
+    future.promptOrScenarioId = u"later"_ustr;
+    future.kind = ScheduleKind::Once;
+    future.nextRunAtMs = now + 60'000;
+    future.enabled = true;
+    CPPUNIT_ASSERT(store.upsert(future));
+
+    ScheduledTask disabled;
+    disabled.id = u"st-disabled"_ustr;
+    disabled.titleZh = u"禁用"_ustr;
+    disabled.promptOrScenarioId = u"nope"_ustr;
+    disabled.kind = ScheduleKind::Once;
+    disabled.nextRunAtMs = now - 1000;
+    disabled.enabled = false;
+    CPPUNIT_ASSERT(store.upsert(disabled));
+
+    auto due = store.dueTasks(now);
+    CPPUNIT_ASSERT_EQUAL(size_t(1), due.size());
+    CPPUNIT_ASSERT_EQUAL(u"st-once-due"_ustr, due[0].id);
+
+    CPPUNIT_ASSERT(store.markRun(u"st-once-due"_ustr, true, u"执行成功"_ustr, now));
+    ScheduledTask after;
+    CPPUNIT_ASSERT(store.get(u"st-once-due"_ustr, after));
+    CPPUNIT_ASSERT(!after.enabled);
+    CPPUNIT_ASSERT_EQUAL(sal_Int64(0), after.nextRunAtMs);
+    CPPUNIT_ASSERT_EQUAL(now, after.lastRunAtMs);
+    CPPUNIT_ASSERT_EQUAL(u"执行成功"_ustr, after.lastResultZh);
+    CPPUNIT_ASSERT_EQUAL(size_t(0), store.dueTasks(now).size());
+
+    // Interval markRun advances next.
+    ScheduledTask interval;
+    interval.id = u"st-interval"_ustr;
+    interval.titleZh = u"间隔任务"_ustr;
+    interval.promptOrScenarioId = u"every-10"_ustr;
+    interval.kind = ScheduleKind::IntervalMinutes;
+    interval.intervalMinutes = 10;
+    interval.nextRunAtMs = now - 1;
+    interval.enabled = true;
+    CPPUNIT_ASSERT(store.upsert(interval));
+    CPPUNIT_ASSERT(store.markRun(u"st-interval"_ustr, false, u"失败重试"_ustr, now));
+    ScheduledTask afterInt;
+    CPPUNIT_ASSERT(store.get(u"st-interval"_ustr, afterInt));
+    CPPUNIT_ASSERT(afterInt.enabled);
+    CPPUNIT_ASSERT_EQUAL(now + 10 * 60 * 1000, afterInt.nextRunAtMs);
+    CPPUNIT_ASSERT_EQUAL(u"失败重试"_ustr, afterInt.lastResultZh);
+}
+
+void CowoekTest::testScheduledTaskTickHeadless()
+{
+    ScopedScheduledTasksDir scope;
+    ScheduledTaskStore store(scope.pathOu());
+
+    const sal_Int64 now = 1'700'000'100'000LL;
+
+    ScheduledTask a;
+    a.id = u"st-tick-a"_ustr;
+    a.titleZh = u"A"_ustr;
+    a.promptOrScenarioId = u"prompt-a"_ustr;
+    a.kind = ScheduleKind::Once;
+    a.nextRunAtMs = now;
+    a.enabled = true;
+    CPPUNIT_ASSERT(store.upsert(a));
+
+    ScheduledTask b;
+    b.id = u"st-tick-b"_ustr;
+    b.titleZh = u"B"_ustr;
+    b.promptOrScenarioId = u"prompt-b"_ustr;
+    b.kind = ScheduleKind::Once;
+    b.nextRunAtMs = now + 1;
+    b.enabled = true;
+    CPPUNIT_ASSERT(store.upsert(b));
+
+    const auto ids = store.tick(now);
+    CPPUNIT_ASSERT_EQUAL(size_t(1), ids.size());
+    CPPUNIT_ASSERT_EQUAL(u"st-tick-a"_ustr, ids[0]);
+
+    // tick must not mutate state (still due after tick).
+    CPPUNIT_ASSERT_EQUAL(size_t(1), store.dueTasks(now).size());
+    ScheduledTask still;
+    CPPUNIT_ASSERT(store.get(u"st-tick-a"_ustr, still));
+    CPPUNIT_ASSERT(still.enabled);
+    CPPUNIT_ASSERT_EQUAL(now, still.nextRunAtMs);
+}
+
+void CowoekTest::testScheduledTaskDispatcherProcessDue()
+{
+    ScopedScheduledTasksDir scope;
+    ScheduledTaskStore store(scope.pathOu());
+
+    // Isolate inject path away from the real ~/.config file.
+    char injectTempl[] = "/tmp/kqoffice-inject-XXXXXX";
+    const char* injectDir = ::mkdtemp(injectTempl);
+    CPPUNIT_ASSERT(injectDir != nullptr);
+    const OString injectPath = OString(injectDir) + "/pending-prompt-inject";
+    ::setenv("KQOFFICE_AI_PENDING_PROMPT_INJECT", injectPath.getStr(), 1);
+
+    const sal_Int64 now = 1'700'000'200'000LL;
+
+    ScheduledTask due;
+    due.id = u"st-disp-due"_ustr;
+    due.titleZh = u"晨会摘要"_ustr;
+    due.promptOrScenarioId = u"summarize-morning-notes"_ustr;
+    due.kind = ScheduleKind::Once;
+    due.nextRunAtMs = now - 500;
+    due.enabled = true;
+    CPPUNIT_ASSERT(store.upsert(due));
+
+    ScheduledTask future;
+    future.id = u"st-disp-future"_ustr;
+    future.titleZh = u"未到期"_ustr;
+    future.promptOrScenarioId = u"later-prompt"_ustr;
+    future.kind = ScheduleKind::Once;
+    future.nextRunAtMs = now + 60'000;
+    future.enabled = true;
+    CPPUNIT_ASSERT(store.upsert(future));
+
+    InMemoryTaskOsNotificationSink osSink;
+    ScheduledTaskDispatcher dispatcher(store);
+    dispatcher.setOsNotificationSink(&osSink);
+
+    const ScheduledDispatchResult result = dispatcher.processDue(now);
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(1), result.dueCount);
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(1), result.dispatched);
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(0), result.failed);
+    CPPUNIT_ASSERT(result.lastMessageZh.indexOf(u"已到期并注入"_ustr) >= 0);
+
+    // Once task disabled after successful dispatch.
+    ScheduledTask after;
+    CPPUNIT_ASSERT(store.get(u"st-disp-due"_ustr, after));
+    CPPUNIT_ASSERT(!after.enabled);
+    CPPUNIT_ASSERT_EQUAL(now, after.lastRunAtMs);
+    CPPUNIT_ASSERT_EQUAL(u"已到期并注入可圈 AI 待办"_ustr, after.lastResultZh);
+
+    // Inject file content.
+    const OUString injectText = ScheduledTaskDispatcher::buildInjectText(due);
+    CPPUNIT_ASSERT(injectText.startsWith(u"【定时任务】晨会摘要"_ustr));
+    CPPUNIT_ASSERT(injectText.indexOf(u"summarize-morning-notes"_ustr) >= 0);
+
+    // Read written file.
+    FILE* fp = std::fopen(injectPath.getStr(), "rb");
+    CPPUNIT_ASSERT(fp != nullptr);
+    char buf[1024] = {};
+    const size_t n = std::fread(buf, 1, sizeof(buf) - 1, fp);
+    std::fclose(fp);
+    const OUString written = OUString::fromUtf8(std::string_view(buf, n));
+    CPPUNIT_ASSERT_EQUAL(injectText, written);
+
+    // OS notification posted once.
+    const auto posts = osSink.snapshot();
+    CPPUNIT_ASSERT_EQUAL(size_t(1), posts.size());
+    CPPUNIT_ASSERT(posts[0].valid);
+    CPPUNIT_ASSERT_EQUAL(u"晨会摘要"_ustr, posts[0].title);
+
+    // Second processDue: nothing due.
+    const ScheduledDispatchResult empty = dispatcher.processDue(now);
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(0), empty.dueCount);
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(0), empty.dispatched);
+
+    ::unsetenv("KQOFFICE_AI_PENDING_PROMPT_INJECT");
+}
+
+void CowoekTest::testScheduledTaskDispatcherDispatchNow()
+{
+    ScopedScheduledTasksDir scope;
+    ScheduledTaskStore store(scope.pathOu());
+
+    char injectTempl[] = "/tmp/kqoffice-inject2-XXXXXX";
+    const char* injectDir = ::mkdtemp(injectTempl);
+    CPPUNIT_ASSERT(injectDir != nullptr);
+    const OString injectPath = OString(injectDir) + "/pending-prompt-inject";
+
+    const sal_Int64 now = 1'700'000'300'000LL;
+
+    ScheduledTask notDue;
+    notDue.id = u"st-force-run"_ustr;
+    notDue.titleZh = u"立即执行"_ustr;
+    notDue.promptOrScenarioId = u"run-now-prompt"_ustr;
+    notDue.kind = ScheduleKind::IntervalMinutes;
+    notDue.intervalMinutes = 60;
+    notDue.nextRunAtMs = now + 3600'000; // not due yet
+    notDue.enabled = true;
+    CPPUNIT_ASSERT(store.upsert(notDue));
+
+    ScheduledTaskDispatcher dispatcher(store);
+    dispatcher.setInjectPath(OUString::fromUtf8(injectPath));
+
+    // Force run ignores due check.
+    const ScheduledDispatchResult result = dispatcher.dispatchNow(u"st-force-run"_ustr, now);
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(1), result.dueCount);
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(1), result.dispatched);
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(0), result.failed);
+
+    ScheduledTask after;
+    CPPUNIT_ASSERT(store.get(u"st-force-run"_ustr, after));
+    CPPUNIT_ASSERT(after.enabled);
+    CPPUNIT_ASSERT_EQUAL(now, after.lastRunAtMs);
+    // Interval advanced from now.
+    CPPUNIT_ASSERT_EQUAL(now + 60 * 60 * 1000, after.nextRunAtMs);
+
+    // Missing id fails cleanly.
+    const ScheduledDispatchResult missing = dispatcher.dispatchNow(u"no-such"_ustr, now);
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(1), missing.failed);
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(0), missing.dispatched);
+
+    // Disabled without force fails.
+    CPPUNIT_ASSERT(store.setEnabled(u"st-force-run"_ustr, false));
+    const ScheduledDispatchResult disabled = dispatcher.dispatchNow(u"st-force-run"_ustr, now);
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(1), disabled.failed);
+
+    const ScheduledDispatchResult forced
+        = dispatcher.dispatchNow(u"st-force-run"_ustr, now + 1, /*forceEvenIfDisabled*/ true);
+    CPPUNIT_ASSERT_EQUAL(sal_Int32(1), forced.dispatched);
 }
 
 } // namespace

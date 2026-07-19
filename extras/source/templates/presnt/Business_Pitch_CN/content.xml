@@ -19,9 +19,7 @@
     <office:presentation>
       <draw:page draw:name="page1" draw:style-name="dp1" draw:master-page-name="Blue_5f_Curve" presentation:presentation-page-layout-name="AL1T19" presentation:use-date-time-name="dtd1">
         <office:forms form:automatic-focus="false" form:apply-design-mode="false"/>
-        <draw:frame presentation:style-name="Blue_5f_Curve-title" draw:layer="layout" svg:width="25cm" svg:height="3cm" svg:x="0cm" svg:y="4.5cm" presentation:class="title" presentation:placeholder="true" presentation:user-transformed="true">
-          <draw:text-box/>
-        </draw:frame>
+        <draw:frame presentation:style-name="Blue_5f_Curve-title" draw:layer="layout" svg:width="25cm" svg:height="3cm" svg:x="0cm" svg:y="4.5cm" presentation:class="title" presentation:user-transformed="true"><draw:text-box><text:p>商务路演 · 方案概览</text:p></draw:text-box></draw:frame>
         <presentation:notes draw:style-name="dp2">
           <draw:page-thumbnail draw:style-name="gr1" draw:layer="layout" svg:width="17cm" svg:height="9.56cm" svg:x="2cm" svg:y="2.5cm" draw:page-number="1" presentation:class="page"/>
           <draw:frame presentation:style-name="Blue_5f_Curve-notes" draw:layer="layout" svg:width="17cm" svg:height="14cm" svg:x="2cm" svg:y="13cm" presentation:class="notes" presentation:placeholder="true">
@@ -31,11 +29,9 @@
       </draw:page>
       <draw:page draw:name="page2" draw:style-name="dp3" draw:master-page-name="Blue_5f_Curve1" presentation:presentation-page-layout-name="AL2T1" presentation:use-date-time-name="dtd1">
         <office:forms form:automatic-focus="false" form:apply-design-mode="false"/>
-        <draw:frame presentation:style-name="Blue_5f_Curve1-title" draw:layer="layout" svg:width="26cm" svg:height="1.328cm" svg:x="1cm" svg:y="0.5cm" presentation:class="title" presentation:placeholder="true">
-          <draw:text-box/>
-        </draw:frame>
-        <draw:frame presentation:style-name="Blue_5f_Curve1-outline1" draw:layer="layout" svg:width="26cm" svg:height="10cm" svg:x="1cm" svg:y="3cm" presentation:class="outline" presentation:placeholder="true">
-          <draw:text-box/>
+        <draw:frame presentation:style-name="Blue_5f_Curve1-title" draw:layer="layout" svg:width="26cm" svg:height="1.328cm" svg:x="1cm" svg:y="0.5cm" presentation:class="title"><draw:text-box><text:p>问题 · 方案 · 下一步</text:p></draw:text-box></draw:frame>
+        <draw:frame presentation:style-name="Blue_5f_Curve1-outline1" draw:layer="layout" svg:width="26cm" svg:height="10cm" svg:x="1cm" svg:y="3cm" presentation:class="outline">
+          <draw:text-box><text:p>业务背景与痛点</text:p><text:p>解决方案与节奏</text:p><text:p>关键里程碑</text:p><text:p>需要确认的决策</text:p></draw:text-box>
         </draw:frame>
         <presentation:notes draw:style-name="dp2">
           <draw:page-thumbnail draw:style-name="gr1" draw:layer="layout" svg:width="17cm" svg:height="9.56cm" svg:x="2cm" svg:y="2.5cm" draw:page-number="2" presentation:class="page"/>

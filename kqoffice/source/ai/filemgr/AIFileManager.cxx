@@ -11,8 +11,13 @@
 
 #include "AIFileManager.hxx"
 
+#include "PermissionCenter.hxx"
+
 #include <algorithm>
 #include <ctime>
+#include <cstdlib>
+#include <utility>
+#include <vector>
 #include <osl/file.hxx>
 #include <osl/security.hxx>
 #include <osl/time.h>
@@ -24,12 +29,64 @@ namespace kqoffice::ai::filemgr
 
 namespace
 {
+OUString toFileUrl(const OUString& systemOrUrl)
+{
+    if (systemOrUrl.startsWith("file://"))
+        return systemOrUrl;
+    OUString url;
+    if (osl::FileBase::getFileURLFromSystemPath(systemOrUrl, url) == osl::FileBase::E_None
+        && !url.isEmpty())
+        return url;
+    return systemOrUrl;
+}
+
 sal_Int64 currentTimeMs()
 {
     TimeValue tv;
     osl_getSystemTime(&tv);
     return static_cast<sal_Int64>(tv.Seconds) * 1000
          + static_cast<sal_Int64>(tv.Nanosec) / 1000000;
+}
+
+OUString projectKeyFromPath(const OUString& path)
+{
+    sal_Int32 slash = path.lastIndexOf('/');
+    if (slash <= 0)
+        return u""_ustr;
+    OUString parent = path.copy(0, slash);
+    sal_Int32 pslash = parent.lastIndexOf('/');
+    if (pslash < 0)
+        return parent;
+    return parent.copy(pslash + 1);
+}
+
+bool writeTextFile(const OUString& path, const OUString& content)
+{
+    const OUString fileUrl = toFileUrl(path);
+    osl::File::remove(fileUrl);
+    osl::File out(fileUrl);
+    if (out.open(osl_File_OpenFlag_Write | osl_File_OpenFlag_Create) != osl::FileBase::E_None)
+        return false;
+    const OString utf8 = OUStringToOString(content, RTL_TEXTENCODING_UTF8);
+    sal_uInt64 written = 0;
+    out.write(utf8.getStr(), utf8.getLength(), written);
+    out.close();
+    return written > 0;
+}
+
+bool readTextFile(const OUString& path, OUString& outContent)
+{
+    osl::File file(toFileUrl(path));
+    if (file.open(osl_File_OpenFlag_Read) != osl::FileBase::E_None)
+        return false;
+    sal_uInt64 size = 0;
+    file.getSize(size);
+    std::vector<char> buf(static_cast<size_t>(size) + 1, 0);
+    sal_uInt64 read = 0;
+    file.read(buf.data(), size, read);
+    file.close();
+    outContent = OUString(buf.data(), static_cast<sal_Int32>(read), RTL_TEXTENCODING_UTF8);
+    return true;
 }
 }
 
@@ -44,14 +101,38 @@ ScanResult AIFileManager::scan(const ScanFilter& filter)
     sal_Int64 startMs = currentTimeMs();
 
     std::vector<OUString> roots = filter.scanRoots;
+    kqoffice::ai::control::PermissionCenter perms;
+
     if (roots.empty())
-        roots = commonDirectories();
+    {
+        // Never default to full-disk. Prefer authorized roots; otherwise no-op
+        // until the user grants directories in Permission Center.
+        if (perms.hasAnyAuthorizedDirectory())
+        {
+            for (const auto& d : perms.authorizedDirectories())
+                roots.push_back(d.path);
+        }
+        else if (!filter.requireAuthorizedRoots)
+        {
+            roots = commonDirectories();
+        }
+    }
 
     for (const auto& root : roots)
     {
+        if (filter.cancelFlag && filter.cancelFlag->load())
+            break;
+        if (filter.requireAuthorizedRoots && !perms.isPathAuthorized(root))
+        {
+            SAL_INFO("kqoffice.ai.filemgr",
+                     "Skip unauthorized scan root: " << root);
+            continue;
+        }
         result.scanRoot = root;
         scanRecursive(root, 0, filter, result);
     }
+
+    applyWorkbenchMetadata(result.files);
 
     result.scanDurationMs = currentTimeMs() - startMs;
     SAL_INFO("kqoffice.ai.filemgr",
@@ -65,7 +146,8 @@ ScanResult AIFileManager::quickScan()
 {
     ScanFilter filter;
     filter.maxDepth = 3;
-    filter.scanRoots = commonDirectories();
+    // Authorized-only by default. Empty authorized set => empty result (safe).
+    filter.requireAuthorizedRoots = true;
     return scan(filter);
 }
 
@@ -74,6 +156,7 @@ ScanResult AIFileManager::scanDirectory(const OUString& rootPath, sal_Int32 maxD
     ScanFilter filter;
     filter.scanRoots.push_back(rootPath);
     filter.maxDepth = maxDepth;
+    filter.requireAuthorizedRoots = true;
     return scan(filter);
 }
 
@@ -221,32 +304,25 @@ void AIFileManager::groupByCategory(std::vector<FileEntry>& files, SortOrder inn
 OUString AIFileManager::generateNavIndex(const std::vector<FileEntry>& files,
                                           const OUString& outputDir)
 {
-    auto entries = buildNavEntries(files);
     OUString indexPath = outputDir + u"/AI文件导航索引.odt"_ustr;
 
     // Build the document content as text
     OUString content;
     content += u"AI 文件智能管家 — 导航索引\n"_ustr;
-    content += u"生成时间: " + formatTime(currentTimeMs()) + u"\n"_ustr;
+    content += u"生成时间: " + formatTime(currentTimeMs() / 1000) + u"\n"_ustr;
     content += u"共 " + OUString::number(static_cast<sal_Int32>(files.size()))
         + u" 个文件\n\n"_ustr;
 
-    // Table of contents by category
-    FileCategory lastCat = FileCategory::Other;
-    bool firstCat = true;
+    // Table of contents by category.
     for (const auto& cat : {
          FileCategory::Writer, FileCategory::Calc, FileCategory::Impress,
          FileCategory::PDF, FileCategory::Image, FileCategory::Other })
     {
         sal_Int32 count = 0;
-        for (const auto& e : entries)
+        for (const auto& f : files)
         {
-            // Count files for this category
-            for (const auto& f : files)
-            {
-                if (f.category == cat)
-                    count++;
-            }
+            if (f.category == cat)
+                count++;
         }
         if (count > 0)
         {
@@ -263,7 +339,7 @@ OUString AIFileManager::generateNavIndex(const std::vector<FileEntry>& files,
     }
 
     // Write the content to the output file
-    osl::File outFile(indexPath);
+    osl::File outFile(toFileUrl(indexPath));
     if (outFile.open(osl_File_OpenFlag_Write | osl_File_OpenFlag_Create) == osl::FileBase::E_None)
     {
         OString utf8Content = OUStringToOString(content, RTL_TEXTENCODING_UTF8);
@@ -273,7 +349,7 @@ OUString AIFileManager::generateNavIndex(const std::vector<FileEntry>& files,
     }
 
     SAL_INFO("kqoffice.ai.filemgr",
-             "generateNavIndex: " << indexPath << " entries=" << entries.size());
+             "generateNavIndex: " << indexPath << " entries=" << files.size());
     return indexPath;
 }
 
@@ -349,7 +425,7 @@ std::vector<SemanticMatch> AIFileManager::semanticSearch(
         }
 
         // Recent files bonus
-        if (f.modifiedTime > currentTimeMs() - 7 * 24 * 3600) // last 7 days
+        if (f.modifiedTime > currentTimeMs() / 1000 - 7 * 24 * 3600) // last 7 days
         {
             score += 0.1;
         }
@@ -389,21 +465,425 @@ std::vector<SemanticMatch> AIFileManager::quickSearch(const OUString& query)
 
 std::vector<OUString> AIFileManager::commonDirectories()
 {
+    // Candidates only — product scanning still requires PermissionCenter grant.
+    // Never include developer trees, full home, or full disk.
     std::vector<OUString> dirs;
 
-    // Get home directory
     OUString homeDir;
     osl::Security().getHomeDir(homeDir);
+    if (homeDir.isEmpty())
+        return dirs;
 
     dirs.push_back(homeDir + u"/Desktop"_ustr);
     dirs.push_back(homeDir + u"/Documents"_ustr);
     dirs.push_back(homeDir + u"/Downloads"_ustr);
-    dirs.push_back(homeDir + u"/可点office"_ustr);
-
-    // Common project directories
-    dirs.push_back(u"/Users/lu/kdoffice-src/kqoffice"_ustr);
-
     return dirs;
+}
+
+OUString AIFileManager::workbenchStoreDir()
+{
+    if (const char* env = std::getenv("KQOFFICE_AI_FILEMGR_DIR"))
+    {
+        if (env[0] != '\0')
+            return OUString::createFromAscii(env);
+    }
+    osl::Security security;
+    OUString configDir;
+    if (security.getConfigDir(configDir) && !configDir.isEmpty())
+        return configDir + u"/KQOffice/AI/file-workbench"_ustr;
+
+    OUString homeDir;
+    if (security.getHomeDir(homeDir) && !homeDir.isEmpty())
+        return homeDir + u"/.kqoffice/ai/file-workbench"_ustr;
+
+    return u".kqoffice/ai/file-workbench"_ustr;
+}
+
+void AIFileManager::loadWorkbenchMeta()
+{
+    if (m_metaLoaded)
+        return;
+    m_metaLoaded = true;
+    m_meta.clear();
+
+    OUString content;
+    if (!readTextFile(workbenchStoreDir() + u"/meta.tsv"_ustr, content))
+        return;
+
+    sal_Int32 from = 0;
+    while (from <= content.getLength())
+    {
+        sal_Int32 to = content.indexOf('\n', from);
+        if (to < 0)
+            to = content.getLength();
+        OUString line = content.copy(from, to - from).trim();
+        from = to + 1;
+        if (line.isEmpty() || line.startsWith("#"))
+            continue;
+        // path\tpinned\tfavorite\ttag
+        const sal_Int32 p1 = line.indexOf('\t');
+        if (p1 < 0)
+            continue;
+        const sal_Int32 p2 = line.indexOf('\t', p1 + 1);
+        const sal_Int32 p3 = (p2 < 0) ? -1 : line.indexOf('\t', p2 + 1);
+        MetaFlags flags;
+        OUString path = line.copy(0, p1);
+        flags.pinned = (p2 >= 0) && line.copy(p1 + 1, p2 - p1 - 1) == u"1"_ustr;
+        flags.favorite = (p3 >= 0) && line.copy(p2 + 1, p3 - p2 - 1) == u"1"_ustr;
+        if (p3 >= 0)
+            flags.tag = line.copy(p3 + 1);
+        m_meta.emplace_back(path, flags);
+    }
+}
+
+void AIFileManager::saveWorkbenchMeta() const
+{
+    OUString dir = workbenchStoreDir();
+    osl::Directory::createPath(toFileUrl(dir));
+    OUString body = u"# path\tpinned\tfavorite\ttag\n"_ustr;
+    for (const auto& item : m_meta)
+    {
+        body += item.first + u"\t"_ustr
+            + (item.second.pinned ? u"1"_ustr : u"0"_ustr) + u"\t"_ustr
+            + (item.second.favorite ? u"1"_ustr : u"0"_ustr) + u"\t"_ustr
+            + item.second.tag + u"\n"_ustr;
+    }
+    writeTextFile(dir + u"/meta.tsv"_ustr, body);
+}
+
+bool AIFileManager::pin(const OUString& path, bool pinned)
+{
+    loadWorkbenchMeta();
+    for (auto& item : m_meta)
+    {
+        if (item.first == path)
+        {
+            item.second.pinned = pinned;
+            saveWorkbenchMeta();
+            return true;
+        }
+    }
+    MetaFlags flags;
+    flags.pinned = pinned;
+    m_meta.emplace_back(path, flags);
+    saveWorkbenchMeta();
+    return true;
+}
+
+bool AIFileManager::favorite(const OUString& path, bool favorited)
+{
+    loadWorkbenchMeta();
+    for (auto& item : m_meta)
+    {
+        if (item.first == path)
+        {
+            item.second.favorite = favorited;
+            saveWorkbenchMeta();
+            return true;
+        }
+    }
+    MetaFlags flags;
+    flags.favorite = favorited;
+    m_meta.emplace_back(path, flags);
+    saveWorkbenchMeta();
+    return true;
+}
+
+bool AIFileManager::setTag(const OUString& path, const OUString& tag)
+{
+    loadWorkbenchMeta();
+    for (auto& item : m_meta)
+    {
+        if (item.first == path)
+        {
+            item.second.tag = tag;
+            saveWorkbenchMeta();
+            return true;
+        }
+    }
+    MetaFlags flags;
+    flags.tag = tag;
+    m_meta.emplace_back(path, flags);
+    saveWorkbenchMeta();
+    return true;
+}
+
+bool AIFileManager::isPinned(const OUString& path) const
+{
+    const_cast<AIFileManager*>(this)->loadWorkbenchMeta();
+    for (const auto& item : m_meta)
+        if (item.first == path)
+            return item.second.pinned;
+    return false;
+}
+
+bool AIFileManager::isFavorite(const OUString& path) const
+{
+    const_cast<AIFileManager*>(this)->loadWorkbenchMeta();
+    for (const auto& item : m_meta)
+        if (item.first == path)
+            return item.second.favorite;
+    return false;
+}
+
+OUString AIFileManager::tagOf(const OUString& path) const
+{
+    const_cast<AIFileManager*>(this)->loadWorkbenchMeta();
+    for (const auto& item : m_meta)
+        if (item.first == path)
+            return item.second.tag;
+    return u""_ustr;
+}
+
+void AIFileManager::applyWorkbenchMetadata(std::vector<FileEntry>& files) const
+{
+    const_cast<AIFileManager*>(this)->loadWorkbenchMeta();
+    for (auto& f : files)
+    {
+        f.projectKey = projectKeyFromPath(f.path);
+        for (const auto& item : m_meta)
+        {
+            if (item.first == f.path)
+            {
+                f.pinned = item.second.pinned;
+                f.favorite = item.second.favorite;
+                f.tag = item.second.tag;
+                break;
+            }
+        }
+    }
+    // Pinned first, then favorites, then original order.
+    std::stable_sort(files.begin(), files.end(),
+        [](const FileEntry& a, const FileEntry& b) {
+            if (a.pinned != b.pinned)
+                return a.pinned && !b.pinned;
+            if (a.favorite != b.favorite)
+                return a.favorite && !b.favorite;
+            return false;
+        });
+}
+
+void AIFileManager::groupByProject(std::vector<FileEntry>& files)
+{
+    std::sort(files.begin(), files.end(),
+        [](const FileEntry& a, const FileEntry& b) {
+            const int cmp = a.projectKey.compareTo(b.projectKey);
+            if (cmp != 0)
+                return cmp < 0;
+            return a.name.compareTo(b.name) < 0;
+        });
+}
+
+bool AIFileManager::moveToTrash(const OUString& path, const OUString& evidenceNote,
+                                kqoffice::ai::control::PermissionDecision confirm)
+{
+    if (path.isEmpty())
+        return false;
+
+    kqoffice::ai::control::PermissionCenter perms;
+    if (!perms.isPathAuthorized(path))
+    {
+        SAL_WARN("kqoffice.ai.filemgr",
+                 "moveToTrash blocked — path not in authorized workspace: " << path);
+        return false;
+    }
+    if (!perms.resolveRiskyOp(kqoffice::ai::control::RiskOperation::Delete, path, confirm))
+    {
+        SAL_INFO("kqoffice.ai.filemgr",
+                 "moveToTrash needs 拒绝/本次/本轮 confirmation: " << path);
+        return false;
+    }
+
+    const OUString trashDir = workbenchStoreDir() + u"/trash"_ustr;
+    osl::Directory::createPath(toFileUrl(trashDir));
+
+    sal_Int32 slash = path.lastIndexOf('/');
+    OUString name = (slash >= 0) ? path.copy(slash + 1) : path;
+    OUString trashPath = trashDir + u"/"_ustr + OUString::number(currentTimeMs())
+        + u"_"_ustr + name;
+
+    if (osl::File::move(toFileUrl(path), toFileUrl(trashPath)) != osl::FileBase::E_None)
+        return false;
+
+    OUString line = path + u"\t"_ustr + trashPath + u"\t"_ustr
+        + OUString::number(currentTimeMs()) + u"\t"_ustr + evidenceNote + u"\n"_ustr;
+    OUString logPath = trashDir + u"/trash.tsv"_ustr;
+    OUString existing;
+    readTextFile(logPath, existing);
+    writeTextFile(logPath, existing + line);
+    SAL_INFO("kqoffice.ai.filemgr",
+             "moveToTrash: " << path << " -> " << trashPath
+                 << " note=" << evidenceNote);
+    return true;
+}
+
+bool AIFileManager::writeAuthorizedFile(const OUString& path, const OUString& content,
+                                        kqoffice::ai::control::PermissionDecision confirm)
+{
+    if (path.isEmpty())
+        return false;
+
+    kqoffice::ai::control::PermissionCenter perms;
+    if (!perms.isPathAuthorized(path))
+    {
+        SAL_WARN("kqoffice.ai.filemgr",
+                 "writeAuthorizedFile blocked — path not in authorized workspace: " << path);
+        return false;
+    }
+
+    // Create or overwrite under authorized root always requires risk resolve
+    // so agent write paths never silently materialize / clobber files.
+    if (!perms.resolveRiskyOp(kqoffice::ai::control::RiskOperation::Overwrite, path, confirm))
+    {
+        SAL_INFO("kqoffice.ai.filemgr",
+                 "writeAuthorizedFile needs 拒绝/本次/本轮 confirmation: " << path);
+        return false;
+    }
+
+    // Ensure parent directory exists under the authorized tree.
+    sal_Int32 slash = path.lastIndexOf('/');
+    if (slash > 0)
+    {
+        const OUString parent = path.copy(0, slash);
+        osl::Directory::createPath(toFileUrl(parent));
+    }
+    if (!writeTextFile(path, content))
+        return false;
+    SAL_INFO("kqoffice.ai.filemgr", "writeAuthorizedFile ok: " << path);
+    return true;
+}
+
+bool AIFileManager::restoreFromTrash(const OUString& originalPath)
+{
+    const OUString logPath = workbenchStoreDir() + u"/trash/trash.tsv"_ustr;
+    OUString content;
+    if (!readTextFile(logPath, content))
+        return false;
+
+    OUString rebuilt;
+    bool restored = false;
+    sal_Int32 from = 0;
+    while (from <= content.getLength())
+    {
+        sal_Int32 to = content.indexOf('\n', from);
+        if (to < 0)
+            to = content.getLength();
+        OUString line = content.copy(from, to - from);
+        from = to + 1;
+        if (line.trim().isEmpty())
+            continue;
+        const sal_Int32 p1 = line.indexOf('\t');
+        const sal_Int32 p2 = (p1 < 0) ? -1 : line.indexOf('\t', p1 + 1);
+        if (p1 < 0 || p2 < 0)
+        {
+            rebuilt += line + u"\n"_ustr;
+            continue;
+        }
+        OUString orig = line.copy(0, p1);
+        OUString trashPath = line.copy(p1 + 1, p2 - p1 - 1);
+        if (!restored && orig == originalPath)
+        {
+            if (osl::File::move(toFileUrl(trashPath), toFileUrl(originalPath)) == osl::FileBase::E_None)
+            {
+                restored = true;
+                continue; // drop from trash log
+            }
+        }
+        rebuilt += line + u"\n"_ustr;
+    }
+    if (restored)
+        writeTextFile(logPath, rebuilt);
+    return restored;
+}
+
+std::vector<TrashEntry> AIFileManager::listTrash() const
+{
+    std::vector<TrashEntry> out;
+    OUString content;
+    if (!readTextFile(workbenchStoreDir() + u"/trash/trash.tsv"_ustr, content))
+        return out;
+
+    sal_Int32 from = 0;
+    while (from <= content.getLength())
+    {
+        sal_Int32 to = content.indexOf('\n', from);
+        if (to < 0)
+            to = content.getLength();
+        OUString line = content.copy(from, to - from).trim();
+        from = to + 1;
+        if (line.isEmpty())
+            continue;
+        const sal_Int32 p1 = line.indexOf('\t');
+        const sal_Int32 p2 = (p1 < 0) ? -1 : line.indexOf('\t', p1 + 1);
+        const sal_Int32 p3 = (p2 < 0) ? -1 : line.indexOf('\t', p2 + 1);
+        if (p1 < 0 || p2 < 0 || p3 < 0)
+            continue;
+        TrashEntry e;
+        e.originalPath = line.copy(0, p1);
+        e.trashPath = line.copy(p1 + 1, p2 - p1 - 1);
+        e.deletedAtMs = line.copy(p2 + 1, p3 - p2 - 1).toInt64();
+        e.evidenceNote = line.copy(p3 + 1);
+        out.push_back(e);
+    }
+    return out;
+}
+
+bool AIFileManager::createLocalSnapshot(const OUString& path, const OUString& label)
+{
+    if (path.isEmpty())
+        return false;
+    const OUString snapDir = workbenchStoreDir() + u"/snapshots"_ustr;
+    osl::Directory::createPath(toFileUrl(snapDir));
+
+    sal_Int32 slash = path.lastIndexOf('/');
+    OUString name = (slash >= 0) ? path.copy(slash + 1) : path;
+    OUString snapPath = snapDir + u"/"_ustr + OUString::number(currentTimeMs())
+        + u"_"_ustr + name;
+
+    if (osl::File::copy(toFileUrl(path), toFileUrl(snapPath)) != osl::FileBase::E_None)
+        return false;
+
+    OUString line = path + u"\t"_ustr + snapPath + u"\t"_ustr
+        + OUString::number(currentTimeMs()) + u"\t"_ustr + label + u"\n"_ustr;
+    OUString logPath = snapDir + u"/snapshots.tsv"_ustr;
+    OUString existing;
+    readTextFile(logPath, existing);
+    writeTextFile(logPath, existing + line);
+    return true;
+}
+
+std::vector<LocalSnapshot> AIFileManager::listSnapshots(const OUString& path) const
+{
+    std::vector<LocalSnapshot> out;
+    OUString content;
+    if (!readTextFile(workbenchStoreDir() + u"/snapshots/snapshots.tsv"_ustr, content))
+        return out;
+
+    sal_Int32 from = 0;
+    while (from <= content.getLength())
+    {
+        sal_Int32 to = content.indexOf('\n', from);
+        if (to < 0)
+            to = content.getLength();
+        OUString line = content.copy(from, to - from).trim();
+        from = to + 1;
+        if (line.isEmpty())
+            continue;
+        const sal_Int32 p1 = line.indexOf('\t');
+        const sal_Int32 p2 = (p1 < 0) ? -1 : line.indexOf('\t', p1 + 1);
+        const sal_Int32 p3 = (p2 < 0) ? -1 : line.indexOf('\t', p2 + 1);
+        if (p1 < 0 || p2 < 0 || p3 < 0)
+            continue;
+        LocalSnapshot s;
+        s.sourcePath = line.copy(0, p1);
+        if (!path.isEmpty() && s.sourcePath != path)
+            continue;
+        s.snapshotPath = line.copy(p1 + 1, p2 - p1 - 1);
+        s.createdAtMs = line.copy(p2 + 1, p3 - p2 - 1).toInt64();
+        s.label = line.copy(p3 + 1);
+        out.push_back(s);
+    }
+    return out;
 }
 
 OUString AIFileManager::formatSize(sal_Int64 bytes)
@@ -474,24 +954,42 @@ bool AIFileManager::isSupportedDocument(const OUString& path)
 void AIFileManager::scanRecursive(const OUString& dirPath, sal_Int32 currentDepth,
                                    const ScanFilter& filter, ScanResult& result)
 {
+    if (filter.cancelFlag && filter.cancelFlag->load())
+        return;
     if (currentDepth > filter.maxDepth)
         return;
 
-    osl::Directory dir(dirPath);
+    // osl::Directory requires a file:// URL on macOS/Windows.
+    const OUString dirUrl = toFileUrl(dirPath);
+    osl::Directory dir(dirUrl);
     if (dir.open() != osl::FileBase::E_None)
         return;
 
     osl::DirectoryItem item;
     while (dir.getNextItem(item) == osl::FileBase::E_None)
     {
+        if (filter.cancelFlag && filter.cancelFlag->load())
+            break;
         result.totalScanned++;
 
         osl::FileStatus status(osl_FileStatus_Mask_Type | osl_FileStatus_Mask_FileName
-                               | osl_FileStatus_Mask_FileURL);
+                               | osl_FileStatus_Mask_FileURL
+                               | osl_FileStatus_Mask_LinkTargetURL);
         if (item.getFileStatus(status) != osl::FileBase::E_None)
             continue;
 
-        OUString fullPath = dirPath + u"/"_ustr + status.getFileName();
+        OUString fullUrl = status.getFileURL();
+        if (fullUrl.isEmpty())
+            fullUrl = dirUrl + u"/"_ustr + status.getFileName();
+
+        // Prefer system path for product-facing entries (open/pin/display).
+        OUString fullPath;
+        if (osl::FileBase::getSystemPathFromFileURL(fullUrl, fullPath) != osl::FileBase::E_None
+            || fullPath.isEmpty())
+            fullPath = fullUrl;
+
+        if (status.isLink() && !filter.followSymlinks)
+            continue;
 
         if (status.getFileType() == osl::FileStatus::Directory)
         {
@@ -503,7 +1001,7 @@ void AIFileManager::scanRecursive(const OUString& dirPath, sal_Int32 currentDept
             if (name == "node_modules" || name == ".git" || name == ".svn"
                 || name == "workdir" || name == "instdir")
                 continue;
-            scanRecursive(fullPath, currentDepth + 1, filter, result);
+            scanRecursive(fullUrl, currentDepth + 1, filter, result);
             continue;
         }
 
@@ -511,13 +1009,16 @@ void AIFileManager::scanRecursive(const OUString& dirPath, sal_Int32 currentDept
             continue;
 
         // Check file against filter
-        if (!matchesFilter(fullPath, filter))
+        if (!matchesFilter(fullPath, filter) && !matchesFilter(fullUrl, filter))
             continue;
 
-        // Get file info
-        FileEntry entry = getFileInfo(fullPath);
+        // Get file info via file URL (reliable with osl), store system path.
+        FileEntry entry = getFileInfo(fullUrl);
+        if (entry.path.isEmpty() || entry.path.startsWith("file://"))
+            entry.path = fullPath;
         entry.depth = currentDepth;
-        entry.parentDir = dirPath;
+        entry.parentDir = dirPath.startsWith("file://") ? fullPath.copy(0, fullPath.lastIndexOf('/'))
+                                                        : dirPath;
 
         result.files.push_back(entry);
         result.totalMatched++;
@@ -577,7 +1078,7 @@ FileEntry AIFileManager::getFileInfo(const OUString& path)
     FileEntry entry;
     entry.path = path;
 
-    // Extract name and extension
+    // Extract name and extension (works for system path or file URL).
     sal_Int32 lastSlash = path.lastIndexOf('/');
     if (lastSlash >= 0)
         entry.name = path.copy(lastSlash + 1);
@@ -593,8 +1094,7 @@ FileEntry AIFileManager::getFileInfo(const OUString& path)
     // Get file stats
     osl::FileStatus status(osl_FileStatus_Mask_FileSize
                            | osl_FileStatus_Mask_ModifyTime);
-    OUString fileUrl;
-    osl::FileBase::getFileURLFromSystemPath(path, fileUrl);
+    const OUString fileUrl = toFileUrl(path);
     osl::DirectoryItem item;
     if (osl::DirectoryItem::get(fileUrl, item) == osl::FileBase::E_None)
     {

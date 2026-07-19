@@ -149,29 +149,29 @@
         <text:sequence-decl text:display-outline-level="0" text:name="Drawing"/>
         <text:sequence-decl text:display-outline-level="0" text:name="Figure"/>
       </text:sequence-decls>
-      <text:h text:style-name="P1" text:outline-level="1">Your Name</text:h>
-      <text:p text:style-name="P5">Address Line 1<text:line-break/>Address Line 2</text:p>
+      <text:h text:style-name="P1" text:outline-level="1">张明</text:h>
+      <text:p text:style-name="P5">示例市示例区示例路 88 号<text:line-break/>电话：138-0000-0000</text:p>
       <text:p text:style-name="P5">(000) 000 000<text:line-break/>(000) 000 000<text:line-break/>(000) 000 000</text:p>
-      <text:p text:style-name="P5">you@example.com<text:line-break/>webpage.url</text:p>
-      <text:h text:style-name="P3" text:outline-level="3">Education</text:h>
+      <text:p text:style-name="P5">zhangming@example.com<text:line-break/>期望岗位：商务 / 项目助理</text:p>
+      <text:h text:style-name="P3" text:outline-level="3">教育背景</text:h>
       <text:p text:style-name="P6">
-        <text:span text:style-name="T1">PhD in Egg Engineering</text:span>
-        <text:span text:style-name="T2"><text:line-break/>University of Eggington, May 2010<text:line-break/>Cumulative GPA: 2.89</text:span>
+        <text:span text:style-name="T1">示例大学 · 工商管理 · 本科</text:span>
+        <text:span text:style-name="T2"><text:line-break/>2013 – 2017<text:line-break/>主修：管理、沟通、数据分析</text:span>
       </text:p>
       <text:p text:style-name="P6">
-        <text:span text:style-name="T1">BS in Hamology</text:span>
-        <text:span text:style-name="T2"><text:line-break/>Hammsworth College, May 2007<text:line-break/>Cumulative GPA: 3.26</text:span>
+        <text:span text:style-name="T1">示例高中</text:span>
+        <text:span text:style-name="T2"><text:line-break/>2010 – 2013<text:line-break/>学生会 / 社团实践经历</text:span>
       </text:p>
-      <text:h text:style-name="P2" text:outline-level="3">Experience</text:h>
+      <text:h text:style-name="P2" text:outline-level="3">工作经历</text:h>
       <table:table table:name="Table1" table:style-name="Table1">
         <table:table-column table:style-name="Table1.A"/>
         <table:table-column table:style-name="Table1.B"/>
         <table:table-row>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="P7">Egg Inspector<text:line-break/><text:span text:style-name="T3">Eggs and Ham, Co.</text:span></text:p>
+            <text:p text:style-name="P7">业务专员<text:line-break/><text:span text:style-name="T3">示例科技有限公司</text:span></text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-            <text:p text:style-name="P8">Jan 2013 – Mar 2014</text:p>
+            <text:p text:style-name="P8">2021-03 至今</text:p>
           </table:table-cell>
         </table:table-row>
       </table:table>
@@ -192,15 +192,15 @@
         <table:table-row>
           <table:table-cell table:style-name="Table2.A1" office:value-type="string">
             <text:p text:style-name="P7">
-              <text:span text:style-name="T5">Ham Inspector</text:span>
+              <text:span text:style-name="T5">项目助理</text:span>
               <text:span text:style-name="T3">
                 <text:line-break/>
               </text:span>
-              <text:span text:style-name="T4">Ham and Eggs, Co.</text:span>
+              <text:span text:style-name="T4">示例咨询有限公司</text:span>
             </text:p>
           </table:table-cell>
           <table:table-cell table:style-name="Table2.A1" office:value-type="string">
-            <text:p text:style-name="P8">Jun 2011 – Nov 2013</text:p>
+            <text:p text:style-name="P8">2018-07 – 2021-02</text:p>
           </table:table-cell>
         </table:table-row>
       </table:table>
@@ -215,7 +215,7 @@
           <text:p text:style-name="P10"/>
         </text:list-item>
       </text:list>
-      <text:h text:style-name="P4" text:outline-level="3">Skills</text:h>
+      <text:h text:style-name="P4" text:outline-level="3">技能专长</text:h>
       <table:table table:name="Table3" table:style-name="Table3">
         <table:table-column table:style-name="Table3.A" table:number-columns-repeated="2"/>
         <table:table-row>

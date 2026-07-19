@@ -223,6 +223,157 @@
         <child type="label">
           <object class="GtkLabel">
             <property name="visible">True</property>
+            <property name="label" translatable="yes" context="optaipage|workspace_frame">权限中心（工作区 · 网络 · 麦克风 · 截图）</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="box_workspace">
+            <property name="visible">True</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">6</property>
+            <property name="margin-start">12</property>
+            <property name="margin-top">6</property>
+            <child>
+              <object class="GtkLabel" id="ws_hint">
+                <property name="visible">True</property>
+                <property name="halign">start</property>
+                <property name="wrap">True</property>
+                <property name="label" translatable="yes" context="optaipage|ws_hint">仅索引与操作您明确授权的文件夹，默认不扫全盘、不静默联网。删除/覆盖仍须确认：拒绝 / 仅本次 / 本轮对话均允许。麦克风与截图在首次使用时由系统询问。</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="ws_list_label">
+                <property name="visible">True</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes" context="optaipage|ws_list">已授权目录：</property>
+                <property name="mnemonic-widget">ws_dir_list</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkScrolledWindow" id="ws_list_scroll">
+                <property name="visible">True</property>
+                <property name="hexpand">True</property>
+                <property name="height-request">100</property>
+                <property name="shadow-type">in</property>
+                <child>
+                  <object class="GtkTreeView" id="ws_dir_list">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="hexpand">True</property>
+                    <property name="headers_visible">False</property>
+                    <property name="show_expanders">False</property>
+                    <child internal-child="selection">
+                      <object class="GtkTreeSelection" id="ws_dir_list_selection"/>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="ws_dir_list_col">
+                        <property name="expand">True</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="ws_dir_list_cell"/>
+                          <attributes>
+                            <attribute name="text">0</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox" id="ws_btns">
+                <property name="visible">True</property>
+                <property name="orientation">horizontal</property>
+                <property name="spacing">8</property>
+                <child>
+                  <object class="GtkButton" id="ws_grant_btn">
+                    <property name="label" translatable="yes" context="optaipage|ws_grant">授权目录…</property>
+                    <property name="visible">True</property>
+                    <property name="tooltip-text" translatable="yes" context="optai|ws_grant.tooltip_text">选择一个文件夹作为工作区（不会授权整个用户主目录）</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="ws_revoke_btn">
+                    <property name="label" translatable="yes" context="optaipage|ws_revoke">撤销选中</property>
+                    <property name="visible">True</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="ws_revoke_all_btn">
+                    <property name="label" translatable="yes" context="optaipage|ws_revoke_all">清空工作区</property>
+                    <property name="visible">True</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="ws_clear_session_btn">
+                    <property name="label" translatable="yes" context="optaipage|ws_clear_session">清空本轮写删授权</property>
+                    <property name="visible">True</property>
+                    <property name="tooltip-text" translatable="yes" context="optai|ws_clear_session.tooltip_text">清除进程内「本轮允许」的删除/覆盖授权，下次仍会二次确认</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="ws_network_revoke_btn">
+                    <property name="label" translatable="yes" context="optaipage|ws_network_revoke">关闭网络授权</property>
+                    <property name="visible">True</property>
+                    <property name="tooltip-text" translatable="yes" context="optai|ws_network_revoke.tooltip_text">撤销网络外发授权；默认关闭，发送前仍会确认并披露</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="ws_network_status">
+                <property name="visible">True</property>
+                <property name="halign">start</property>
+                <property name="wrap">True</property>
+                <property name="selectable">True</property>
+                <property name="label" translatable="yes" context="optaipage|ws_network_status">网络外发：未请求 · 默认关闭，发送前会确认并披露</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="ws_cap_mic_status">
+                <property name="visible">True</property>
+                <property name="halign">start</property>
+                <property name="wrap">True</property>
+                <property name="label" translatable="yes" context="optaipage|ws_cap_mic">麦克风：使用时系统会询问</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="ws_cap_shot_status">
+                <property name="visible">True</property>
+                <property name="halign">start</property>
+                <property name="wrap">True</property>
+                <property name="label" translatable="yes" context="optaipage|ws_cap_shot">屏幕截图：使用时系统会询问</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="ws_risk_policy_label">
+                <property name="visible">True</property>
+                <property name="halign">start</property>
+                <property name="wrap">True</property>
+                <property name="label" translatable="yes" context="optaipage|ws_risk_policy">高风险文件操作（删除 / 覆盖）在已授权目录内仍须确认：拒绝 / 仅本次 / 本轮对话均允许。</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="ws_status_label">
+                <property name="visible">True</property>
+                <property name="halign">start</property>
+                <property name="wrap">True</property>
+                <property name="selectable">True</property>
+                <property name="label" translatable="yes" context="optaipage|ws_status">尚未授权工作区目录</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkFrame">
+        <property name="visible">True</property>
+        <property name="label-xalign">0</property>
+        <property name="shadow-type">none</property>
+        <child type="label">
+          <object class="GtkLabel">
+            <property name="visible">True</property>
             <property name="label" translatable="yes" context="optaipage|input_frame">高效输入（语音 · 截图 · 对齐微信）</property>
           </object>
         </child>
@@ -362,6 +513,15 @@
                     <property name="active">True</property>
                   </object>
                   <packing><property name="left-attach">0</property><property name="top-attach">9</property><property name="width">2</property></packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="schedule_auto_send">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes" context="optai|schedule_auto_send.label">定时任务到期后自动发送（默认关，更安全）</property>
+                    <property name="active">False</property>
+                    <property name="tooltip-text" translatable="yes" context="optai|schedule_auto_send.tip">开启后，到期注入 AI 输入框时自动发送；默认仅注入、需人工确认</property>
+                  </object>
+                  <packing><property name="left-attach">0</property><property name="top-attach">10</property><property name="width">2</property></packing>
                 </child>
               </object>
             </child>

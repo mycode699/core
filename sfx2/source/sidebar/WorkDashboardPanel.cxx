@@ -926,7 +926,7 @@ IMPL_LINK_NOARG(WorkDashboardPanel, OnGlanceToAi, weld::Button&, void)
     f.close();
     openSidebarDeck(u".uno:SidebarDeck.AIChatDeck"_ustr);
     if (m_xPeriodLabel)
-        m_xPeriodLabel->set_label(u"已注入工作中台上下文 → AI 助手"_ustr);
+        m_xPeriodLabel->set_label(u"已注入工作中台上下文 → 可圈 AI"_ustr);
 }
 
 IMPL_LINK_NOARG(WorkDashboardPanel, OnCompleteWeek, weld::Button&, void)

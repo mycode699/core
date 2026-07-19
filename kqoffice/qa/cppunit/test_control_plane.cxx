@@ -15,15 +15,19 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/plugin/TestPlugIn.h>
 
-#include <osl/directory.hxx>
 #include <osl/file.hxx>
 #include <rtl/ustring.hxx>
 
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <unistd.h>
+#include <rtl/string.hxx>
 
 #include "SessionStore.hxx"
 #include "SafeRestore.hxx"
+#include "PermissionCenter.hxx"
+#include "PermissionGrant.hxx"
 
 namespace
 {
@@ -66,8 +70,8 @@ private:
             if (item.getFileStatus(stat) != osl::FileBase::E_None)
                 continue;
 
-            OUString full = stat.mFileURL;
-            if (stat.mType == osl::FileStatus::Directory)
+            OUString full = stat.getFileURL();
+            if (stat.getFileType() == osl::FileStatus::Directory)
             {
                 // Remove trailing separator if present
                 if (full.endsWith("/"))
@@ -126,6 +130,21 @@ public:
     void testDoctorReportContainsWorkspaceId();
     void testQuarantineNonExistentSurface();
 
+    // PermissionCenter tests
+    void testPermissionDefaultDeniesNetwork();
+    void testPermissionDirectoryGrantRevoke();
+    void testPermissionRejectsSymlinkEscape();
+    void testPermissionNetworkDisclosureRequiresConfirm();
+    void testPermissionCapabilityLabelsZh();
+    void testPermissionRiskConfirmDenyOnceSession();
+    void testPermissionSettingsSurfaceSummary();
+
+    // PermissionGrant (Wave D4 session allow + clarify headless)
+    void testPermissionGrantSessionAllow();
+    void testPermissionGrantApplyDecision();
+    void testPermissionGrantResolveHeadless();
+    void testPermissionGrantDecisionLabelsZh();
+
     CPPUNIT_TEST_SUITE(ControlPlaneTest);
     CPPUNIT_TEST(testDefaultConstructor);
     CPPUNIT_TEST(testCustomRootDir);
@@ -154,6 +173,17 @@ public:
     CPPUNIT_TEST(testIsolateDamage);
     CPPUNIT_TEST(testDoctorReportContainsWorkspaceId);
     CPPUNIT_TEST(testQuarantineNonExistentSurface);
+    CPPUNIT_TEST(testPermissionDefaultDeniesNetwork);
+    CPPUNIT_TEST(testPermissionDirectoryGrantRevoke);
+    CPPUNIT_TEST(testPermissionRejectsSymlinkEscape);
+    CPPUNIT_TEST(testPermissionNetworkDisclosureRequiresConfirm);
+    CPPUNIT_TEST(testPermissionCapabilityLabelsZh);
+    CPPUNIT_TEST(testPermissionRiskConfirmDenyOnceSession);
+    CPPUNIT_TEST(testPermissionSettingsSurfaceSummary);
+    CPPUNIT_TEST(testPermissionGrantSessionAllow);
+    CPPUNIT_TEST(testPermissionGrantApplyDecision);
+    CPPUNIT_TEST(testPermissionGrantResolveHeadless);
+    CPPUNIT_TEST(testPermissionGrantDecisionLabelsZh);
     CPPUNIT_TEST_SUITE_END();
 };
 
@@ -383,14 +413,15 @@ void ControlPlaneTest::testScrollbackMaxLines()
             u"line "_ustr + OUString::number(static_cast<sal_Int32>(i)));
     }
 
-    // Load with maxLines=10 — should get only the last 10 lines
+    // Load with maxLines=10 — should get only the last 10 lines (40..49).
     OUString out;
     bool loaded = store.loadScrollback(u"sf.maxlines"_ustr, out, 10);
     CPPUNIT_ASSERT(loaded);
-    CPPUNIT_ASSERT(out.indexOf(u"line 39") >= 0);
+    CPPUNIT_ASSERT(out.indexOf(u"line 40") >= 0);
     CPPUNIT_ASSERT(out.indexOf(u"line 49") >= 0);
-    // line 0 should be missing
-    CPPUNIT_ASSERT(out.indexOf(u"line 0") < 0 || out.indexOf(u"line 0") > 0);
+    // Older lines must be dropped.
+    CPPUNIT_ASSERT(out.indexOf(u"line 0\n") < 0);
+    CPPUNIT_ASSERT(out.indexOf(u"line 39") < 0);
 }
 
 // ---- SafeRestore tests --------------------------------------------------
@@ -573,6 +604,337 @@ void ControlPlaneTest::testQuarantineNonExistentSurface()
     // Quarantining a non-existent surface should still succeed (nothing to do)
     auto result = kqoffice::ai::control::SafeRestore::quarantine(u"sf.nonexistent"_ustr);
     CPPUNIT_ASSERT(result.success);
+}
+
+// ---- PermissionCenter tests --------------------------------------------
+
+void ControlPlaneTest::testPermissionDefaultDeniesNetwork()
+{
+    char templ[] = "/tmp/kqoffice-perm-XXXXXX";
+    char* dir = ::mkdtemp(templ);
+    CPPUNIT_ASSERT(dir != nullptr);
+    ::setenv("KQOFFICE_AI_PERMISSION_DIR", dir, 1);
+
+    kqoffice::ai::control::PermissionCenter pc;
+    CPPUNIT_ASSERT(!pc.isGranted(kqoffice::ai::control::CapabilityPermission::NetworkEgress));
+    CPPUNIT_ASSERT(!pc.isGranted(kqoffice::ai::control::CapabilityPermission::Microphone));
+    CPPUNIT_ASSERT(!pc.isGranted(kqoffice::ai::control::CapabilityPermission::ScreenCapture));
+    CPPUNIT_ASSERT(!pc.hasAnyAuthorizedDirectory());
+
+    ::unsetenv("KQOFFICE_AI_PERMISSION_DIR");
+}
+
+void ControlPlaneTest::testPermissionDirectoryGrantRevoke()
+{
+    char templ[] = "/tmp/kqoffice-perm-XXXXXX";
+    char* dir = ::mkdtemp(templ);
+    CPPUNIT_ASSERT(dir != nullptr);
+    ::setenv("KQOFFICE_AI_PERMISSION_DIR", dir, 1);
+
+    char scanT[] = "/tmp/kqoffice-authorized-XXXXXX";
+    char* scanDir = ::mkdtemp(scanT);
+    CPPUNIT_ASSERT(scanDir != nullptr);
+    const OUString scanRoot = OUString::createFromAscii(scanDir);
+
+    kqoffice::ai::control::PermissionCenter pc;
+    CPPUNIT_ASSERT(pc.grantDirectory(scanRoot, true));
+    CPPUNIT_ASSERT(pc.hasAnyAuthorizedDirectory());
+    CPPUNIT_ASSERT(pc.isPathAuthorized(scanRoot));
+    CPPUNIT_ASSERT(!pc.isPathAuthorized(u"/tmp/definitely-not-authorized"_ustr));
+    CPPUNIT_ASSERT(pc.revokeDirectory(scanRoot));
+    CPPUNIT_ASSERT(!pc.hasAnyAuthorizedDirectory());
+
+    ::unsetenv("KQOFFICE_AI_PERMISSION_DIR");
+}
+
+void ControlPlaneTest::testPermissionRejectsSymlinkEscape()
+{
+    char storeT[] = "/tmp/kqoffice-perm-XXXXXX";
+    char rootT[] = "/tmp/kqoffice-root-XXXXXX";
+    char outsideT[] = "/tmp/kqoffice-outside-XXXXXX";
+    char* storeDir = ::mkdtemp(storeT);
+    char* rootDir = ::mkdtemp(rootT);
+    char* outsideDir = ::mkdtemp(outsideT);
+    CPPUNIT_ASSERT(storeDir && rootDir && outsideDir);
+    ::setenv("KQOFFICE_AI_PERMISSION_DIR", storeDir, 1);
+
+    const OString linkPath = OString(rootDir) + "/outside";
+    CPPUNIT_ASSERT_EQUAL(0, ::symlink(outsideDir, linkPath.getStr()));
+
+    kqoffice::ai::control::PermissionCenter pc;
+    const OUString root = OUString::createFromAscii(rootDir);
+    CPPUNIT_ASSERT(pc.grantDirectory(root, true));
+    CPPUNIT_ASSERT(pc.isPathAuthorized(root));
+    CPPUNIT_ASSERT(!pc.isPathAuthorized(
+        OUString::createFromAscii(linkPath.getStr())));
+
+    ::unsetenv("KQOFFICE_AI_PERMISSION_DIR");
+}
+
+void ControlPlaneTest::testPermissionNetworkDisclosureRequiresConfirm()
+{
+    char templ[] = "/tmp/kqoffice-perm-XXXXXX";
+    char* dir = ::mkdtemp(templ);
+    CPPUNIT_ASSERT(dir != nullptr);
+    ::setenv("KQOFFICE_AI_PERMISSION_DIR", dir, 1);
+
+    kqoffice::ai::control::PermissionCenter pc;
+    kqoffice::ai::control::NetworkDisclosure d;
+    d.provider = u"openai-compatible:corp"_ustr;
+    d.endpoint = u"https://ai.example.corp/v1"_ustr;
+    d.scopeSummaryZh = u"仅选中段落（约 120 字）"_ustr;
+    d.userConfirmed = true;
+
+    // Without NetworkEgress grant, disclosure must fail.
+    CPPUNIT_ASSERT(!pc.discloseNetworkSend(d));
+
+    CPPUNIT_ASSERT(pc.grant(kqoffice::ai::control::CapabilityPermission::NetworkEgress));
+    d.userConfirmed = false;
+    CPPUNIT_ASSERT(!pc.discloseNetworkSend(d));
+    d.userConfirmed = true;
+    CPPUNIT_ASSERT(pc.discloseNetworkSend(d));
+    CPPUNIT_ASSERT(pc.lastNetworkDisclosureSummary().indexOf(u"corp") >= 0);
+
+    ::unsetenv("KQOFFICE_AI_PERMISSION_DIR");
+}
+
+void ControlPlaneTest::testPermissionCapabilityLabelsZh()
+{
+    using kqoffice::ai::control::CapabilityPermission;
+    using kqoffice::ai::control::PermissionCenter;
+    using kqoffice::ai::control::PermissionDecision;
+    using kqoffice::ai::control::PermissionState;
+    CPPUNIT_ASSERT(!PermissionCenter::capabilityLabelZh(CapabilityPermission::FolderScan).isEmpty());
+    CPPUNIT_ASSERT(!PermissionCenter::capabilityLabelZh(CapabilityPermission::NetworkEgress).isEmpty());
+    CPPUNIT_ASSERT_EQUAL(u"已授权"_ustr,
+        PermissionCenter::stateLabelZh(PermissionState::Granted));
+    CPPUNIT_ASSERT_EQUAL(u"拒绝"_ustr,
+        PermissionCenter::riskConfirmationLabelZh(PermissionDecision::Deny));
+    CPPUNIT_ASSERT(!PermissionCenter::riskConfirmationLabelZh(PermissionDecision::AllowOnce).isEmpty());
+    CPPUNIT_ASSERT(!PermissionCenter::riskConfirmationLabelZh(PermissionDecision::AllowSession).isEmpty());
+}
+
+void ControlPlaneTest::testPermissionRiskConfirmDenyOnceSession()
+{
+    using kqoffice::ai::control::PermissionCenter;
+    using kqoffice::ai::control::PermissionDecision;
+    using kqoffice::ai::control::PermissionGrant;
+    using kqoffice::ai::control::RiskOperation;
+
+    char storeT[] = "/tmp/kqoffice-perm-XXXXXX";
+    char scanT[] = "/tmp/kqoffice-authorized-XXXXXX";
+    char* storeDir = ::mkdtemp(storeT);
+    char* scanDir = ::mkdtemp(scanT);
+    CPPUNIT_ASSERT(storeDir && scanDir);
+    ::setenv("KQOFFICE_AI_PERMISSION_DIR", storeDir, 1);
+    PermissionGrant::clearAllSessionAllows();
+
+    const OUString root = OUString::createFromAscii(scanDir);
+    const OUString file = root + u"/report.odt"_ustr;
+    {
+        const OString sys = OUStringToOString(file, RTL_TEXTENCODING_UTF8);
+        FILE* f = std::fopen(sys.getStr(), "wb");
+        CPPUNIT_ASSERT(f != nullptr);
+        std::fwrite("x", 1, 1, f);
+        std::fclose(f);
+    }
+
+    PermissionCenter pc;
+    // Outside workspace always denied.
+    CPPUNIT_ASSERT(!pc.resolveRiskyOp(RiskOperation::Delete, file, PermissionDecision::AllowOnce));
+
+    CPPUNIT_ASSERT(pc.grantDirectory(root, true));
+    CPPUNIT_ASSERT(pc.needsRiskConfirm(RiskOperation::Delete, file));
+    CPPUNIT_ASSERT(!pc.resolveRiskyOp(RiskOperation::Delete, file, PermissionDecision::Deny));
+    CPPUNIT_ASSERT(pc.needsRiskConfirm(RiskOperation::Delete, file));
+
+    // AllowOnce: pass once, still need confirm next time.
+    CPPUNIT_ASSERT(pc.resolveRiskyOp(RiskOperation::Delete, file, PermissionDecision::AllowOnce));
+    CPPUNIT_ASSERT(pc.needsRiskConfirm(RiskOperation::Delete, file));
+
+    // AllowSession: subsequent ops under same root skip confirm.
+    CPPUNIT_ASSERT(pc.resolveRiskyOp(RiskOperation::Delete, file, PermissionDecision::AllowSession));
+    CPPUNIT_ASSERT(!pc.needsRiskConfirm(RiskOperation::Delete, file));
+    CPPUNIT_ASSERT(pc.hasSessionRiskGrant(RiskOperation::Delete, file));
+    // Deny is ignored once session grant exists.
+    CPPUNIT_ASSERT(pc.resolveRiskyOp(RiskOperation::Delete, file, PermissionDecision::Deny));
+
+    // Overwrite is a separate session grant.
+    CPPUNIT_ASSERT(pc.needsRiskConfirm(RiskOperation::Overwrite, file));
+    CPPUNIT_ASSERT(pc.resolveRiskyOp(RiskOperation::Overwrite, file, PermissionDecision::AllowSession));
+    CPPUNIT_ASSERT(!pc.needsRiskConfirm(RiskOperation::Overwrite, file));
+
+    pc.clearSessionRiskGrants();
+    CPPUNIT_ASSERT_EQUAL(static_cast<sal_Int32>(0), pc.sessionRiskGrantCount());
+    CPPUNIT_ASSERT(pc.needsRiskConfirm(RiskOperation::Delete, file));
+    CPPUNIT_ASSERT(pc.needsRiskConfirm(RiskOperation::Overwrite, file));
+
+    // Persistence: directories survive reload; session grants do not.
+    {
+        PermissionCenter pc2;
+        CPPUNIT_ASSERT(pc2.isPathAuthorized(file));
+        CPPUNIT_ASSERT(pc2.needsRiskConfirm(RiskOperation::Delete, file));
+    }
+
+    PermissionGrant::clearAllSessionAllows();
+    ::unsetenv("KQOFFICE_AI_PERMISSION_DIR");
+}
+
+void ControlPlaneTest::testPermissionSettingsSurfaceSummary()
+{
+    using kqoffice::ai::control::CapabilityPermission;
+    using kqoffice::ai::control::PermissionCenter;
+    using kqoffice::ai::control::PermissionDecision;
+    using kqoffice::ai::control::PermissionState;
+
+    char templ[] = "/tmp/kqoffice-perm-XXXXXX";
+    char* dir = ::mkdtemp(templ);
+    CPPUNIT_ASSERT(dir != nullptr);
+    ::setenv("KQOFFICE_AI_PERMISSION_DIR", dir, 1);
+
+    PermissionCenter pc;
+
+    // Defaults: network off, mic/screenshot first-use OS prompt wording.
+    const OUString mic = pc.settingsCapabilityStatusZh(CapabilityPermission::Microphone);
+    CPPUNIT_ASSERT(mic.indexOf(u"麦克风") >= 0);
+    CPPUNIT_ASSERT(mic.indexOf(u"使用时系统会询问") >= 0);
+    const OUString shot = pc.settingsCapabilityStatusZh(CapabilityPermission::ScreenCapture);
+    CPPUNIT_ASSERT(shot.indexOf(u"屏幕截图") >= 0);
+    CPPUNIT_ASSERT(shot.indexOf(u"使用时系统会询问") >= 0);
+
+    const OUString net = pc.networkStatusLineZh();
+    CPPUNIT_ASSERT(net.indexOf(u"网络") >= 0);
+    CPPUNIT_ASSERT(net.indexOf(u"默认关闭") >= 0);
+    // No English product titles in settings copy.
+    CPPUNIT_ASSERT(net.indexOf(u"AI Assistant") < 0);
+    CPPUNIT_ASSERT(net.indexOf(u"Permission") < 0);
+
+    const OUString risk = PermissionCenter::riskPolicyHintZh();
+    CPPUNIT_ASSERT(risk.indexOf(PermissionCenter::riskConfirmationLabelZh(PermissionDecision::Deny))
+                   >= 0);
+    CPPUNIT_ASSERT(
+        risk.indexOf(PermissionCenter::riskConfirmationLabelZh(PermissionDecision::AllowOnce))
+        >= 0);
+    CPPUNIT_ASSERT(
+        risk.indexOf(PermissionCenter::riskConfirmationLabelZh(PermissionDecision::AllowSession))
+        >= 0);
+
+    const OUString summary = pc.settingsSurfaceSummaryZh();
+    CPPUNIT_ASSERT(summary.indexOf(u"工作区") >= 0);
+    CPPUNIT_ASSERT(summary.indexOf(u"麦克风") >= 0);
+    CPPUNIT_ASSERT(summary.indexOf(u"屏幕截图") >= 0);
+    CPPUNIT_ASSERT(summary.indexOf(u"AI Assistant") < 0);
+
+    // After grant: status flips; network still requires confirm wording when granted.
+    CPPUNIT_ASSERT(pc.grant(CapabilityPermission::NetworkEgress));
+    CPPUNIT_ASSERT(pc.grant(CapabilityPermission::Microphone));
+    const OUString netGranted = pc.networkStatusLineZh();
+    CPPUNIT_ASSERT(netGranted.indexOf(u"已授权") >= 0
+                   || netGranted.indexOf(PermissionCenter::stateLabelZh(PermissionState::Granted))
+                          >= 0);
+    CPPUNIT_ASSERT(netGranted.indexOf(u"确认") >= 0 || netGranted.indexOf(u"披露") >= 0);
+    const OUString micGranted
+        = pc.settingsCapabilityStatusZh(CapabilityPermission::Microphone);
+    CPPUNIT_ASSERT(micGranted.indexOf(u"已授权") >= 0);
+
+    // Revoke network: settings surface reflects closed state.
+    CPPUNIT_ASSERT(pc.revoke(CapabilityPermission::NetworkEgress));
+    const OUString netRevoked = pc.networkStatusLineZh();
+    CPPUNIT_ASSERT(netRevoked.indexOf(u"已撤销") >= 0 || netRevoked.indexOf(u"已关闭") >= 0);
+
+    ::unsetenv("KQOFFICE_AI_PERMISSION_DIR");
+}
+
+// ---- PermissionGrant tests (Wave D4) ------------------------------------
+
+void ControlPlaneTest::testPermissionGrantSessionAllow()
+{
+    using kqoffice::ai::control::PermissionGrant;
+
+    PermissionGrant::clearAllSessionAllows();
+    CPPUNIT_ASSERT(!PermissionGrant::isSessionAllowed(u"apply.diff"_ustr));
+    CPPUNIT_ASSERT(PermissionGrant::sessionAllowedActions().empty());
+
+    PermissionGrant::grantSession(u"apply.diff"_ustr);
+    CPPUNIT_ASSERT(PermissionGrant::isSessionAllowed(u"apply.diff"_ustr));
+    CPPUNIT_ASSERT(!PermissionGrant::isSessionAllowed(u"delete.range"_ustr));
+
+    auto listed = PermissionGrant::sessionAllowedActions();
+    CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), listed.size());
+    CPPUNIT_ASSERT_EQUAL(u"apply.diff"_ustr, listed[0]);
+
+    PermissionGrant::revokeSession(u"apply.diff"_ustr);
+    CPPUNIT_ASSERT(!PermissionGrant::isSessionAllowed(u"apply.diff"_ustr));
+
+    // Empty action id is never allowed / stored
+    PermissionGrant::grantSession(u""_ustr);
+    CPPUNIT_ASSERT(!PermissionGrant::isSessionAllowed(u""_ustr));
+    CPPUNIT_ASSERT(PermissionGrant::sessionAllowedActions().empty());
+
+    PermissionGrant::clearAllSessionAllows();
+}
+
+void ControlPlaneTest::testPermissionGrantApplyDecision()
+{
+    using kqoffice::ai::control::PermissionDecision;
+    using kqoffice::ai::control::PermissionGrant;
+
+    PermissionGrant::clearAllSessionAllows();
+
+    PermissionGrant::applyDecision(u"apply.diff"_ustr, PermissionDecision::Deny);
+    CPPUNIT_ASSERT(!PermissionGrant::isSessionAllowed(u"apply.diff"_ustr));
+
+    PermissionGrant::applyDecision(u"apply.diff"_ustr, PermissionDecision::AllowOnce);
+    CPPUNIT_ASSERT(!PermissionGrant::isSessionAllowed(u"apply.diff"_ustr));
+
+    PermissionGrant::applyDecision(u"apply.diff"_ustr, PermissionDecision::AllowSession);
+    CPPUNIT_ASSERT(PermissionGrant::isSessionAllowed(u"apply.diff"_ustr));
+
+    auto autoAllow = PermissionGrant::tryAutoAllow(u"apply.diff"_ustr);
+    CPPUNIT_ASSERT(autoAllow.has_value());
+    CPPUNIT_ASSERT(*autoAllow == PermissionDecision::AllowSession);
+
+    CPPUNIT_ASSERT(!PermissionGrant::tryAutoAllow(u"other.action"_ustr).has_value());
+
+    PermissionGrant::clearAllSessionAllows();
+}
+
+void ControlPlaneTest::testPermissionGrantResolveHeadless()
+{
+    using kqoffice::ai::control::ClarificationPrompt;
+    using kqoffice::ai::control::PermissionDecision;
+    using kqoffice::ai::control::PermissionGrant;
+
+    PermissionGrant::clearAllSessionAllows();
+
+    ClarificationPrompt prompt;
+    prompt.actionId = u"delete.range"_ustr;
+    prompt.messageZh = u"将删除选中的 2 段内容，是否继续？"_ustr;
+    prompt.options = { u"保留批注"_ustr, u"同步更新目录"_ustr };
+
+    auto denied = PermissionGrant::resolveHeadless(prompt);
+    CPPUNIT_ASSERT(denied.decision == PermissionDecision::Deny);
+    CPPUNIT_ASSERT(!denied.fromSessionCache);
+
+    PermissionGrant::grantSession(u"delete.range"_ustr);
+    auto allowed = PermissionGrant::resolveHeadless(prompt);
+    CPPUNIT_ASSERT(allowed.decision == PermissionDecision::AllowSession);
+    CPPUNIT_ASSERT(allowed.fromSessionCache);
+
+    PermissionGrant::clearAllSessionAllows();
+}
+
+void ControlPlaneTest::testPermissionGrantDecisionLabelsZh()
+{
+    using kqoffice::ai::control::PermissionDecision;
+    using kqoffice::ai::control::PermissionGrant;
+
+    CPPUNIT_ASSERT_EQUAL(u"拒绝"_ustr,
+                         PermissionGrant::decisionLabelZh(PermissionDecision::Deny));
+    CPPUNIT_ASSERT_EQUAL(u"仅本次"_ustr,
+                         PermissionGrant::decisionLabelZh(PermissionDecision::AllowOnce));
+    CPPUNIT_ASSERT_EQUAL(u"本轮对话均允许"_ustr,
+                         PermissionGrant::decisionLabelZh(PermissionDecision::AllowSession));
 }
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ControlPlaneTest);

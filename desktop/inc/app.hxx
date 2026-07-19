@@ -79,6 +79,11 @@ class Desktop final : public Application
         virtual void            AppEvent( const ApplicationEvent& rAppEvent ) override;
 
         DECL_LINK( OpenClients_Impl, void*, void );
+        /// Deferred OpenCL device self-test so start-center first paint is not blocked.
+        DECL_LINK( CheckOpenCL_Impl, void*, void );
+        /// Font substitution + appearance/a11y VCL defaults — off the critical path
+        /// after Start Center is scheduled (cold-start: ~0.3s on macOS).
+        DECL_LINK( DeferredVclAppearance_Impl, void*, void );
 
         static void             OpenClients();
         static void             OpenDefault();

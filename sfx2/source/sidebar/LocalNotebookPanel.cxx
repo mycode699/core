@@ -577,7 +577,7 @@ void LocalNotebookPanel::sendMaterialsToAi(const std::vector<OUString>& rIds,
         else
             m_xStatus->set_label(u"已发送 "_ustr
                                  + OUString::number(static_cast<sal_Int32>(ids.size()))
-                                 + u" 条材料到 AI 助手"_ustr);
+                                 + u" 条材料到 可圈 AI"_ustr);
     }
 }
 
@@ -603,7 +603,7 @@ IMPL_LINK_NOARG(LocalNotebookPanel, OnMatAskAi, weld::Button&, void)
     }
     sendMaterialsToAi(ids,
                       u"已发送 "_ustr + OUString::number(static_cast<sal_Int32>(ids.size()))
-                          + u" 条材料到 AI（检索增强）— 打开「AI 助手」"_ustr);
+                          + u" 条材料到 AI（检索增强）— 打开「可圈 AI」"_ustr);
 }
 
 IMPL_LINK_NOARG(LocalNotebookPanel, OnMatPinnedAi, weld::Button&, void)
@@ -622,7 +622,7 @@ IMPL_LINK_NOARG(LocalNotebookPanel, OnMatPinnedAi, weld::Button&, void)
     }
     sendMaterialsToAi(ids,
                       u"已发送 "_ustr + OUString::number(static_cast<sal_Int32>(ids.size()))
-                          + u" 条置顶材料到 AI — 打开「AI 助手」"_ustr);
+                          + u" 条置顶材料到 AI — 打开「可圈 AI」"_ustr);
 }
 
 IMPL_LINK_NOARG(LocalNotebookPanel, OnMatSelectAll, weld::Button&, void)
@@ -1055,7 +1055,7 @@ IMPL_LINK_NOARG(LocalNotebookPanel, OnSendAiClicked, weld::Button&, void)
     queuePromptInject(b.makeStringAndClear());
     openAiAssistantDeck();
     if (m_xStatus)
-        m_xStatus->set_label(u"已发送笔记+材料到 AI 助手"_ustr);
+        m_xStatus->set_label(u"已发送笔记+材料到 可圈 AI"_ustr);
 }
 
 void LocalNotebookPanel::EnrichImportedMaterial(NotebookMaterial& rMat)
@@ -1468,7 +1468,7 @@ IMPL_LINK_NOARG(LocalNotebookPanel, OnMatSend, weld::Button&, void)
     openAiAssistantDeck();
     if (m_xStatus)
         m_xStatus->set_label(u"已发送 "_ustr + OUString::number(static_cast<sal_Int32>(ids.size()))
-                             + u" 条材料到 AI 助手"_ustr);
+                             + u" 条材料到 可圈 AI"_ustr);
 }
 
 IMPL_LINK_NOARG(LocalNotebookPanel, OnMatDel, weld::Button&, void)

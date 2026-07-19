@@ -36,9 +36,10 @@
       <prop oor:name="InfoURL" oor:type="xs:string">
         <value/>
       </prop>
-      <!-- WPS-modern light tiles: soft blue-gray bg #E8F3FF, near-black text #1F2329 -->
+      <!-- Office/WPS-calm workbench: neutral #F5F7FA tiles, near-black text #1F2329.
+           Avoid saturated lavender wash that reads as unfinished consumer UI. -->
       <prop oor:name="StartCenterThumbnailsBackgroundColor" oor:type="xs:int">
-        <value>15264767</value>
+        <value>16119290</value>
       </prop>
       <prop oor:name="StartCenterThumbnailsTextColor" oor:type="xs:int">
         <value>2040617</value>

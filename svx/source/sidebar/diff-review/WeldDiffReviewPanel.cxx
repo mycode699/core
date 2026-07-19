@@ -16,6 +16,14 @@
 
 #include <algorithm>
 
+#if defined(MACOSX) || defined(LINUX) || defined(FREEBSD) || defined(NETBSD) || defined(OPENBSD) \
+    || defined(DRAGONFLY)
+#include <dlfcn.h>
+#define DIFFREVIEW_HAVE_DLSYM 1
+#else
+#define DIFFREVIEW_HAVE_DLSYM 0
+#endif
+
 namespace svx::sidebar::diff_review {
 
 namespace {
@@ -26,13 +34,94 @@ const OUString& stubDiffId()
     return sId;
 }
 
+using DiffReviewPendingActionFn = sal_Bool (*)(const sal_Unicode*, sal_Int32);
+
+DiffReviewPendingActionFn lcl_lookupPendingAction(const char* pSymbol)
+{
+#if DIFFREVIEW_HAVE_DLSYM
+    if (void* pSym = dlsym(RTLD_DEFAULT, pSymbol))
+        return reinterpret_cast<DiffReviewPendingActionFn>(pSym);
+#else
+    (void)pSymbol;
+#endif
+    return nullptr;
+}
+
+/** Call AI chat panel pending approve (same path as sidebar 批准写回). */
+bool lcl_invokePendingApprove(const OUString& rPlanId)
+{
+    DiffReviewPendingActionFn pFn
+        = lcl_lookupPendingAction("kqoffice_diff_review_approve_pending");
+    if (!pFn)
+    {
+        SAL_WARN("svx.diff_review",
+                 "pending approve: symbol kqoffice_diff_review_approve_pending not found "
+                 "(sidebar not loaded?)");
+        return false;
+    }
+    return pFn(rPlanId.getStr(), rPlanId.getLength()) == sal_True;
+}
+
+/** Call AI chat panel pending reject (same path as sidebar 拒绝). */
+bool lcl_invokePendingReject(const OUString& rPlanId)
+{
+    DiffReviewPendingActionFn pFn
+        = lcl_lookupPendingAction("kqoffice_diff_review_reject_pending");
+    if (!pFn)
+    {
+        SAL_WARN("svx.diff_review",
+                 "pending reject: symbol kqoffice_diff_review_reject_pending not found "
+                 "(sidebar not loaded?)");
+        return false;
+    }
+    return pFn(rPlanId.getStr(), rPlanId.getLength()) == sal_True;
+}
+
+bool lcl_hasPendingProviderEntries(const std::vector<DiffReviewPatchEntry>& rEntries)
+{
+    for (const DiffReviewPatchEntry& rEntry : rEntries)
+    {
+        if (!rEntry.mbApplied && rEntry.maStatus == u"pending"_ustr)
+            return true;
+    }
+    return false;
+}
+
+OUString lcl_localizeStatus(const OUString& rStatus)
+{
+    if (rStatus == u"pending"_ustr)
+        return u"待批"_ustr;
+    if (rStatus == u"ok"_ustr || rStatus == u"applied"_ustr)
+        return u"已写回"_ustr;
+    if (rStatus == u"reverted"_ustr)
+        return u"已撤销"_ustr;
+    if (rStatus == u"rejected"_ustr)
+        return u"已拒绝"_ustr;
+    if (rStatus == u"failed"_ustr || rStatus == u"error"_ustr)
+        return u"失败"_ustr;
+    return rStatus;
+}
+
+OUString lcl_localizeKind(const OUString& rKind)
+{
+    if (rKind == u"replace"_ustr)
+        return u"替换"_ustr;
+    if (rKind == u"insert"_ustr)
+        return u"插入"_ustr;
+    if (rKind == u"delete"_ustr)
+        return u"删除"_ustr;
+    if (rKind == u"placeholder"_ustr)
+        return u"占位"_ustr;
+    return rKind;
+}
+
 OUString lcl_entrySummary(const DiffReviewPatchEntry& rEntry)
 {
     OUString aSummary = rEntry.maPatchId;
     if (!rEntry.maKind.isEmpty())
-        aSummary += u" ["_ustr + rEntry.maKind + u"]"_ustr;
+        aSummary += u" ["_ustr + lcl_localizeKind(rEntry.maKind) + u"]"_ustr;
     if (!rEntry.maStatus.isEmpty())
-        aSummary += u" — "_ustr + rEntry.maStatus;
+        aSummary += u" — "_ustr + lcl_localizeStatus(rEntry.maStatus);
     return aSummary;
 }
 
@@ -83,12 +172,13 @@ void WeldDiffReviewPanel::populateFromPatchResults(
 {
     m_sPlanId = rPlanId;
     m_aEntries = rEntries;
-    m_xLabelPlanId->set_label(u"Apply plan: "_ustr + rPlanId);
+    m_xLabelPlanId->set_label(u"写回计划："_ustr
+                              + (rPlanId.isEmpty() ? u"（无）"_ustr : rPlanId));
 
     m_xTreeDiffs->clear();
     if (m_aEntries.empty())
     {
-        m_xTreeDiffs->append(stubDiffId(), u"(no patches)"_ustr);
+        m_xTreeDiffs->append(stubDiffId(), u"（无差异项）"_ustr);
         m_xTreeDiffs->select(0);
         m_sSelectedDiffId = stubDiffId();
     }
@@ -103,6 +193,23 @@ void WeldDiffReviewPanel::populateFromPatchResults(
         m_sSelectedDiffId = treeIdForPatch(m_aEntries.front().maPatchId);
     }
 
+    // Chrome aligned with sidebar / inline audit chain vocabulary.
+    m_xBtnAccept->set_label(u"批准写回"_ustr);
+    m_xBtnReject->set_label(u"拒绝"_ustr);
+    if (lcl_hasPendingProviderEntries(m_aEntries))
+    {
+        m_xBtnAccept->set_tooltip_text(
+            u"批准写回：将待批计划写入主文档（与侧栏同一审批路径，可撤销）"_ustr);
+        m_xBtnReject->set_tooltip_text(
+            u"拒绝：丢弃待批计划，主文档不变"_ustr);
+    }
+    else
+    {
+        m_xBtnAccept->set_tooltip_text(
+            u"对已写回项：按撤销栈撤销最近一条（LIFO）；未写回项不会静默改主文档"_ustr);
+        m_xBtnReject->set_tooltip_text(
+            u"从审阅列表移除该项；未写回的补丁不会改动主文档"_ustr);
+    }
     updateActionButtons();
 
     SAL_INFO("svx.diff_review",
@@ -171,10 +278,13 @@ void WeldDiffReviewPanel::updateActionButtons()
 {
     const DiffReviewPatchEntry* pEntry = entryForPatchId(selectedDiffId());
     const DiffReviewPatchEntry* pLastApplied = lastRemainingAppliedEntry();
-    // Accept maps to one SfxUndoManager::Undo() — reverts the last applied patch still on
-    // the stack (apply order). Enable only when the selected row is that patch.
-    const bool bCanAccept = pEntry && pLastApplied && pEntry->maPatchId == pLastApplied->maPatchId;
-    m_xBtnAccept->set_sensitive(bCanAccept);
+    // Pending preview: 批准写回 → sidebar ApplyPendingPlanWithApproval (C ABI).
+    // Already applied: 批准写回 historically maps to one SfxUndoManager::Undo() for the
+    // last remaining applied patch (LIFO). Enable when selected row is that patch.
+    const bool bPendingPreview = pEntry && lcl_isPendingProviderEntry(*pEntry);
+    const bool bCanUndoAccept
+        = pEntry && pLastApplied && pEntry->maPatchId == pLastApplied->maPatchId;
+    m_xBtnAccept->set_sensitive(bPendingPreview || bCanUndoAccept);
     m_xBtnReject->set_sensitive(pEntry != nullptr);
 }
 
@@ -190,9 +300,26 @@ void WeldDiffReviewPanel::handleAccept(const rtl::OUString& rDiffId)
 
     if (lcl_isPendingProviderEntry(*pEntry))
     {
+        // Bridge to sidebar pending apply — same semantics as chat/审核「批准写回」.
+        // On success ApplyPendingPlanWithApproval may close/reopen this dialog; do not
+        // touch members after a true return.
         SAL_INFO("svx.diff_review",
-                 "handleAccept: pending provider-only patch diff_id=" << rDiffId
-                                                                      << " (no document change)");
+                 "handleAccept: pending provider patch → sidebar approve plan_id="
+                     << m_sPlanId << " diff_id=" << rDiffId);
+        const bool bOk = lcl_invokePendingApprove(m_sPlanId);
+        if (!bOk)
+        {
+            // Permission deny / apply fail / no active panel: keep pending; no silent write.
+            pEntry->maStatus = u"pending"_ustr;
+            pEntry->mbApplied = false;
+            refreshTreeRow(*pEntry);
+            updateActionButtons();
+            m_xBtnAccept->set_tooltip_text(
+                u"写回未完成：可能已拒绝权限、写回失败或侧栏无待批计划；主文档未改"_ustr);
+            SAL_INFO("svx.diff_review",
+                     "handleAccept: pending approve failed/aborted plan_id="
+                         << m_sPlanId << " (main-document-mutation=false)");
+        }
         return;
     }
 
@@ -240,6 +367,23 @@ void WeldDiffReviewPanel::handleReject(const rtl::OUString& rDiffId)
 {
     const DiffReviewPatchEntry* pEntry = entryForPatchId(rDiffId);
     const bool bWasApplied = pEntry && pEntry->mbApplied;
+    const bool bWasPending = pEntry && lcl_isPendingProviderEntry(*pEntry);
+
+    if (bWasPending)
+    {
+        // Whole pending plan reject — same as sidebar「拒绝」; main document unchanged.
+        SAL_INFO("svx.diff_review",
+                 "handleReject: pending provider patch → sidebar reject plan_id="
+                     << m_sPlanId << " diff_id=" << rDiffId);
+        lcl_invokePendingReject(m_sPlanId);
+        // Drop local preview rows and close dialog (plan cleared in sidebar).
+        m_aEntries.clear();
+        m_xTreeDiffs->clear();
+        m_sSelectedDiffId.clear();
+        updateActionButtons();
+        DismissDiffReviewPanel();
+        return;
+    }
 
     m_aEntries.erase(
         std::remove_if(m_aEntries.begin(), m_aEntries.end(),

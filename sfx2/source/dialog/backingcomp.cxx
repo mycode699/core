@@ -45,6 +45,10 @@
 
 #include <sfx2/notebookbar/SfxNotebookBar.hxx>
 
+#include <chrono>
+#include <cstdio>
+#include <cstdlib>
+
 #ifdef MACOSX
 #include <shutdownicon.hxx>
 #endif
@@ -378,7 +382,20 @@ void SAL_CALL BackingComp::attachFrame( /*IN*/ const css::uno::Reference< css::f
     // inform BackingWindow about frame
     BackingWindow* pBack = dynamic_cast<BackingWindow*>(pWindow.get());
     if( pBack )
+    {
+        const bool bKqStartupTiming = (std::getenv("KQOFFICE_STARTUP_TIMING") != nullptr);
+        const auto tAttach = std::chrono::high_resolution_clock::now();
         pBack->setOwningFrame( m_xFrame );
+        if (bKqStartupTiming)
+        {
+            const auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                                std::chrono::high_resolution_clock::now() - tAttach)
+                                .count();
+            fprintf(stderr, "kqoffice.startuptime BackingComp.attachFrame.setOwningFrame: %lld ms\n",
+                    static_cast<long long>(ms));
+            fflush(stderr);
+        }
+    }
 
     // Set a minimum size for Start Center
     if( !pParent || !pBack )
@@ -644,7 +661,19 @@ void SAL_CALL BackingComp::initialize( /*IN*/ const css::uno::Sequence< css::uno
 
     // create the component window
     VclPtr<vcl::Window> pParent = VCLUnoHelper::GetWindow(xParentWindow);
+    const bool bKqStartupTiming = (std::getenv("KQOFFICE_STARTUP_TIMING") != nullptr);
+    const auto tCreate = std::chrono::high_resolution_clock::now();
     VclPtr<vcl::Window> pWindow = VclPtr<BackingWindow>::Create(pParent);
+    if (bKqStartupTiming)
+    {
+        const auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                            std::chrono::high_resolution_clock::now() - tCreate)
+                            .count();
+        // Full BackingWindow ctor: startcenter.ui + all weld binds + body.
+        fprintf(stderr, "kqoffice.startuptime BackingWindow.ctor: %lld ms\n",
+                static_cast<long long>(ms));
+        fflush(stderr);
+    }
     m_xWindow = VCLUnoHelper::GetInterface(pWindow);
 
     if (!m_xWindow.is())
@@ -657,6 +686,15 @@ void SAL_CALL BackingComp::initialize( /*IN*/ const css::uno::Sequence< css::uno
     m_xWindow->addEventListener(static_cast< css::lang::XEventListener* >(this));
 
     m_xWindow->setVisible(true);
+    if (bKqStartupTiming)
+    {
+        const auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                            std::chrono::high_resolution_clock::now() - tCreate)
+                            .count();
+        fprintf(stderr, "kqoffice.startuptime BackingComp.initialize.create+show: %lld ms\n",
+                static_cast<long long>(ms));
+        fflush(stderr);
+    }
 
     /* } SAFE */
 }

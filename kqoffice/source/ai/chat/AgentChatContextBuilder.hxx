@@ -40,7 +40,7 @@ struct ChatContext
     bool hasSelection() const { return !selectionText.isEmpty(); }
 
     /// Build a compact debug string representation.
-    OUString debugString() const;
+    SAL_DLLPUBLIC_EXPORT OUString debugString() const;
 };
 
 /// Builder for ChatContext from user input and document state.

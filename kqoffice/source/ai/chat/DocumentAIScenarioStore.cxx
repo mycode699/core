@@ -351,34 +351,109 @@ std::vector<DocumentAIScenario> DocumentAIScenarioStore::builtinDefaults()
         u"/解释单元格"_ustr,
         u"【解释】用通俗语言解释选中内容含义与可能用途。\n选区：\n{selection}"_ustr, 140));
 
-    // —— Impress ——
+    // —— Impress · Wave UI-4 设计流（墨刀/Claude Design 心智）——
+    // 禁止「一句话黑盒成片」：先大纲 → 多方案卡片 → 用户选一 → 批准写回 → 导出 PPTX。
+    // ① 大纲：chat only，不产出可写回 ## 页结构，避免误触 apply。
     v.push_back(makeBuiltin(
-        u"outline-to-slides"_ustr, u"大纲成片"_ustr, u"impress"_ustr, u"impress"_ustr,
-        u"plan"_ustr, u"/大纲成片"_ustr,
-        u"【大纲成片 / 真成片结构】把素材拆成可写回的多页幻灯。要求：\n"
-        u"1) 用编号幻灯，每页格式：\n"
-        u"## 1. 标题\n"
-        u"版式：标题内容|标题页|分栏|章节\n"
-        u"主题：商务蓝|简洁灰（可选）\n"
-        u"- 要点1\n- 要点2\n- 要点3\n"
-        u"讲稿：30–60 秒口播（可选）\n"
-        u"配图：建议画面描述（可选，写回为占位框）\n"
-        u"2) 每页 3–5 要点；页数建议 5–10；\n"
-        u"3) 首页用「版式：标题页」，章节分隔用「版式：章节」；\n"
-        u"4) 写回 target 用 slide:N，new_text 含标题/版式/要点/讲稿/配图。\n"
-        u"素材：\n{selection}"_ustr,
-        210));
+        u"design-outline"_ustr, u"① 先写大纲"_ustr, u"impress"_ustr, u"impress"_ustr,
+        u"chat"_ustr, u"/先写大纲"_ustr,
+        u"【演示设计流 · 步骤① 仅大纲 · 禁止直接写回幻灯】\n"
+        u"根据主题/素材只输出「可评审大纲」，不要使用 ## 1. 幻灯写回格式。\n"
+        u"输出结构：\n"
+        u"标题：（演示名）\n"
+        u"页数建议：N\n"
+        u"1. 章节/页标题 — 一句话目的\n"
+        u"   - 要点…\n"
+        u"2. …\n"
+        u"讲者节奏：（总时长建议）\n"
+        u"缺信息用【待填】。结束后提示用户：点「② 多方案」对比 2–3 版结构。\n"
+        u"主题/素材：\n{selection}"_ustr,
+        200));
     v.back().options.pinned = true;
+    v.back().options.autoSubmit = false;
+    v.back().options.requireApproval = true;
+
+    // ② 多方案：并列 方案A/B/C，仍不写回。
     v.push_back(makeBuiltin(
-        u"blank-draft-impress"_ustr, u"AI 成片"_ustr, u"impress"_ustr, u"impress"_ustr,
-        u"plan"_ustr, u"/AI成片"_ustr,
-        u"【空白演示 AI 成片】按主题生成完整演示大纲并格式化成页。要求：\n"
-        u"1) 首页标题页 + 目录/议程 + 正文页 + 总结/下一步；\n"
-        u"2) 每页：\n## N. 标题\n- 要点\n讲稿：…\n"
-        u"3) 语气商务专业；缺信息用【待填】。\n"
+        u"design-variants"_ustr, u"② 多方案"_ustr, u"impress"_ustr, u"impress"_ustr,
+        u"chat"_ustr, u"/多方案"_ustr,
+        u"【演示设计流 · 步骤② 多方案板 · 对标墨刀/Claude Design】\n"
+        u"基于主题与（若有）上文大纲，给出 **恰好 3 套** 可并列比较的结构方案。\n"
+        u"每套格式：\n"
+        u"### 方案A · 名称（一句话定位）\n"
+        u"- 适合：…\n"
+        u"- 页数：…\n"
+        u"- 页序：1… 2… 3…（只列标题，不写 ## 写回体）\n"
+        u"- 风格：商务克制 / 故事线 / 数据汇报 等其一\n"
+        u"同样给出 方案B、方案C。\n"
+        u"最后用一行：请回复「选方案A/B/C」或点「③ 选一写回」并写明选用方案。\n"
+        u"**禁止**在本步输出可自动写回的 ## 1. 幻灯体。\n"
+        u"主题/素材：\n{selection}"_ustr,
+        201));
+    v.back().options.pinned = true;
+    v.back().options.autoSubmit = false;
+
+    // ③ 选一写回：仅在用户已选定方案后，产出 ## 写回体；须批准。
+    v.push_back(makeBuiltin(
+        u"design-apply"_ustr, u"③ 选一写回"_ustr, u"impress"_ustr, u"impress"_ustr,
+        u"plan"_ustr, u"/选一写回"_ustr,
+        u"【演示设计流 · 步骤③ 选定方案 → 可写回幻灯 · 须用户批准】\n"
+        u"前提：用户已从多方案中选定一套（若未指定，默认采用上文「方案A」）。\n"
+        u"把选定方案展开为可写回多页结构。每页必须用：\n"
+        u"## 1. 标题\n"
+        u"版式：标题页|标题内容|分栏|章节\n"
+        u"主题：商务蓝\n"
+        u"- 要点1\n- 要点2\n- 要点3\n"
+        u"讲稿：30–60 秒（可选）\n"
+        u"配图：画面描述（可选，写回为占位）\n"
+        u"页数 5–10；首页标题页；结尾总结/下一步。缺信息【待填】。\n"
+        u"说明：写回后主文档仍须用户点「批准写回」；未批准零变更。\n"
+        u"主题/已选方案/素材：\n{selection}"_ustr,
+        202));
+    v.back().options.pinned = true;
+    v.back().options.autoSubmit = false;
+    v.back().options.requireApproval = true;
+
+    // ④ 导出：操作指引（本地文件→导出），不调云、不黑盒。
+    v.push_back(makeBuiltin(
+        u"design-export"_ustr, u"④ 导出 PPTX"_ustr, u"impress"_ustr, u"impress"_ustr,
+        u"chat"_ustr, u"/导出PPTX"_ustr,
+        u"【演示设计流 · 步骤④ 导出】\n"
+        u"用简洁中文说明如何把当前演示导出为 PPTX（不执行导出、不改文档）：\n"
+        u"1) 菜单：文件 → 导出为 → 导出为 PPTX…（或另存为 .pptx）\n"
+        u"2) 选择路径与文件名后保存\n"
+        u"3) 若需兼容投影：检查字体是否嵌入/替换\n"
+        u"4) 提醒：AI 只协助内容；导出始终由用户确认\n"
+        u"若上文有页数，可附「建议检查清单」3 条。\n"
+        u"补充：\n{selection}"_ustr,
+        203));
+    v.back().options.autoSubmit = true; // 纯指引，可直接生成说明
+    v.back().options.requireApproval = true;
+
+    // 兼容旧 id：outline-to-slides = ③ 写回体（须批准，禁止 auto 黑盒）
+    v.push_back(makeBuiltin(
+        u"outline-to-slides"_ustr, u"③ 选一写回"_ustr, u"impress"_ustr, u"impress"_ustr,
+        u"plan"_ustr, u"/大纲成片"_ustr,
+        u"【兼容 · 等同设计流③】仅在用户已有明确大纲/选定方案时使用。\n"
+        u"输出可写回多页（## N. 标题 + 版式 + 要点 + 可选讲稿/配图）。\n"
+        u"**禁止**在用户未提供主题/大纲时凭空编造整本演示。\n"
+        u"写回须用户批准。素材：\n{selection}"_ustr,
+        210));
+    v.back().options.autoSubmit = false;
+    v.back().options.requireApproval = true;
+    v.back().options.showAsButton = false; // 避免与 design-apply 双按钮
+
+    // 旧「AI 成片」：降级为「从主题进入设计流」，禁止一键黑盒写回
+    v.push_back(makeBuiltin(
+        u"blank-draft-impress"_ustr, u"从主题开始"_ustr, u"impress"_ustr, u"impress"_ustr,
+        u"chat"_ustr, u"/从主题开始"_ustr,
+        u"【禁止黑盒成片】不要一次生成可写回 ## 幻灯体。\n"
+        u"请只做设计流①：输出页序大纲（标题+目的+页数建议），然后请用户点「② 多方案」。\n"
         u"主题/素材：\n{selection}"_ustr,
         205));
     v.back().options.autoSubmit = false;
+    v.back().options.requireApproval = true;
+
     v.push_back(makeBuiltin(
         u"slide-copy"_ustr, u"幻灯文案"_ustr, u"impress"_ustr, u"impress"_ustr, u"rewrite"_ustr,
         u"/幻灯文案"_ustr,
@@ -388,12 +463,14 @@ std::vector<DocumentAIScenario> DocumentAIScenarioStore::builtinDefaults()
         u"/讲稿"_ustr,
         u"【讲稿】为下列要点写 30–60 秒口播稿。\n要点：\n{selection}"_ustr, 230));
     v.push_back(makeBuiltin(
-        u"theme-layout-deck"_ustr, u"版式主题成片"_ustr, u"impress"_ustr, u"impress"_ustr,
-        u"plan"_ustr, u"/版式成片"_ustr,
-        u"【版式+主题成片】生成完整演示并标注版式/主题。要求每页：\n"
-        u"## N. 标题\n版式：…\n主题：商务蓝\n- 要点\n讲稿：…\n配图：…\n"
-        u"首页标题页，中间标题内容或分栏，结尾总结页。\n素材：\n{selection}"_ustr,
+        u"theme-layout-deck"_ustr, u"版式风格方案"_ustr, u"impress"_ustr, u"impress"_ustr,
+        u"chat"_ustr, u"/版式方案"_ustr,
+        u"【版式/风格多方案 · 非黑盒成片】给出 3 套版式+主题组合（方案A/B/C），\n"
+        u"每套：主题名、首页/正文/结尾版式建议、配色（商务蓝/简洁灰等）、适用场合。\n"
+        u"不要输出 ## 写回体；用户选定后再走「③ 选一写回」。\n"
+        u"素材：\n{selection}"_ustr,
         215));
+    v.back().options.autoSubmit = false;
     v.push_back(makeBuiltin(
         u"image-suggest"_ustr, u"配图建议"_ustr, u"impress"_ustr, u"impress"_ustr, u"chat"_ustr,
         u"/配图"_ustr,
@@ -452,6 +529,178 @@ std::vector<DocumentAIScenario> DocumentAIScenarioStore::builtinDefaults()
         u"/清单审查"_ustr,
         u"【清单审查】用检查清单评估完整性/风险/表述，输出通过项与待改项。\n内容：\n{selection}"_ustr,
         320));
+
+    // —— 业务场景包 v1（飞书应用目录 → Office 模板工厂；非多维表运行时）——
+    // 命名用「模板/台账/清单」，禁止「系统/平台」默认文案。requireApproval 已默认 true。
+    auto bizWriter = [&](const OUString& id, const OUString& title, const OUString& slash,
+                         const OUString& prompt, sal_Int32 order) {
+        v.push_back(makeBuiltin(id, title, u"writer"_ustr, u"writer"_ustr, u"plan"_ustr, slash,
+                                prompt, order));
+        v.back().options.autoSubmit = false;
+        v.back().options.attachSelection = true;
+    };
+    auto bizCalc = [&](const OUString& id, const OUString& title, const OUString& slash,
+                       const OUString& prompt, sal_Int32 order) {
+        v.push_back(makeBuiltin(id, title, u"calc"_ustr, u"calc"_ustr, u"plan"_ustr, slash, prompt,
+                                order));
+        v.back().options.autoSubmit = false;
+        v.back().options.attachSelection = true;
+    };
+    auto bizImpress = [&](const OUString& id, const OUString& title, const OUString& slash,
+                          const OUString& prompt, sal_Int32 order) {
+        v.push_back(makeBuiltin(id, title, u"impress"_ustr, u"impress"_ustr, u"plan"_ustr, slash,
+                                prompt, order));
+        v.back().options.autoSubmit = false;
+        v.back().options.attachSelection = true;
+    };
+
+    const OUString kCalcRules
+        = u"【输出格式 · Calc 台账模板】\n"
+          u"1) 第一行：表头（制表符或逗号分隔列名，中文）；\n"
+          u"2) 2–4 行示例数据（可用【示例】前缀，勿编造真实隐私）；\n"
+          u"3) 可选：单独列出以 = 开头的汇总公式；\n"
+          u"4) 文末一行说明：「此为本地表格模板，非在线业务系统。」\n"
+          u"主题/补充：\n{selection}"_ustr;
+    const OUString kWriterRules
+        = u"【输出格式 · Writer 公文/表单模板】\n"
+          u"1) 标题 + 清晰分节；缺字段用【待填】；\n"
+          u"2) 语气专业克制，不编造无法核实数据；\n"
+          u"3) 只输出可粘贴进正文的成稿；\n"
+          u"4) 文末注明：「本地文档模板，可导出 PDF。」\n"
+          u"主题/补充：\n{selection}"_ustr;
+
+    bizWriter(u"biz-daily-report"_ustr, u"团队工作日报"_ustr, u"/团队日报"_ustr,
+              u"【团队工作日报模板】生成可填写日报骨架：日期/姓名/今日完成/风险阻塞/明日计划/"
+              u"需协调事项。每人可复制一节。\n"_ustr
+                  + kWriterRules,
+              400);
+    bizWriter(u"biz-weekly-report"_ustr, u"团队周报"_ustr, u"/团队周报"_ustr,
+              u"【团队周报模板】本周目标、关键进展、数据、问题、下周计划、所需支持。\n"_ustr
+                  + kWriterRules,
+              401);
+    bizCalc(u"biz-todo-board"_ustr, u"AI 待办清单"_ustr, u"/待办台账"_ustr,
+            u"【待办事项台账】列：任务、优先级、负责人、状态、截止日、风险、备注。"
+            u"状态用：未开始/进行中/阻塞/完成。\n"_ustr
+                + kCalcRules,
+            402);
+    bizCalc(u"biz-project-tasks"_ustr, u"项目任务清单"_ustr, u"/项目任务"_ustr,
+            u"【项目任务清单】列：模块、任务、负责人、开始、截止、进度%、依赖、状态、风险。\n"_ustr
+                + kCalcRules,
+            403);
+    bizCalc(u"biz-expense"_ustr, u"费用报销单"_ustr, u"/报销单"_ustr,
+            u"【费用报销台账】列：日期、报销人、部门、费用类型、摘要、金额、票据号、审批状态、"
+            u"备注。费用类型示例：差旅/餐饮/办公/交通。\n"_ustr
+                + kCalcRules,
+            404);
+    bizWriter(u"biz-leave"_ustr, u"请假申请"_ustr, u"/请假申请"_ustr,
+              u"【请假申请单】字段：申请人、部门、请假类型、起止时间、天数、事由、代理人、"
+              u"审批意见区。\n"_ustr
+                  + kWriterRules,
+              405);
+    bizCalc(u"biz-crm-leads"_ustr, u"客户商机台账"_ustr, u"/客户台账"_ustr,
+            u"【客户与商机台账 · 非 CRM 系统】列：客户名、联系人、电话、来源、阶段、预计金额、"
+            u"下次跟进、负责人、备注。阶段：线索/需求/方案/谈判/赢单/丢单。\n"_ustr
+                + kCalcRules,
+            406);
+    bizCalc(u"biz-orders"_ustr, u"订单台账"_ustr, u"/订单台账"_ustr,
+            u"【订单台账】列：订单号、客户、产品/服务、数量、单价、金额、下单日、交付日、"
+            u"回款状态、备注。\n"_ustr
+                + kCalcRules,
+            407);
+    bizCalc(u"biz-inventory"_ustr, u"库存进出台账"_ustr, u"/库存台账"_ustr,
+            u"【库存基础台账 · 非 WMS】Sheet 建议在说明中写出两表结构："
+            u"①商品：SKU、名称、单位、安全库存；②流水：日期、SKU、类型(入/出)、数量、结存、经手人。"
+            u"先输出①的表头+示例，再输出②。\n"_ustr
+                + kCalcRules,
+            408);
+    bizCalc(u"biz-contracts"_ustr, u"合同台账"_ustr, u"/合同台账"_ustr,
+            u"【合同台账】列：合同编号、相对方、类型、金额、签订日、生效、到期、负责人、状态、"
+            u"续约提醒、备注。\n"_ustr
+                + kCalcRules,
+            409);
+    bizWriter(u"biz-quote"_ustr, u"报价单"_ustr, u"/报价单"_ustr,
+              u"【报价单正文模板】含：供方/需方、报价日期、有效期、明细表（品名数量单价金额）、"
+              u"合计、付款与交付条款、签章区。明细用纯文本表格即可。\n"_ustr
+                  + kWriterRules,
+              410);
+    bizCalc(u"biz-attendance"_ustr, u"考勤与请假台账"_ustr, u"/考勤台账"_ustr,
+            u"【考勤台账】列：日期、姓名、部门、出勤、迟到、请假类型、备注。\n"_ustr
+                + kCalcRules,
+            411);
+    bizCalc(u"biz-recruit"_ustr, u"招聘进度表"_ustr, u"/招聘进度"_ustr,
+            u"【招聘进度】列：岗位、候选人、渠道、阶段、面试官、结果、下步动作、备注。"
+            u"阶段：简历/初筛/面试/Offer/入职/淘汰。\n"_ustr
+                + kCalcRules,
+            412);
+    bizCalc(u"biz-okr"_ustr, u"OKR 进度表"_ustr, u"/OKR表"_ustr,
+            u"【OKR 进度】列：周期、目标O、关键结果KR、负责人、进度%、状态、风险、备注。\n"_ustr
+                + kCalcRules,
+            413);
+    bizWriter(u"biz-meeting-signup"_ustr, u"活动签到表说明+表头"_ustr, u"/活动签到"_ustr,
+              u"【活动签到】先给简短活动说明（名称/时间/地点），再给表格列："
+              u"序号、姓名、单位、手机、签到时间、备注。\n"_ustr
+                  + kWriterRules,
+              414);
+    bizCalc(u"biz-survey"_ustr, u"满意度调研表"_ustr, u"/满意度调研"_ustr,
+            u"【客户满意度调研】列：时间、客户、评分1-5、维度(产品/服务/交付)、反馈原文、跟进人、"
+            u"改进项。\n"_ustr
+                + kCalcRules,
+            415);
+    bizCalc(u"biz-assets"_ustr, u"固定资产台账"_ustr, u"/固定资产"_ustr,
+            u"【固定资产台账】列：资产编号、名称、类别、购入日、原值、使用人、部门、状态、位置、"
+            u"备注。\n"_ustr
+                + kCalcRules,
+            416);
+    bizCalc(u"biz-invoice"_ustr, u"发票与费用台账"_ustr, u"/发票台账"_ustr,
+            u"【发票台账 · 无税控验真】列：开票日、发票号、购销方、税额、价税合计、关联报销单、"
+            u"入账状态、备注。\n"_ustr
+                + kCalcRules,
+            417);
+    bizCalc(u"biz-tickets"_ustr, u"工单台账"_ustr, u"/工单台账"_ustr,
+            u"【工单台账 · 非自动派单系统】列：工单号、类型、标题、优先级、提单人、处理人、状态、"
+            u"创建日、解决日、备注。\n"_ustr
+                + kCalcRules,
+            418);
+    bizWriter(u"biz-contract-body"_ustr, u"购销合同正文"_ustr, u"/购销合同"_ustr,
+              u"【购销合同正文骨架】甲乙方、标的、数量价款、交付、验收、付款、违约、争议、签章。"
+              u"法律条款用通用占位，标注需法务审定。\n"_ustr
+                  + kWriterRules,
+              419);
+    bizImpress(u"biz-ops-review"_ustr, u"经营复盘演示"_ustr, u"/经营复盘"_ustr,
+               u"【经营复盘演示】生成 6–10 页：封面、核心指标、结构、趋势、问题、动作、风险、"
+               u"下一步。每页：## N. 标题 / 版式 / 要点 / 讲稿。\n主题/素材：\n{selection}"_ustr,
+               420);
+    bizCalc(u"biz-sales-daily"_ustr, u"每日销售额汇总"_ustr, u"/日销售"_ustr,
+            u"【每日销售额】列：日期、渠道/门店、订单数、销售额、退款、净额、备注；并给合计公式。"
+            u"\n"_ustr
+                + kCalcRules,
+            421);
+    bizCalc(u"biz-member"_ustr, u"会员信息表"_ustr, u"/会员表"_ustr,
+            u"【会员信息】列：会员号、姓名、手机、等级、开卡日、余额/积分、兴趣标签、备注。\n"_ustr
+                + kCalcRules,
+            422);
+    bizWriter(u"biz-personal-plan"_ustr, u"月度个人计划"_ustr, u"/月度计划"_ustr,
+              u"【月度个人计划】目标、周拆解、关键任务、复盘问题、习惯打卡区。\n"_ustr
+                  + kWriterRules,
+              423);
+    bizCalc(u"biz-personal-ledger"_ustr, u"个人记账"_ustr, u"/个人记账"_ustr,
+            u"【个人记账】列：日期、类别、收支、金额、账户、备注；类别示例：餐饮/交通/住房/工资。"
+            u"\n"_ustr
+                + kCalcRules,
+            424);
+    bizWriter(u"biz-reading-notes"_ustr, u"读书笔记"_ustr, u"/读书笔记"_ustr,
+              u"【读书笔记】书名/作者、核心观点、金句、启发、行动项。\n"_ustr + kWriterRules,
+              425);
+    bizCalc(u"biz-bug-list"_ustr, u"需求与缺陷清单"_ustr, u"/缺陷清单"_ustr,
+            u"【需求/缺陷清单】列：ID、类型(需求/缺陷)、标题、优先级、状态、负责人、发现日、"
+            u"目标版本、备注。\n"_ustr
+                + kCalcRules,
+            426);
+    bizWriter(u"biz-offer-letter-stub"_ustr, u"证明开具底稿"_ustr, u"/在职证明"_ustr,
+              u"【在职/收入证明底稿】含抬头、被证明人信息、【待填】薪资与职务、用途、落款公章区。"
+              u"注明仅供模板，内容须人工核实。\n"_ustr
+                  + kWriterRules,
+              427);
 
     return v;
 }

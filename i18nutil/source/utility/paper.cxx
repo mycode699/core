@@ -228,7 +228,12 @@ PaperInfo PaperInfo::getSystemDefaultPaper()
     if (comphelper::IsFuzzing())
         return PaperInfo(PAPER_A4);
 
-    OUString aLocaleStr = officecfg::Setup::L10N::ooSetupSystemLocale::get();
+    // Prefer the product/UI office locale when set (可圈办公 defaults zh-CN).
+    // WPS/Office Chinese editions always open A4 blank pages even on en-US hosts;
+    // following only the OS paper locale would yield Letter on English macOS.
+    OUString aLocaleStr = officecfg::Setup::L10N::ooLocale::get();
+    if (aLocaleStr.isEmpty())
+        aLocaleStr = officecfg::Setup::L10N::ooSetupSystemLocale::get();
 
 #ifdef UNX
     // if set to "use system", get papersize from system

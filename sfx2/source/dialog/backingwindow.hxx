@@ -24,7 +24,15 @@
 
 #include <vcl/InterimItemWindow.hxx>
 #include <vcl/weld/ComboBox.hxx>
+#include <vcl/weld/Entry.hxx>
 #include <vcl/weld/MenuButton.hxx>
+#include <vcl/weld/TreeView.hxx>
+#include <vcl/timer.hxx>
+
+struct ImplSVEvent;
+
+#include <AIFileManager.hxx>
+#include <BatchJob.hxx>
 
 #include <recentdocsview.hxx>
 #include <templatedefaultview.hxx>
@@ -37,14 +45,20 @@
 #include <com/sun/star/frame/XFrame.hpp>
 
 #include <array>
+#include <atomic>
 #include <memory>
+#include <mutex>
 #include <string_view>
+#include <vector>
 
 class BrandImage;
 class SfxDocumentTemplates;
+class FileWorkbenchScanThread;
 
 class BackingWindow : public InterimItemWindow
 {
+    friend class FileWorkbenchScanThread;
+
     css::uno::Reference<css::uno::XComponentContext> mxContext;
     css::uno::Reference<css::frame::XDispatchProvider> mxDesktopDispatchProvider;
     css::uno::Reference<css::frame::XFrame> mxFrame;
@@ -56,16 +70,40 @@ class BackingWindow : public InterimItemWindow
     std::unique_ptr<weld::ToggleButton> mxRecentButton;
     std::unique_ptr<weld::Button> mxRemoteButton;
     std::unique_ptr<weld::ToggleButton> mxTemplateButton;
+    std::unique_ptr<weld::ToggleButton> mxFileWorkbenchButton;
 
     std::unique_ptr<weld::Label> mxCreateLabel;
     std::unique_ptr<weld::Label> mxAllRecentLabel;
     std::unique_ptr<weld::Label> mxLocalViewLabel;
+    std::unique_ptr<weld::Label> mxFileWorkbenchLabel;
+    std::unique_ptr<weld::Container> mxFileWorkbenchBox;
+    std::unique_ptr<weld::Entry> mxFileWorkbenchSearch;
+    std::unique_ptr<weld::Button> mxFileWorkbenchAuthorize;
+    std::unique_ptr<weld::Button> mxFileWorkbenchRevoke;
+    std::unique_ptr<weld::Button> mxFileWorkbenchNetworkRevoke;
+    std::unique_ptr<weld::Button> mxFileWorkbenchRefresh;
+    std::unique_ptr<weld::Button> mxFileWorkbenchPin;
+    std::unique_ptr<weld::Entry> mxFileWorkbenchTag;
+    std::unique_ptr<weld::Button> mxFileWorkbenchTagBtn;
+    std::unique_ptr<weld::Button> mxFileWorkbenchOpen;
+    std::unique_ptr<weld::Button> mxFileWorkbenchDelete;
+    std::unique_ptr<weld::Button> mxFileWorkbenchExportPdf;
+    std::unique_ptr<weld::Button> mxFileWorkbenchExportOffice;
+    std::unique_ptr<weld::Label> mxFileWorkbenchStatus;
+    std::unique_ptr<weld::Label> mxFileWorkbenchNetworkStatus;
+    std::unique_ptr<weld::Label> mxFileWorkbenchCapStatus;
+    std::unique_ptr<weld::Label> mxFileWorkbenchRiskHint;
+    std::unique_ptr<weld::TreeView> mxFileWorkbenchAuthTree;
+    std::unique_ptr<weld::TreeView> mxFileWorkbenchTree;
     std::unique_ptr<weld::Label> mxScenarioLabel;
     std::unique_ptr<weld::Label> mxScenarioWriterGroup;
     std::unique_ptr<weld::Label> mxScenarioCalcGroup;
     std::unique_ptr<weld::Label> mxScenarioImpressGroup;
     std::unique_ptr<weld::Label> mxScenarioCompatGroup;
     std::unique_ptr<weld::Label> mxScenarioFallbackHint;
+    std::unique_ptr<weld::Entry> mxTemplateSearch;
+    std::unique_ptr<weld::ComboBox> mxTemplateCategory;
+    std::unique_ptr<weld::TreeView> mxTemplateMarketTree;
     std::unique_ptr<weld::Label> mxAltHelpLabel;
     std::unique_ptr<weld::ComboBox> mxFilter;
     std::unique_ptr<weld::MenuButton> mxActions;
@@ -117,11 +155,28 @@ class BackingWindow : public InterimItemWindow
     std::unique_ptr<weld::CustomWeld> mxLocalViewWin;
 
     bool mbLocalViewInitialized;
+    bool mbSecondaryInitDone = false;
+    /// Pending PostUserEvent for DeferredSecondaryInitHdl; cleared in handler / dispose.
+    ImplSVEvent* mpDeferredSecondaryInitEvent = nullptr;
 
-    css::uno::Reference<css::datatransfer::dnd::XDropTarget> mxDropTarget;
+    /// Drop targets registered for open-file (recent + local view + workbench tree).
+    std::vector<css::uno::Reference<css::datatransfer::dnd::XDropTarget>> mxDropTargets;
+
+    void attachOpenFileDrop(const css::uno::Reference<css::datatransfer::dnd::XDropTarget>& xDrop);
 
     bool mbInitControls;
+    /// One-shot first Paint log for KQOFFICE_STARTUP_TIMING (cold-start segments).
+    bool mbFirstPaintLogged = false;
     std::unique_ptr<svt::AcceleratorExecute> mpAccExec;
+
+    std::unique_ptr<FileWorkbenchScanThread> mxFileWorkbenchScanThread;
+    AutoTimer maFileWorkbenchPollTimer;
+    std::atomic_bool mbFileWorkbenchScanCancelled{ false };
+    std::mutex maFileWorkbenchResultMutex;
+    std::vector<kqoffice::ai::filemgr::FileEntry> maFileWorkbenchFiles;
+    sal_Int64 mnFileWorkbenchScanDurationMs = 0;
+    sal_Int32 mnFileWorkbenchAuthorizedRootCount = 0;
+    bool mbFileWorkbenchScanReady = false;
 
     void dispatchURL(const OUString& i_rURL, const OUString& i_rTarget = u"_default"_ustr,
                      const css::uno::Reference<css::frame::XDispatchProvider>& i_xProv
@@ -141,10 +196,59 @@ class BackingWindow : public InterimItemWindow
     DECL_LINK(OpenScenarioHdl, weld::Button&, void);
     DECL_LINK(OpenCompatibilityHdl, weld::Button&, void);
     DECL_LINK(AiDraftHdl, weld::Button&, void);
+    DECL_LINK(FileWorkbenchAuthorizeHdl, weld::Button&, void);
+    DECL_LINK(FileWorkbenchRevokeHdl, weld::Button&, void);
+    DECL_LINK(FileWorkbenchNetworkRevokeHdl, weld::Button&, void);
+    DECL_LINK(FileWorkbenchRefreshHdl, weld::Button&, void);
+    DECL_LINK(FileWorkbenchPinHdl, weld::Button&, void);
+    DECL_LINK(FileWorkbenchTagHdl, weld::Button&, void);
+    DECL_LINK(FileWorkbenchOpenHdl, weld::Button&, void);
+    DECL_LINK(FileWorkbenchDeleteHdl, weld::Button&, void);
+    DECL_LINK(FileWorkbenchExportPdfHdl, weld::Button&, void);
+    DECL_LINK(FileWorkbenchExportOfficeHdl, weld::Button&, void);
+    DECL_LINK(FileWorkbenchSearchHdl, weld::Entry&, void);
+    DECL_LINK(FileWorkbenchRowActivatedHdl, weld::TreeView&, bool);
+    DECL_LINK(FileWorkbenchPollHdl, Timer*, void);
+    /// Decode recent-doc thumbnails after first paint (cold-start).
+    DECL_LINK(DeferredRecentReloadHdl, void*, void);
+    /// Populate template LocalView (disk scan + thumbnails) after first paint.
+    DECL_LINK(DeferredTemplateInitHdl, void*, void);
+    /// Wire secondary handlers + style + content after first paint.
+    DECL_LINK(DeferredSecondaryInitHdl, void*, void);
+    DECL_LINK(TemplateSearchHdl, weld::Entry&, void);
+    DECL_LINK(TemplateCategoryHdl, weld::ComboBox&, void);
+    DECL_LINK(TemplateMarketActivateHdl, weld::TreeView&, bool);
 
     void initControls();
 
+    /// Lazy-create heavy CustomWeld views (cold-start: not in ctor).
+    void ensureRecentThumbnails();
+    void ensureLocalView();
+    void ensureBrandImage();
+    void ensureDesktopDispatch();
+
     void initializeLocalView();
+    void refreshTemplateMarket();
+    void openTemplateMarketSelection();
+    /// PDF tools (L1–L2): open / page-info / merge&split guided workflows — not Acrobat.
+    void runPdfTool(std::u16string_view rToolId);
+    void showFileWorkbenchPane(bool bShow);
+    void refreshFileWorkbench(bool bRescan = true);
+    void startFileWorkbenchScan();
+    void cancelFileWorkbenchScan();
+    void renderFileWorkbench();
+    void renderPermissionPanel();
+    void openFileWorkbenchSelection();
+    OUString selectedFileWorkbenchPath() const;
+    /// Paths of all selected workbench tree rows (multi-select aware).
+    std::vector<OUString> selectedFileWorkbenchPaths() const;
+    /// Shared batch convert flow for PDF / Office export buttons.
+    void runFileWorkbenchBatchConvert(
+        kqoffice::ai::filemgr::BatchJobKind eKind, const OUString& rActionId,
+        const OUString& rPromptMessageZh);
+    /// Office batch: group selection by target kind (DOCX/XLSX/PPTX) and run.
+    void runFileWorkbenchBatchConvertOffice();
+    OUString selectedAuthorizedDirectory() const;
 
     void checkInstalledModules();
     bool resolveTemplatePathByFileName(const SfxDocumentTemplates& rTemplates,
@@ -171,6 +275,7 @@ public:
     virtual ~BackingWindow() override;
     virtual void dispose() override;
 
+    virtual void Paint(vcl::RenderContext& rRenderContext, const tools::Rectangle& rRect) override;
     virtual bool PreNotify(NotifyEvent& rNEvt) override;
     virtual void GetFocus() override;
 

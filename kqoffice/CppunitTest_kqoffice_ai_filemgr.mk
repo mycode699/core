@@ -11,6 +11,7 @@ $(eval $(call gb_CppunitTest_CppunitTest,kqoffice_ai_filemgr))
 
 $(eval $(call gb_CppunitTest_set_include,kqoffice_ai_filemgr,\
     -I$(SRCDIR)/kqoffice/source/ai/filemgr \
+    -I$(SRCDIR)/kqoffice/source/ai/control \
     $$(INCLUDE) \
 ))
 

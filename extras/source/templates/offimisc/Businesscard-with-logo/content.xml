@@ -101,7 +101,7 @@
       </text:sequence-decls>
       <draw:frame draw:name="TemplateDesigner" text:anchor-page-number="1" draw:style-name="gr1" svg:width="3.8cm" svg:height="0.5cm">
         <draw:text-box>
-          <text:p text:style-name="P17">Designed by Edmund Laugasson</text:p>
+          <text:p text:style-name="P17">示例姓名</text:p>
         </draw:text-box>
       </draw:frame>
       <text:p text:style-name="Standard">
@@ -123,7 +123,7 @@
                       <text:tab/>
                       <text:author-name text:fixed="false"/>
                     </text:p>
-                    <text:p text:style-name="P4"><text:tab/>profession</text:p>
+                    <text:p text:style-name="P4"><text:tab/>职位 / 部门</text:p>
                   </table:table-cell>
                   <table:covered-table-cell/>
                   <table:covered-table-cell/>
@@ -135,10 +135,10 @@
                     <text:p text:style-name="P3"/>
                   </table:table-cell>
                   <table:table-cell table:style-name="Table1.B3" office:value-type="string">
-                    <text:p text:style-name="P6">Work:</text:p>
+                    <text:p text:style-name="P6">工作：</text:p>
                   </table:table-cell>
                   <table:table-cell table:style-name="Table1.B3" office:value-type="string">
-                    <text:p text:style-name="P2">GSM:</text:p>
+                    <text:p text:style-name="P2">手机：</text:p>
                   </table:table-cell>
                   <table:table-cell table:style-name="Table1.B3" office:value-type="string">
                     <text:p text:style-name="P3"/>
@@ -155,7 +155,7 @@
                     <text:p text:style-name="P2"/>
                   </table:table-cell>
                   <table:table-cell table:style-name="Table1.B3" office:value-type="string">
-                    <text:p text:style-name="P2">phone:</text:p>
+                    <text:p text:style-name="P2">电话：</text:p>
                   </table:table-cell>
                   <table:table-cell table:style-name="Table1.B3" office:value-type="string">
                     <text:p text:style-name="P3"/>
@@ -172,7 +172,7 @@
                     <text:p text:style-name="P2"/>
                   </table:table-cell>
                   <table:table-cell table:style-name="Table1.B3" office:value-type="string">
-                    <text:p text:style-name="P2">e-mail:</text:p>
+                    <text:p text:style-name="P2">邮箱：</text:p>
                   </table:table-cell>
                   <table:table-cell table:style-name="Table1.B3" office:value-type="string">
                     <text:p text:style-name="P3"/>
@@ -189,7 +189,7 @@
                     <text:p text:style-name="P2"/>
                   </table:table-cell>
                   <table:table-cell table:style-name="Table1.B3" office:value-type="string">
-                    <text:p text:style-name="P2">fax:</text:p>
+                    <text:p text:style-name="P2">传真：</text:p>
                   </table:table-cell>
                   <table:table-cell table:style-name="Table1.B3" office:value-type="string">
                     <text:p text:style-name="P3"/>
@@ -203,10 +203,10 @@
                     <text:p text:style-name="P3"/>
                   </table:table-cell>
                   <table:table-cell table:style-name="Table1.B3" office:value-type="string">
-                    <text:p text:style-name="P6">Home:</text:p>
+                    <text:p text:style-name="P6">住址：</text:p>
                   </table:table-cell>
                   <table:table-cell table:style-name="Table1.B3" office:value-type="string">
-                    <text:p text:style-name="P2">phone:</text:p>
+                    <text:p text:style-name="P2">电话：</text:p>
                   </table:table-cell>
                   <table:table-cell table:style-name="Table1.B3" office:value-type="string">
                     <text:p text:style-name="P3"/>
@@ -223,7 +223,7 @@
                     <text:p text:style-name="P2"/>
                   </table:table-cell>
                   <table:table-cell table:style-name="Table1.B8" office:value-type="string">
-                    <text:p text:style-name="P2">e-mail:</text:p>
+                    <text:p text:style-name="P2">邮箱：</text:p>
                   </table:table-cell>
                   <table:table-cell table:style-name="Table1.B8" office:value-type="string">
                     <text:p text:style-name="P3"/>

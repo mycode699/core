@@ -44,12 +44,13 @@ SidebarChildWindow::SidebarChildWindow(vcl::Window* pParentWindow, sal_uInt16 nI
     pDockWin->SetHelpId(HID_SIDEBAR_WINDOW);
     pDockWin->SetOutputSizePixel(Size(GetDefaultWidth(pDockWin), 450));
 
+    // First start (no saved docking layout): keep only the tab strip so the
+    // blank document canvas matches WPS/Office compact chrome. Impress used to
+    // expand PropertyDeck by default and steal horizontal space on empty decks.
+    // Draw/Math still keep a usable default width (object properties are primary).
     if (pInfo && pInfo->aExtraString.isEmpty() && pInfo->aModule != "sdraw"
-        && pInfo->aModule != "simpress" && pInfo->aModule != "smath")
+        && pInfo->aModule != "smath")
     {
-        // When this is the first start (never had the sidebar open yet),
-        // default to non-expanded sidebars in Writer and Calc.
-        //
         // HACK: unfortunately I haven't found a clean solution to do
         // this, so do it this way:
         //

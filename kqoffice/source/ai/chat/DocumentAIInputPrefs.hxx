@@ -50,6 +50,18 @@ struct DocumentAIInputPrefs
     bool screenshotCopyClipboard = true;
     OUString screenshotDir; ///< empty → ~/.config/kqoffice/captures
 
+    // —— Scheduled tasks (DuMate-style 定时任务) ——
+    /// When true, due-task inject into AI prompt auto-submits. Default false:
+    /// safer human-in-the-loop (user edits then sends).
+    bool scheduleAutoSend = false;
+
+    // —— Local material OCR / multi-format read (closed loop) ——
+    /// Enable local OCR for @截图/@文件 images (default true; no cloud).
+    bool ocrEnabled = true;
+    /// Optional OCR command template; $IMAGE or $FILE = path. Empty → env
+    /// KQOFFICE_AI_OCR_CMD or auto-detect `tesseract`.
+    OUString ocrCmd;
+
     static OUString defaultConfigPath();
     static DocumentAIInputPrefs load();
     static bool save(const DocumentAIInputPrefs& r);

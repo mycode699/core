@@ -111,7 +111,7 @@ Ctrl+Shift+u aka U_SHIFT_MOD1 under GTK/IBUS is for unicode key input
         </prop>
       </node>
       <!-- Cursor-style 续写补全：Ctrl/Cmd+. → light 槽自动生成，Tab 应用 -->
-      <node oor:name="PERIOD_MOD1" oor:op="replace">
+      <node oor:name="POINT_MOD1" oor:op="replace">
         <prop oor:name="Command">
           <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
           <value xml:lang="en-US">.uno:KQAIGhostComplete</value>

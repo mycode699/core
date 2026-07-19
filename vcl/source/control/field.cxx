@@ -29,6 +29,8 @@
 
 #include <vcl/event.hxx>
 #include <vcl/fieldvalues.hxx>
+#include <vcl/settings.hxx>
+#include <vcl/svapp.hxx>
 #include <vcl/toolkit/field.hxx>
 #include <vcl/uitest/metricfielduiobject.hxx>
 
@@ -966,6 +968,11 @@ static OUString ImplMetricGetUnitText(std::u16string_view rStr)
 
 static OUString ImplMetricToString( FieldUnit rUnit )
 {
+    // Match MetricSpinButton::MetricToString — Chinese UI uses "点", not "点 (pt)".
+    if (rUnit == FieldUnit::POINT
+        && Application::GetSettings().GetUILanguageTag().getLanguage() == u"zh")
+        return u"点"_ustr;
+
     // return unit's default string (ie, the first one )
     for (auto const& elem : ImplGetFieldUnits())
     {

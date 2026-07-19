@@ -288,6 +288,17 @@ DocumentAIInputPrefs DocumentAIInputPrefs::load()
     if (!dir.isEmpty())
         p.screenshotDir = dir;
 
+    // Default false: due inject stays in prompt for human review unless opted in.
+    p.scheduleAutoSend = jsonBoolField(body, u"scheduleAutoSend"_ustr, false);
+
+    p.ocrEnabled = jsonBoolField(body, u"ocrEnabled"_ustr, true);
+    const OUString ocr = jsonStringField(body, u"ocrCmd"_ustr);
+    if (!ocr.isEmpty())
+        p.ocrCmd = ocr;
+    const OUString envOcr = envOrEmpty("KQOFFICE_AI_OCR_CMD");
+    if (!envOcr.isEmpty())
+        p.ocrCmd = envOcr;
+
     // Env still wins for voice cmd if set
     if (!envCmd.isEmpty())
         p.voiceCmd = envCmd;
@@ -335,6 +346,12 @@ bool DocumentAIInputPrefs::save(const DocumentAIInputPrefs& r)
     appendJsonBool(b, u"screenshotCopyClipboard"_ustr, r.screenshotCopyClipboard);
     b.append(u",\n"_ustr);
     appendJsonString(b, u"screenshotDir"_ustr, r.screenshotDir);
+    b.append(u",\n"_ustr);
+    appendJsonBool(b, u"scheduleAutoSend"_ustr, r.scheduleAutoSend);
+    b.append(u",\n"_ustr);
+    appendJsonBool(b, u"ocrEnabled"_ustr, r.ocrEnabled);
+    b.append(u",\n"_ustr);
+    appendJsonString(b, u"ocrCmd"_ustr, r.ocrCmd);
     b.append(u"\n}\n"_ustr);
     const OString utf8 = OUStringToOString(b.makeStringAndClear(), RTL_TEXTENCODING_UTF8);
     return writeFileUtf8(path, std::string(utf8.getStr(), static_cast<size_t>(utf8.getLength())));

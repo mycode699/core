@@ -42,11 +42,11 @@ using namespace com::sun::star::uno;
 
 namespace {
 
-/// Set (larger) font for the Welcome message.
-void SetMessageFont(vcl::RenderContext& rRenderContext)
+void SetWelcomeTitleFont(vcl::RenderContext& rRenderContext)
 {
     vcl::Font aFont(rRenderContext.GetFont());
-    aFont.SetFontHeight(aFont.GetFontHeight() * 1.3);
+    aFont.SetFontHeight(aFont.GetFontHeight() * 1.35);
+    aFont.SetWeight(WEIGHT_BOLD);
     rRenderContext.SetFont(aFont);
 }
 
@@ -283,35 +283,63 @@ void RecentDocsView::Paint(vcl::RenderContext& rRenderContext, const tools::Rect
     if (!mItemList.empty())
         return;
 
-    const tools::Long nLogoWidth(
-        aRect.GetWidth() > aRect.getOpenHeight() ? aRect.GetHeight() / 2 : aRect.GetWidth() / 2);
+    const tools::Long nAvailableDimension = std::min(aRect.GetWidth(), aRect.GetHeight());
+    // WPS/Office-home density: compact mark, not a giant floating logo.
+    const tools::Long nLogoWidth
+        = std::clamp<tools::Long>(nAvailableDimension / 6, 120, 168);
     if (maWelcomeImage.IsEmpty() || maWelcomeImage.GetSizePixel().Width() != nLogoWidth)
         maWelcomeImage = SfxApplication::GetApplicationLogo(nLogoWidth);
 
-    // No recent files to be shown yet. Show a welcome screen.
-    auto popIt = rRenderContext.ScopedPush(vcl::PushFlags::FONT | vcl::PushFlags::TEXTCOLOR);
-    SetMessageFont(rRenderContext);
-    rRenderContext.SetTextColor(maTextColor);
-
-    tools::Long nTextHeight = rRenderContext.GetTextHeight();
-
+    // Compact, elevated card — premium through restraint, not empty space.
+    auto popIt = rRenderContext.ScopedPush(vcl::PushFlags::FONT | vcl::PushFlags::TEXTCOLOR
+                                           | vcl::PushFlags::FILLCOLOR
+                                           | vcl::PushFlags::LINECOLOR);
+    const StyleSettings& rStyle = rRenderContext.GetSettings().GetStyleSettings();
     const Size aImgSize = maWelcomeImage.GetSizePixel();
     const Size& rSize = GetOutputSizePixel();
-    const tools::Long nGap = nTextHeight;
-    const tools::Long nTextBlockHeight = 3 * nTextHeight + nGap;
+    const tools::Long nCardWidth = std::min<tools::Long>(440, rSize.Width() - 80);
+    const tools::Long nCardHeight = std::min<tools::Long>(320, rSize.Height() - 64);
+    const tools::Long nCardX = (rSize.Width() - nCardWidth) / 2;
+    const tools::Long nCardY
+        = std::max<tools::Long>(32, (rSize.Height() - nCardHeight) / 2 - rSize.Height() / 24);
+    const tools::Rectangle aCardRect(nCardX, nCardY, nCardX + nCardWidth,
+                                     nCardY + nCardHeight);
 
-    const int nX = (rSize.Width() - aImgSize.Width()) / 2;
-    int nY = (rSize.Height() - nTextBlockHeight - aImgSize.Height()) / 2;
-    Point aImgPoint(nX, nY);
+    // Soft card on neutral workbench: subtle border, no heavy chrome.
+    Color aCardFill(rStyle.GetWindowColor());
+    aCardFill.Merge(rStyle.GetDialogColor(), 32);
+    Color aCardBorder(rStyle.GetShadowColor());
+    aCardBorder.Merge(rStyle.GetWindowColor(), 160);
+    rRenderContext.SetFillColor(aCardFill);
+    rRenderContext.SetLineColor(aCardBorder);
+    rRenderContext.DrawRect(aCardRect, 12, 12);
+
+    const tools::Long nTopPadding = 28;
+    tools::Long nY = nCardY + nTopPadding;
+    Point aImgPoint((rSize.Width() - aImgSize.Width()) / 2, nY);
     rRenderContext.DrawBitmap(aImgPoint, aImgSize, maWelcomeImage);
 
-    nY += aImgSize.Height() + nGap;
-    rRenderContext.DrawText(tools::Rectangle(0, nY, rSize.Width(), nY + nTextHeight),
-                            maWelcomeLine1,
-                            DrawTextFlags::Center);
-    rRenderContext.DrawText(tools::Rectangle(0, nY + nTextHeight, rSize.Width(), rSize.Height()),
-                            maWelcomeLine2,
-                            DrawTextFlags::MultiLine | DrawTextFlags::WordBreak | DrawTextFlags::Center);
+    nY += aImgSize.Height() + 16;
+    SetWelcomeTitleFont(rRenderContext);
+    rRenderContext.SetTextColor(maTextColor);
+    const tools::Long nTitleHeight = rRenderContext.GetTextHeight();
+    rRenderContext.DrawText(
+        tools::Rectangle(nCardX + 24, nY, nCardX + nCardWidth - 24, nY + nTitleHeight),
+        maWelcomeLine1, DrawTextFlags::Center);
+
+    vcl::Font aBodyFont(rRenderContext.GetFont());
+    aBodyFont.SetFontHeight(aBodyFont.GetFontHeight() * 0.8);
+    aBodyFont.SetWeight(WEIGHT_NORMAL);
+    rRenderContext.SetFont(aBodyFont);
+    Color aBodyText(rStyle.GetWindowTextColor());
+    aBodyText.Merge(rStyle.GetWindowColor(), 100);
+    rRenderContext.SetTextColor(aBodyText);
+    nY += nTitleHeight + 10;
+    rRenderContext.DrawText(
+        tools::Rectangle(nCardX + 32, nY, nCardX + nCardWidth - 32,
+                         nCardY + nCardHeight - 20),
+        maWelcomeLine2,
+        DrawTextFlags::MultiLine | DrawTextFlags::WordBreak | DrawTextFlags::Center);
 }
 
 void RecentDocsView::LoseFocus()

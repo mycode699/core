@@ -32,7 +32,7 @@
             <property name="placeholder-text" translatable="yes" context="aiinline|ph">描述要做的修改，或选下方快捷…（Enter 生成）</property>
             <child internal-child="accessible">
               <object class="AtkObject" id="instruction_entry-atkobject">
-                <property name="AtkObject::accessible-name" translatable="yes" context="aiinline|instr-atk">AI instruction</property>
+                <property name="AtkObject::accessible-name" translatable="yes" context="aiinline|instr-atk">内联指令</property>
               </object>
             </child>
           </object>
@@ -87,7 +87,7 @@
                 <property name="activate-on-single-click">True</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="suggest_view-atkobject">
-                    <property name="AtkObject::accessible-name" translatable="yes" context="aiinline|suggest-atk">AI suggestions</property>
+                    <property name="AtkObject::accessible-name" translatable="yes" context="aiinline|suggest-atk">AI 建议</property>
                   </object>
                 </child>
                 <child internal-child="selection">
@@ -132,7 +132,7 @@
                 <property name="wrap-mode">word-char</property>
                 <child internal-child="accessible">
                   <object class="AtkObject" id="preview_view-atkobject">
-                    <property name="AtkObject::accessible-name" translatable="yes" context="aiinline|preview-atk">AI ghost preview</property>
+                    <property name="AtkObject::accessible-name" translatable="yes" context="aiinline|preview-atk">AI 对照预览</property>
                   </object>
                 </child>
               </object>
@@ -144,7 +144,7 @@
             <property name="visible">True</property>
             <property name="halign">start</property>
             <property name="wrap">True</property>
-            <property name="label" translatable="yes" context="aiinline|kbd_hint">快捷键：Enter 生成 · Tab 应用写回 · Esc 关闭（未批准不改主文档）</property>
+            <property name="label" translatable="yes" context="aiinline|kbd_hint">快捷键：Enter 生成 · Tab 批准写回 · Esc 拒绝（未批准不改主文档）</property>
             <attributes>
               <attribute name="style" value="italic"/>
               <attribute name="scale" value="0.92"/>
@@ -156,7 +156,7 @@
             <property name="visible">True</property>
             <property name="halign">start</property>
             <property name="wrap">True</property>
-            <property name="label">Ctrl/Cmd+K · 生成后 Tab 应用写回（需确认）</property>
+            <property name="label">Ctrl/Cmd+K · 生成后 Tab 批准写回（需确认）</property>
             <property name="mnemonic-widget">generate_btn</property>
           </object>
         </child>
@@ -178,14 +178,14 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="sensitive">False</property>
-                <property name="label" translatable="yes" context="aiinline|accept">应用 (Tab)</property>
+                <property name="label" translatable="yes" context="aiinline|accept">批准写回 (Tab)</property>
               </object>
             </child>
             <child>
               <object class="GtkButton" id="reject_btn">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
-                <property name="label" translatable="yes" context="aiinline|reject">关闭 (Esc)</property>
+                <property name="label" translatable="yes" context="aiinline|reject">拒绝 (Esc)</property>
               </object>
             </child>
           </object>

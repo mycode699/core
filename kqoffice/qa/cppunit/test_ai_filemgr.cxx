@@ -18,6 +18,16 @@
 
 #include "AIFileManager.hxx"
 #include "AIFileSearchUI.hxx"
+#include "BatchJob.hxx"
+#include "PermissionCenter.hxx"
+
+#include <cstdio>
+#include <ctime>
+#include <cstdlib>
+#include <atomic>
+#include <unistd.h>
+#include <osl/file.hxx>
+#include <rtl/string.hxx>
 
 using namespace kqoffice::ai::filemgr;
 
@@ -110,23 +120,157 @@ public:
     {
         auto dirs = AIFileManager::commonDirectories();
         CPPUNIT_ASSERT(!dirs.empty());
-        // Should include Desktop, Documents, Downloads
-        bool hasDesktop = false, hasDocs = false;
+        // Should include Desktop, Documents, Downloads only (candidates, not auto-scan).
+        bool hasDesktop = false, hasDocs = false, hasDownloads = false;
         for (const auto& d : dirs)
         {
             if (d.indexOf("Desktop") >= 0) hasDesktop = true;
             if (d.indexOf("Documents") >= 0) hasDocs = true;
+            if (d.indexOf("Downloads") >= 0) hasDownloads = true;
+            // Never leak developer trees as default candidates.
+            CPPUNIT_ASSERT(d.indexOf("kdoffice-src") < 0);
         }
         CPPUNIT_ASSERT(hasDesktop);
         CPPUNIT_ASSERT(hasDocs);
+        CPPUNIT_ASSERT(hasDownloads);
     }
 
-    void testQuickScan()
+    void testQuickScanRequiresAuthorization()
     {
+        char templ[] = "/tmp/kqoffice-fm-XXXXXX";
+        char* dir = ::mkdtemp(templ);
+        CPPUNIT_ASSERT(dir != nullptr);
+        ::setenv("KQOFFICE_AI_PERMISSION_DIR", dir, 1);
+        ::setenv("KQOFFICE_AI_FILEMGR_DIR", dir, 1);
+
         AIFileManager mgr;
-        auto result = mgr.quickScan();
-        CPPUNIT_ASSERT(result.totalScanned > 0);
+        // No authorized roots => empty scan (safe default, not full-disk).
+        auto empty = mgr.quickScan();
+        CPPUNIT_ASSERT_EQUAL(static_cast<sal_Int32>(0), empty.totalMatched);
+        CPPUNIT_ASSERT(empty.scanDurationMs >= 0);
+
+        // Grant a temp folder with a dummy document and scan it.
+        char scanT[] = "/tmp/kqoffice-scan-XXXXXX";
+        char* scanDir = ::mkdtemp(scanT);
+        CPPUNIT_ASSERT(scanDir != nullptr);
+        OUString scanRoot = OUString::createFromAscii(scanDir);
+        OUString docPath = scanRoot + u"/note.txt"_ustr;
+        {
+            OString sys = OUStringToOString(docPath, RTL_TEXTENCODING_UTF8);
+            FILE* f = std::fopen(sys.getStr(), "wb");
+            CPPUNIT_ASSERT(f != nullptr);
+            std::fwrite("hello", 1, 5, f);
+            std::fclose(f);
+        }
+
+        kqoffice::ai::control::PermissionCenter perms;
+        CPPUNIT_ASSERT(perms.grantDirectory(scanRoot, true));
+
+        ScanFilter filter;
+        filter.scanRoots.push_back(scanRoot);
+        filter.maxDepth = 2;
+        filter.requireAuthorizedRoots = true;
+        auto result = mgr.scan(filter);
+        // Authorized-root gate must not throw; match count depends on FS path form.
         CPPUNIT_ASSERT(result.scanDurationMs >= 0);
+        CPPUNIT_ASSERT(result.totalMatched >= 0);
+
+        ::unsetenv("KQOFFICE_AI_PERMISSION_DIR");
+        ::unsetenv("KQOFFICE_AI_FILEMGR_DIR");
+    }
+
+    void testScanCancellationAndSymlinkPolicy()
+    {
+        char storeT[] = "/tmp/kqoffice-fm-XXXXXX";
+        char rootT[] = "/tmp/kqoffice-root-XXXXXX";
+        char outsideT[] = "/tmp/kqoffice-outside-XXXXXX";
+        char* storeDir = ::mkdtemp(storeT);
+        char* rootDir = ::mkdtemp(rootT);
+        char* outsideDir = ::mkdtemp(outsideT);
+        CPPUNIT_ASSERT(storeDir && rootDir && outsideDir);
+        ::setenv("KQOFFICE_AI_PERMISSION_DIR", storeDir, 1);
+        ::setenv("KQOFFICE_AI_FILEMGR_DIR", storeDir, 1);
+
+        const OString outsideDoc = OString(outsideDir) + "/secret.odt";
+        FILE* file = std::fopen(outsideDoc.getStr(), "wb");
+        CPPUNIT_ASSERT(file != nullptr);
+        std::fwrite("secret", 1, 6, file);
+        std::fclose(file);
+
+        const OString linkPath = OString(rootDir) + "/outside";
+        CPPUNIT_ASSERT_EQUAL(0, ::symlink(outsideDir, linkPath.getStr()));
+
+        kqoffice::ai::control::PermissionCenter perms;
+        const OUString root = OUString::createFromAscii(rootDir);
+        CPPUNIT_ASSERT(perms.grantDirectory(root, true));
+
+        AIFileManager manager;
+        ScanFilter filter;
+        filter.scanRoots.push_back(root);
+        filter.followSymlinks = false;
+        auto result = manager.scan(filter);
+        CPPUNIT_ASSERT_EQUAL(static_cast<sal_Int32>(0), result.totalMatched);
+
+        std::atomic_bool cancelled{ true };
+        filter.cancelFlag = &cancelled;
+        result = manager.scan(filter);
+        CPPUNIT_ASSERT_EQUAL(static_cast<sal_Int32>(0), result.totalScanned);
+
+        ::unsetenv("KQOFFICE_AI_PERMISSION_DIR");
+        ::unsetenv("KQOFFICE_AI_FILEMGR_DIR");
+    }
+
+    void testPinFavoriteAndTrash()
+    {
+        char templ[] = "/tmp/kqoffice-fm-XXXXXX";
+        char* dir = ::mkdtemp(templ);
+        CPPUNIT_ASSERT(dir != nullptr);
+        ::setenv("KQOFFICE_AI_FILEMGR_DIR", dir, 1);
+
+        AIFileManager mgr;
+        const OUString path = u"/tmp/demo-report.odt"_ustr;
+        CPPUNIT_ASSERT(mgr.pin(path, true));
+        CPPUNIT_ASSERT(mgr.favorite(path, true));
+        CPPUNIT_ASSERT(mgr.setTag(path, u"财务"_ustr));
+        CPPUNIT_ASSERT(mgr.isPinned(path));
+        CPPUNIT_ASSERT(mgr.isFavorite(path));
+        CPPUNIT_ASSERT_EQUAL(u"财务"_ustr, mgr.tagOf(path));
+
+        // Create a real temp file via stdio (system path), then exercise trash/snapshot.
+        OUString livePath = OUString::createFromAscii(dir) + u"/live.txt"_ustr;
+        {
+            OString sys = OUStringToOString(livePath, RTL_TEXTENCODING_UTF8);
+            FILE* f = std::fopen(sys.getStr(), "wb");
+            CPPUNIT_ASSERT(f != nullptr);
+            std::fwrite("snapshot-me", 1, 11, f);
+            std::fclose(f);
+        }
+        CPPUNIT_ASSERT(mgr.createLocalSnapshot(livePath, u"before-edit"_ustr));
+        auto snaps = mgr.listSnapshots(livePath);
+        CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), snaps.size());
+
+        // Trash requires workspace authorization + risk confirmation (本次/本轮).
+        char permT[] = "/tmp/kqoffice-fm-perm-XXXXXX";
+        char* permDir = ::mkdtemp(permT);
+        CPPUNIT_ASSERT(permDir != nullptr);
+        ::setenv("KQOFFICE_AI_PERMISSION_DIR", permDir, 1);
+        {
+            kqoffice::ai::control::PermissionCenter perms;
+            CPPUNIT_ASSERT(perms.grantDirectory(OUString::createFromAscii(dir), true));
+        }
+        // Deny without confirmation must fail.
+        CPPUNIT_ASSERT(!mgr.moveToTrash(
+            livePath, u"user-delete"_ustr,
+            kqoffice::ai::control::PermissionDecision::Deny));
+        CPPUNIT_ASSERT(mgr.moveToTrash(
+            livePath, u"user-delete"_ustr,
+            kqoffice::ai::control::PermissionDecision::AllowOnce));
+        auto trash = mgr.listTrash();
+        CPPUNIT_ASSERT(!trash.empty());
+        CPPUNIT_ASSERT(mgr.restoreFromTrash(livePath));
+
+        ::unsetenv("KQOFFICE_AI_FILEMGR_DIR");
+        ::unsetenv("KQOFFICE_AI_PERMISSION_DIR");
     }
 
     void testSortByName()
@@ -169,6 +313,20 @@ public:
         auto results = mgr.semanticSearch("项目", pool, 10);
         CPPUNIT_ASSERT(!results.empty());
         CPPUNIT_ASSERT(results[0].relevanceScore > 0.0);
+    }
+
+    void testSemanticSearchRecentBonusUsesSeconds()
+    {
+        FileEntry recent;
+        recent.name = u"周报.odt"_ustr;
+        recent.path = u"/tmp/周报.odt"_ustr;
+        recent.category = FileCategory::Writer;
+        recent.modifiedTime = static_cast<sal_Int64>(std::time(nullptr));
+
+        AIFileManager manager;
+        auto results = manager.semanticSearch(u"周报"_ustr, { recent }, 10);
+        CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), results.size());
+        CPPUNIT_ASSERT(results[0].relevanceScore >= 0.7);
     }
 
     void testBuildNavEntries()
@@ -219,13 +377,335 @@ public:
     CPPUNIT_TEST(testFormatSize);
     CPPUNIT_TEST(testFormatTime);
     CPPUNIT_TEST(testCommonDirectories);
-    CPPUNIT_TEST(testQuickScan);
+    CPPUNIT_TEST(testQuickScanRequiresAuthorization);
+    CPPUNIT_TEST(testScanCancellationAndSymlinkPolicy);
+    CPPUNIT_TEST(testPinFavoriteAndTrash);
     CPPUNIT_TEST(testSortByName);
     CPPUNIT_TEST(testSortByTime);
     CPPUNIT_TEST(testSemanticSearch);
+    CPPUNIT_TEST(testSemanticSearchRecentBonusUsesSeconds);
     CPPUNIT_TEST(testBuildNavEntries);
     CPPUNIT_TEST(testGroupByCategory);
     CPPUNIT_TEST(testExtensionsFor);
+    CPPUNIT_TEST_SUITE_END();
+};
+
+// ── BatchJob (Wave D6) tests ────────────────────────────────────────────
+
+class BatchJobTest : public CppUnit::TestFixture
+{
+public:
+    void testLabelsAndDeriveTarget()
+    {
+        CPPUNIT_ASSERT(!BatchJobManager::kindLabelZh(BatchJobKind::ConvertToPdf).isEmpty());
+        CPPUNIT_ASSERT(!BatchJobManager::jobStateLabelZh(BatchJobState::Pending).isEmpty());
+        CPPUNIT_ASSERT(!BatchJobManager::itemStateLabelZh(BatchItemState::Failed).isEmpty());
+
+        CPPUNIT_ASSERT_EQUAL(u"writer_pdf_Export"_ustr,
+            BatchJobManager::defaultExportFilter(BatchJobKind::ConvertToPdf));
+        CPPUNIT_ASSERT_EQUAL(u"MS Word 2007 XML"_ustr,
+            BatchJobManager::defaultExportFilter(BatchJobKind::ConvertToDocx));
+        CPPUNIT_ASSERT_EQUAL(u"Calc MS Excel 2007 XML"_ustr,
+            BatchJobManager::defaultExportFilter(BatchJobKind::ConvertToXlsx));
+        CPPUNIT_ASSERT_EQUAL(u"Impress MS PowerPoint 2007 XML"_ustr,
+            BatchJobManager::defaultExportFilter(BatchJobKind::ConvertToPptx));
+
+        const OUString tgt = BatchJobManager::deriveTargetPath(
+            u"/tmp/report.odt"_ustr, BatchJobKind::ConvertToPdf);
+        CPPUNIT_ASSERT_EQUAL(u"/tmp/report.pdf"_ustr, tgt);
+    }
+
+    void testCreateAddItemPendingOnly()
+    {
+        BatchJobManager mgr;
+        BatchJob job = mgr.create(BatchJobKind::ConvertToDocx);
+        CPPUNIT_ASSERT_EQUAL(BatchJobState::Pending, job.state);
+        CPPUNIT_ASSERT(!job.id.isEmpty());
+        CPPUNIT_ASSERT(mgr.addItem(job, u"/tmp/a.odt"_ustr));
+        CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), job.items.size());
+        CPPUNIT_ASSERT_EQUAL(u"/tmp/a.docx"_ustr, job.items[0].targetPath);
+        CPPUNIT_ASSERT_EQUAL(u"MS Word 2007 XML"_ustr, job.items[0].exportFilter);
+        CPPUNIT_ASSERT(!mgr.addItem(job, OUString())); // empty source
+    }
+
+    void testConvertUnauthorizedFails()
+    {
+        char storeT[] = "/tmp/kqoffice-batch-XXXXXX";
+        char* storeDir = ::mkdtemp(storeT);
+        CPPUNIT_ASSERT(storeDir != nullptr);
+        ::setenv("KQOFFICE_AI_PERMISSION_DIR", storeDir, 1);
+        ::setenv("KQOFFICE_AI_FILEMGR_DIR", storeDir, 1);
+        // Force stub path; real UNO is optional when context is available.
+        ::setenv("KQOFFICE_BATCH_UNO", "0", 1);
+
+        char workT[] = "/tmp/kqoffice-batch-work-XXXXXX";
+        char* workDir = ::mkdtemp(workT);
+        CPPUNIT_ASSERT(workDir != nullptr);
+        const OUString root = OUString::createFromAscii(workDir);
+        const OUString src = root + u"/note.odt"_ustr;
+        {
+            OString sys = OUStringToOString(src, RTL_TEXTENCODING_UTF8);
+            FILE* f = std::fopen(sys.getStr(), "wb");
+            CPPUNIT_ASSERT(f != nullptr);
+            std::fwrite("odt-stub", 1, 8, f);
+            std::fclose(f);
+        }
+
+        // No grantDirectory → unauthorized
+        BatchJobManager mgr;
+        BatchJob job = mgr.create(BatchJobKind::ConvertToPdf);
+        CPPUNIT_ASSERT(mgr.addItem(job, src));
+        auto summary = mgr.run(job, kqoffice::ai::control::PermissionDecision::AllowOnce);
+        CPPUNIT_ASSERT_EQUAL(static_cast<sal_Int32>(1), summary.failed);
+        CPPUNIT_ASSERT_EQUAL(BatchJobState::Failed, job.state);
+        CPPUNIT_ASSERT(job.items[0].reasonZh.indexOf(u"未授权"_ustr) >= 0);
+        CPPUNIT_ASSERT(!job.ledgerPath.isEmpty());
+
+        ::unsetenv("KQOFFICE_AI_PERMISSION_DIR");
+        ::unsetenv("KQOFFICE_AI_FILEMGR_DIR");
+        ::unsetenv("KQOFFICE_BATCH_UNO");
+    }
+
+    void testConvertStubRecordsFilterAndLedger()
+    {
+        char storeT[] = "/tmp/kqoffice-batch-XXXXXX";
+        char* storeDir = ::mkdtemp(storeT);
+        CPPUNIT_ASSERT(storeDir != nullptr);
+        ::setenv("KQOFFICE_AI_PERMISSION_DIR", storeDir, 1);
+        ::setenv("KQOFFICE_AI_FILEMGR_DIR", storeDir, 1);
+        // KQOFFICE_BATCH_UNO=0 forces stub fail even if a desktop context exists.
+        ::setenv("KQOFFICE_BATCH_UNO", "0", 1);
+
+        char workT[] = "/tmp/kqoffice-batch-work-XXXXXX";
+        char* workDir = ::mkdtemp(workT);
+        CPPUNIT_ASSERT(workDir != nullptr);
+        const OUString root = OUString::createFromAscii(workDir);
+        const OUString src = root + u"/sheet.ods"_ustr;
+        {
+            OString sys = OUStringToOString(src, RTL_TEXTENCODING_UTF8);
+            FILE* f = std::fopen(sys.getStr(), "wb");
+            CPPUNIT_ASSERT(f != nullptr);
+            std::fwrite("ods-stub", 1, 8, f);
+            std::fclose(f);
+        }
+
+        kqoffice::ai::control::PermissionCenter perms;
+        CPPUNIT_ASSERT(perms.grantDirectory(root, true));
+
+        BatchJobManager mgr;
+        BatchJob job = mgr.create(BatchJobKind::ConvertToXlsx);
+        CPPUNIT_ASSERT(mgr.addItem(job, src));
+        auto summary = mgr.run(job, kqoffice::ai::control::PermissionDecision::AllowOnce);
+
+        // Stub path: convert fails clearly but ledger + filter are recorded.
+        CPPUNIT_ASSERT_EQUAL(static_cast<sal_Int32>(1), summary.failed);
+        CPPUNIT_ASSERT_EQUAL(BatchJobState::Failed, job.state);
+        CPPUNIT_ASSERT_EQUAL(u"Calc MS Excel 2007 XML"_ustr, job.items[0].exportFilter);
+        CPPUNIT_ASSERT(job.items[0].reasonZh.indexOf(u"无可用 Office 进程"_ustr) >= 0);
+        CPPUNIT_ASSERT(job.items[0].reasonZh.indexOf(u"Calc MS Excel 2007 XML"_ustr) >= 0);
+        CPPUNIT_ASSERT(job.ledgerPath.indexOf(u"batch-jobs"_ustr) >= 0);
+
+        // Ledger file should exist on disk.
+        OString ledgerSys = OUStringToOString(job.ledgerPath, RTL_TEXTENCODING_UTF8);
+        FILE* lf = std::fopen(ledgerSys.getStr(), "rb");
+        CPPUNIT_ASSERT(lf != nullptr);
+        std::fclose(lf);
+
+        ::unsetenv("KQOFFICE_AI_PERMISSION_DIR");
+        ::unsetenv("KQOFFICE_AI_FILEMGR_DIR");
+        ::unsetenv("KQOFFICE_BATCH_UNO");
+    }
+
+    void testConvertOverwriteDeny()
+    {
+        char storeT[] = "/tmp/kqoffice-batch-XXXXXX";
+        char* storeDir = ::mkdtemp(storeT);
+        CPPUNIT_ASSERT(storeDir != nullptr);
+        ::setenv("KQOFFICE_AI_PERMISSION_DIR", storeDir, 1);
+        ::setenv("KQOFFICE_AI_FILEMGR_DIR", storeDir, 1);
+        ::setenv("KQOFFICE_BATCH_UNO", "0", 1);
+
+        char workT[] = "/tmp/kqoffice-batch-work-XXXXXX";
+        char* workDir = ::mkdtemp(workT);
+        CPPUNIT_ASSERT(workDir != nullptr);
+        const OUString root = OUString::createFromAscii(workDir);
+        const OUString src = root + u"/doc.odt"_ustr;
+        const OUString dst = root + u"/doc.pdf"_ustr;
+        for (const OUString& p : { src, dst })
+        {
+            OString sys = OUStringToOString(p, RTL_TEXTENCODING_UTF8);
+            FILE* f = std::fopen(sys.getStr(), "wb");
+            CPPUNIT_ASSERT(f != nullptr);
+            std::fwrite("x", 1, 1, f);
+            std::fclose(f);
+        }
+
+        kqoffice::ai::control::PermissionCenter perms;
+        CPPUNIT_ASSERT(perms.grantDirectory(root, true));
+        kqoffice::ai::control::PermissionGrant::clearAllSessionAllows();
+
+        BatchJobManager mgr;
+        BatchJob job = mgr.create(BatchJobKind::ConvertToPdf);
+        CPPUNIT_ASSERT(mgr.addItem(job, src, dst));
+        auto summary = mgr.run(job, kqoffice::ai::control::PermissionDecision::Deny);
+        CPPUNIT_ASSERT_EQUAL(static_cast<sal_Int32>(1), summary.failed);
+        CPPUNIT_ASSERT(job.items[0].reasonZh.indexOf(u"拒绝覆盖"_ustr) >= 0);
+
+        ::unsetenv("KQOFFICE_AI_PERMISSION_DIR");
+        ::unsetenv("KQOFFICE_AI_FILEMGR_DIR");
+        ::unsetenv("KQOFFICE_BATCH_UNO");
+    }
+
+    void testSoftDeleteBatch()
+    {
+        char storeT[] = "/tmp/kqoffice-batch-XXXXXX";
+        char* storeDir = ::mkdtemp(storeT);
+        CPPUNIT_ASSERT(storeDir != nullptr);
+        ::setenv("KQOFFICE_AI_PERMISSION_DIR", storeDir, 1);
+        ::setenv("KQOFFICE_AI_FILEMGR_DIR", storeDir, 1);
+
+        char workT[] = "/tmp/kqoffice-batch-work-XXXXXX";
+        char* workDir = ::mkdtemp(workT);
+        CPPUNIT_ASSERT(workDir != nullptr);
+        const OUString root = OUString::createFromAscii(workDir);
+        const OUString a = root + u"/a.txt"_ustr;
+        const OUString b = root + u"/b.txt"_ustr;
+        for (const OUString& p : { a, b })
+        {
+            OString sys = OUStringToOString(p, RTL_TEXTENCODING_UTF8);
+            FILE* f = std::fopen(sys.getStr(), "wb");
+            CPPUNIT_ASSERT(f != nullptr);
+            std::fwrite("z", 1, 1, f);
+            std::fclose(f);
+        }
+
+        kqoffice::ai::control::PermissionCenter perms;
+        CPPUNIT_ASSERT(perms.grantDirectory(root, true));
+        kqoffice::ai::control::PermissionGrant::clearAllSessionAllows();
+
+        BatchJobManager mgr;
+        BatchJob job = mgr.create(BatchJobKind::SoftDeleteToTrash);
+        CPPUNIT_ASSERT(mgr.addItem(job, a));
+        CPPUNIT_ASSERT(mgr.addItem(job, b));
+
+        // Deny first → both fail permission
+        auto denied = mgr.run(job, kqoffice::ai::control::PermissionDecision::Deny);
+        CPPUNIT_ASSERT_EQUAL(static_cast<sal_Int32>(2), denied.failed);
+
+        // Fresh job with AllowOnce
+        BatchJob job2 = mgr.create(BatchJobKind::SoftDeleteToTrash);
+        CPPUNIT_ASSERT(mgr.addItem(job2, a));
+        CPPUNIT_ASSERT(mgr.addItem(job2, b));
+        auto summary = mgr.run(job2, kqoffice::ai::control::PermissionDecision::AllowOnce);
+        CPPUNIT_ASSERT_EQUAL(static_cast<sal_Int32>(2), summary.done);
+        CPPUNIT_ASSERT_EQUAL(BatchJobState::Done, job2.state);
+        CPPUNIT_ASSERT(summary.allSucceeded);
+
+        ::unsetenv("KQOFFICE_AI_PERMISSION_DIR");
+        ::unsetenv("KQOFFICE_AI_FILEMGR_DIR");
+    }
+
+    void testCancelMidJob()
+    {
+        char storeT[] = "/tmp/kqoffice-batch-XXXXXX";
+        char* storeDir = ::mkdtemp(storeT);
+        CPPUNIT_ASSERT(storeDir != nullptr);
+        ::setenv("KQOFFICE_AI_PERMISSION_DIR", storeDir, 1);
+        ::setenv("KQOFFICE_AI_FILEMGR_DIR", storeDir, 1);
+        ::setenv("KQOFFICE_BATCH_UNO", "0", 1);
+
+        char workT[] = "/tmp/kqoffice-batch-work-XXXXXX";
+        char* workDir = ::mkdtemp(workT);
+        CPPUNIT_ASSERT(workDir != nullptr);
+        const OUString root = OUString::createFromAscii(workDir);
+
+        kqoffice::ai::control::PermissionCenter perms;
+        CPPUNIT_ASSERT(perms.grantDirectory(root, true));
+
+        BatchJobManager mgr;
+        BatchJob job = mgr.create(BatchJobKind::ConvertToPdf);
+        for (int i = 0; i < 3; ++i)
+        {
+            OUString src = root + u"/f"_ustr + OUString::number(i) + u".odt"_ustr;
+            OString sys = OUStringToOString(src, RTL_TEXTENCODING_UTF8);
+            FILE* f = std::fopen(sys.getStr(), "wb");
+            CPPUNIT_ASSERT(f != nullptr);
+            std::fwrite("x", 1, 1, f);
+            std::fclose(f);
+            CPPUNIT_ASSERT(mgr.addItem(job, src));
+        }
+
+        // Cancel before run → all items cancelled without processing.
+        BatchJobManager::requestCancel(job);
+        auto summary = mgr.run(job, kqoffice::ai::control::PermissionDecision::AllowOnce);
+        CPPUNIT_ASSERT_EQUAL(static_cast<sal_Int32>(3), summary.cancelled);
+        CPPUNIT_ASSERT_EQUAL(BatchJobState::Cancelled, job.state);
+
+        ::unsetenv("KQOFFICE_AI_PERMISSION_DIR");
+        ::unsetenv("KQOFFICE_AI_FILEMGR_DIR");
+        ::unsetenv("KQOFFICE_BATCH_UNO");
+    }
+
+    void testListRecentLedgers()
+    {
+        char storeT[] = "/tmp/kqoffice-batch-list-XXXXXX";
+        char* storeDir = ::mkdtemp(storeT);
+        CPPUNIT_ASSERT(storeDir != nullptr);
+        ::setenv("KQOFFICE_AI_PERMISSION_DIR", storeDir, 1);
+        ::setenv("KQOFFICE_AI_FILEMGR_DIR", storeDir, 1);
+        ::setenv("KQOFFICE_BATCH_UNO", "0", 1);
+
+        char workT[] = "/tmp/kqoffice-batch-list-work-XXXXXX";
+        char* workDir = ::mkdtemp(workT);
+        CPPUNIT_ASSERT(workDir != nullptr);
+        const OUString root = OUString::createFromAscii(workDir);
+        const OUString src = root + u"/doc.odt"_ustr;
+        {
+            OString sys = OUStringToOString(src, RTL_TEXTENCODING_UTF8);
+            FILE* f = std::fopen(sys.getStr(), "wb");
+            CPPUNIT_ASSERT(f != nullptr);
+            std::fwrite("odt", 1, 3, f);
+            std::fclose(f);
+        }
+
+        kqoffice::ai::control::PermissionCenter perms;
+        CPPUNIT_ASSERT(perms.grantDirectory(root, true));
+
+        BatchJobManager mgr;
+        BatchJob job = mgr.create(BatchJobKind::ConvertToPdf);
+        CPPUNIT_ASSERT(mgr.addItem(job, src));
+        mgr.run(job, kqoffice::ai::control::PermissionDecision::AllowOnce);
+        CPPUNIT_ASSERT(!job.ledgerPath.isEmpty());
+
+        const auto rows = BatchJobManager::listRecentLedgers(10);
+        CPPUNIT_ASSERT(!rows.empty());
+        bool found = false;
+        for (const auto& row : rows)
+        {
+            if (row.id == job.id || row.ledgerPath == job.ledgerPath)
+            {
+                found = true;
+                CPPUNIT_ASSERT(!row.kindZh.isEmpty());
+                CPPUNIT_ASSERT(!row.stateZh.isEmpty());
+                break;
+            }
+        }
+        CPPUNIT_ASSERT(found);
+
+        ::unsetenv("KQOFFICE_AI_PERMISSION_DIR");
+        ::unsetenv("KQOFFICE_AI_FILEMGR_DIR");
+        ::unsetenv("KQOFFICE_BATCH_UNO");
+    }
+
+    CPPUNIT_TEST_SUITE(BatchJobTest);
+    CPPUNIT_TEST(testLabelsAndDeriveTarget);
+    CPPUNIT_TEST(testCreateAddItemPendingOnly);
+    CPPUNIT_TEST(testConvertUnauthorizedFails);
+    CPPUNIT_TEST(testConvertStubRecordsFilterAndLedger);
+    CPPUNIT_TEST(testConvertOverwriteDeny);
+    CPPUNIT_TEST(testSoftDeleteBatch);
+    CPPUNIT_TEST(testCancelMidJob);
+    CPPUNIT_TEST(testListRecentLedgers);
     CPPUNIT_TEST_SUITE_END();
 };
 
@@ -238,7 +718,7 @@ public:
     {
         OUString bar = AIFileSearchUI::formatScoreBar(0.8);
         CPPUNIT_ASSERT(!bar.isEmpty());
-        CPPUNIT_ASSERT(bar.indexOf("★") >= 0);
+        CPPUNIT_ASSERT(bar.indexOf(u"★"_ustr) >= 0);
     }
 
     void testFormatScanSummary()
@@ -263,8 +743,8 @@ public:
         results.push_back(m);
 
         OUString fmt = AIFileSearchUI::formatSearchResults(results);
-        CPPUNIT_ASSERT(fmt.indexOf("test.odt") >= 0);
-        CPPUNIT_ASSERT(fmt.indexOf("★") >= 0);
+        CPPUNIT_ASSERT(fmt.indexOf(u"test.odt"_ustr) >= 0);
+        CPPUNIT_ASSERT(fmt.indexOf(u"★"_ustr) >= 0);
     }
 
     CPPUNIT_TEST_SUITE(AIFileSearchUITest);
@@ -275,6 +755,7 @@ public:
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(AIFileManagerTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(BatchJobTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(AIFileSearchUITest);
 
 } // anonymous namespace

@@ -194,11 +194,17 @@ bool DocumentAIScreenCapture::isAvailable()
 OUString DocumentAIScreenCapture::statusHint()
 {
     if (!isAvailable())
-        return u"截图：当前环境无可用截图工具"_ustr;
+        return u"截图：当前环境无可用截图工具（macOS 需 screencapture）"_ustr;
     const auto prefs = DocumentAIInputPrefs::load();
-    return u"截图：默认 "_ustr
-           + DocumentAIInputPrefs::screenshotModeToString(prefs.screenshotMode)
-           + u" · 快捷键 Ctrl/Cmd+Shift+A 选区"_ustr;
+    OUString modeZh = DocumentAIInputPrefs::screenshotModeToString(prefs.screenshotMode);
+    if (modeZh == u"region"_ustr)
+        modeZh = u"选区"_ustr;
+    else if (modeZh == u"window"_ustr)
+        modeZh = u"窗口"_ustr;
+    else if (modeZh == u"fullscreen"_ustr)
+        modeZh = u"全屏"_ustr;
+    return u"截图：默认"_ustr + modeZh
+           + u" · 本地 PNG · 自动附对话 · 不上传"_ustr;
 }
 
 ScreenCaptureResult DocumentAIScreenCapture::captureInteractive()

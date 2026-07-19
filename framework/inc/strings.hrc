@@ -47,7 +47,7 @@
 #define STR_CORRUPT_UICFG_SHARE                     NC_("STR_CORRUPT_UICFG_SHARE", "An error occurred while loading the user interface configuration data. The application will be terminated now.\nPlease try to reinstall the application." )
 #define STR_CORRUPT_UICFG_USER                      NC_("STR_CORRUPT_UICFG_USER", "An error occurred while loading the user interface configuration data. The application will be terminated now.\nPlease try to remove your user profile for the application." )
 #define STR_CORRUPT_UICFG_GENERAL                   NC_("STR_CORRUPT_UICFG_GENERAL", "An error occurred while loading the user interface configuration data. The application will be terminated now.\nPlease try to remove your user profile for the application first or try to reinstall the application." )
-#define STR_UNTITLED_DOCUMENT                       NC_("STR_UNTITLED_DOCUMENT", "Untitled" )
+#define STR_UNTITLED_DOCUMENT                       NC_("STR_UNTITLED_DOCUMENT", "未命名" )
 // To translators: for displaying 'Multiple Languages' in the language statusbar control
 #define STR_LANGSTATUS_MULTIPLE_LANGUAGES           NC_("STR_LANGSTATUS_MULTIPLE_LANGUAGES", "Multiple Languages" )
 #define STR_LANGSTATUS_NONE                         NC_("STR_LANGSTATUS_NONE", "无（不检查拼写）" )

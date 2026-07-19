@@ -12,6 +12,7 @@
 #include <sfx2/viewsh.hxx>
 #include <sfx2/dispatch.hxx>
 #include <sfx2/notebookbar/SfxNotebookBar.hxx>
+#include <sfx2/sidebar/SidebarController.hxx>
 #include <vcl/notebookbar/notebookbar.hxx>
 #include <vcl/syswin.hxx>
 #include <sfx2/viewfrm.hxx>
@@ -538,7 +539,39 @@ bool SfxNotebookBar::StateMethod(SystemWindow* pSysWindow,
 
             utl::OConfigurationTreeRoot aRoot(lcl_getCurrentImplConfigRoot());
             const utl::OConfigurationNode aModeNode(lcl_getCurrentImplConfigNode(xFrame, aRoot));
-            SfxNotebookBar::ShowMenubar( comphelper::getBOOL( aModeNode.getNodeValue( u"HasMenubar"_ustr ) ) );
+            if (aModeNode.isValid())
+            {
+                SfxNotebookBar::ShowMenubar(
+                    comphelper::getBOOL(aModeNode.getNodeValue(u"HasMenubar"_ustr)));
+
+                // Apply the same Sidebar policy as SID_TOOLBAR_MODE (Arrow/Tabs/Opened).
+                // Without this, Active=notebookbar_compact.ui enables the notebookbar but
+                // leaves a previously opened deck stealing canvas space — not how WPS/Office
+                // compact chrome behaves for blank documents (tab strip only until needed).
+                const OUString aSidebarMode
+                    = comphelper::getString(aModeNode.getNodeValue(u"Sidebar"_ustr));
+                if (SfxViewFrame* pViewFrame = SfxViewFrame::Current())
+                {
+                    pViewFrame->ShowChildWindow(SID_SIDEBAR);
+                    if (sfx2::sidebar::SidebarController* pSidebar
+                        = sfx2::sidebar::SidebarController::GetSidebarControllerForFrame(xFrame))
+                    {
+                        if (aSidebarMode == u"Arrow")
+                            pSidebar->FadeOut();
+                        else if (aSidebarMode == u"Tabs")
+                        {
+                            pSidebar->FadeIn();
+                            pSidebar->RequestOpenDeck();
+                            pSidebar->RequestCloseDeck();
+                        }
+                        else if (aSidebarMode == u"Opened")
+                        {
+                            pSidebar->FadeIn();
+                            pSidebar->RequestOpenDeck();
+                        }
+                    }
+                }
+            }
 
             SfxViewFrame* pView = SfxViewFrame::Current();
 

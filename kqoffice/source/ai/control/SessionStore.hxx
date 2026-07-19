@@ -34,7 +34,7 @@ struct SessionManifest
     bool                 isValid       = false;
 };
 
-class SessionStore
+class SAL_DLLPUBLIC_EXPORT SessionStore
 {
 public:
     SessionStore();

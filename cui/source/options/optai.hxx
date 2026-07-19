@@ -79,16 +79,23 @@ private:
     DECL_LINK(OnScenarioResetClicked, weld::Button&, void);
     DECL_LINK(OnScenarioUpClicked, weld::Button&, void);
     DECL_LINK(OnScenarioDownClicked, weld::Button&, void);
+    DECL_LINK(OnWorkspaceGrantClicked, weld::Button&, void);
+    DECL_LINK(OnWorkspaceRevokeClicked, weld::Button&, void);
+    DECL_LINK(OnWorkspaceRevokeAllClicked, weld::Button&, void);
+    DECL_LINK(OnWorkspaceClearSessionClicked, weld::Button&, void);
+    DECL_LINK(OnNetworkRevokeClicked, weld::Button&, void);
 
     void FillFromSnapshot();
     void WriteToSnapshot();
     OUString ResolvePrimaryOrSelected() const;
 
     void ReloadScenarioList(const OUString& rSelectId = OUString());
+    void ReloadWorkspaceList();
     void FillScenarioForm(const kqoffice::ai::chat::DocumentAIScenario& r);
     kqoffice::ai::chat::DocumentAIScenario ReadScenarioForm() const;
     void ClearScenarioForm();
     OUString SelectedScenarioId() const;
+    OUString SelectedWorkspacePath() const;
 
     std::unique_ptr<weld::Label> m_xStatusLabel;
     std::unique_ptr<weld::Label> m_xPathLabel;
@@ -145,6 +152,20 @@ private:
     std::unique_ptr<weld::CheckButton> m_xScreenshotAttach;
     std::unique_ptr<weld::CheckButton> m_xScreenshotOpenAi;
     std::unique_ptr<weld::CheckButton> m_xScreenshotClipboard;
+    std::unique_ptr<weld::CheckButton> m_xScheduleAutoSend;
+
+    // Permission center: workspace + network + mic/screenshot (Wave D3)
+    std::unique_ptr<weld::TreeView> m_xWsDirList;
+    std::unique_ptr<weld::Button> m_xWsGrantBtn;
+    std::unique_ptr<weld::Button> m_xWsRevokeBtn;
+    std::unique_ptr<weld::Button> m_xWsRevokeAllBtn;
+    std::unique_ptr<weld::Button> m_xWsClearSessionBtn;
+    std::unique_ptr<weld::Button> m_xWsNetworkRevokeBtn;
+    std::unique_ptr<weld::Label> m_xWsNetworkStatus;
+    std::unique_ptr<weld::Label> m_xWsCapMicStatus;
+    std::unique_ptr<weld::Label> m_xWsCapShotStatus;
+    std::unique_ptr<weld::Label> m_xWsRiskPolicyLabel;
+    std::unique_ptr<weld::Label> m_xWsStatusLabel;
 
     kqoffice::ai::chat::ScenarioCatalog m_aScenarioCatalog;
 };

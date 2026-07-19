@@ -11,8 +11,14 @@
 #include <ModelRoles.hxx>
 #include <ModelRoutingConfig.hxx>
 #include <OllamaAdapter.hxx>
+#include <PermissionCenter.hxx>
 
+#include <com/sun/star/ui/dialogs/ExecutableDialogResults.hpp>
+#include <com/sun/star/ui/dialogs/XFolderPicker2.hpp>
+#include <comphelper/processfactory.hxx>
+#include <osl/file.hxx>
 #include <rtl/ustrbuf.hxx>
+#include <sfx2/filedlghelper.hxx>
 #include <vcl/transfer.hxx>
 #include <vcl/vclenum.hxx>
 #include <vcl/weld/Builder.hxx>
@@ -87,6 +93,18 @@ OptAiTabPage::OptAiTabPage(weld::Container* pPage, weld::DialogController* pCont
     , m_xScreenshotAttach(m_xBuilder->weld_check_button(u"screenshot_attach"_ustr))
     , m_xScreenshotOpenAi(m_xBuilder->weld_check_button(u"screenshot_open_ai"_ustr))
     , m_xScreenshotClipboard(m_xBuilder->weld_check_button(u"screenshot_clipboard"_ustr))
+    , m_xScheduleAutoSend(m_xBuilder->weld_check_button(u"schedule_auto_send"_ustr))
+    , m_xWsDirList(m_xBuilder->weld_tree_view(u"ws_dir_list"_ustr))
+    , m_xWsGrantBtn(m_xBuilder->weld_button(u"ws_grant_btn"_ustr))
+    , m_xWsRevokeBtn(m_xBuilder->weld_button(u"ws_revoke_btn"_ustr))
+    , m_xWsRevokeAllBtn(m_xBuilder->weld_button(u"ws_revoke_all_btn"_ustr))
+    , m_xWsClearSessionBtn(m_xBuilder->weld_button(u"ws_clear_session_btn"_ustr))
+    , m_xWsNetworkRevokeBtn(m_xBuilder->weld_button(u"ws_network_revoke_btn"_ustr))
+    , m_xWsNetworkStatus(m_xBuilder->weld_label(u"ws_network_status"_ustr))
+    , m_xWsCapMicStatus(m_xBuilder->weld_label(u"ws_cap_mic_status"_ustr))
+    , m_xWsCapShotStatus(m_xBuilder->weld_label(u"ws_cap_shot_status"_ustr))
+    , m_xWsRiskPolicyLabel(m_xBuilder->weld_label(u"ws_risk_policy_label"_ustr))
+    , m_xWsStatusLabel(m_xBuilder->weld_label(u"ws_status_label"_ustr))
 {
     m_xProbeBtn->connect_clicked(LINK(this, OptAiTabPage, OnProbeClicked));
     m_xApplyPrimaryBtn->connect_clicked(LINK(this, OptAiTabPage, OnApplyPrimaryToAllClicked));
@@ -110,6 +128,19 @@ OptAiTabPage::OptAiTabPage(weld::Container* pPage, weld::DialogController* pCont
     m_xScResetBtn->connect_clicked(LINK(this, OptAiTabPage, OnScenarioResetClicked));
     m_xScUpBtn->connect_clicked(LINK(this, OptAiTabPage, OnScenarioUpClicked));
     m_xScDownBtn->connect_clicked(LINK(this, OptAiTabPage, OnScenarioDownClicked));
+    if (m_xWsDirList)
+        m_xWsDirList->set_selection_mode(SelectionMode::Single);
+    if (m_xWsGrantBtn)
+        m_xWsGrantBtn->connect_clicked(LINK(this, OptAiTabPage, OnWorkspaceGrantClicked));
+    if (m_xWsRevokeBtn)
+        m_xWsRevokeBtn->connect_clicked(LINK(this, OptAiTabPage, OnWorkspaceRevokeClicked));
+    if (m_xWsRevokeAllBtn)
+        m_xWsRevokeAllBtn->connect_clicked(LINK(this, OptAiTabPage, OnWorkspaceRevokeAllClicked));
+    if (m_xWsClearSessionBtn)
+        m_xWsClearSessionBtn->connect_clicked(
+            LINK(this, OptAiTabPage, OnWorkspaceClearSessionClicked));
+    if (m_xWsNetworkRevokeBtn)
+        m_xWsNetworkRevokeBtn->connect_clicked(LINK(this, OptAiTabPage, OnNetworkRevokeClicked));
 }
 
 OptAiTabPage::~OptAiTabPage() = default;
@@ -281,7 +312,9 @@ void OptAiTabPage::FillFromSnapshot()
     m_xReview->set_text(s.reviewModel);
     m_xPathLabel->set_label(u"配置文件："_ustr + modelRoutingConfigPathForDisplay());
     m_xStatusLabel->set_label(
-        u"模型五槽 + 语音/截图 + AI 方案。F4 语音 · Ctrl/Cmd+Shift+A 截图。"_ustr);
+        u"模型五槽 + 权限中心（工作区/网络/麦克风/截图）+ 语音/截图偏好 + 方案。F4 语音 · Ctrl/Cmd+Shift+A 截图。"_ustr);
+
+    ReloadWorkspaceList();
 
     // Voice / screenshot prefs
     const DocumentAIInputPrefs ip = DocumentAIInputPrefs::load();
@@ -327,6 +360,8 @@ void OptAiTabPage::FillFromSnapshot()
         m_xScreenshotOpenAi->set_active(ip.screenshotOpenAiPanel);
     if (m_xScreenshotClipboard)
         m_xScreenshotClipboard->set_active(ip.screenshotCopyClipboard);
+    if (m_xScheduleAutoSend)
+        m_xScheduleAutoSend->set_active(ip.scheduleAutoSend);
 
     ReloadScenarioList();
 }
@@ -382,14 +417,16 @@ void OptAiTabPage::WriteToSnapshot()
         ip.screenshotOpenAiPanel = m_xScreenshotOpenAi->get_active();
     if (m_xScreenshotClipboard)
         ip.screenshotCopyClipboard = m_xScreenshotClipboard->get_active();
+    if (m_xScheduleAutoSend)
+        ip.scheduleAutoSend = m_xScheduleAutoSend->get_active();
     if (!DocumentAIInputPrefs::save(ip))
     {
-        m_xStatusLabel->set_label(u"模型已保存；语音/截图偏好写入失败。"_ustr);
+        m_xStatusLabel->set_label(u"模型已保存；语音/截图/定时偏好写入失败。"_ustr);
         return;
     }
 
     m_xStatusLabel->set_label(
-        u"已保存模型路由、语音/截图偏好与方案配置。F4 语音 · ⌘/Ctrl+Shift+A 截图。"_ustr);
+        u"已保存模型路由、语音/截图/定时偏好与方案配置。F4 语音 · ⌘/Ctrl+Shift+A 截图。"_ustr);
     m_xPathLabel->set_label(u"配置文件："_ustr + modelRoutingConfigPathForDisplay());
 }
 
@@ -544,8 +581,161 @@ IMPL_LINK_NOARG(OptAiTabPage, OnComboDualClicked, weld::Button&, void)
 
 IMPL_LINK_NOARG(OptAiTabPage, OnOpenConfigDirClicked, weld::Button&, void)
 {
+    kqoffice::ai::control::PermissionCenter perms;
     m_xStatusLabel->set_label(u"模型："_ustr + modelRoutingConfigPathForDisplay() + u"\n方案："_ustr
-                              + DocumentAIScenarioStore::defaultConfigPath());
+                              + DocumentAIScenarioStore::defaultConfigPath()
+                              + u"\n工作区权限："_ustr + perms.storePathForDisplay());
+}
+
+OUString OptAiTabPage::SelectedWorkspacePath() const
+{
+    if (!m_xWsDirList)
+        return OUString();
+    return m_xWsDirList->get_selected_id();
+}
+
+void OptAiTabPage::ReloadWorkspaceList()
+{
+    using kqoffice::ai::control::CapabilityPermission;
+    using kqoffice::ai::control::PermissionCenter;
+    using kqoffice::ai::control::PermissionState;
+
+    PermissionCenter perms;
+    if (m_xWsDirList)
+    {
+        m_xWsDirList->clear();
+        for (const auto& d : perms.authorizedDirectories())
+        {
+            OUString label = d.path;
+            if (d.recursive)
+                label += u" （含子目录）"_ustr;
+            m_xWsDirList->append(d.path, label);
+        }
+    }
+
+    if (m_xWsNetworkStatus)
+        m_xWsNetworkStatus->set_label(perms.networkStatusLineZh());
+    if (m_xWsCapMicStatus)
+        m_xWsCapMicStatus->set_label(
+            perms.settingsCapabilityStatusZh(CapabilityPermission::Microphone));
+    if (m_xWsCapShotStatus)
+        m_xWsCapShotStatus->set_label(
+            perms.settingsCapabilityStatusZh(CapabilityPermission::ScreenCapture));
+    if (m_xWsRiskPolicyLabel)
+        m_xWsRiskPolicyLabel->set_label(PermissionCenter::riskPolicyHintZh());
+
+    const auto netState = perms.stateOf(CapabilityPermission::NetworkEgress);
+    if (m_xWsNetworkRevokeBtn)
+        m_xWsNetworkRevokeBtn->set_sensitive(netState == PermissionState::Granted);
+    if (m_xWsRevokeBtn)
+        m_xWsRevokeBtn->set_sensitive(perms.hasAnyAuthorizedDirectory());
+    if (m_xWsRevokeAllBtn)
+        m_xWsRevokeAllBtn->set_sensitive(perms.hasAnyAuthorizedDirectory());
+    if (m_xWsClearSessionBtn)
+        m_xWsClearSessionBtn->set_sensitive(perms.sessionRiskGrantCount() > 0);
+
+    if (m_xWsStatusLabel)
+    {
+        // Full multi-line summary for discoverability + store path.
+        m_xWsStatusLabel->set_label(perms.settingsSurfaceSummaryZh() + u"\n存储："_ustr
+                                    + perms.storePathForDisplay());
+    }
+}
+
+IMPL_LINK_NOARG(OptAiTabPage, OnWorkspaceGrantClicked, weld::Button&, void)
+{
+    try
+    {
+        const css::uno::Reference<css::uno::XComponentContext>& xContext
+            = ::comphelper::getProcessComponentContext();
+        css::uno::Reference<css::ui::dialogs::XFolderPicker2> xPicker
+            = sfx2::createFolderPicker(xContext, GetFrameWeld());
+        if (!xPicker.is())
+        {
+            m_xStatusLabel->set_label(u"无法打开文件夹选择器。"_ustr);
+            return;
+        }
+        if (xPicker->execute() != css::ui::dialogs::ExecutableDialogResults::OK)
+            return;
+
+        OUString dirUrl = xPicker->getDirectory();
+        OUString systemPath;
+        if (osl::FileBase::getSystemPathFromFileURL(dirUrl, systemPath) != osl::FileBase::E_None
+            || systemPath.isEmpty())
+            systemPath = dirUrl;
+
+        kqoffice::ai::control::PermissionCenter perms;
+        if (!perms.grantDirectory(systemPath, true))
+        {
+            m_xStatusLabel->set_label(
+                u"授权失败：不能授权整个用户主目录或系统根路径，请选择更具体的工作文件夹。"_ustr);
+            ReloadWorkspaceList();
+            return;
+        }
+        m_xStatusLabel->set_label(u"已授权工作区："_ustr + systemPath);
+        ReloadWorkspaceList();
+    }
+    catch (const css::uno::Exception&)
+    {
+        m_xStatusLabel->set_label(u"授权目录时发生错误。"_ustr);
+    }
+}
+
+IMPL_LINK_NOARG(OptAiTabPage, OnWorkspaceRevokeClicked, weld::Button&, void)
+{
+    const OUString path = SelectedWorkspacePath();
+    if (path.isEmpty())
+    {
+        m_xStatusLabel->set_label(u"请先在列表中选择要撤销的目录。"_ustr);
+        return;
+    }
+    kqoffice::ai::control::PermissionCenter perms;
+    if (!perms.revokeDirectory(path))
+    {
+        m_xStatusLabel->set_label(u"撤销失败："_ustr + path);
+        return;
+    }
+    m_xStatusLabel->set_label(u"已撤销目录授权："_ustr + path);
+    ReloadWorkspaceList();
+}
+
+IMPL_LINK_NOARG(OptAiTabPage, OnWorkspaceRevokeAllClicked, weld::Button&, void)
+{
+    kqoffice::ai::control::PermissionCenter perms;
+    if (!perms.hasAnyAuthorizedDirectory())
+    {
+        m_xStatusLabel->set_label(u"当前没有已授权的工作区目录。"_ustr);
+        return;
+    }
+    perms.revokeAllDirectories();
+    m_xStatusLabel->set_label(u"已清空全部工作区目录授权。"_ustr);
+    ReloadWorkspaceList();
+}
+
+IMPL_LINK_NOARG(OptAiTabPage, OnWorkspaceClearSessionClicked, weld::Button&, void)
+{
+    kqoffice::ai::control::PermissionCenter perms;
+    const sal_Int32 before = perms.sessionRiskGrantCount();
+    perms.clearSessionRiskGrants();
+    m_xStatusLabel->set_label(
+        u"已清空本轮写删授权（"_ustr + OUString::number(before)
+        + u" 条）。下次删除/覆盖仍会二次确认。"_ustr);
+    ReloadWorkspaceList();
+}
+
+IMPL_LINK_NOARG(OptAiTabPage, OnNetworkRevokeClicked, weld::Button&, void)
+{
+    kqoffice::ai::control::PermissionCenter perms;
+    if (perms.stateOf(kqoffice::ai::control::CapabilityPermission::NetworkEgress)
+        != kqoffice::ai::control::PermissionState::Granted)
+    {
+        m_xStatusLabel->set_label(u"网络外发当前未授权（默认关闭）。"_ustr);
+        ReloadWorkspaceList();
+        return;
+    }
+    perms.revoke(kqoffice::ai::control::CapabilityPermission::NetworkEgress);
+    m_xStatusLabel->set_label(u"已关闭网络授权 · 外发需重新确认并披露提供方与范围。"_ustr);
+    ReloadWorkspaceList();
 }
 
 IMPL_LINK_NOARG(OptAiTabPage, OnScenarioListChanged, weld::TreeView&, void)

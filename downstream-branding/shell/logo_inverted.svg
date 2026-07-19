@@ -25,7 +25,6 @@
     <circle cx="158" cy="158" r="11" fill="#69B1FF" opacity=".95"/>
   </g>
   <g fill="url(#word)">
-    <text x="286" y="114" font-family="'PingFang SC','苹方-简','Microsoft YaHei UI','Microsoft YaHei','微软雅黑','Noto Sans SC',sans-serif" font-size="62" font-weight="700" letter-spacing="3">可圈可点</text>
-    <text x="286" y="196" font-family="'Avenir Next','Helvetica Neue','Segoe UI',Arial,sans-serif" font-size="80" font-weight="700" letter-spacing="1.5">office</text>
+    <text x="286" y="155" font-family="'PingFang SC','苹方-简','Microsoft YaHei UI','Microsoft YaHei','微软雅黑','Noto Sans SC',sans-serif" font-size="72" font-weight="700" letter-spacing="3">可圈办公</text>
   </g>
 </svg>

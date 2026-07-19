@@ -32,6 +32,9 @@
 #include <vcl/virdev.hxx>
 
 #include <map>
+#include <osl/file.hxx>
+#include <osl/time.h>
+#include <rtl/ustrbuf.hxx>
 
 #include <bitmaps.hlst>
 #include "recentdocsviewitem.hxx"
@@ -44,6 +47,84 @@ using namespace drawinglayer::processor2d;
 
 namespace
 {
+OUString recentDocTypeLabel(const INetURLObject& rURL)
+{
+    const OUString ext = rURL.getExtension().toAsciiLowerCase();
+    if (ext == u"odt" || ext == u"ott" || ext == u"doc" || ext == u"docx" || ext == u"rtf"
+        || ext == u"wps")
+        return u"文档"_ustr;
+    if (ext == u"ods" || ext == u"ots" || ext == u"xls" || ext == u"xlsx" || ext == u"csv"
+        || ext == u"et")
+        return u"表格"_ustr;
+    if (ext == u"odp" || ext == u"otp" || ext == u"ppt" || ext == u"pptx" || ext == u"dps")
+        return u"演示"_ustr;
+    if (ext == u"odg" || ext == u"otg")
+        return u"绘图"_ustr;
+    if (ext == u"pdf")
+        return u"PDF"_ustr;
+    if (ext.isEmpty())
+        return u"文件"_ustr;
+    return ext.toAsciiUpperCase();
+}
+
+OUString shortenPathForDisplay(const OUString& rPath)
+{
+    constexpr sal_Int32 nMax = 48;
+    if (rPath.getLength() <= nMax)
+        return rPath;
+    // Keep head + tail so users still recognize home/project folders.
+    const sal_Int32 nHead = 18;
+    const sal_Int32 nTail = 24;
+    return rPath.copy(0, nHead) + u"…" + rPath.copy(rPath.getLength() - nTail);
+}
+
+OUString relativeModifyLabel(const OUString& rURL)
+{
+    osl::DirectoryItem aItem;
+    if (osl::DirectoryItem::get(rURL, aItem) != osl::FileBase::E_None)
+        return {};
+
+    osl::FileStatus aStatus(osl_FileStatus_Mask_ModifyTime);
+    if (aItem.getFileStatus(aStatus) != osl::FileBase::E_None || !aStatus.isValid(osl_FileStatus_Mask_ModifyTime))
+        return {};
+
+    TimeValue aMod = aStatus.getModifyTime();
+    TimeValue aNow{};
+    if (!osl_getSystemTime(&aNow))
+        return {};
+
+    const sal_Int64 nDiffSec
+        = static_cast<sal_Int64>(aNow.Seconds) - static_cast<sal_Int64>(aMod.Seconds);
+    if (nDiffSec < 0)
+        return u"刚刚"_ustr;
+    if (nDiffSec < 60)
+        return u"刚刚"_ustr;
+    if (nDiffSec < 3600)
+        return OUString::number(nDiffSec / 60) + u" 分钟前"_ustr;
+    if (nDiffSec < 86400)
+        return OUString::number(nDiffSec / 3600) + u" 小时前"_ustr;
+    if (nDiffSec < 86400 * 2)
+        return u"昨天"_ustr;
+    if (nDiffSec < 86400 * 7)
+        return OUString::number(nDiffSec / 86400) + u" 天前"_ustr;
+
+    // Fallback absolute local date (YYYY-MM-DD).
+    oslDateTime aDt{};
+    if (!osl_getDateTimeFromTimeValue(&aMod, &aDt))
+        return {};
+    OUStringBuffer b;
+    b.append(static_cast<sal_Int32>(aDt.Year));
+    b.append(u'-');
+    if (aDt.Month < 10)
+        b.append(u'0');
+    b.append(static_cast<sal_Int32>(aDt.Month));
+    b.append(u'-');
+    if (aDt.Day < 10)
+        b.append(u'0');
+    b.append(static_cast<sal_Int32>(aDt.Day));
+    return b.makeStringAndClear();
+}
+
 bool IsDocEncrypted(const OUString& rURL)
 {
     bool bIsEncrypted = false;
@@ -140,13 +221,50 @@ RecentDocsViewItem::RecentDocsViewItem(sfx2::RecentDocsView &rView, const OUStri
     OUString aTitle(rTitle);
     INetURLObject aURLObj(rURL);
 
-    if( aURLObj.GetProtocol() == INetProtocol::File )
-        m_sHelpText = aURLObj.getFSysPath(FSysStyle::Detect);
-    if( m_sHelpText.isEmpty() )
-        m_sHelpText = aURLObj.GetURLNoPass();
+    OUString aPath;
+    if (aURLObj.GetProtocol() == INetProtocol::File)
+        aPath = aURLObj.getFSysPath(FSysStyle::Detect);
+    if (aPath.isEmpty())
+        aPath = aURLObj.GetURLNoPass();
 
     if (aTitle.isEmpty())
         aTitle = aURLObj.GetLastName(INetURLObject::DecodeMechanism::WithCharset);
+    if (aTitle.isEmpty())
+        aTitle = aURLObj.GetBase();
+
+    const OUString aType = recentDocTypeLabel(aURLObj);
+    const OUString aWhen = relativeModifyLabel(rURL);
+    OUStringBuffer aHelp;
+    aHelp.append(aPath);
+    aHelp.append(u'\n');
+    aHelp.append(aType);
+    if (!aWhen.isEmpty())
+    {
+        aHelp.append(u" · ");
+        aHelp.append(aWhen);
+    }
+    if (isReadOnly)
+        aHelp.append(u" · 只读");
+    if (isPinned)
+        aHelp.append(u" · 已置顶");
+    m_sHelpText = aHelp.makeStringAndClear();
+
+    // Card subtitle (WPS/Office-style): path + time under the file name.
+    OUStringBuffer aCardTitle;
+    aCardTitle.append(aTitle);
+    aCardTitle.append(u'\n');
+    aCardTitle.append(shortenPathForDisplay(aPath));
+    if (!aWhen.isEmpty())
+    {
+        aCardTitle.append(u" · ");
+        aCardTitle.append(aWhen);
+    }
+    else if (!aType.isEmpty())
+    {
+        aCardTitle.append(u" · ");
+        aCardTitle.append(aType);
+    }
+    aTitle = aCardTitle.makeStringAndClear();
 
     Bitmap aThumbnail;
 

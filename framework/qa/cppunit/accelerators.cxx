@@ -8,6 +8,7 @@
  */
 
 #include <com/sun/star/awt/Key.hpp>
+#include <com/sun/star/awt/KeyModifier.hpp>
 #include <com/sun/star/container/NoSuchElementException.hpp>
 #include <com/sun/star/ui/XAcceleratorConfiguration.hpp>
 #include <com/sun/star/ui/XUIConfigurationPersistence.hpp>
@@ -41,6 +42,12 @@ void AcceleratorsTest::configNotification()
         xFactory->createInstance(u"com.sun.star.ui.GlobalAcceleratorConfiguration"_ustr),
         uno::UNO_QUERY);
     CPPUNIT_ASSERT(xGlobalAccelCfg.is());
+
+    awt::KeyEvent aGhostCompleteKey;
+    aGhostCompleteKey.KeyCode = awt::Key::POINT;
+    aGhostCompleteKey.Modifiers = awt::KeyModifier::MOD1;
+    CPPUNIT_ASSERT_EQUAL(u".uno:KQAIGhostComplete"_ustr,
+                         xGlobalAccelCfg->getCommandByKeyEvent(aGhostCompleteKey));
 
     // Create two instances of the Writer module accelerator config so
     // we can test that updates are copied between them

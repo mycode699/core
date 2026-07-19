@@ -48,7 +48,7 @@
             </child>
             <child>
               <object class="GtkButton" id="cancel">
-                <property name="label" translatable="yes" context="stock">_Cancel</property>
+                <property name="label" translatable="yes" context="docrecoverybrokendialog|cancel">取消(_C)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -100,7 +100,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="docrecoverybrokendialog|label3">Documents:</property>
+                <property name="label" translatable="yes" context="docrecoverybrokendialog|label3">文档：</property>
                 <property name="use_underline">True</property>
                 <property name="mnemonic_widget">filelist</property>
               </object>
@@ -156,7 +156,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes" context="docrecoverybrokendialog|label4">_Save to:</property>
+                <property name="label" translatable="yes" context="docrecoverybrokendialog|label4">保存到(_S)：</property>
                 <property name="use_underline">True</property>
                 <property name="mnemonic_widget">savedir</property>
                 <property name="xalign">0</property>
@@ -189,7 +189,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="change">
-                    <property name="label" translatable="yes" context="docrecoverybrokendialog|change">Chan_ge...</property>
+                    <property name="label" translatable="yes" context="docrecoverybrokendialog|change">更改(_G)…</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>

@@ -21,6 +21,8 @@
 #include <memory>
 #include <vector>
 
+class DropTargetHelper;
+
 namespace weld
 {
 class Button;
@@ -37,6 +39,11 @@ class TreeView;
 namespace kqoffice::ai::chat
 {
 struct ScenarioCatalog;
+}
+
+namespace kqoffice::ai::cowork
+{
+enum class ScheduleKind : sal_uInt8;
 }
 
 namespace sfx2::sidebar
@@ -80,6 +87,15 @@ public:
     explicit AIChatPanel(weld::Widget* pParent);
     ~AIChatPanel() override;
 
+    /// Active AI chat panel for DiffReview pending approve/reject C ABI bridge.
+    static AIChatPanel* GetActivePanel();
+    bool HasPendingApplyPlan() const { return m_bHasPendingPlan; }
+    const OUString& GetPendingPlanId() const { return m_aPendingPlan.planId; }
+    /// Explicit human approve → DocumentAIApply (same path as sidebar「批准写回」).
+    bool ApplyPendingPlanWithApproval();
+    /// Discard staged plan; main document unchanged (same path as sidebar「拒绝」).
+    void RejectPendingPlan();
+
 private:
     DECL_LINK(OnPromptChanged, weld::Entry&, void);
     DECL_LINK(OnPromptActivated, weld::Entry&, bool);
@@ -105,6 +121,16 @@ private:
     DECL_LINK(OnAgentRunClicked, weld::Button&, void);
     DECL_LINK(OnAgentRefreshClicked, weld::Button&, void);
     DECL_LINK(OnAgentClearClicked, weld::Button&, void);
+    DECL_LINK(OnScheduleRefreshClicked, weld::Button&, void);
+    DECL_LINK(OnScheduleToggleClicked, weld::Button&, void);
+    DECL_LINK(OnScheduleRunNowClicked, weld::Button&, void);
+    DECL_LINK(OnScheduleAddClicked, weld::Button&, void);
+    DECL_LINK(OnScheduleRemoveClicked, weld::Button&, void);
+    DECL_LINK(OnScheduleSaveClicked, weld::Button&, void);
+    DECL_LINK(OnScheduleTreeSelectionChanged, weld::TreeView&, void);
+    DECL_LINK(OnScheduleAutoSendToggled, weld::Toggleable&, void);
+    DECL_LINK(OnBatchRefreshClicked, weld::Button&, void);
+    DECL_LINK(OnMainNotebookEnterPage, const OUString&, void);
     DECL_LINK(OnReviewRefreshClicked, weld::Button&, void);
     DECL_LINK(OnAiSettingsClicked, weld::Button&, void);
     DECL_LINK(OnRunScenarioClicked, weld::Button&, void);
@@ -126,6 +152,10 @@ private:
     DECL_LINK(OnIntentSummarizeClicked, weld::Button&, void);
     DECL_LINK(OnIntentPlanClicked, weld::Button&, void);
     DECL_LINK(OnIntentAgentClicked, weld::Button&, void);
+    DECL_LINK(OnDesignStepOutlineClicked, weld::Button&, void);
+    DECL_LINK(OnDesignStepVariantsClicked, weld::Button&, void);
+    DECL_LINK(OnDesignStepApplyClicked, weld::Button&, void);
+    DECL_LINK(OnDesignStepExportClicked, weld::Button&, void);
     DECL_LINK(OnRoutingDiagClicked, weld::Button&, void);
     DECL_LINK(OnVoiceClicked, weld::Button&, void);
     DECL_LINK(OnVoiceMousePress, const MouseEvent&, bool);
@@ -133,10 +163,14 @@ private:
     DECL_LINK(OnScreenshotClicked, weld::Button&, void);
     DECL_LINK(OnScreenshotWinClicked, weld::Button&, void);
     DECL_LINK(OnScreenshotFullClicked, weld::Button&, void);
+    DECL_LINK(OnAttachFileClicked, weld::Button&, void);
     DECL_LINK(OnCtxWorkbenchClicked, weld::Button&, void);
     DECL_LINK(OnCtxNotebookClicked, weld::Button&, void);
     DECL_LINK(OnPromptInsertText, OUString&, bool);
     DECL_LINK(OnInjectPollTick, Timer*, void);
+    DECL_LINK(OnDeferredWarmupTick, Timer*, void);
+    /// Periodic local scheduled-task due scan (injects pending-prompt-inject).
+    DECL_LINK(OnScheduleTick, Timer*, void);
 
     static constexpr sal_Int32 kScenarioGridSlots = 12;
     static constexpr sal_Int32 kScenarioPinSlots = 4;
@@ -168,12 +202,37 @@ private:
     bool MaterializeInsertedContent(OUString& rInsertedText);
     void LoadArtifactNavigator();
     void LoadAgentSteps();
+    /// DuMate-style 定时任务 list from kqoffice::ai::cowork::ScheduledTaskStore.
+    void LoadScheduleList();
+    /// Selected schedule_tree row id, or empty.
+    OUString GetSelectedScheduleId() const;
+    /// Fill kind/interval/daily editor from selected row (or clear defaults).
+    void FillScheduleEditorFromSelected();
+    /// Read editor widgets into kind + interval/daily fields. Returns false if invalid.
+    bool ReadScheduleEditorFields(kqoffice::ai::cowork::ScheduleKind& rKind,
+                                  sal_Int32& rIntervalMinutes, sal_Int32& rDailyHour,
+                                  sal_Int32& rDailyMinute, OUString& rErrorZh) const;
+    /// Minimal "run now": inject promptOrScenarioId + markRun (no dispatcher yet).
+    bool DispatchScheduledTaskNow(const OUString& rId);
+    /// Read-only batch convert/archive ledger list (start center runs jobs).
+    void LoadBatchJobList();
+    /// Attach local file paths as @文件: prompt mentions (click or drag-drop).
+    void AttachLocalFilePaths(const std::vector<OUString>& rPaths);
+    /// Register a local path into 内容 tab so MD/PDF/图片 can be previewed (read-only).
+    void RegisterLocalFileArtifact(const OUString& rPath, const OUString& rSourceKind);
     void LoadReviewQueue();
     void UpdateArtifactDetails();
     void OpenSelectedArtifact();
     void ReviewSelectedArtifact();
     void ReviewSelectedFormatting();
     void PushAgentStepRow(const OUString& rStep, const OUString& rStatus);
+    /// Mark in-progress agent-tree rows as stopped (DuMate task progress).
+    void MarkAgentStepsStopped();
+    /// Stop stream + optional cowork TaskRunner; update tree/status (Chinese).
+    /// @param rUserStatus visible status, e.g. 「已停止」or「已终止上一任务，开始新任务」
+    /// @param bFromAppend when true, keep composer ready for the replacement prompt
+    void StopActiveRun(const OUString& rUserStatus, bool bFromAppend);
+    bool IsRunBusy() const;
     /// Register AI reply into 内容 registry so 审查/打开 have a real target.
     void RegisterAssistantArtifact(const OUString& rContent, const OUString& rEvidenceId,
                                    const OUString& rSourceKind);
@@ -181,6 +240,13 @@ private:
     static OUString LocalizeArtifactState(const OUString& rState);
     static OUString LocalizeReviewState(const OUString& rState);
     static OUString LocalizeReviewItemType(const OUString& rItemType);
+    /// Map raw English agent/cowork step statuses to Chinese (任务 Tab).
+    static OUString LocalizeAgentStepStatus(const OUString& rStatus);
+    /// Provider/machine status → short Chinese (失败/成功侧栏用，不堆 JSON).
+    static OUString LocalizeProviderStatusZh(const OUString& rStatus);
+    /// One-line user evidence summary: 结果 + 主文档语义 + 证据编号（无 JSON）.
+    static OUString FormatEvidenceUserSummary(const OUString& rStatus,
+                                              const OUString& rEvidenceId);
     void InspectSelectedEvidence();
     bool DispatchWorkspaceAction(const OUString& rCommand);
     void SyncReviewState(const OUString& rReviewId, const OUString& rTransitionEvent,
@@ -214,6 +280,8 @@ private:
     void UpdateActions();
     void SetState(AIChatPanelState eState);
     void SubmitPrompt();
+    /// Clarify card before multi-step agent / plan starts. false = Deny (abort start).
+    bool ConfirmComplexAiTaskStart(bool bNeedsConfirm);
     /// Optional capability override (from scenario capabilityHint / slash). Empty → heuristic.
     css::ai::ProviderResponse CallProvider(const OUString& rPrompt,
                                            const OUString& rCapabilityOverride = OUString());
@@ -238,6 +306,8 @@ private:
     void UpdateActivityCard();
     /// Intent chips + placeholder (task-aware composer).
     void UpdateComposerChrome();
+    /// Impress design-flow strip: outline → variants → apply → export.
+    void UpdateDesignFlowChrome();
     /// Detect rewrite/summarize/plan/agent/… from prompt text.
     static OUString DetectComposerIntent(const OUString& rPrompt);
     /// Apply intent chip: set capability + seed prompt hint.
@@ -246,17 +316,21 @@ private:
     void UpdateApprovalChrome();
     /// Jump notebook to review tab (index 3) for pending plan (M3.2).
     void ShowReviewTab();
+    /// Lazy-load 内容/多步/审核 trees + session (not on panel construct — cold open).
+    void EnsureWorkspaceDataLoaded();
 
     /// Stage provider JSON as a pending ApplyPlan; never mutates the main document.
     void StagePendingApplyPlan(const OUString& rProviderContent, const OUString& rEvidenceId);
-    /// Apply the staged plan only after explicit human approval.
-    bool ApplyPendingPlanWithApproval();
     void ClearPendingPlan();
-    bool HasPendingApplyPlan() const { return m_bHasPendingPlan; }
 
     std::unique_ptr<weld::Label> m_xStatusLabel;
     std::unique_ptr<weld::Label> m_xAgentStepBar;
     std::unique_ptr<weld::Label> m_xActivityCard;
+    std::unique_ptr<weld::Widget> m_xDesignFlowBox;
+    std::unique_ptr<weld::Button> m_xDesignStepOutline;
+    std::unique_ptr<weld::Button> m_xDesignStepVariants;
+    std::unique_ptr<weld::Button> m_xDesignStepApply;
+    std::unique_ptr<weld::Button> m_xDesignStepExport;
     std::unique_ptr<weld::TextView> m_xTranscriptView;
     std::unique_ptr<weld::Entry> m_xPromptEntry;
     std::unique_ptr<weld::Button> m_xIntentRewriteBtn;
@@ -269,6 +343,7 @@ private:
     std::unique_ptr<weld::Button> m_xScreenshotButton;
     std::unique_ptr<weld::Button> m_xScreenshotWinButton;
     std::unique_ptr<weld::Button> m_xScreenshotFullButton;
+    std::unique_ptr<weld::Button> m_xAttachFileButton;
     std::unique_ptr<weld::Button> m_xCtxWorkbenchButton;
     std::unique_ptr<weld::Button> m_xCtxNotebookButton;
     std::unique_ptr<weld::Button> m_xSendButton;
@@ -282,6 +357,22 @@ private:
     std::unique_ptr<weld::Button> m_xAgentRunBtn;
     std::unique_ptr<weld::Button> m_xAgentRefreshBtn;
     std::unique_ptr<weld::Button> m_xAgentClearBtn;
+    std::unique_ptr<weld::TreeView> m_xScheduleTree;
+    std::unique_ptr<weld::Button> m_xScheduleRefreshBtn;
+    std::unique_ptr<weld::Button> m_xScheduleToggleBtn;
+    std::unique_ptr<weld::Button> m_xScheduleRunNowBtn;
+    std::unique_ptr<weld::Button> m_xScheduleAddBtn;
+    std::unique_ptr<weld::Button> m_xScheduleRemoveBtn;
+    std::unique_ptr<weld::ComboBox> m_xScheduleKind;
+    std::unique_ptr<weld::Entry> m_xScheduleInterval;
+    std::unique_ptr<weld::Entry> m_xScheduleHour;
+    std::unique_ptr<weld::Entry> m_xScheduleMinute;
+    std::unique_ptr<weld::Button> m_xScheduleSaveBtn;
+    std::unique_ptr<weld::CheckButton> m_xScheduleAutoSend;
+    std::unique_ptr<weld::TreeView> m_xBatchTree;
+    std::unique_ptr<weld::Button> m_xBatchRefreshBtn;
+    /// Drop files onto prompt → @文件: (lifetime owned by panel).
+    std::unique_ptr<DropTargetHelper> m_xAttachDropHelper;
     std::unique_ptr<weld::TreeView> m_xReviewTree;
     std::unique_ptr<weld::Label> m_xReviewEmptyLabel;
     std::unique_ptr<weld::Button> m_xReviewRefreshBtn;
@@ -349,12 +440,28 @@ private:
 
     OUString m_sLastPrompt;
     OUString m_sStreamingBuffer;
+    /// Last failure/cancel detail for activity card + status (Chinese, no JSON).
+    OUString m_sLastOutcomeDetail;
     OUString m_sPendingEvidenceId;
     kqoffice::ai::chat::ApplyPlan m_aPendingPlan;
     bool m_bHasPendingPlan = false;
     AIChatPanelState m_eState = AIChatPanelState::Idle;
+    /// Cooperative cancel for stream / multi-step agent / cowork TaskRunner.
+    bool m_bCancelRequested = false;
+    /// True while multi-step agent pipeline is in flight (for append/stop UX).
+    bool m_bAgentRunActive = false;
+    /// Guards re-entrant SubmitPrompt (e.g. append via Reschedule while running).
+    bool m_bSubmitInFlight = false;
+    /// When append arrives mid-run, hold the replacement prompt until stop completes.
+    OUString m_sQueuedReplacePrompt;
     /// Poll pending-prompt-inject while AI panel stays open (workbench/notebook inject).
     Timer m_aInjectPoll;
+    /// Defer Ollama routing probe + workspace tree hydrate off the open critical path.
+    Timer m_aDeferredWarmup;
+    /// 60s local scheduled-task dispatcher (kqoffice ScheduledTaskDispatcher::processDue).
+    Timer m_aScheduleTick;
+    bool m_bWorkspaceDataLoaded = false;
+    bool m_bRoutingDiagDone = false;
 };
 
 } // namespace sfx2::sidebar

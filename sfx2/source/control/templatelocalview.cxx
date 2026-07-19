@@ -10,6 +10,7 @@
 #include <sfx2/templatelocalview.hxx>
 
 #include <comphelper/string.hxx>
+#include <comphelper/DirectoryHelper.hxx>
 #include <sfx2/doctempl.hxx>
 #include <inputdlg.hxx>
 #include <sfx2/sfxresid.hxx>
@@ -133,6 +134,13 @@ void TemplateLocalView::Populate()
             aProperties.aName = mpDocTemplates->GetName(i, j);
             aProperties.aPath = mpDocTemplates->GetPath(i, j);
             aProperties.aRegionName = aRegionName;
+            // Skip ghost entries left after packaging prunes templates
+            // (user registry Hierarchy may still list deleted .otp files).
+            if (aProperties.aPath.isEmpty()
+                || !comphelper::DirectoryHelper::fileExists(aProperties.aPath))
+            {
+                continue;
+            }
             aProperties.aThumbnail = TemplateLocalView::fetchThumbnail(aProperties.aPath,
                                                                           mnThumbnailWidth,
                                                                           mnThumbnailHeight);

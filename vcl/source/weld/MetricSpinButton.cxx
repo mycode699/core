@@ -12,12 +12,20 @@
 #include <i18nutil/unicode.hxx>
 #include <unotools/localedatawrapper.hxx>
 #include <vcl/fieldvalues.hxx>
+#include <vcl/settings.hxx>
+#include <vcl/svapp.hxx>
 #include <vcl/weld/MetricSpinButton.hxx>
 
 namespace weld
 {
 OUString MetricSpinButton::MetricToString(FieldUnit rUnit)
 {
+    // WPS/Office CN: Chinese UI uses a single unit label (点), not dual "点 (pt)".
+    // Stock LO gettext for msgid "pt" is "点 (pt)", which looks unfinished on chrome.
+    if (rUnit == FieldUnit::POINT
+        && Application::GetSettings().GetUILanguageTag().getLanguage() == u"zh")
+        return u"点"_ustr;
+
     const FieldUnitStringList& rList = ImplGetFieldUnits();
     // return unit's default string (ie, the first one )
     auto it = std::find_if(

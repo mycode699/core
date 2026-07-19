@@ -115,6 +115,11 @@ private:
     std::atomic<bool> m_bCancelled;
 };
 
+/// Cancel the TaskRunner currently bound for UI (if any). Safe no-op when idle.
+SAL_DLLPUBLIC_EXPORT void cancelActiveTaskRunner();
+/// True while startOneAndJoinForTest (or UI bridge) holds an active runner.
+SAL_DLLPUBLIC_EXPORT bool hasActiveTaskRunner();
+
 } // namespace kqoffice::ai::cowork
 
 #endif

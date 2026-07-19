@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 可圈办公 PDF 工具进度（合并/拆分/提取） -->
+<interface domain="sfx">
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkDialog" id="PdfProgressDialog">
+    <property name="can-focus">False</property>
+    <property name="border-width">14</property>
+    <property name="title" translatable="yes" context="pdfprogress|PdfProgressDialog">正在处理 PDF</property>
+    <property name="modal">True</property>
+    <property name="default-width">420</property>
+    <property name="deletable">False</property>
+    <property name="type-hint">dialog</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="dialog-vbox">
+        <property name="can-focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">12</property>
+        <child>
+          <object class="GtkLabel" id="status_label">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="xalign">0</property>
+            <property name="wrap">True</property>
+            <property name="label" translatable="yes" context="pdfprogress|status_label">准备中…</property>
+            <property name="mnemonic-widget">progress</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkProgressBar" id="progress">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="show-text">True</property>
+            <child>
+              <object class="AtkObject" id="progress-atkobject">
+                <property name="AtkObject::accessible-name" translatable="yes" context="pdfprogress|progress">处理进度</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="hint_label">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="xalign">0</property>
+            <property name="wrap">True</property>
+            <property name="label" translatable="yes" context="pdfprogress|hint_label">本地处理，请稍候。页面将以图像嵌入结果 PDF。</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

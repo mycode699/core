@@ -21,6 +21,7 @@
 #include <sal/log.hxx>
 
 #include <cstdlib>
+#include <string_view>
 
 namespace kqoffice::ai::control
 {
@@ -28,21 +29,55 @@ namespace kqoffice::ai::control
 namespace
 {
 
+OUString toFileUrl(const OUString& systemOrUrl)
+{
+    if (systemOrUrl.isEmpty())
+        return systemOrUrl;
+    if (systemOrUrl.startsWith("file://"))
+        return systemOrUrl;
+    OUString url;
+    if (osl::FileBase::getFileURLFromSystemPath(systemOrUrl, url) == osl::FileBase::E_None
+        && !url.isEmpty())
+        return url;
+    return systemOrUrl;
+}
+
 OUString defaultSessionDir()
 {
     const char* envDir = ::getenv("KQOFFICE_AI_SESSIONS_DIR");
     if (envDir && envDir[0] != '\0')
-    {
-        return OUString::createFromAscii(envDir);
-    }
+        return toFileUrl(OUString::createFromAscii(envDir));
+
     // Fallback: ~/.kqoffice/ai/sessions
     OUString home;
     if (!osl::Security().getHomeDir(home))
-    {
-        // If home dir is unavailable, use a tmp path
-        return u"/tmp/kqoffice-ai-sessions"_ustr;
-    }
-    return home + u"/.kqoffice/ai/sessions"_ustr;
+        return toFileUrl(u"/tmp/kqoffice-ai-sessions"_ustr);
+    // getHomeDir may already return a file URL on some platforms.
+    if (home.startsWith("file://"))
+        return home + u"/.kqoffice/ai/sessions"_ustr;
+    return toFileUrl(home + u"/.kqoffice/ai/sessions"_ustr);
+}
+
+/// Find `"key"` then optional whitespace, then expected colon/value start.
+sal_Int32 findJsonKey(const OUString& json, std::u16string_view key)
+{
+    OUString needle = u"\""_ustr + OUString(key) + u"\""_ustr;
+    sal_Int32 idx = json.indexOf(needle);
+    if (idx < 0)
+        return -1;
+    idx += needle.getLength();
+    while (idx < json.getLength()
+           && (json[idx] == ' ' || json[idx] == '\t' || json[idx] == '\n'
+               || json[idx] == '\r'))
+        ++idx;
+    if (idx >= json.getLength() || json[idx] != ':')
+        return -1;
+    ++idx;
+    while (idx < json.getLength()
+           && (json[idx] == ' ' || json[idx] == '\t' || json[idx] == '\n'
+               || json[idx] == '\r'))
+        ++idx;
+    return idx;
 }
 
 } // anonymous namespace
@@ -53,7 +88,7 @@ SessionStore::SessionStore()
 }
 
 SessionStore::SessionStore(const OUString& rootDir)
-    : m_rootDir(rootDir)
+    : m_rootDir(toFileUrl(rootDir))
 {
 }
 
@@ -67,41 +102,28 @@ SessionManifest SessionStore::loadManifest()
     OUString json;
     if (readFile(filePath(u""_ustr, u"manifest.json"_ustr), json))
     {
-        // Minimal JSON scan: extract version, lastSavedMs, totalSizeBytes.
-        // LibreOffice-style: cheap field-at-a-time without pulling in a full
-        // JSON parser.  The manifest is always small (<4 KB).
-        sal_Int32 idx;
-        // version
-        idx = json.indexOf(u"\"version\":\""_ustr);
-        if (idx >= 0)
+        // Minimal JSON scan tolerant of whitespace after ':' (saveManifest pretty-prints).
+        sal_Int32 idx = findJsonKey(json, u"version");
+        if (idx >= 0 && idx < json.getLength() && json[idx] == '"')
         {
-            idx += 11; // skip past \"version\":\"
+            ++idx;
             sal_Int32 end = json.indexOf('"', idx);
             if (end > idx)
                 m.version = json.copy(idx, end - idx);
         }
-        // lastSavedMs
-        idx = json.indexOf(u"\"lastSavedMs\":"_ustr);
+        idx = findJsonKey(json, u"lastSavedMs");
         if (idx >= 0)
-        {
-            idx += 14;
             m.lastSavedMs = json.copy(idx).toInt64();
-        }
-        // totalSizeBytes
-        idx = json.indexOf(u"\"totalSizeBytes\":"_ustr);
+        idx = findJsonKey(json, u"totalSizeBytes");
         if (idx >= 0)
-        {
-            idx += 17;
             m.totalSizeBytes = json.copy(idx).toInt64();
-        }
-        // workspaceIds — collect quoted strings inside the array
-        idx = json.indexOf(u"\"workspaceIds\":["_ustr);
-        if (idx >= 0)
+
+        idx = findJsonKey(json, u"workspaceIds");
+        if (idx >= 0 && idx < json.getLength() && json[idx] == '[')
         {
-            idx += 16; // skip past \"workspaceIds\":[
+            ++idx;
             while (idx < json.getLength())
             {
-                // skip whitespace
                 while (idx < json.getLength()
                        && (json[idx] == ' ' || json[idx] == '\t'
                            || json[idx] == '\n' || json[idx] == '\r'))
@@ -116,9 +138,8 @@ SessionManifest SessionStore::loadManifest()
                         ++idx;
                     if (idx > start)
                         m.workspaceIds.push_back(json.copy(start, idx - start));
-                    ++idx; // skip closing quote
+                    ++idx;
                 }
-                // skip comma
                 while (idx < json.getLength()
                        && (json[idx] == ',' || json[idx] == ' '
                            || json[idx] == '\t' || json[idx] == '\n'
@@ -194,7 +215,7 @@ bool SessionStore::deleteWorkspace(const OUString& id)
     osl::MutexGuard guard(m_mutex);
 
     OUString path = filePath(u"workspaces"_ustr, id + u".json"_ustr);
-    osl::FileBase::RC rc = osl::File::remove(path);
+    osl::FileBase::RC rc = osl::File::remove(toFileUrl(path));
     bool ok = (rc == osl::FileBase::E_None);
     SAL_INFO("kqoffice.ai.control",
         "SessionStore: deleteWorkspace " << id << " -> " << (ok ? "ok" : "fail"));
@@ -234,7 +255,7 @@ bool SessionStore::deleteSurface(const OUString& id)
     osl::MutexGuard guard(m_mutex);
 
     OUString path = filePath(u"surfaces"_ustr, id + u".json"_ustr);
-    osl::FileBase::RC rc = osl::File::remove(path);
+    osl::FileBase::RC rc = osl::File::remove(toFileUrl(path));
     bool ok = (rc == osl::FileBase::E_None);
     SAL_INFO("kqoffice.ai.control",
         "SessionStore: deleteSurface " << id << " -> " << (ok ? "ok" : "fail"));
@@ -253,9 +274,11 @@ bool SessionStore::appendScrollback(const OUString& surfaceId, const OUString& l
 
     OUString path = dir + u"/"_ustr + surfaceId + u".log"_ustr;
 
-    // Open for append (or create if missing)
-    osl::File file(path);
+    // Open for append (or create if missing). path is already a file:// URL.
+    osl::File file(toFileUrl(path));
     osl::FileBase::RC rc = file.open(osl_File_OpenFlag_Write | osl_File_OpenFlag_Create);
+    if (rc != osl::FileBase::E_None)
+        rc = file.open(osl_File_OpenFlag_Write);
     if (rc == osl::FileBase::E_None)
     {
         // Seek to end for append
@@ -361,16 +384,14 @@ bool SessionStore::rotateScrollback(const OUString& surfaceId, sal_Int64 maxSize
 
 bool SessionStore::validateAll()
 {
-    osl::MutexGuard guard(m_mutex);
-
+    // Do not hold m_mutex across corruptedSessions() — nested file/manifest
+    // helpers already lock and osl::Mutex is non-recursive.
     SAL_INFO("kqoffice.ai.control", "SessionStore: validateAll");
     return corruptedSessions().empty();
 }
 
 std::vector<OUString> SessionStore::corruptedSessions()
 {
-    osl::MutexGuard guard(m_mutex);
-
     std::vector<OUString> corrupt;
 
     // Check that the manifest exists and is parseable
@@ -437,7 +458,10 @@ std::vector<OUString> SessionStore::corruptedSessions()
 
 OUString SessionStore::ensureDir(const OUString& subPath)
 {
+    // m_rootDir is always a file:// URL.
     OUString fullPath = m_rootDir;
+    while (fullPath.endsWith("/") && fullPath.getLength() > 8)
+        fullPath = fullPath.copy(0, fullPath.getLength() - 1);
     if (!subPath.isEmpty())
         fullPath += u"/"_ustr + subPath;
 
@@ -448,6 +472,8 @@ OUString SessionStore::ensureDir(const OUString& subPath)
 OUString SessionStore::filePath(const OUString& subPath, const OUString& fileName)
 {
     OUString full = m_rootDir;
+    while (full.endsWith("/") && full.getLength() > 8)
+        full = full.copy(0, full.getLength() - 1);
     if (!subPath.isEmpty())
         full += u"/"_ustr + subPath;
     full += u"/"_ustr + fileName;
@@ -458,8 +484,17 @@ bool SessionStore::writeFile(const OUString& path, const OUString& content)
 {
     OString utf8 = OUStringToOString(content, RTL_TEXTENCODING_UTF8);
 
-    osl::File file(path);
+    const OUString url = toFileUrl(path);
+    // Ensure parent directory exists for leaf paths under root.
+    sal_Int32 slash = url.lastIndexOf('/');
+    if (slash > 0)
+        osl::Directory::createPath(url.copy(0, slash));
+
+    osl::File::remove(url);
+    osl::File file(url);
     osl::FileBase::RC rc = file.open(osl_File_OpenFlag_Write | osl_File_OpenFlag_Create);
+    if (rc != osl::FileBase::E_None)
+        rc = file.open(osl_File_OpenFlag_Write);
     if (rc != osl::FileBase::E_None)
         return false;
 
@@ -472,7 +507,7 @@ bool SessionStore::writeFile(const OUString& path, const OUString& content)
 
 bool SessionStore::readFile(const OUString& path, OUString& out)
 {
-    osl::File file(path);
+    osl::File file(toFileUrl(path));
     osl::FileBase::RC rc = file.open(osl_File_OpenFlag_Read);
     if (rc != osl::FileBase::E_None)
         return false;
@@ -518,13 +553,13 @@ bool SessionStore::readFile(const OUString& path, OUString& out)
 bool SessionStore::fileExists(const OUString& path)
 {
     osl::DirectoryItem item;
-    return (osl::DirectoryItem::get(path, item) == osl::FileBase::E_None);
+    return (osl::DirectoryItem::get(toFileUrl(path), item) == osl::FileBase::E_None);
 }
 
 sal_Int64 SessionStore::fileSize(const OUString& path)
 {
     osl::DirectoryItem item;
-    if (osl::DirectoryItem::get(path, item) != osl::FileBase::E_None)
+    if (osl::DirectoryItem::get(toFileUrl(path), item) != osl::FileBase::E_None)
         return -1;
 
     osl::FileStatus stat(osl_FileStatus_Mask_FileSize);

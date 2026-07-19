@@ -173,6 +173,22 @@ public:
             join();
     }
 
+    void cancelJob()
+    {
+        m_bCancelRequested = true;
+        // Best-effort: cancel the live TaskRunner (if mid startOneAndJoin).
+        cancelActiveTaskRunner();
+        // Persist cancelled terminal state when still pending/running.
+        TaskQueue aQueue(m_aStore);
+        AsyncTaskEnvelope aIgnored;
+        aQueue.cancel(m_aMonthDir, m_aTask.taskId, u"user-cancelled-ui"_ustr, &aIgnored);
+        {
+            std::scoped_lock aGuard(m_aResultMutex);
+            m_aResult.finalState = TaskState::Cancelled;
+        }
+    }
+
+    bool isCancelled() const { return m_bCancelRequested; }
     bool isStarted() const { return m_bStarted; }
     bool isDone() const { return m_bDone; }
 
@@ -185,6 +201,16 @@ public:
 private:
     void SAL_CALL run() override
     {
+        if (m_bCancelRequested)
+        {
+            std::scoped_lock aGuard(m_aResultMutex);
+            m_aResult.enqueued = true;
+            m_aResult.finalState = TaskState::Cancelled;
+            m_aResult.taskId = m_aTask.taskId;
+            m_bDone = true;
+            return;
+        }
+
         TaskQueue aQueue(m_aStore);
         TaskScheduler aScheduler(m_aStore, aQueue);
         AutoOpenReviewNotificationSink aAutoSink(m_aNotificationSink, m_aStore, m_rOpenSink);
@@ -209,7 +235,8 @@ private:
         aResult.threadStarted = aRunnerResult.threadStarted;
         aResult.dispatched = aRunnerResult.dispatched;
         aResult.workerCalled = aRunnerResult.workerCalled;
-        aResult.finalState = aRunnerResult.finalState;
+        aResult.finalState = m_bCancelRequested ? TaskState::Cancelled
+                                                : aRunnerResult.finalState;
         aResult.taskId = m_aTask.taskId;
         aResult.notificationCount
             = static_cast<sal_Int32>(m_aNotificationSink.snapshot().size());
@@ -240,6 +267,7 @@ private:
     std::atomic<bool> m_bStarted = false;
     std::atomic<bool> m_bDone = false;
     std::atomic<bool> m_bJoined = false;
+    std::atomic<bool> m_bCancelRequested = false;
 };
 
 CoworkUiTaskBridgeJob::CoworkUiTaskBridgeJob(const OUString& rMonthDir,
@@ -258,6 +286,10 @@ bool CoworkUiTaskBridgeJob::prepare() { return m_xImpl->prepare(); }
 bool CoworkUiTaskBridgeJob::start() { return m_xImpl->startJob(); }
 
 void CoworkUiTaskBridgeJob::join() { m_xImpl->joinJob(); }
+
+void CoworkUiTaskBridgeJob::cancel() { m_xImpl->cancelJob(); }
+
+bool CoworkUiTaskBridgeJob::isCancelled() const { return m_xImpl->isCancelled(); }
 
 bool CoworkUiTaskBridgeJob::isStarted() const { return m_xImpl->isStarted(); }
 

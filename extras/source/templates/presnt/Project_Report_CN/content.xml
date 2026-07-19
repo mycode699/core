@@ -18,9 +18,7 @@
     <office:presentation>
       <draw:page draw:name="page1" draw:style-name="dp1" draw:master-page-name="Progress" presentation:presentation-page-layout-name="AL1T0" presentation:use-footer-name="ftr1" presentation:use-date-time-name="dtd1" xml:id="id1" draw:id="id1">
         <office:forms form:automatic-focus="false" form:apply-design-mode="false"/>
-        <draw:frame presentation:style-name="Progress-title" draw:layer="layout" svg:width="25cm" svg:height="2.65cm" draw:transform="rotate (0.142244334037538) translate (1.295cm 9.021cm)" presentation:class="title" presentation:placeholder="true" presentation:user-transformed="true">
-          <draw:text-box/>
-        </draw:frame>
+        <draw:frame presentation:style-name="Progress-title" draw:layer="layout" svg:width="25cm" svg:height="2.65cm" draw:transform="rotate (0.142244334037538) translate (1.295cm 9.021cm)" presentation:class="title" presentation:user-transformed="true"><draw:text-box><text:p>项目阶段汇报</text:p></draw:text-box></draw:frame>
         <draw:frame presentation:style-name="Progress-subtitle" draw:layer="layout" svg:width="24.957cm" svg:height="1.721cm" draw:transform="rotate (0.142244334037538) translate (1.688cm 11.524cm)">
           <draw:text-box>
             <text:p>
@@ -43,11 +41,9 @@
       </draw:page>
       <draw:page draw:name="page2" draw:style-name="dp3" draw:master-page-name="Standard_20_1" presentation:presentation-page-layout-name="AL2T1" presentation:use-date-time-name="dtd1" xml:id="id2" draw:id="id2">
         <office:forms form:automatic-focus="false" form:apply-design-mode="false"/>
-        <draw:frame presentation:style-name="Standard_20_1-title" draw:layer="layout" svg:width="25cm" svg:height="2.65cm" draw:transform="rotate (0.142244334037538) translate (0.189cm 1.344cm)" presentation:class="title" presentation:placeholder="true" presentation:user-transformed="true">
-          <draw:text-box/>
-        </draw:frame>
-        <draw:frame presentation:style-name="Standard_20_1-outline1" draw:layer="layout" svg:width="25.2cm" svg:height="9.135cm" svg:x="1.4cm" svg:y="4.209cm" presentation:class="outline" presentation:placeholder="true" presentation:user-transformed="true">
-          <draw:text-box/>
+        <draw:frame presentation:style-name="Standard_20_1-title" draw:layer="layout" svg:width="25cm" svg:height="2.65cm" draw:transform="rotate (0.142244334037538) translate (0.189cm 1.344cm)" presentation:class="title" presentation:user-transformed="true"><draw:text-box><text:p>进展 · 风险 · 计划</text:p></draw:text-box></draw:frame>
+        <draw:frame presentation:style-name="Standard_20_1-outline1" draw:layer="layout" svg:width="25.2cm" svg:height="9.135cm" svg:x="1.4cm" svg:y="4.209cm" presentation:class="outline" presentation:user-transformed="true">
+          <draw:text-box><text:p>本期完成与交付</text:p><text:p>关键指标</text:p><text:p>风险与依赖</text:p><text:p>下阶段计划</text:p></draw:text-box>
         </draw:frame>
         <anim:par presentation:node-type="timing-root">
           <anim:par smil:begin="id2.begin">
@@ -64,11 +60,9 @@
       </draw:page>
       <draw:page draw:name="page3" draw:style-name="dp3" draw:master-page-name="Standard" presentation:presentation-page-layout-name="AL2T1" presentation:use-date-time-name="dtd1" xml:id="id3" draw:id="id3">
         <office:forms form:automatic-focus="false" form:apply-design-mode="false"/>
-        <draw:frame presentation:style-name="Standard-title" draw:layer="layout" svg:width="25cm" svg:height="2.65cm" draw:transform="rotate (0.142244334037538) translate (0.195cm 1.973cm)" presentation:class="title" presentation:placeholder="true" presentation:user-transformed="true">
-          <draw:text-box/>
-        </draw:frame>
-        <draw:frame presentation:style-name="Standard-outline1" draw:layer="layout" svg:width="24.639cm" svg:height="9.135cm" svg:x="1.399cm" svg:y="4.959cm" presentation:class="outline" presentation:placeholder="true" presentation:user-transformed="true">
-          <draw:text-box/>
+        <draw:frame presentation:style-name="Standard-title" draw:layer="layout" svg:width="25cm" svg:height="2.65cm" draw:transform="rotate (0.142244334037538) translate (0.195cm 1.973cm)" presentation:class="title" presentation:user-transformed="true"><draw:text-box><text:p>进展 · 风险 · 计划</text:p></draw:text-box></draw:frame>
+        <draw:frame presentation:style-name="Standard-outline1" draw:layer="layout" svg:width="24.639cm" svg:height="9.135cm" svg:x="1.399cm" svg:y="4.959cm" presentation:class="outline" presentation:user-transformed="true">
+          <draw:text-box><text:p>本期完成与交付</text:p><text:p>关键指标</text:p><text:p>风险与依赖</text:p><text:p>下阶段计划</text:p></draw:text-box>
         </draw:frame>
         <anim:par presentation:node-type="timing-root">
           <anim:par smil:begin="id3.begin">
@@ -86,11 +80,9 @@
       </draw:page>
       <draw:page draw:name="page4" draw:style-name="dp3" draw:master-page-name="Standard_20_2" presentation:presentation-page-layout-name="AL2T1" presentation:use-date-time-name="dtd1" xml:id="id4" draw:id="id4">
         <office:forms form:automatic-focus="false" form:apply-design-mode="false"/>
-        <draw:frame presentation:style-name="Standard_20_2-title" draw:layer="layout" svg:width="25cm" svg:height="2.65cm" draw:transform="rotate (0.142244334037538) translate (0.192cm 3.845cm)" presentation:class="title" presentation:placeholder="true" presentation:user-transformed="true">
-          <draw:text-box/>
-        </draw:frame>
-        <draw:frame presentation:style-name="Standard_20_2-outline1" draw:layer="layout" svg:width="24.04cm" svg:height="6.909cm" draw:transform="rotate (0.188495559215388) translate (1.549cm 7.769cm)" presentation:class="outline" presentation:placeholder="true" presentation:user-transformed="true">
-          <draw:text-box/>
+        <draw:frame presentation:style-name="Standard_20_2-title" draw:layer="layout" svg:width="25cm" svg:height="2.65cm" draw:transform="rotate (0.142244334037538) translate (0.192cm 3.845cm)" presentation:class="title" presentation:user-transformed="true"><draw:text-box><text:p>进展 · 风险 · 计划</text:p></draw:text-box></draw:frame>
+        <draw:frame presentation:style-name="Standard_20_2-outline1" draw:layer="layout" svg:width="24.04cm" svg:height="6.909cm" draw:transform="rotate (0.188495559215388) translate (1.549cm 7.769cm)" presentation:class="outline" presentation:user-transformed="true">
+          <draw:text-box><text:p>本期完成与交付</text:p><text:p>关键指标</text:p><text:p>风险与依赖</text:p><text:p>下阶段计划</text:p></draw:text-box>
         </draw:frame>
         <anim:par presentation:node-type="timing-root">
           <anim:par smil:begin="id4.begin">

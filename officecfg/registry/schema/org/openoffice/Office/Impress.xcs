@@ -596,7 +596,8 @@
             <desc>Indicates whether to show the template selection when creating a new presentation.</desc>
             <label>Start with Template Manager</label>
           </info>
-          <value>true</value>
+          <!-- 可圈办公 / WPS-like: open a blank deck by default; templates stay one click away. -->
+          <value>false</value>
         </prop>
         <prop oor:name="Layout" oor:type="xs:boolean" oor:nillable="false">
           <!-- UIHints: Tools - Options - Impress - Other  [Section] New document -->

@@ -40,7 +40,7 @@ struct SafeRestoreResult
     OUString               diagnosticsReport;
 };
 
-class SafeRestore
+class SAL_DLLPUBLIC_EXPORT SafeRestore
 {
 public:
     // Restore modes

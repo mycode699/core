@@ -185,8 +185,8 @@
 #define STR_FILTER_NOT_INSTALLED                NC_("STR_FILTER_NOT_INSTALLED", "尚未安装所选筛选器 $(FILTER)。\n是否现在安装？")
 #define STR_FILTER_CONSULT_SERVICE              NC_("STR_FILTER_CONSULT_SERVICE", "当前安装中不包含所选筛选器 $(FILTER)。\n请安装所需组件，或改用支持的格式。")
 
-#define STR_WELCOME_LINE1                       NC_("STR_WELCOME_LINE1", "欢迎使用 %PRODUCTNAME 工作台")
-#define STR_WELCOME_LINE2                       NC_("STR_WELCOME_LINE2", "先设置界面与外观，然后从任务工作台开始。")
+#define STR_WELCOME_LINE1                       NC_("STR_WELCOME_LINE1", "开始你的工作")
+#define STR_WELCOME_LINE2                       NC_("STR_WELCOME_LINE2", "左侧新建文档，或打开文件。也可切换到「场景模板」快速开始。文件仅在授权后读取。")
 
 // Translators: Target types in Auto-redaction dialog
 #define STR_REDACTION_TARGET_TYPE_TEXT          NC_("STR_REDACTION_TARGET_TYPE_TEXT", "文本")

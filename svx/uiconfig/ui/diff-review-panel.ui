@@ -26,7 +26,7 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="hexpand">True</property>
-        <property name="label" translatable="yes" context="diffreview|planplaceholder">Apply plan: (none)</property>
+        <property name="label" translatable="yes" context="diffreview|planplaceholder">写回计划：（无）</property>
         <property name="xalign">0</property>
         <property name="wrap">True</property>
         <child internal-child="accessible">
@@ -64,7 +64,7 @@
               <object class="GtkTreeViewColumn" id="treeviewcolumn_diff">
                 <property name="resizable">True</property>
                 <property name="expand">True</property>
-                <property name="title" translatable="yes" context="diffreview|diffcolumn">Diff</property>
+                <property name="title" translatable="yes" context="diffreview|diffcolumn">差异</property>
                 <child>
                   <object class="GtkCellRendererText" id="cellrenderertext_diff"/>
                   <attributes>
@@ -89,13 +89,14 @@
         <property name="spacing">6</property>
         <child>
           <object class="GtkButton" id="btn_accept">
-            <property name="label" translatable="yes" context="diffreview|accept">Accept</property>
+            <property name="label" translatable="yes" context="diffreview|accept">批准写回</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
+            <property name="tooltip-text" translatable="yes" context="diffreview|accept_tip">待批预览：批准写回（与侧栏同一路径，可撤销）；已写回项：按撤销栈撤销最近一条</property>
             <child internal-child="accessible">
               <object class="AtkObject" id="btn_accept-atkobject">
-                <property name="AtkObject::accessible-name" translatable="yes" context="diffreview|accept-atk">Accept selected diff</property>
+                <property name="AtkObject::accessible-name" translatable="yes" context="diffreview|accept-atk">批准写回所选差异</property>
               </object>
             </child>
           </object>
@@ -107,12 +108,13 @@
         </child>
         <child>
           <object class="GtkButton" id="btn_reject">
-            <property name="label" translatable="yes" context="diffreview|reject">Reject</property>
+            <property name="label" translatable="yes" context="diffreview|reject">拒绝</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
+            <property name="tooltip-text" translatable="yes" context="diffreview|reject_tip">待批：拒绝整份计划（主文档不变）；已写回列表：仅从审阅列表移除该项</property>
             <child internal-child="accessible">
               <object class="AtkObject" id="btn_reject-atkobject">
-                <property name="AtkObject::accessible-name" translatable="yes" context="diffreview|reject-atk">Reject selected diff</property>
+                <property name="AtkObject::accessible-name" translatable="yes" context="diffreview|reject-atk">拒绝所选差异</property>
               </object>
             </child>
           </object>

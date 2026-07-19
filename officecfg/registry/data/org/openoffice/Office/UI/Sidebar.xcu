@@ -420,11 +420,11 @@
         </prop>
       </node>
 
-      <!-- 工作中台：日/月/年使用洞察（左侧一级入口） -->
+      <!-- 使用统计：降级为隐藏，经菜单打开（对标系统用量，不抢主路径） -->
       <node oor:name="WorkDashboardDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Workbench</value>
-          <value xml:lang="zh-CN">工作中台</value>
+          <value xml:lang="en-US">使用统计</value>
+          <value xml:lang="zh-CN">使用统计</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>WorkDashboardDeck</value>
@@ -434,24 +434,22 @@
         </prop>
         <prop oor:name="ContextList">
           <value oor:separator=";">
-            WriterVariants, any, visible ;
-            Calc, any, visible ;
-            DrawImpress, any, visible ;
-            StartModule, any, visible ;
+            any, any, hidden ;
           </value>
         </prop>
         <prop oor:name="OrderIndex" oor:type="xs:int">
-          <value>710</value>
+          <value>980</value>
         </prop>
         <prop oor:name="HiddenInViewer" oor:type="xs:boolean">
           <value>true</value>
         </prop>
       </node>
 
-      <!-- 本地记事本（NotebookLM 本地化） -->
+      <!-- 本地记事本：素材夹，非第二聊天 -->
+      <!-- 降级：非一级入口；从侧栏默认隐藏，避免与「可圈 AI」形成双聊天心智（Wave α） -->
       <node oor:name="LocalNotebookDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">Notebook</value>
+          <value xml:lang="en-US">记事本</value>
           <value xml:lang="zh-CN">记事本</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
@@ -462,25 +460,22 @@
         </prop>
         <prop oor:name="ContextList">
           <value oor:separator=";">
-            WriterVariants, any, visible ;
-            Calc, any, visible ;
-            DrawImpress, any, visible ;
-            StartModule, any, visible ;
+            any, any, hidden ;
           </value>
         </prop>
         <prop oor:name="OrderIndex" oor:type="xs:int">
-          <value>715</value>
+          <value>730</value>
         </prop>
         <prop oor:name="HiddenInViewer" oor:type="xs:boolean">
           <value>true</value>
         </prop>
       </node>
 
-      <!-- V3 W1: cross-app native AI chat workbench entry. -->
+      <!-- 主 AI 入口（侧栏唯一 AI Deck 标题） -->
       <node oor:name="AIChatDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">AI Assistant</value>
-          <value xml:lang="zh-CN">AI 助手</value>
+          <value xml:lang="en-US">可圈 AI</value>
+          <value xml:lang="zh-CN">可圈 AI</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>AIChatDeck</value>
@@ -496,17 +491,18 @@
           </value>
         </prop>
         <prop oor:name="OrderIndex" oor:type="xs:int">
-          <value>725</value>
+          <value>720</value>
         </prop>
         <prop oor:name="HiddenInViewer" oor:type="xs:boolean">
           <value>true</value>
         </prop>
       </node>
 
-      <!-- V2 W4 Select-to-Act: neutral DiffReview deck (svx-owned, cross-app) -->
+      <!-- Diff 审阅：由 AI 流唤起，不常驻一级 -->
       <node oor:name="DiffReviewDeck" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
           <value xml:lang="en-US">差异审阅</value>
+          <value xml:lang="zh-CN">差异审阅</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>DiffReviewDeck</value>
@@ -2423,7 +2419,8 @@
 
       <node oor:name="AIChatPanel" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">AI 助手</value>
+          <value xml:lang="en-US">可圈 AI</value>
+          <value xml:lang="zh-CN">可圈 AI</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>AIChatPanel</value>
@@ -2451,7 +2448,8 @@
 
       <node oor:name="WorkDashboardPanel" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
-          <value xml:lang="en-US">工作中台</value>
+          <value xml:lang="en-US">使用统计</value>
+          <value xml:lang="zh-CN">使用统计</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>WorkDashboardPanel</value>
@@ -2461,10 +2459,7 @@
         </prop>
         <prop oor:name="ContextList">
           <value oor:separator=";">
-            WriterVariants, any, visible ;
-            Calc, any, visible ;
-            DrawImpress, any, visible ;
-            StartModule, any, visible ;
+            any, any, hidden ;
           </value>
         </prop>
         <prop oor:name="ImplementationURL" oor:type="xs:string">
@@ -2481,6 +2476,7 @@
       <node oor:name="LocalNotebookPanel" oor:op="replace">
         <prop oor:name="Title" oor:type="xs:string">
           <value xml:lang="en-US">记事本</value>
+          <value xml:lang="zh-CN">记事本</value>
         </prop>
         <prop oor:name="Id" oor:type="xs:string">
           <value>LocalNotebookPanel</value>
@@ -2490,10 +2486,7 @@
         </prop>
         <prop oor:name="ContextList">
           <value oor:separator=";">
-            WriterVariants, any, visible ;
-            Calc, any, visible ;
-            DrawImpress, any, visible ;
-            StartModule, any, visible ;
+            any, any, hidden ;
           </value>
         </prop>
         <prop oor:name="ImplementationURL" oor:type="xs:string">

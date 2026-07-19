@@ -58,6 +58,9 @@ public:
     bool prepare();
     bool start();
     void join();
+    /// Cooperative cancel: marks the job cancelled and cancels any active TaskRunner.
+    void cancel();
+    bool isCancelled() const;
     bool isStarted() const;
     bool isDone() const;
     CoworkUiBridgeResult result() const;

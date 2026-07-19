@@ -328,7 +328,7 @@
             <table:table-row table:style-name="ro1" table:default-cell-style-name="ce2">
               <table:table-cell>
                 <text:p text:style-name="P43">
-                  <text:span>Lorem Ipsum Dolor 1</text:span>
+                  <text:span>章节标题 1</text:span>
                 </text:p>
               </table:table-cell>
               <table:table-cell>
@@ -350,7 +350,7 @@
             <table:table-row table:style-name="ro1" table:default-cell-style-name="ce2">
               <table:table-cell>
                 <text:p text:style-name="P43">
-                  <text:span>Lorem Ipsum Dolor 2</text:span>
+                  <text:span>章节标题 2</text:span>
                 </text:p>
               </table:table-cell>
               <table:table-cell>
@@ -372,7 +372,7 @@
             <table:table-row table:style-name="ro1" table:default-cell-style-name="ce2">
               <table:table-cell>
                 <text:p text:style-name="P43">
-                  <text:span>Lorem Ipsum Dolor 3</text:span>
+                  <text:span>章节标题 3</text:span>
                 </text:p>
               </table:table-cell>
               <table:table-cell>
@@ -394,7 +394,7 @@
             <table:table-row table:style-name="ro1" table:default-cell-style-name="ce2">
               <table:table-cell>
                 <text:p text:style-name="P43">
-                  <text:span>Lorem Ipsum Dolor 4</text:span>
+                  <text:span>章节标题 4</text:span>
                 </text:p>
               </table:table-cell>
               <table:table-cell>
@@ -416,7 +416,7 @@
             <table:table-row table:style-name="ro1" table:default-cell-style-name="ce2">
               <table:table-cell>
                 <text:p text:style-name="P43">
-                  <text:span>Lorem Ipsum Dolor 5</text:span>
+                  <text:span>章节标题 5</text:span>
                 </text:p>
               </table:table-cell>
               <table:table-cell>

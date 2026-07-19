@@ -1003,7 +1003,16 @@ void XCUBasedAcceleratorConfiguration::impl_ts_load( bool bPreferred, const css:
 
             sal_Int32 nIndex = 0;
             std::u16string_view sKeyCommand = o3tl::getToken(sKey, 0, '_', nIndex);
-            aKeyEvent.KeyCode = KeyMapping::get().mapIdentifierToCode(OUString::Concat("KEY_") + sKeyCommand);
+            try
+            {
+                aKeyEvent.KeyCode = KeyMapping::get().mapIdentifierToCode(
+                    OUString::Concat("KEY_") + sKeyCommand);
+            }
+            catch (const css::lang::IllegalArgumentException&)
+            {
+                SAL_WARN("fwk.accelerators", "Ignoring invalid accelerator key " << sKey);
+                continue;
+            }
 
             const sal_Int32 nToken = 4;
             bool bValid = true;

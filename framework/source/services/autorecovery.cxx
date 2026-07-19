@@ -1897,6 +1897,43 @@ void AutoRecovery::implts_readConfig()
         else
             SAL_INFO("fwk.autorecovery", "AutoRecovery::implts_readConfig(): Who changed numbering of recovery items? Cache will be inconsistent then! I do not know, what will happen next time .-)");
 
+        // Ghost entries after open-crashes: no backup file and no original path.
+        // Recovering only private:factory would re-open a blank doc and leave the
+        // UI stuck on "尚未恢复" / keep showing the wizard every launch.
+        const bool bHasBackup = !aInfo.OldTempURL.isEmpty();
+        const bool bHasOriginal = !aInfo.OrgURL.isEmpty() || !aInfo.TemplateURL.isEmpty();
+        bool bBackupFileExists = false;
+        if (bHasBackup)
+        {
+            osl::DirectoryItem aItem;
+            bBackupFileExists
+                = (osl::DirectoryItem::get(aInfo.OldTempURL, aItem) == osl::FileBase::E_None);
+        }
+        if ((!bHasBackup && !bHasOriginal) || (bHasBackup && !bBackupFileExists && !bHasOriginal))
+        {
+            SAL_INFO("fwk.autorecovery",
+                     "AutoRecovery::implts_readConfig(): pruning unrecoverable ghost entry id="
+                         << aInfo.ID << " title=" << aInfo.Title);
+            // Drop stale config node so next startup won't re-show recovery UI.
+            try
+            {
+                auto batch = comphelper::ConfigurationChanges::create();
+                css::uno::Reference<css::container::XNameAccess> xList(
+                    officecfg::Office::Recovery::RecoveryList::get(batch));
+                css::uno::Reference<css::container::XNameContainer> xModify(
+                    xList, css::uno::UNO_QUERY);
+                if (xModify.is() && xList->hasByName(rItem))
+                {
+                    xModify->removeByName(rItem);
+                    batch->commit();
+                }
+            }
+            catch (const css::uno::Exception&)
+            {
+            }
+            continue;
+        }
+
         /* SAFE */ {
         osl::MutexGuard g(cppu::WeakComponentImplHelperBase::rBHelper.rMutex);
         m_lDocCache.push_back(std::move(aInfo));
@@ -3348,7 +3385,18 @@ AutoRecovery::ETimerType AutoRecovery::implts_openDocs(const DispatchParams& aPa
             info.DocumentState |= DocState::TryLoadOriginal;
         }
         else
-            continue; // TODO ERROR!
+        {
+            // No backup, original, template, or factory URL — mark failed so the
+            // recovery dialog leaves "尚未恢复" and user can finish/discard cleanly.
+            info.DocumentState |= DocState::Handled;
+            info.DocumentState |= DocState::Damaged;
+            g.clear();
+            implts_flushConfigItem(info, /*bRemoveIt=*/true);
+            implts_informListener(
+                eJob, AutoRecovery::implst_createFeatureStateEvent(eJob, OPERATION_UPDATE, &info));
+            g.reset();
+            continue;
+        }
 
         LoadEnv::initializeUIDefaults( m_xContext, lDescriptor, true, nullptr );
 

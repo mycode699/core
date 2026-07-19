@@ -12,12 +12,39 @@
 #include <osl/thread.hxx>
 
 #include <memory>
+#include <mutex>
 #include <utility>
 
 namespace kqoffice::ai::cowork
 {
 namespace
 {
+std::mutex g_activeRunnerMutex;
+TaskRunner* g_pActiveRunner = nullptr;
+
+/// Binds the runner for cancelActiveTaskRunner() for the duration of a join.
+class ActiveTaskRunnerGuard
+{
+public:
+    explicit ActiveTaskRunnerGuard(TaskRunner& rRunner)
+        : m_pRunner(&rRunner)
+    {
+        std::scoped_lock aGuard(g_activeRunnerMutex);
+        g_pActiveRunner = m_pRunner;
+    }
+    ~ActiveTaskRunnerGuard()
+    {
+        std::scoped_lock aGuard(g_activeRunnerMutex);
+        if (g_pActiveRunner == m_pRunner)
+            g_pActiveRunner = nullptr;
+    }
+    ActiveTaskRunnerGuard(const ActiveTaskRunnerGuard&) = delete;
+    ActiveTaskRunnerGuard& operator=(const ActiveTaskRunnerGuard&) = delete;
+
+private:
+    TaskRunner* m_pRunner;
+};
+
 void appendNotification(TaskNotificationSink& sink,
                         TaskNotificationKind kind,
                         const OUString& monthDir,
@@ -185,6 +212,7 @@ bool TaskRunner::startOneAndJoinForTest(const OUString& monthDir,
                                         TaskWorker& worker,
                                         TaskRunnerResult* out)
 {
+    ActiveTaskRunnerGuard aActive(*this);
     auto thread = std::make_unique<RunOneThread>(m_scheduler, m_sink, monthDir, worker, *this);
     thread->create();
     thread->join();
@@ -207,6 +235,19 @@ bool TaskRunner::startOneAndJoinForTest(const OUString& monthDir,
     if (out)
         *out = result;
     return thread->ok();
+}
+
+void cancelActiveTaskRunner()
+{
+    std::scoped_lock aGuard(g_activeRunnerMutex);
+    if (g_pActiveRunner)
+        g_pActiveRunner->cancel();
+}
+
+bool hasActiveTaskRunner()
+{
+    std::scoped_lock aGuard(g_activeRunnerMutex);
+    return g_pActiveRunner != nullptr;
 }
 
 } // namespace kqoffice::ai::cowork
