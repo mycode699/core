@@ -608,13 +608,13 @@ void BackingWindow::initControls()
     if (mxTemplateCategory)
     {
         static constexpr std::u16string_view kCats[] = {
-            u"推荐",     u"热门",     u"合同文档", u"表格预设", u"演示文稿",
+            u"高频精选", u"推荐",     u"热门",     u"合同文档", u"表格预设", u"演示文稿",
             u"AI 场景",  u"信息收集", u"数据分析", u"销售管理", u"行政财务",
             u"人力资源", u"项目管理", u"协作效率", u"个人成长", u"公文信函", u"PDF"};
         mxTemplateCategory->clear();
         for (const auto& c : kCats)
             mxTemplateCategory->append_text(OUString(c));
-        mxTemplateCategory->set_active(0);
+        mxTemplateCategory->set_active(0); // 默认「高频精选」
         mxTemplateCategory->connect_changed(LINK(this, BackingWindow, TemplateCategoryHdl));
     }
     if (mxTemplateSearch)
@@ -1681,21 +1681,29 @@ void lcl_appendKqCnLibraryCatalog(std::vector<TemplateMarketEntry>& rOut)
             }
 
             const OUString aRel = u"zh-CN/kq/"_ustr + OUString::fromUtf8(file.c_str());
-            rOut.push_back({ OUString::fromUtf8(category.c_str()),
-                             OUString::fromUtf8(title.c_str()), typeLabel,
-                             OUString::fromUtf8(summary.c_str()), aRel, {}, filter });
+            const OUString aCat = OUString::fromUtf8(category.c_str());
+            const OUString aTitle = OUString::fromUtf8(title.c_str());
+            const OUString aSum = OUString::fromUtf8(summary.c_str());
+            rOut.push_back({ aCat, aTitle, typeLabel, aSum, aRel, {}, filter });
             ++nAdded;
 
-            // First slice also surfaces under 推荐/热门 for discovery.
-            if (nAdded <= 12)
+            // High-frequency pack always also listed under 高频精选 (if not already)
+            if (aCat == u"高频精选"_ustr || file.rfind("高频精选/", 0) == 0)
             {
-                rOut.push_back({ u"推荐"_ustr, OUString::fromUtf8(title.c_str()), typeLabel,
-                                 OUString::fromUtf8(summary.c_str()), aRel, {}, filter });
+                // already in 高频精选 category from catalog
             }
-            else if (nAdded <= 24)
+
+            // Surface high-frequency and first slice into 推荐/热门 for discovery.
+            const bool isHf = (aCat == u"高频精选"_ustr) || (file.rfind("高频精选/", 0) == 0);
+            if (isHf || nAdded <= 12)
             {
-                rOut.push_back({ u"热门"_ustr, OUString::fromUtf8(title.c_str()), typeLabel,
-                                 OUString::fromUtf8(summary.c_str()), aRel, {}, filter });
+                rOut.push_back(
+                    { u"推荐"_ustr, aTitle, typeLabel, aSum, aRel, {}, filter });
+            }
+            if (isHf || (nAdded > 12 && nAdded <= 24))
+            {
+                rOut.push_back(
+                    { u"热门"_ustr, aTitle, typeLabel, aSum, aRel, {}, filter });
             }
         }
     }
@@ -3135,7 +3143,8 @@ void BackingWindow::openScenarioTemplate(std::u16string_view rTemplateFileName,
 
     // 可圈 640 模板库：zh-CN/kq/… under brand share or ~/可圈办公空间/模板库
     if (aName.startsWith("zh-CN/kq/") || aName.indexOf(u"合同文档/"_ustr) >= 0
-        || aName.indexOf(u"表格预设/"_ustr) >= 0 || aName.indexOf(u"演示文稿/"_ustr) >= 0)
+        || aName.indexOf(u"表格预设/"_ustr) >= 0 || aName.indexOf(u"演示文稿/"_ustr) >= 0
+        || aName.indexOf(u"高频精选/"_ustr) >= 0)
     {
         const OUString aKq = lcl_resolveKqLibraryTemplateURL(aName);
         if (!aKq.isEmpty())
