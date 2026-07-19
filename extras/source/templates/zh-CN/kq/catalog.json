@@ -1,0 +1,487 @@
+{
+  "version": 2,
+  "tier": "hf",
+  "generator": "kqoffice-stage-hf-package",
+  "storage": {
+    "policy": "docs/product/template-storage-policy.md",
+    "package_path": "zh-CN/kq/hf/",
+    "ui_category": "高频精选",
+    "expand_later": true
+  },
+  "counts": {
+    "ott": 13,
+    "ots": 12,
+    "otp": 8,
+    "total": 33
+  },
+  "items": [
+    {
+      "id": "hf_s01_weekly",
+      "title": "工作周报（深度）",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "S",
+        "文字"
+      ],
+      "summary": "本周目标/完成/数据/风险/下周计划，适合团队周报",
+      "file": "hf/hf_s01_weekly.ott",
+      "kind": "ott",
+      "freq": "S"
+    },
+    {
+      "id": "hf_s01_daily",
+      "title": "工作日报（深度）",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "S",
+        "文字"
+      ],
+      "summary": "今日完成/进行中/明日计划/风险，10 分钟写完",
+      "file": "hf/hf_s01_daily.ott",
+      "kind": "ott",
+      "freq": "S"
+    },
+    {
+      "id": "hf_s02_minutes",
+      "title": "会议纪要（含待办）",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "S",
+        "文字"
+      ],
+      "summary": "议题、决议、待办责任人与截止日",
+      "file": "hf/hf_s02_minutes.ott",
+      "kind": "ott",
+      "freq": "S"
+    },
+    {
+      "id": "hf_s05_leave",
+      "title": "请假申请单",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "S",
+        "文字"
+      ],
+      "summary": "请假类型、时段、事由、交接与审批栏",
+      "file": "hf/hf_s05_leave.ott",
+      "kind": "ott",
+      "freq": "S"
+    },
+    {
+      "id": "hf_s09_notice",
+      "title": "通知公告（规范体）",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "S",
+        "文字"
+      ],
+      "summary": "标题、主送、正文、落款，适合对内通知",
+      "file": "hf/hf_s09_notice.ott",
+      "kind": "ott",
+      "freq": "S"
+    },
+    {
+      "id": "hf_s10_quote",
+      "title": "商务报价单",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "S",
+        "文字"
+      ],
+      "summary": "报价明细、合计、有效期、付款与签章",
+      "file": "hf/hf_s10_quote.ott",
+      "kind": "ott",
+      "freq": "S"
+    },
+    {
+      "id": "hf_a01_monthly",
+      "title": "月度工作总结",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "A",
+        "文字"
+      ],
+      "summary": "月目标、成果、数据、问题、下月计划",
+      "file": "hf/hf_a01_monthly.ott",
+      "kind": "ott",
+      "freq": "A"
+    },
+    {
+      "id": "hf_a02_project_plan",
+      "title": "项目方案立项书",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "A",
+        "文字"
+      ],
+      "summary": "背景目标、范围、里程碑、资源、风险、预算",
+      "file": "hf/hf_a02_project_plan.ott",
+      "kind": "ott",
+      "freq": "A"
+    },
+    {
+      "id": "hf_a11_labor",
+      "title": "劳动合同（通用深度范本）",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "A",
+        "文字"
+      ],
+      "summary": "期限岗位报酬工时休假保密解除签署（非法律意见）",
+      "file": "hf/hf_a11_labor.ott",
+      "kind": "ott",
+      "freq": "A"
+    },
+    {
+      "id": "hf_a12_nda",
+      "title": "保密协议 NDA（双边）",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "A",
+        "文字"
+      ],
+      "summary": "保密信息定义、义务、期限、返还、违约",
+      "file": "hf/hf_a12_nda.ott",
+      "kind": "ott",
+      "freq": "A"
+    },
+    {
+      "id": "hf_a13_purchase",
+      "title": "采购合同（货物）",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "A",
+        "文字"
+      ],
+      "summary": "标的交期验收付款违约争议",
+      "file": "hf/hf_a13_purchase.ott",
+      "kind": "ott",
+      "freq": "A"
+    },
+    {
+      "id": "hf_a15_letter",
+      "title": "商务函件",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "A",
+        "文字"
+      ],
+      "summary": "商务沟通正式函件结构",
+      "file": "hf/hf_a15_letter.ott",
+      "kind": "ott",
+      "freq": "A"
+    },
+    {
+      "id": "hf_a16_resume",
+      "title": "个人简历（一页）",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "A",
+        "文字"
+      ],
+      "summary": "求职高频一页简历结构",
+      "file": "hf/hf_a16_resume.ott",
+      "kind": "ott",
+      "freq": "A"
+    },
+    {
+      "id": "hf_s03_todo",
+      "title": "待办任务清单",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "S",
+        "表格"
+      ],
+      "summary": "优先级、负责人、状态、截止日",
+      "file": "hf/hf_s03_todo.ots",
+      "kind": "ots",
+      "freq": "S"
+    },
+    {
+      "id": "hf_s04_expense",
+      "title": "费用报销台账",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "S",
+        "表格"
+      ],
+      "summary": "日期事项金额发票项目审批状态",
+      "file": "hf/hf_s04_expense.ots",
+      "kind": "ots",
+      "freq": "S"
+    },
+    {
+      "id": "hf_s06_sales",
+      "title": "销售客户跟进表",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "S",
+        "表格"
+      ],
+      "summary": "客户阶段金额下次跟进",
+      "file": "hf/hf_s06_sales.ots",
+      "kind": "ots",
+      "freq": "S"
+    },
+    {
+      "id": "hf_s07_schedule",
+      "title": "项目进度排期表",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "S",
+        "表格"
+      ],
+      "summary": "任务负责人起止进度风险",
+      "file": "hf/hf_s07_schedule.ots",
+      "kind": "ots",
+      "freq": "S"
+    },
+    {
+      "id": "hf_a03_purchase_cmp",
+      "title": "采购申请与比价",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "A",
+        "表格"
+      ],
+      "summary": "申请信息+三家比价",
+      "file": "hf/hf_a03_purchase_cmp.ots",
+      "kind": "ots",
+      "freq": "A"
+    },
+    {
+      "id": "hf_a04_attendance",
+      "title": "月度考勤统计",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "A",
+        "表格"
+      ],
+      "summary": "出勤迟到请假加班汇总",
+      "file": "hf/hf_a04_attendance.ots",
+      "kind": "ots",
+      "freq": "A"
+    },
+    {
+      "id": "hf_a05_budget",
+      "title": "部门预算执行表",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "A",
+        "表格"
+      ],
+      "summary": "科目预算实际差额完成率",
+      "file": "hf/hf_a05_budget.ots",
+      "kind": "ots",
+      "freq": "A"
+    },
+    {
+      "id": "hf_a06_customer",
+      "title": "客户与合同台账",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "A",
+        "表格"
+      ],
+      "summary": "客户级别签约金额到期",
+      "file": "hf/hf_a06_customer.ots",
+      "kind": "ots",
+      "freq": "A"
+    },
+    {
+      "id": "hf_a07_inventory",
+      "title": "库存进销存简表",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "A",
+        "表格"
+      ],
+      "summary": "SKU期初入库出库结存预警",
+      "file": "hf/hf_a07_inventory.ots",
+      "kind": "ots",
+      "freq": "A"
+    },
+    {
+      "id": "hf_a17_kpi",
+      "title": "KPI 考核表",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "A",
+        "表格"
+      ],
+      "summary": "指标权重目标完成得分",
+      "file": "hf/hf_a17_kpi.ots",
+      "kind": "ots",
+      "freq": "A"
+    },
+    {
+      "id": "hf_a18_collection",
+      "title": "回款计划与跟踪",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "A",
+        "表格"
+      ],
+      "summary": "合同已回本期计划逾期",
+      "file": "hf/hf_a18_collection.ots",
+      "kind": "ots",
+      "freq": "A"
+    },
+    {
+      "id": "hf_a19_recruit",
+      "title": "招聘进度表",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "A",
+        "表格"
+      ],
+      "summary": "岗位候选人阶段结果",
+      "file": "hf/hf_a19_recruit.ots",
+      "kind": "ots",
+      "freq": "A"
+    },
+    {
+      "id": "hf_s08_weekly_deck",
+      "title": "周会汇报PPT",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "S",
+        "演示"
+      ],
+      "summary": "议程进展阻塞决策待办",
+      "file": "hf/hf_s08_weekly_deck.otp",
+      "kind": "otp",
+      "freq": "S"
+    },
+    {
+      "id": "hf_a08_pitch",
+      "title": "商业路演PPT",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "A",
+        "演示"
+      ],
+      "summary": "痛点方案市场模式团队诉求",
+      "file": "hf/hf_a08_pitch.otp",
+      "kind": "otp",
+      "freq": "A"
+    },
+    {
+      "id": "hf_a09_launch",
+      "title": "产品发布会PPT",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "A",
+        "演示"
+      ],
+      "summary": "背景亮点演示定价节奏",
+      "file": "hf/hf_a09_launch.otp",
+      "kind": "otp",
+      "freq": "A"
+    },
+    {
+      "id": "hf_a09_training",
+      "title": "内训课件PPT",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "A",
+        "演示"
+      ],
+      "summary": "目标知识点案例练习总结",
+      "file": "hf/hf_a09_training.otp",
+      "kind": "otp",
+      "freq": "A"
+    },
+    {
+      "id": "hf_a10_review",
+      "title": "述职答辩PPT",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "A",
+        "演示"
+      ],
+      "summary": "职责成果不足规划支持",
+      "file": "hf/hf_a10_review.otp",
+      "kind": "otp",
+      "freq": "A"
+    },
+    {
+      "id": "hf_a08_marketing",
+      "title": "营销方案PPT",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "A",
+        "演示"
+      ],
+      "summary": "人群策略渠道预算排期",
+      "file": "hf/hf_a08_marketing.otp",
+      "kind": "otp",
+      "freq": "A"
+    },
+    {
+      "id": "hf_a_data_review",
+      "title": "数据分析汇报PPT",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "A",
+        "演示"
+      ],
+      "summary": "口径发现解读建议",
+      "file": "hf/hf_a_data_review.otp",
+      "kind": "otp",
+      "freq": "A"
+    },
+    {
+      "id": "hf_a_ops_month",
+      "title": "经营月会PPT",
+      "category": "高频精选",
+      "tags": [
+        "高频",
+        "A",
+        "演示"
+      ],
+      "summary": "经营结果偏差动作",
+      "file": "hf/hf_a_ops_month.otp",
+      "kind": "otp",
+      "freq": "A"
+    }
+  ],
+  "expansion": {
+    "matrix_optional": true,
+    "install_full": "bin/kqoffice-install-cn-template-library.sh --full",
+    "feedback_dir": "_反馈",
+    "note": "package: ASCII hf/<id>; UI category 高频精选; matrix via --full"
+  }
+}

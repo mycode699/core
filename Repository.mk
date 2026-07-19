@@ -978,6 +978,7 @@ $(eval $(call gb_Helper_register_packages_for_install,ooo,\
 		extras_templates \
 		extras_tplwizbitmap \
 		extras_tplwizard \
+		extras_kq_cn_hf \
 	) \
 	framework_dtd \
 	$(if $(filter $(OS),MACOSX),infoplist) \

@@ -1687,14 +1687,10 @@ void lcl_appendKqCnLibraryCatalog(std::vector<TemplateMarketEntry>& rOut)
             rOut.push_back({ aCat, aTitle, typeLabel, aSum, aRel, {}, filter });
             ++nAdded;
 
-            // High-frequency pack always also listed under 高频精选 (if not already)
-            if (aCat == u"高频精选"_ustr || file.rfind("高频精选/", 0) == 0)
-            {
-                // already in 高频精选 category from catalog
-            }
-
             // Surface high-frequency and first slice into 推荐/热门 for discovery.
-            const bool isHf = (aCat == u"高频精选"_ustr) || (file.rfind("高频精选/", 0) == 0);
+            // Package path is ASCII hf/; user hub may still use 高频精选/.
+            const bool isHf = (aCat == u"高频精选"_ustr) || (file.rfind("高频精选/", 0) == 0)
+                              || (file.rfind("hf/", 0) == 0);
             if (isHf || nAdded <= 12)
             {
                 rOut.push_back(
@@ -2066,10 +2062,18 @@ const std::vector<TemplateMarketEntry>& lcl_templateMarketCatalog()
           u"本地一键合并（图像页；非完整 Acrobat / 非云端矢量引擎）。"_ustr, {},
           u"tool:pdf-merge"_ustr, FILTER_APPLICATION::NONE },
         };
-        lcl_appendKqCnLibraryCatalog(cat);
+        // 可圈 catalog.json 每次 refresh 动态加载（非静态），便于 --hf/--full 后无需重启。
         return cat;
     }();
     return kCatalog;
+}
+
+/** Base catalog + on-disk 可圈模板库（高频默认 / 全量可选）。 */
+std::vector<TemplateMarketEntry> lcl_templateMarketCatalogLive()
+{
+    std::vector<TemplateMarketEntry> out = lcl_templateMarketCatalog();
+    lcl_appendKqCnLibraryCatalog(out);
+    return out;
 }
 }
 
@@ -2088,8 +2092,8 @@ void BackingWindow::refreshTemplateMarket()
         OUString id;
         if (!e.relPath.isEmpty())
             id = u"path:"_ustr + e.relPath;
-        else if (e.aiScenarioId.startsWith(u"tool:"_ustr))
-            id = e.aiScenarioId; // tool:pdf-open | tool:pdf-merge | …
+        else if (e.aiScenarioId.startsWith(u"hint:"_ustr) || e.aiScenarioId.startsWith(u"tool:"_ustr))
+            id = e.aiScenarioId; // hint:… | tool:pdf-open | …
         else
             id = u"ai:"_ustr + e.aiScenarioId;
         mxTemplateMarketTree->append(id, e.title);
@@ -2098,7 +2102,8 @@ void BackingWindow::refreshTemplateMarket()
         mxTemplateMarketTree->set_text(row, e.description, 2);
     };
 
-    for (const auto& e : lcl_templateMarketCatalog())
+    const auto live = lcl_templateMarketCatalogLive();
+    for (const auto& e : live)
     {
         if (cat != e.category)
             continue;
@@ -2115,7 +2120,7 @@ void BackingWindow::refreshTemplateMarket()
     // Search falls back to all categories when current category has no hit.
     if (mxTemplateMarketTree->n_children() == 0 && !q.isEmpty())
     {
-        for (const auto& e : lcl_templateMarketCatalog())
+        for (const auto& e : live)
         {
             const OUString hay
                 = OUString(e.title + e.description + e.typeLabel + e.category).toAsciiLowerCase();
@@ -2123,6 +2128,38 @@ void BackingWindow::refreshTemplateMarket()
                 continue;
             appendRow(e);
         }
+    }
+
+    // Empty category: honest Chinese tip (default install is HF-only; matrix needs --full).
+    if (mxTemplateMarketTree->n_children() == 0 && q.isEmpty())
+    {
+        TemplateMarketEntry tip;
+        tip.category = cat;
+        tip.typeLabel = u"说明"_ustr;
+        tip.filter = FILTER_APPLICATION::NONE;
+        if (cat == u"合同文档"_ustr || cat == u"表格预设"_ustr || cat == u"演示文稿"_ustr)
+        {
+            tip.title = u"长尾矩阵未安装（可选）"_ustr;
+            tip.description
+                = u"默认只装「高频精选」以节省空间。需要 ≥200 合同/表格/演示检索时，运行："
+                  " bash bin/kqoffice-install-cn-template-library.sh --full"_ustr;
+            tip.aiScenarioId = u"hint:install-full"_ustr;
+        }
+        else if (cat == u"高频精选"_ustr)
+        {
+            tip.title = u"暂无高频精选模板"_ustr;
+            tip.description
+                = u"请安装高频包：bash bin/kqoffice-install-cn-template-library.sh --hf"
+                  " 或确认应用内 template/common/zh-CN/kq/ 已进包。"_ustr;
+            tip.aiScenarioId = u"hint:install-hf"_ustr;
+        }
+        else
+        {
+            tip.title = u"此分类暂无条目"_ustr;
+            tip.description = u"可切换「高频精选 / 推荐 / 热门」，或搜索模板名称。"_ustr;
+            tip.aiScenarioId = u"hint:empty-category"_ustr;
+        }
+        appendRow(tip);
     }
 }
 
@@ -2134,6 +2171,36 @@ void BackingWindow::openTemplateMarketSelection()
     if (row < 0)
         return;
     const OUString id = mxTemplateMarketTree->get_id(row);
+    if (id.startsWith("hint:"))
+    {
+        OUString msg;
+        if (id == u"hint:install-full"_ustr)
+        {
+            msg = u"默认安装仅含「高频精选」（体积小、覆盖日常）。\n\n"
+                  "需要合同/表格/演示长尾矩阵时，在终端执行：\n"
+                  "bash bin/kqoffice-install-cn-template-library.sh --full\n\n"
+                  "也可在 ~/可圈办公空间/模板库/_反馈/ 记录缺失场景，后续再补充。"_ustr;
+        }
+        else if (id == u"hint:install-hf"_ustr)
+        {
+            msg = u"未找到高频精选模板。\n\n"
+                  "请执行：\n"
+                  "bash bin/kqoffice-install-cn-template-library.sh --hf\n\n"
+                  "或重新构建含 Package_extras_kq_cn_hf 的安装包。"_ustr;
+        }
+        else
+        {
+            msg = u"此分类暂无可用模板，请切换「高频精选」或使用搜索。"_ustr;
+        }
+        std::unique_ptr<weld::MessageDialog> xBox(Application::CreateMessageDialog(
+            GetFrameWeld(), VclMessageType::Info, VclButtonsType::Ok, msg));
+        if (xBox)
+        {
+            xBox->set_title(u"可圈模板库"_ustr);
+            xBox->run();
+        }
+        return;
+    }
     if (id.startsWith("path:"))
     {
         openScenarioTemplate(id.copy(5), u"", FILTER_APPLICATION::NONE);
@@ -3141,10 +3208,11 @@ void BackingWindow::openScenarioTemplate(std::u16string_view rTemplateFileName,
         return;
     }
 
-    // 可圈 640 模板库：zh-CN/kq/… under brand share or ~/可圈办公空间/模板库
+    // 可圈模板库：zh-CN/kq/… under brand share or ~/可圈办公空间/模板库
+    // Package HF uses ASCII hf/; user hub may use 高频精选/ or matrix dirs.
     if (aName.startsWith("zh-CN/kq/") || aName.indexOf(u"合同文档/"_ustr) >= 0
         || aName.indexOf(u"表格预设/"_ustr) >= 0 || aName.indexOf(u"演示文稿/"_ustr) >= 0
-        || aName.indexOf(u"高频精选/"_ustr) >= 0)
+        || aName.indexOf(u"高频精选/"_ustr) >= 0 || aName.indexOf(u"hf/"_ustr) >= 0)
     {
         const OUString aKq = lcl_resolveKqLibraryTemplateURL(aName);
         if (!aKq.isEmpty())
@@ -3193,6 +3261,19 @@ void BackingWindow::openScenarioTemplate(std::u16string_view rTemplateFileName,
     }
 
     SAL_WARN("sfx", "openScenarioTemplate: missing template " << OUString(rTemplateFileName));
+    {
+        OUString msg = u"找不到模板文件：\n"_ustr + aName
+                       + u"\n\n默认仅安装「高频精选」。若需长尾矩阵：\n"
+                         "bash bin/kqoffice-install-cn-template-library.sh --full\n\n"
+                         "或切换分类「高频精选 / 推荐」选用其它模板。"_ustr;
+        std::unique_ptr<weld::MessageDialog> xBox(Application::CreateMessageDialog(
+            GetFrameWeld(), VclMessageType::Warning, VclButtonsType::Ok, msg));
+        if (xBox)
+        {
+            xBox->set_title(u"可圈模板库"_ustr);
+            xBox->run();
+        }
+    }
     showTemplateHub(eFilter);
 }
 
