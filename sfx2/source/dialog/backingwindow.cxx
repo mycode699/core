@@ -1714,30 +1714,30 @@ const std::vector<TemplateMarketEntry>& lcl_templateMarketCatalog()
 {
     static const std::vector<TemplateMarketEntry> kCatalog = [] {
         std::vector<TemplateMarketEntry> cat = {
-        // 推荐 / 热门 — core CN office
-        { u"推荐"_ustr, u"工作汇报"_ustr, u"文字"_ustr,
-          u"结构化周报/月报，开箱即写关键结论与进展。"_ustr, u"offimisc/Work_Report_CN.ott"_ustr,
-          {}, FILTER_APPLICATION::WRITER },
-        { u"推荐"_ustr, u"会议纪要"_ustr, u"文字"_ustr,
-          u"议题、决议、待办一页齐，适合会后 10 分钟沉淀。"_ustr,
-          u"offimisc/Meeting_Minutes_CN.ott"_ustr, {}, FILTER_APPLICATION::WRITER },
-        { u"推荐"_ustr, u"商务路演"_ustr, u"演示"_ustr,
-          u"中文商务路演骨架：问题、方案、节奏、下一步。"_ustr, u"presnt/Business_Pitch_CN.otp"_ustr,
-          {}, FILTER_APPLICATION::IMPRESS },
-        { u"推荐"_ustr, u"预算总览"_ustr, u"表格"_ustr,
-          u"科目与金额清晰，适合部门预算与复盘。"_ustr, u"spreadsheets/Budget_CN.ots"_ustr, {},
-          FILTER_APPLICATION::CALC },
-        { u"热门"_ustr, u"销售跟进"_ustr, u"表格"_ustr,
-          u"客户与商机台账，掌握推进阶段（表格，非 CRM 系统）。"_ustr,
-          u"spreadsheets/Sales_Tracker_CN.ots"_ustr, {}, FILTER_APPLICATION::CALC },
-        { u"热门"_ustr, u"项目排期"_ustr, u"表格"_ustr,
-          u"里程碑与责任人一目了然，替代口头排期。"_ustr,
-          u"spreadsheets/Project_Schedule_CN.ots"_ustr, {}, FILTER_APPLICATION::CALC },
-        { u"热门"_ustr, u"项目汇报"_ustr, u"演示"_ustr,
-          u"阶段成果与风险汇报，适合周会/月会。"_ustr, u"presnt/Project_Report_CN.otp"_ustr, {},
+        // 推荐 / 热门 — 与精选任务同一 HF 深度模板（1:1）
+        { u"推荐"_ustr, u"工作周报（深度）"_ustr, u"文字"_ustr,
+          u"高频精选：结构化周报，开箱即写结论与进展。"_ustr, u"hf/hf_s01_weekly.ott"_ustr, {},
+          FILTER_APPLICATION::WRITER },
+        { u"推荐"_ustr, u"会议纪要（含待办）"_ustr, u"文字"_ustr,
+          u"高频精选：议题、决议、待办一页齐。"_ustr, u"hf/hf_s02_minutes.ott"_ustr, {},
+          FILTER_APPLICATION::WRITER },
+        { u"推荐"_ustr, u"商业路演PPT"_ustr, u"演示"_ustr,
+          u"高频精选：问题、方案、节奏、下一步。"_ustr, u"hf/hf_a08_pitch.otp"_ustr, {},
           FILTER_APPLICATION::IMPRESS },
-        { u"热门"_ustr, u"通知"_ustr, u"文字"_ustr,
-          u"规范通知体例，发文更正式。"_ustr, u"officorr/Notice_CN.ott"_ustr, {},
+        { u"推荐"_ustr, u"部门预算执行表"_ustr, u"表格"_ustr,
+          u"高频精选：科目与金额清晰，适合部门预算与复盘。"_ustr, u"hf/hf_a05_budget.ots"_ustr, {},
+          FILTER_APPLICATION::CALC },
+        { u"热门"_ustr, u"销售客户跟进表"_ustr, u"表格"_ustr,
+          u"高频精选：客户与商机台账（表格，非 CRM）。"_ustr, u"hf/hf_s06_sales.ots"_ustr, {},
+          FILTER_APPLICATION::CALC },
+        { u"热门"_ustr, u"项目进度排期表"_ustr, u"表格"_ustr,
+          u"高频精选：里程碑与责任人一目了然。"_ustr, u"hf/hf_s07_schedule.ots"_ustr, {},
+          FILTER_APPLICATION::CALC },
+        { u"热门"_ustr, u"周会汇报PPT"_ustr, u"演示"_ustr,
+          u"高频精选：阶段成果与风险，适合周会/月会。"_ustr, u"hf/hf_s08_weekly_deck.otp"_ustr, {},
+          FILTER_APPLICATION::IMPRESS },
+        { u"热门"_ustr, u"通知公告（规范体）"_ustr, u"文字"_ustr,
+          u"高频精选：规范通知体例，发文更正式。"_ustr, u"hf/hf_s09_notice.ott"_ustr, {},
           FILTER_APPLICATION::WRITER },
         { u"推荐"_ustr, u"费用报销 · AI"_ustr, u"表格·AI"_ustr,
           u"高频：本地报销台账，AI 生成表头与示例。"_ustr, {}, u"biz-expense"_ustr,
@@ -3171,35 +3171,80 @@ bool BackingWindow::resolveTemplatePathByFileName(const SfxDocumentTemplates& rT
 
 std::array<BackingWindow::ScenarioTemplate, 11> BackingWindow::getScenarioTemplates()
 {
-    return { { { mxScenarioReportButton.get(), u"offimisc/Work_Report_CN.ott", u"工作汇报",
-                 FILTER_APPLICATION::WRITER },
-               { mxScenarioMinutesButton.get(), u"offimisc/Meeting_Minutes_CN.ott", u"会议纪要",
-                 FILTER_APPLICATION::WRITER },
-               { mxScenarioNoticeButton.get(), u"officorr/Notice_CN.ott", u"通知",
-                 FILTER_APPLICATION::WRITER },
-               { mxScenarioPlanButton.get(), u"offimisc/Project_Plan_CN.ott", u"项目方案",
-                 FILTER_APPLICATION::WRITER },
-               { mxScenarioBudgetButton.get(), u"spreadsheets/Budget_CN.ots", u"预算总览",
-                 FILTER_APPLICATION::CALC },
-               { mxScenarioSalesButton.get(), u"spreadsheets/Sales_Tracker_CN.ots", u"销售跟进",
-                 FILTER_APPLICATION::CALC },
-               { mxScenarioScheduleButton.get(), u"spreadsheets/Project_Schedule_CN.ots", u"项目排期",
-                 FILTER_APPLICATION::CALC },
-               { mxScenarioOutlineButton.get(), u"offimisc/PPT_Outline_CN.ott", u"演示提纲",
-                 FILTER_APPLICATION::WRITER },
-               { mxScenarioPitchButton.get(), u"presnt/Business_Pitch_CN.otp", u"商务路演",
-                 FILTER_APPLICATION::IMPRESS },
-               { mxScenarioProjectReportButton.get(), u"presnt/Project_Report_CN.otp", u"项目汇报",
-                 FILTER_APPLICATION::IMPRESS },
-               { mxScenarioCoursewareButton.get(), u"presnt/Teaching_Courseware_CN.otp", u"教学课件",
-                 FILTER_APPLICATION::IMPRESS } } };
+    // 精选任务 ↔ 高频深度模板 1:1（主路径）；库存 CN 样张作后备。
+    return { {
+        { mxScenarioReportButton.get(), u"hf/hf_s01_weekly.ott", u"offimisc/Work_Report_CN.ott",
+          u"工作周报（深度）", FILTER_APPLICATION::WRITER },
+        { mxScenarioMinutesButton.get(), u"hf/hf_s02_minutes.ott",
+          u"offimisc/Meeting_Minutes_CN.ott", u"会议纪要（含待办）", FILTER_APPLICATION::WRITER },
+        { mxScenarioNoticeButton.get(), u"hf/hf_s09_notice.ott", u"officorr/Notice_CN.ott",
+          u"通知公告（规范体）", FILTER_APPLICATION::WRITER },
+        { mxScenarioPlanButton.get(), u"hf/hf_a02_project_plan.ott", u"offimisc/Project_Plan_CN.ott",
+          u"项目方案立项书", FILTER_APPLICATION::WRITER },
+        { mxScenarioBudgetButton.get(), u"hf/hf_a05_budget.ots", u"spreadsheets/Budget_CN.ots",
+          u"部门预算执行表", FILTER_APPLICATION::CALC },
+        { mxScenarioSalesButton.get(), u"hf/hf_s06_sales.ots", u"spreadsheets/Sales_Tracker_CN.ots",
+          u"销售客户跟进表", FILTER_APPLICATION::CALC },
+        { mxScenarioScheduleButton.get(), u"hf/hf_s07_schedule.ots",
+          u"spreadsheets/Project_Schedule_CN.ots", u"项目进度排期表", FILTER_APPLICATION::CALC },
+        // 演示提纲：Writer 结构提纲（尚无独立 HF 深度包）
+        { mxScenarioOutlineButton.get(), u"offimisc/PPT_Outline_CN.ott", {}, u"演示提纲",
+          FILTER_APPLICATION::WRITER },
+        { mxScenarioPitchButton.get(), u"hf/hf_a08_pitch.otp", u"presnt/Business_Pitch_CN.otp",
+          u"商业路演PPT", FILTER_APPLICATION::IMPRESS },
+        { mxScenarioProjectReportButton.get(), u"hf/hf_s08_weekly_deck.otp",
+          u"presnt/Project_Report_CN.otp", u"周会汇报PPT", FILTER_APPLICATION::IMPRESS },
+        { mxScenarioCoursewareButton.get(), u"hf/hf_a09_training.otp",
+          u"presnt/Teaching_Courseware_CN.otp", u"内训课件PPT", FILTER_APPLICATION::IMPRESS },
+    } };
 }
 
 void BackingWindow::openScenarioTemplate(std::u16string_view rTemplateFileName,
                                          std::u16string_view rFallbackTitle,
-                                         FILTER_APPLICATION eFilter)
+                                         FILTER_APPLICATION eFilter,
+                                         std::u16string_view rLegacyFileName)
 {
     const OUString aName(rTemplateFileName);
+
+    auto tryOpenPath = [this](std::u16string_view rPath) -> bool {
+        if (rPath.empty())
+            return false;
+        const OUString path(rPath);
+
+        if (path.startsWith("file://") || path.startsWith("/"))
+        {
+            OpenTemplateHdl(path);
+            return true;
+        }
+
+        // 可圈 HF / 矩阵：zh-CN/kq/… 或相对 hf/、高频精选/
+        if (path.startsWith("zh-CN/kq/") || path.indexOf(u"合同文档/"_ustr) >= 0
+            || path.indexOf(u"表格预设/"_ustr) >= 0 || path.indexOf(u"演示文稿/"_ustr) >= 0
+            || path.indexOf(u"高频精选/"_ustr) >= 0 || path.indexOf(u"hf/"_ustr) >= 0)
+        {
+            const OUString aKq = lcl_resolveKqLibraryTemplateURL(path);
+            if (!aKq.isEmpty())
+            {
+                OpenTemplateHdl(aKq);
+                return true;
+            }
+        }
+
+        const OUString aBrandUrl = lcl_brandCommonTemplateURL(path);
+        if (!aBrandUrl.isEmpty())
+        {
+            OpenTemplateHdl(aBrandUrl);
+            return true;
+        }
+
+        const OUString aKq2 = lcl_resolveKqLibraryTemplateURL(path);
+        if (!aKq2.isEmpty())
+        {
+            OpenTemplateHdl(aKq2);
+            return true;
+        }
+        return false;
+    };
 
     // Absolute path or user hub absolute file
     if (aName.startsWith("file://") || aName.startsWith("/"))
@@ -3208,25 +3253,25 @@ void BackingWindow::openScenarioTemplate(std::u16string_view rTemplateFileName,
         return;
     }
 
-    // 可圈模板库：zh-CN/kq/… under brand share or ~/可圈办公空间/模板库
-    // Package HF uses ASCII hf/; user hub may use 高频精选/ or matrix dirs.
-    if (aName.startsWith("zh-CN/kq/") || aName.indexOf(u"合同文档/"_ustr) >= 0
-        || aName.indexOf(u"表格预设/"_ustr) >= 0 || aName.indexOf(u"演示文稿/"_ustr) >= 0
-        || aName.indexOf(u"高频精选/"_ustr) >= 0 || aName.indexOf(u"hf/"_ustr) >= 0)
-    {
-        const OUString aKq = lcl_resolveKqLibraryTemplateURL(aName);
-        if (!aKq.isEmpty())
-        {
-            OpenTemplateHdl(aKq);
-            return;
-        }
-    }
+    // 1) Primary (HF depth pack preferred)
+    if (tryOpenPath(rTemplateFileName))
+        return;
+
+    // 2) Legacy stock CN template (packaged via extras_templates / tplpresnt)
+    if (tryOpenPath(rLegacyFileName))
+        return;
 
     SfxDocumentTemplates aTemplates;
     aTemplates.Update();
 
     OUString aTemplatePath;
     if (resolveTemplatePathByFileName(aTemplates, rTemplateFileName, aTemplatePath))
+    {
+        OpenTemplateHdl(aTemplatePath);
+        return;
+    }
+    if (!rLegacyFileName.empty()
+        && resolveTemplatePathByFileName(aTemplates, rLegacyFileName, aTemplatePath))
     {
         OpenTemplateHdl(aTemplatePath);
         return;
@@ -3243,29 +3288,20 @@ void BackingWindow::openScenarioTemplate(std::u16string_view rTemplateFileName,
         }
     }
 
-    // Catalog/registry can lag behind packaging (pruned decorative presnt packs).
-    // Resolve on disk under brand share so CN scenario buttons always work.
-    const OUString aBrandUrl = lcl_brandCommonTemplateURL(rTemplateFileName);
-    if (!aBrandUrl.isEmpty())
+    SAL_WARN("sfx", "openScenarioTemplate: missing template " << aName);
     {
-        OpenTemplateHdl(aBrandUrl);
-        return;
-    }
-
-    // Last chance: kq library by basename under hub
-    const OUString aKq2 = lcl_resolveKqLibraryTemplateURL(aName);
-    if (!aKq2.isEmpty())
-    {
-        OpenTemplateHdl(aKq2);
-        return;
-    }
-
-    SAL_WARN("sfx", "openScenarioTemplate: missing template " << OUString(rTemplateFileName));
-    {
-        OUString msg = u"找不到模板文件：\n"_ustr + aName
-                       + u"\n\n默认仅安装「高频精选」。若需长尾矩阵：\n"
-                         "bash bin/kqoffice-install-cn-template-library.sh --full\n\n"
-                         "或切换分类「高频精选 / 推荐」选用其它模板。"_ustr;
+        OUString msg = u"无法打开精选任务对应的模板。\n\n任务："_ustr;
+        if (!rFallbackTitle.empty())
+            msg += OUString(rFallbackTitle);
+        else
+            msg += aName;
+        msg += u"\n主路径："_ustr + aName;
+        if (!rLegacyFileName.empty())
+            msg += u"\n后备路径："_ustr + OUString(rLegacyFileName);
+        msg += u"\n\n请确认已安装高频精选：\n"
+               "bash bin/kqoffice-install-cn-template-library.sh --hf\n\n"
+               "或打开「模板中心」→「高频精选」手动选用。\n"
+               "也可在 ~/可圈办公空间/模板库/_反馈/ 记录缺失场景。"_ustr;
         std::unique_ptr<weld::MessageDialog> xBox(Application::CreateMessageDialog(
             GetFrameWeld(), VclMessageType::Warning, VclButtonsType::Ok, msg));
         if (xBox)
@@ -3283,7 +3319,8 @@ IMPL_LINK(BackingWindow, OpenScenarioHdl, weld::Button&, rButton, void)
     {
         if (rScenario.pButton && &rButton == rScenario.pButton)
         {
-            openScenarioTemplate(rScenario.aFileName, rScenario.aFallbackTitle, rScenario.eFilter);
+            openScenarioTemplate(rScenario.aFileName, rScenario.aFallbackTitle, rScenario.eFilter,
+                                 rScenario.aLegacyFileName);
             return;
         }
     }

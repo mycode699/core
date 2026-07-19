@@ -134,7 +134,11 @@ class BackingWindow : public InterimItemWindow
     struct ScenarioTemplate
     {
         weld::Button* pButton;
+        /** Primary path: HF package (hf/…) or stock under template/common/. */
         std::u16string_view aFileName;
+        /** Optional legacy stock CN template if primary missing. */
+        std::u16string_view aLegacyFileName;
+        /** Human title for registry lookup / Chinese error UI. */
         std::u16string_view aFallbackTitle;
         FILTER_APPLICATION eFilter;
     };
@@ -262,8 +266,8 @@ class BackingWindow : public InterimItemWindow
     void showTemplateHub(FILTER_APPLICATION eFilter);
     std::array<ScenarioTemplate, 11> getScenarioTemplates();
     void openScenarioTemplate(std::u16string_view rTemplateFileName,
-                              std::u16string_view rFallbackTitle,
-                              FILTER_APPLICATION eFilter);
+                              std::u16string_view rFallbackTitle, FILTER_APPLICATION eFilter,
+                              std::u16string_view rLegacyFileName = {});
     /// Queue AI scenario + open blank factory doc (Writer/Calc/Impress).
     void openAiDraft(std::u16string_view rScenarioId, const OUString& rFactoryUrl);
 

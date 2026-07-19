@@ -972,7 +972,7 @@
                         <property name="receives-default">True</property>
                         <property name="hexpand">True</property>
                         <property name="halign">fill</property>
-                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_report|tool_tip">从汇报模板开始，快速整理进展、问题和下一步。</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_report|tool_tip">打开高频精选「工作周报（深度）」：进展、问题与下一步。</property>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -987,7 +987,7 @@
                         <property name="receives-default">True</property>
                         <property name="hexpand">True</property>
                         <property name="halign">fill</property>
-                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_minutes|tool_tip">记录议题、结论、负责人和待办事项。</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_minutes|tool_tip">打开高频精选「会议纪要（含待办）」：议题、结论与待办。</property>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -1002,7 +1002,7 @@
                         <property name="receives-default">True</property>
                         <property name="hexpand">True</property>
                         <property name="halign">fill</property>
-                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_notice|tool_tip">创建正式通知、公告或内部说明。</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_notice|tool_tip">打开高频精选「通知公告（规范体）」。</property>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -1017,7 +1017,7 @@
                         <property name="receives-default">True</property>
                         <property name="hexpand">True</property>
                         <property name="halign">fill</property>
-                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_plan|tool_tip">搭建项目目标、范围、计划和交付说明。</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_plan|tool_tip">打开高频精选「项目方案立项书」。</property>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -1047,7 +1047,7 @@
                         <property name="receives-default">True</property>
                         <property name="hexpand">True</property>
                         <property name="halign">fill</property>
-                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_budget|tool_tip">从预算表开始汇总收入、成本和差异。</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_budget|tool_tip">打开高频精选「部门预算执行表」。</property>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -1062,7 +1062,7 @@
                         <property name="receives-default">True</property>
                         <property name="hexpand">True</property>
                         <property name="halign">fill</property>
-                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_sales|tool_tip">管理客户、阶段、金额和下一次跟进。</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_sales|tool_tip">打开高频精选「销售客户跟进表」。</property>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -1077,7 +1077,7 @@
                         <property name="receives-default">True</property>
                         <property name="hexpand">True</property>
                         <property name="halign">fill</property>
-                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_schedule|tool_tip">规划里程碑、任务、负责人和时间节点。</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_schedule|tool_tip">打开高频精选「项目进度排期表」。</property>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -1092,7 +1092,7 @@
                         <property name="receives-default">True</property>
                         <property name="hexpand">True</property>
                         <property name="halign">fill</property>
-                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_pitch|tool_tip">准备面向客户或投资人的商务演示。</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_pitch|tool_tip">打开高频精选「商业路演PPT」。</property>
                       </object>
                       <packing>
                         <property name="left-attach">2</property>
@@ -1107,7 +1107,7 @@
                         <property name="receives-default">True</property>
                         <property name="hexpand">True</property>
                         <property name="halign">fill</property>
-                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_project_report|tool_tip">用演示稿汇报项目背景、进展、风险和计划。</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_project_report|tool_tip">打开高频精选「周会汇报PPT」。</property>
                       </object>
                       <packing>
                         <property name="left-attach">2</property>
@@ -1122,7 +1122,7 @@
                         <property name="receives-default">True</property>
                         <property name="hexpand">True</property>
                         <property name="halign">fill</property>
-                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_courseware|tool_tip">创建课程讲义、培训材料或课堂演示。</property>
+                        <property name="tooltip-text" translatable="yes" context="startcenter|scenario_courseware|tool_tip">打开高频精选「内训课件PPT」。</property>
                       </object>
                       <packing>
                         <property name="left-attach">2</property>
@@ -1161,7 +1161,7 @@
                     <property name="can-focus">False</property>
                     <property name="xalign">0</property>
                     <property name="wrap">True</property>
-                    <property name="label" translatable="yes" context="startcenter|scenario_fallback_hint">未找到匹配模板，已显示相关模板。</property>
+                    <property name="label" translatable="yes" context="startcenter|scenario_fallback_hint">未找到匹配模板时，会提示中文说明并打开模板中心「高频精选」。</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="scenario_fallback_hint-atkobject">
                         <property name="AtkObject::accessible-role" translatable="no">static</property>
