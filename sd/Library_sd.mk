@@ -259,11 +259,13 @@ $(eval $(call gb_Library_add_exception_objects,sd,\
 	sd/source/ui/dlg/titledockwin \
 	sd/source/ui/dlg/unchss \
 	sd/source/ui/dlg/UndoThemeChange \
+	sd/source/ui/docshell/ChatImpressApplyBridge \
 	sd/source/ui/docshell/docshel2 \
 	sd/source/ui/docshell/docshel3 \
 	sd/source/ui/docshell/docshel4 \
 	sd/source/ui/docshell/docshell \
 	sd/source/ui/docshell/grdocsh \
+	sd/source/ui/docshell/IntelligentImpressApplyEngine \
 	sd/source/ui/docshell/sdclient \
 	sd/source/ui/framework/configuration/ChangeRequestQueue \
 	sd/source/ui/framework/configuration/ChangeRequestQueueProcessor \

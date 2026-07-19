@@ -7,7 +7,9 @@
  * (dlsym RTLD_DEFAULT — avoids gbuild MERGELIBS link cycles).
  * Calc prefers native skeleton via kqoffice_calc_apply_runtime_json (libsc)
  * for cell-replace / cell-formula; falls back to UNO DiffApplier.
- * Impress still UNO-only. Never auto-applies.
+ * Impress prefers native skeleton via kqoffice_impress_apply_runtime_json (libsd)
+ * for shape-text-replace; falls back to UNO DiffApplier (outline multi-slide).
+ * Never auto-applies.
  */
 
 #ifndef INCLUDED_KQOFFICE_SOURCE_AI_CHAT_DOCUMENTAIAPPLY_HXX
@@ -24,8 +26,8 @@ namespace kqoffice::ai::chat
 struct DocumentAIApplyResult
 {
     bool success = false;
-    // "writer-apply-engine" | "calc-apply-engine" | "uno-diff-applier" |
-    // "calc-chart-dispatch" | "none"
+    // "writer-apply-engine" | "calc-apply-engine" | "impress-apply-engine" |
+    // "uno-diff-applier" | "calc-chart-dispatch" | "none"
     OUString engine;
     OUString surface;
     OUString planId;
@@ -44,6 +46,11 @@ using WriterApplyEngineHook
 using CalcApplyEngineHook
     = bool (*)(const OUString& rRuntimeJson, OUString& rErrorOut, sal_Int32& rAppliedCount);
 
+/// Optional test/override hook. Production uses dlsym of
+/// kqoffice_impress_apply_runtime_json from loaded libsd.
+using ImpressApplyEngineHook
+    = bool (*)(const OUString& rRuntimeJson, OUString& rErrorOut, sal_Int32& rAppliedCount);
+
 class SAL_DLLPUBLIC_EXPORT DocumentAIApply
 {
 public:
@@ -53,9 +60,14 @@ public:
     static void registerCalcApplyEngineHook(CalcApplyEngineHook pHook);
     static bool hasCalcApplyEngineHook();
 
+    static void registerImpressApplyEngineHook(ImpressApplyEngineHook pHook);
+    static bool hasImpressApplyEngineHook();
+
     static OUString chatPlanToWriterRuntimeJson(const ApplyPlan& rPlan);
     /// C1 schema: v1-calc-runtime-1 patches cell-replace / cell-formula.
     static OUString chatPlanToCalcRuntimeJson(const ApplyPlan& rPlan);
+    /// I1 schema: v1-impress-runtime-1 patches shape-text-replace (+ slide-insert token).
+    static OUString chatPlanToImpressRuntimeJson(const ApplyPlan& rPlan);
 
     static DocumentAIApplyResult applyApproved(const ApplyPlan& rPlan);
     static DocumentAIApplyResult applyApprovedWithRawFallback(const ApplyPlan& rPlan,

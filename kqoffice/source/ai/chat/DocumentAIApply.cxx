@@ -28,6 +28,7 @@ namespace
 {
 WriterApplyEngineHook g_writerHook = nullptr;
 CalcApplyEngineHook g_calcHook = nullptr;
+ImpressApplyEngineHook g_impressHook = nullptr;
 
 void appendJsonEscaped(OUStringBuffer& b, const OUString& s)
 {
@@ -100,6 +101,14 @@ bool looksLikeCalcRuntimeJson(const OUString& s)
                || s.indexOf(u"cell-formula"_ustr) >= 0);
 }
 
+bool looksLikeImpressRuntimeJson(const OUString& s)
+{
+    return s.indexOf(u"v1-impress-runtime-1"_ustr) >= 0
+           && (s.indexOf(u"\"patches\""_ustr) >= 0
+               || s.indexOf(u"shape-text-replace"_ustr) >= 0
+               || s.indexOf(u"slide-insert"_ustr) >= 0);
+}
+
 OUString toCalcCellRef(const OUString& rTarget)
 {
     OUString s = rTarget.trim();
@@ -134,6 +143,14 @@ OUString calcPatchKindForOp(const DiffOperation& op)
     if (op.opType == u"delete"_ustr)
         return u"cell-replace"_ustr;
     return OUString();
+}
+
+/// True when target is slide:N:shape:M (I1 native shape-text-replace only).
+bool isImpressShapeTarget(const OUString& rTarget)
+{
+    if (!rTarget.startsWith(u"slide:"_ustr))
+        return false;
+    return rTarget.indexOf(u":shape:"_ustr) >= 0;
 }
 
 using CApplyFn = sal_Bool (*)(const sal_Unicode*, sal_Int32, sal_Unicode*, sal_Int32, sal_Int32*);
@@ -190,6 +207,14 @@ bool tryCalcApplyViaDlsym(const OUString& rRuntimeJson, OUString& rErrorOut,
                             u"calc-apply-failed"_ustr);
 }
 
+bool tryImpressApplyViaDlsym(const OUString& rRuntimeJson, OUString& rErrorOut,
+                             sal_Int32& rAppliedCount)
+{
+    return tryApplyViaDlsym("kqoffice_impress_apply_runtime_json", rRuntimeJson, rErrorOut,
+                            rAppliedCount, u"impress-apply-symbol-not-loaded"_ustr,
+                            u"impress-apply-failed"_ustr);
+}
+
 bool callWriterApply(const OUString& rRuntimeJson, OUString& rErrorOut, sal_Int32& rAppliedCount)
 {
     if (g_writerHook)
@@ -202,6 +227,13 @@ bool callCalcApply(const OUString& rRuntimeJson, OUString& rErrorOut, sal_Int32&
     if (g_calcHook)
         return g_calcHook(rRuntimeJson, rErrorOut, rAppliedCount);
     return tryCalcApplyViaDlsym(rRuntimeJson, rErrorOut, rAppliedCount);
+}
+
+bool callImpressApply(const OUString& rRuntimeJson, OUString& rErrorOut, sal_Int32& rAppliedCount)
+{
+    if (g_impressHook)
+        return g_impressHook(rRuntimeJson, rErrorOut, rAppliedCount);
+    return tryImpressApplyViaDlsym(rRuntimeJson, rErrorOut, rAppliedCount);
 }
 } // namespace
 
@@ -232,6 +264,22 @@ bool DocumentAIApply::hasCalcApplyEngineHook()
         return true;
 #if KQOFFICE_HAVE_DLSYM
     return dlsym(RTLD_DEFAULT, "kqoffice_calc_apply_runtime_json") != nullptr;
+#else
+    return false;
+#endif
+}
+
+void DocumentAIApply::registerImpressApplyEngineHook(ImpressApplyEngineHook pHook)
+{
+    g_impressHook = pHook;
+}
+
+bool DocumentAIApply::hasImpressApplyEngineHook()
+{
+    if (g_impressHook)
+        return true;
+#if KQOFFICE_HAVE_DLSYM
+    return dlsym(RTLD_DEFAULT, "kqoffice_impress_apply_runtime_json") != nullptr;
 #else
     return false;
 #endif
@@ -386,12 +434,76 @@ OUString DocumentAIApply::chatPlanToCalcRuntimeJson(const ApplyPlan& rPlan)
     return b.makeStringAndClear();
 }
 
+OUString DocumentAIApply::chatPlanToImpressRuntimeJson(const ApplyPlan& rPlan)
+{
+    if (rPlan.operations.empty())
+        return OUString();
+
+    const OUString planId
+        = rPlan.planId.isEmpty() ? u"ap-chat-impress-apply"_ustr : rPlan.planId;
+
+    OUStringBuffer b;
+    b.append(u"{\n");
+    b.append(u"  \"schema_version\": \"v1-impress-runtime-1\",\n");
+    b.append(u"  \"plan_id\": \"");
+    appendJsonEscaped(b, planId);
+    b.append(u"\",\n");
+    b.append(u"  \"preview_only\": false,\n");
+    b.append(u"  \"patches\": [\n");
+
+    sal_Int32 nPatch = 0;
+    for (sal_Int32 i = 0; i < static_cast<sal_Int32>(rPlan.operations.size()); ++i)
+    {
+        const DiffOperation& op = rPlan.operations[static_cast<size_t>(i)];
+        // I1 native path: shape-text-replace only (replace/insert on shape targets).
+        // Bare slide:N insert/outline stays for UNO DiffApplier fallback.
+        if (!isImpressShapeTarget(op.target))
+            continue;
+        if (op.opType == u"format"_ustr || op.opType == u"delete"_ustr
+            || op.opType == u"chart_insert"_ustr)
+            continue;
+        if (!(op.opType == u"replace"_ustr || op.opType == u"insert"_ustr || op.opType.isEmpty()))
+            continue;
+
+        if (nPatch > 0)
+            b.append(u",\n");
+
+        b.append(u"    {\n");
+        b.append(u"      \"patch_id\": \"p");
+        b.append(nPatch + 1);
+        b.append(u"\",\n");
+        b.append(u"      \"kind\": \"shape-text-replace\",\n");
+        b.append(u"      \"target\": \"");
+        appendJsonEscaped(b, op.target);
+        b.append(u"\",\n");
+        if (!op.oldText.isEmpty())
+        {
+            b.append(u"      \"before\": \"");
+            appendJsonEscaped(b, op.oldText);
+            b.append(u"\",\n");
+        }
+        b.append(u"      \"after\": \"");
+        appendJsonEscaped(b, op.newText);
+        b.append(u"\"\n");
+        b.append(u"    }");
+        ++nPatch;
+    }
+
+    if (nPatch == 0)
+        return OUString();
+
+    b.append(u"\n  ]\n}\n");
+    return b.makeStringAndClear();
+}
+
 OUString DocumentAIApply::userFacingEngineZh(const OUString& rEngine)
 {
     if (rEngine == u"writer-apply-engine"_ustr)
         return u"Writer 原生写回"_ustr;
     if (rEngine == u"calc-apply-engine"_ustr)
         return u"Calc 原生骨架写回"_ustr;
+    if (rEngine == u"impress-apply-engine"_ustr)
+        return u"Impress 原生骨架写回"_ustr;
     if (rEngine == u"uno-diff-applier"_ustr)
         return u"UNO 轻量写回"_ustr;
     if (rEngine == u"calc-chart-dispatch"_ustr)
@@ -431,7 +543,7 @@ OUString DocumentAIApply::userFacingErrorZh(const OUString& rError, const OUStri
         if (rSurface == u"calc"_ustr)
             return u"写回失败 · 表格优先 Calc 原生骨架（cell-replace/cell-formula），否则 UNO 轻量写回"_ustr;
         if (rSurface == u"impress"_ustr)
-            return u"写回失败 · 当前应用仅支持 UNO 轻量写回（无原生 ApplyEngine）"_ustr;
+            return u"写回失败 · 演示优先 Impress 原生骨架（shape-text-replace），否则 UNO 轻量写回（大纲成片）"_ustr;
         if (rEngine == u"uno-diff-applier"_ustr)
             return u"UNO 写回失败 · 主文档未改"_ustr;
         return u"写回失败 · 主文档未改"_ustr;
@@ -454,8 +566,16 @@ OUString DocumentAIApply::userFacingErrorZh(const OUString& rError, const OUStri
         return u"Calc 原生骨架写回失败 · 已尝试或将尝试 UNO 轻量写回"_ustr;
     if (s.indexOf(u"no-active-calc-docshell"_ustr) >= 0)
         return u"当前不是表格文档 · 无法使用 Calc 原生写回骨架"_ustr;
+    if (s.indexOf(u"impress-apply-symbol-not-loaded"_ustr) >= 0)
+        return u"Impress 原生骨架未加载 · 将尝试 UNO 轻量写回"_ustr;
+    if (s.indexOf(u"impress-apply-failed"_ustr) >= 0
+        || s.indexOf(u"impress-apply-status="_ustr) >= 0)
+        return u"Impress 原生骨架写回失败 · 已尝试或将尝试 UNO 轻量写回"_ustr;
+    if (s.indexOf(u"no-active-impress-docshell"_ustr) >= 0)
+        return u"当前不是演示文档 · 无法使用 Impress 原生写回骨架"_ustr;
     if (s.indexOf(u"calc-runtime-json-parse-failed"_ustr) >= 0
         || s.indexOf(u"writer-runtime-json-parse-failed"_ustr) >= 0
+        || s.indexOf(u"impress-runtime-json-parse-failed"_ustr) >= 0
         || s.indexOf(u"empty-runtime-json"_ustr) >= 0)
         return u"写回计划解析失败"_ustr;
     if (s.indexOf(u"preview-only-plan-blocked"_ustr) >= 0)
@@ -476,7 +596,7 @@ OUString DocumentAIApply::userFacingErrorZh(const OUString& rError, const OUStri
     if (s.indexOf(u"expected cell:"_ustr) >= 0 || s.indexOf(u"Calc "_ustr) >= 0)
         return u"表格写回失败 · 目标须为单元格（如 cell:A1）；暂无原生 Calc ApplyEngine 全量能力（C1 仅 cell-replace/cell-formula 骨架）"_ustr;
     if (s.indexOf(u"expected slide:"_ustr) >= 0 || s.indexOf(u"Impress "_ustr) >= 0)
-        return u"演示写回失败 · 目标须为幻灯/形状；暂无原生 Impress ApplyEngine"_ustr;
+        return u"演示写回失败 · 目标须为幻灯/形状；I1 原生骨架仅 shape-text-replace（暂无原生 Impress ApplyEngine 全量）"_ustr;
     if (s.indexOf(u"Writer "_ustr) >= 0 || s.indexOf(u"para:"_ustr) >= 0)
         return u"文字写回失败 · 请检查段落目标后重试"_ustr;
     if (s.indexOf(u"No operation to undo"_ustr) >= 0)
@@ -599,6 +719,42 @@ DocumentAIApplyResult DocumentAIApply::applyApprovedWithRawFallback(
             }
             SAL_WARN("kqoffice.ai.chat",
                      "DocumentAIApply: calc engine failed: " << err
+                     << " — falling back to UNO DiffApplier");
+            out.error = err;
+        }
+    }
+
+    // Impress: prefer native I1 skeleton (shape-text-replace) via C ABI.
+    // Outline multi-slide / bare slide:N insert falls through to UNO when conversion
+    // yields empty runtime JSON or native returns unsupported/fail.
+    if (out.surface == u"impress"_ustr)
+    {
+        OUString runtimeJson;
+        if (looksLikeImpressRuntimeJson(rRawProviderContent))
+            runtimeJson = rRawProviderContent;
+        else if (looksLikeImpressRuntimeJson(rPlan.rawOutput))
+            runtimeJson = rPlan.rawOutput;
+        else
+            runtimeJson = chatPlanToImpressRuntimeJson(rPlan);
+
+        if (!runtimeJson.isEmpty())
+        {
+            OUString err;
+            sal_Int32 applied = 0;
+            if (callImpressApply(runtimeJson, err, applied))
+            {
+                out.success = true;
+                out.engine = u"impress-apply-engine"_ustr;
+                out.appliedCount = applied;
+                out.error.clear();
+                out.evidenceNote = u"impress-apply-engine plan="_ustr + out.planId
+                                   + u" applied="_ustr + OUString::number(applied)
+                                   + u" schema=v1-impress-runtime-1"_ustr;
+                SAL_INFO("kqoffice.ai.chat", out.evidenceNote);
+                return out;
+            }
+            SAL_WARN("kqoffice.ai.chat",
+                     "DocumentAIApply: impress engine failed: " << err
                      << " — falling back to UNO DiffApplier");
             out.error = err;
         }

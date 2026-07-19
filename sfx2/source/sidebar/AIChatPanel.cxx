@@ -2948,7 +2948,7 @@ void AIChatPanel::UpdatePendingPlanChip()
         if (surface == u"calc"_ustr)
             tip += u"\n表格：Calc 原生骨架（cell-replace/cell-formula）优先，失败回退 UNO 轻量写回；图表向导"_ustr;
         else if (surface == u"impress"_ustr)
-            tip += u"\n演示：UNO 轻量写回（大纲成片/形状文案；无原生 ApplyEngine）"_ustr;
+            tip += u"\n演示：Impress 原生骨架（shape-text-replace）优先，失败回退 UNO 大纲成片/形状文案"_ustr;
         else if (surface == u"writer"_ustr)
             tip += u"\n文字：优先 Writer 原生写回引擎（undo 分组）"_ustr;
         m_xPendingPlanChip->set_tooltip_text(tip);
@@ -4131,7 +4131,9 @@ void AIChatPanel::StagePendingApplyPlan(const OUString& rProviderContent,
     const bool bWriterEngine
         = kqoffice::ai::chat::DocumentAIApply::hasWriterApplyEngineHook();
     const bool bCalcEngine = kqoffice::ai::chat::DocumentAIApply::hasCalcApplyEngineHook();
-    // Honest engine path by surface (Writer native; Calc C1 skeleton; Impress UNO-only).
+    const bool bImpressEngine
+        = kqoffice::ai::chat::DocumentAIApply::hasImpressApplyEngineHook();
+    // Honest engine path by surface (Writer native; Calc C1 / Impress I1 skeleton).
     OUString enginePathToken;
     OUString enginePathZh;
     if (m_aPendingPlan.planId == u"ap-chart-insert"_ustr
@@ -4158,8 +4160,18 @@ void AIChatPanel::StagePendingApplyPlan(const OUString& rProviderContent,
     }
     else if (sel.surface == u"impress"_ustr)
     {
-        enginePathToken = u"uno-diff-applier"_ustr;
-        enginePathZh = u"演示 · UNO 轻量写回（无原生 Impress ApplyEngine；大纲/幻灯文案）"_ustr;
+        if (bImpressEngine)
+        {
+            enginePathToken = u"impress-apply-engine"_ustr;
+            enginePathZh = u"演示 · Impress 原生骨架写回（shape-text-replace；"
+                           "失败回退 UNO 大纲成片/幻灯文案）"_ustr;
+        }
+        else
+        {
+            enginePathToken = u"uno-diff-applier"_ustr;
+            enginePathZh
+                = u"演示 · UNO 轻量写回（无原生 Impress ApplyEngine；大纲/幻灯文案）"_ustr;
+        }
     }
     else
     {
@@ -4177,6 +4189,8 @@ void AIChatPanel::StagePendingApplyPlan(const OUString& rProviderContent,
                          + (bWriterEngine ? u"ready"_ustr : u"fallback-uno"_ustr)
                          + u" calc-engine="_ustr
                          + (bCalcEngine ? u"skeleton-ready"_ustr : u"fallback-uno"_ustr)
+                         + u" impress-engine="_ustr
+                         + (bImpressEngine ? u"skeleton-ready"_ustr : u"fallback-uno"_ustr)
                          + u" awaiting-approval=true main-document-mutation=false "
                            "explicit-human-approval-required=true · "_ustr
                          + enginePathZh);
