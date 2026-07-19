@@ -20,6 +20,10 @@
 #include <config_folders.h>
 #include <config_features.h>
 
+#include <chrono>
+#include <cstdio>
+#include <cstdlib>
+
 #include <rtl/bootstrap.hxx>
 #include <rtl/ustring.hxx>
 #include <sal/log.hxx>
@@ -402,17 +406,42 @@ bool Desktop::CheckExtensionDependencies()
 
 void Desktop::SynchronizeExtensionRepositories(bool bCleanedExtensionCache, Desktop* pDesktop)
 {
+    // Sub-segment wall clock for W11-B dual-Main profiling (stderr only).
+    const bool bKqStartupTiming = (std::getenv("KQOFFICE_STARTUP_TIMING") != nullptr);
+    auto kqExtSeg
+        = [bKqStartupTiming](std::chrono::high_resolution_clock::time_point& startTp,
+                             const char* message)
+    {
+        const auto endTp = std::chrono::high_resolution_clock::now();
+        auto tMs = std::chrono::duration_cast<std::chrono::milliseconds>(endTp - startTp);
+        if (bKqStartupTiming)
+        {
+            fprintf(stderr, "kqoffice.startuptime %s%lld ms\n", message,
+                    static_cast<long long>(tMs.count()));
+            fflush(stderr);
+        }
+        startTp = std::chrono::high_resolution_clock::now();
+    };
+    auto tExt = std::chrono::high_resolution_clock::now();
+
     const uno::Reference< uno::XComponentContext >& context(
         comphelper::getProcessComponentContext());
     uno::Reference< ucb::XCommandEnvironment > silent(
         new SilentCommandEnv(context, pDesktop));
     if (bCleanedExtensionCache) {
+        if (bKqStartupTiming)
+        {
+            fprintf(stderr, "kqoffice.startuptime Main.extSync.branch: reinstall+restart\n");
+            fflush(stderr);
+        }
         deployment::ExtensionManager::get(context)->reinstallDeployedExtensions(
             true, u"user"_ustr, Reference<task::XAbortChannel>(), silent);
+        kqExtSeg(tExt, "Main.extSync.reinstallDeployedExtensions: ");
 #if !HAVE_FEATURE_MACOSX_SANDBOX
         if (!comphelper::LibreOfficeKit::isActive())
             task::OfficeRestartManager::get(context)->requestRestart(
                 silent->getInteractionHandler());
+        kqExtSeg(tExt, "Main.extSync.requestRestart: ");
 #endif
     } else {
         // reinstallDeployedExtensions above already calls syncRepositories internally
@@ -423,7 +452,13 @@ void Desktop::SynchronizeExtensionRepositories(bool bCleanedExtensionCache, Desk
         // cleaned extension cache (branch above) or DISABLE_EXTENSION_SYNCHRONIZATION.
         // Stock LO used force=true to heal rare broken registrations; that cost
         // dominates first paint when many bundled dict extensions are present.
+        if (bKqStartupTiming)
+        {
+            fprintf(stderr, "kqoffice.startuptime Main.extSync.branch: stamp-gated-sync\n");
+            fflush(stderr);
+        }
         dp_misc::syncRepositories(/*force=*/false, silent);
+        kqExtSeg(tExt, "Main.extSync.syncRepositories: ");
     }
 }
 

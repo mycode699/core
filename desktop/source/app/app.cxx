@@ -1520,9 +1520,21 @@ int Desktop::Main()
     }
 #endif
 
+    // progress(40)→(50) sub-segments (KQOFFICE_STARTUP_TIMING=1).
+    // Keys are stable English identifiers for W11-B dual-Main flame tables.
+    // Cumulative progress(50) record below is preserved for W5/W9/W10 parsers.
+    auto tP50seg = std::chrono::high_resolution_clock::now();
+    if (bKqStartupTiming)
+    {
+        fprintf(stderr, "kqoffice.startuptime Main.extCache.cleaned: %s\n",
+                m_bCleanedExtensionCache ? "true" : "false");
+        fflush(stderr);
+    }
+
     // create service for loading SFX (still needed in startup)
     pExecGlobals->xGlobalBroadcaster = Reference < css::document::XDocumentEventListener >
         ( css::frame::theGlobalEventBroadcaster::get(xContext), UNO_SET_THROW );
+    recordTime(tP50seg, "Main.globalBroadcaster: ");
 
     /* ensure existence of a default window that messages can be dispatched to
        This is for the benefit of testtool which uses PostUserEvent extensively
@@ -1530,28 +1542,34 @@ int Desktop::Main()
        the main thread is not yet in the event loop.
     */
     Application::GetDefaultDevice();
+    recordTime(tP50seg, "Main.GetDefaultDevice: ");
 
 #if HAVE_FEATURE_EXTENSIONS
     // Check if bundled or shared extensions were added /removed
     // and process those extensions (has to be done before checking
     // the extension dependencies!
     SynchronizeExtensionRepositories(m_bCleanedExtensionCache, this);
+    recordTime(tP50seg, "Main.SynchronizeExtensionRepositories: ");
     bool bAbort = CheckExtensionDependencies();
+    recordTime(tP50seg, "Main.CheckExtensionDependencies: ");
     if ( bAbort )
         return EXIT_FAILURE;
 
     if (inst_fin == userinstall::CREATED)
     {
         Migration::migrateSettingsIfNecessary();
+        recordTime(tP50seg, "Main.Migration: ");
     }
 #endif
 
     // keep a language options instance...
     pExecGlobals->pCTLLanguageOptions.reset( new SvtCTLOptions(true));
+    recordTime(tP50seg, "Main.SvtCTLOptions: ");
 
     css::document::DocumentEvent aEvent;
     aEvent.EventName = "OnStartApp";
     pExecGlobals->xGlobalBroadcaster->documentEventOccured(aEvent);
+    recordTime(tP50seg, "Main.OnStartApp: ");
 
     SetSplashScreenProgress(50);
     recordTime(startT, "SetSplashScreenProgress(50): time = ");
@@ -1561,7 +1579,17 @@ int Desktop::Main()
     bool bExistsRecoveryData = false;
     bool bExistsSessionData  = false;
 
+    auto tPost50 = std::chrono::high_resolution_clock::now();
     impl_checkRecoveryState(bCrashed, bExistsRecoveryData, bExistsSessionData);
+    recordTime(tPost50, "Main.impl_checkRecoveryState: ");
+    if (bKqStartupTiming)
+    {
+        fprintf(stderr,
+                "kqoffice.startuptime Main.recoveryFlags: crashed=%s recovery=%s session=%s\n",
+                bCrashed ? "1" : "0", bExistsRecoveryData ? "1" : "0",
+                bExistsSessionData ? "1" : "0");
+        fflush(stderr);
+    }
 
     OUString pidfileName = rCmdLineArgs.GetPidfileName();
     if ( !pidfileName.isEmpty() )
@@ -1596,6 +1624,12 @@ int Desktop::Main()
     }
 
     pExecGlobals->bRestartRequested = xRestartManager->isRestartRequested(true);
+    if (bKqStartupTiming)
+    {
+        fprintf(stderr, "kqoffice.startuptime Main.restartRequested: %s\n",
+                pExecGlobals->bRestartRequested ? "true" : "false");
+        fflush(stderr);
+    }
     if ( !pExecGlobals->bRestartRequested )
     {
         if ((!rCmdLineArgs.WantsToLoadDocument() && !rCmdLineArgs.IsInvisible() && !rCmdLineArgs.IsHeadless() && !rCmdLineArgs.IsQuickstart()) &&
