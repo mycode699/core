@@ -46,6 +46,12 @@ public:
     static DocumentAIApplyResult applyApproved(const ApplyPlan& rPlan);
     static DocumentAIApplyResult applyApprovedWithRawFallback(const ApplyPlan& rPlan,
                                                               const OUString& rRawProviderContent);
+
+    /// User-facing Chinese labels for engine / surface / apply errors (honest parity copy).
+    static OUString userFacingEngineZh(const OUString& rEngine);
+    static OUString userFacingSurfaceZh(const OUString& rSurface);
+    static OUString userFacingErrorZh(const OUString& rError, const OUString& rEngine = OUString(),
+                                      const OUString& rSurface = OUString());
 };
 
 } // namespace kqoffice::ai::chat

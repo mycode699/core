@@ -679,8 +679,9 @@ bool AIInlineEditPopover::applyPreview()
         = kqoffice::ai::chat::DocumentAIApply::applyApprovedWithRawFallback(plan, m_sPreviewText);
     if (!result.success)
     {
-        m_xStatus->set_label(u"写回失败："_ustr
-                             + (result.error.isEmpty() ? result.engine : result.error)
+        const OUString sFailZh = kqoffice::ai::chat::DocumentAIApply::userFacingErrorZh(
+            result.error, result.engine, result.surface);
+        m_xStatus->set_label(u"写回失败："_ustr + sFailZh
                              + u" · 主文档未改 · 可改指令后重试"_ustr);
         return false;
     }
@@ -703,8 +704,12 @@ bool AIInlineEditPopover::applyPreview()
         }
 #endif
     }
-    m_xStatus->set_label(u"已批准写回 · 可撤销（Ctrl/Cmd+Z）· 差异审阅已打开 · "_ustr
-                         + result.engine + u" · "_ustr + m_aSel.surface);
+    m_xStatus->set_label(
+        u"已批准写回 · 可撤销（Ctrl/Cmd+Z）· 差异审阅已打开 · "_ustr
+        + kqoffice::ai::chat::DocumentAIApply::userFacingEngineZh(result.engine) + u" · "_ustr
+        + kqoffice::ai::chat::DocumentAIApply::userFacingSurfaceZh(result.surface.isEmpty()
+                                                                       ? m_aSel.surface
+                                                                       : result.surface));
     return true;
 }
 

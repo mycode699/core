@@ -226,15 +226,21 @@ bool AgentChatDiffExtractor::validate(const ApplyPlan& plan)
             return false;
         }
 
-        // Validate opType is one of the known types
+        // Known types: insert/delete/replace/format + chart_insert (Calc wizard,
+        // no cell mutation until DocumentAIApply dispatches InsertObjectChart).
         if (op.opType != u"insert"_ustr && op.opType != u"delete"_ustr
-            && op.opType != u"replace"_ustr && op.opType != u"format"_ustr)
+            && op.opType != u"replace"_ustr && op.opType != u"format"_ustr
+            && op.opType != u"chart_insert"_ustr)
         {
             SAL_WARN("kqoffice.ai.chat",
                      "Plan validation failed: operation[" << i << "] unknown opType: "
                          << op.opType);
             return false;
         }
+
+        // chart_insert only needs a target (selection/cell/range); newText is advice.
+        if (op.opType == u"chart_insert"_ustr)
+            continue;
 
         // For replace/insert, newText should not be empty
         if ((op.opType == u"insert"_ustr || op.opType == u"replace"_ustr) && op.newText.isEmpty())

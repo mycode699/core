@@ -350,6 +350,7 @@ BackingWindow::BackingWindow(vcl::Window* i_pParent)
     , mxLocalView()
     , mxLocalViewWin()
     , mbLocalViewInitialized(false)
+    , maDeferredSecondaryInitIdle("BackingWindow DeferredSecondaryInit")
     , mbInitControls(false)
     , maFileWorkbenchPollTimer("FileWorkbenchPoll")
 {
@@ -410,8 +411,9 @@ void BackingWindow::dispose()
 {
     // Cancel deferred secondary init before tearing down weld widgets.
     // Without this, --writer / direct factory launch disposes the Start Center
-    // while a PostUserEvent is still queued → null-deref / Abort in
-    // DeferredSecondaryInitHdl (W2-A/W2-B P0).
+    // while Idle/PostUserEvent is still pending → null-deref / Abort in
+    // DeferredSecondaryInitHdl (W2-A/W2-B P0; W3-A RemoveUserEvent guard).
+    maDeferredSecondaryInitIdle.Stop();
     if (mpDeferredSecondaryInitEvent)
     {
         Application::RemoveUserEvent(mpDeferredSecondaryInitEvent);
@@ -627,17 +629,32 @@ void BackingWindow::initControls()
     showFileWorkbenchPane(false);
 
     // Single deferred wave: style, modules, secondary handlers, content hydrate.
-    // bReferenceLink keeps a VclPtr on this window until the event runs or is removed.
-    // dispose() must still RemoveUserEvent — dispose nulls weld widgets while the
-    // object may still be alive under the reference.
+    // Default: Idle DEFAULT_IDLE so work runs after high-priority paint (W5-B:
+    // PostUserEvent logged before firstPaint). Escape hatch: KQOFFICE_DEFSEC_IDLE=0
+    // restores PostUserEvent (W3-A / W5 path). dispose() cancels either path.
+    maDeferredSecondaryInitIdle.Stop();
     if (mpDeferredSecondaryInitEvent)
     {
         Application::RemoveUserEvent(mpDeferredSecondaryInitEvent);
         mpDeferredSecondaryInitEvent = nullptr;
     }
-    mpDeferredSecondaryInitEvent = Application::PostUserEvent(
-        LINK(this, BackingWindow, DeferredSecondaryInitHdl), nullptr, true);
-    KqStartupTimeLog("BackingWindow.initControls.postUserEvent: ", KqStartupElapsedMs(tSeg));
+    const char* pDefSecIdle = std::getenv("KQOFFICE_DEFSEC_IDLE");
+    const bool bUseIdle = !(pDefSecIdle && pDefSecIdle[0] == '0' && pDefSecIdle[1] == '\0');
+    if (bUseIdle)
+    {
+        maDeferredSecondaryInitIdle.SetPriority(TaskPriority::DEFAULT_IDLE);
+        maDeferredSecondaryInitIdle.SetInvokeHandler(
+            LINK(this, BackingWindow, DeferredSecondaryInitIdleHdl));
+        maDeferredSecondaryInitIdle.Start();
+        KqStartupTimeLog("BackingWindow.initControls.idleSchedule: ", KqStartupElapsedMs(tSeg));
+    }
+    else
+    {
+        // bReferenceLink keeps VclPtr until run/remove; still RemoveUserEvent in dispose.
+        mpDeferredSecondaryInitEvent = Application::PostUserEvent(
+            LINK(this, BackingWindow, DeferredSecondaryInitHdl), nullptr, true);
+        KqStartupTimeLog("BackingWindow.initControls.postUserEvent: ", KqStartupElapsedMs(tSeg));
+    }
     KqStartupTimeLog("BackingWindow.initControls.total: ", KqStartupElapsedMs(tInit));
 }
 
@@ -1153,11 +1170,21 @@ IMPL_LINK_NOARG(BackingWindow, DeferredTemplateInitHdl, void*, void)
     applyFilter();
 }
 
+IMPL_LINK_NOARG(BackingWindow, DeferredSecondaryInitIdleHdl, Timer*, void)
+{
+    maDeferredSecondaryInitIdle.Stop();
+    runDeferredSecondaryInit();
+}
+
 IMPL_LINK_NOARG(BackingWindow, DeferredSecondaryInitHdl, void*, void)
 {
-    // Event is being dispatched; clear id so dispose() does not double-remove.
+    // PostUserEvent path (KQOFFICE_DEFSEC_IDLE=0); clear id so dispose won't double-remove.
     mpDeferredSecondaryInitEvent = nullptr;
+    runDeferredSecondaryInit();
+}
 
+void BackingWindow::runDeferredSecondaryInit()
+{
     // Start Center often disposed before first idle when launching with
     // --writer/--calc/etc. Never touch weld widgets after dispose.
     if (isDisposed() || mbSecondaryInitDone)
@@ -1167,7 +1194,7 @@ IMPL_LINK_NOARG(BackingWindow, DeferredSecondaryInitHdl, void*, void)
         return;
     mbSecondaryInitDone = true;
     const auto tSec = std::chrono::high_resolution_clock::now();
-    // Mark that first paint path has reached secondary wave (not wall-clock to paint).
+    // Idle DEFAULT_IDLE: first paint should already have run (W5-B / W6-B).
     KqStartupTimeLog("BackingWindow.DeferredSecondaryInit.begin: ", 0);
 
     // Module availability (config) — after first paint.

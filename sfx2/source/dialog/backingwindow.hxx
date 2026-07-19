@@ -27,6 +27,7 @@
 #include <vcl/weld/Entry.hxx>
 #include <vcl/weld/MenuButton.hxx>
 #include <vcl/weld/TreeView.hxx>
+#include <vcl/idle.hxx>
 #include <vcl/timer.hxx>
 
 struct ImplSVEvent;
@@ -156,7 +157,9 @@ class BackingWindow : public InterimItemWindow
 
     bool mbLocalViewInitialized;
     bool mbSecondaryInitDone = false;
-    /// Pending PostUserEvent for DeferredSecondaryInitHdl; cleared in handler / dispose.
+    /// Idle (DEFAULT_IDLE) for DeferredSecondaryInitHdl — after first paint; Stop in dispose.
+    Idle maDeferredSecondaryInitIdle;
+    /// Fallback PostUserEvent id when KQOFFICE_DEFSEC_IDLE=0; cleared in handler / dispose.
     ImplSVEvent* mpDeferredSecondaryInitEvent = nullptr;
 
     /// Drop targets registered for open-file (recent + local view + workbench tree).
@@ -213,8 +216,10 @@ class BackingWindow : public InterimItemWindow
     DECL_LINK(DeferredRecentReloadHdl, void*, void);
     /// Populate template LocalView (disk scan + thumbnails) after first paint.
     DECL_LINK(DeferredTemplateInitHdl, void*, void);
-    /// Wire secondary handlers + style + content after first paint.
+    /// Wire secondary handlers + style + content after first paint (Idle or PostUserEvent).
+    DECL_LINK(DeferredSecondaryInitIdleHdl, Timer*, void);
     DECL_LINK(DeferredSecondaryInitHdl, void*, void);
+    void runDeferredSecondaryInit();
     DECL_LINK(TemplateSearchHdl, weld::Entry&, void);
     DECL_LINK(TemplateCategoryHdl, weld::ComboBox&, void);
     DECL_LINK(TemplateMarketActivateHdl, weld::TreeView&, bool);

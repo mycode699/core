@@ -1365,6 +1365,9 @@ ApplyResult dispatchByDocType(
             return writerReplace(doc, op.target, op.newText);
         if (op.opType == u"format"_ustr)
             return writerFormat(doc, op.target, op.newText);
+        ApplyResult r;
+        r.error = u"Unsupported operation for writer: "_ustr + op.opType;
+        return r;
     }
 
     if (docType == u"calc"_ustr)
@@ -1377,6 +1380,14 @@ ApplyResult dispatchByDocType(
             r.error = u"Calc document does not support XSpreadsheetDocument"_ustr;
             return r;
         }
+        // chart_insert is handled by DocumentAIApply (wizard dispatch), not UNO cell ops.
+        if (op.opType == u"chart_insert"_ustr)
+        {
+            ApplyResult r;
+            r.error = u"Unsupported operation for calc: chart_insert "
+                      u"(use DocumentAIApply calc-chart-dispatch)"_ustr;
+            return r;
+        }
         if (op.opType == u"insert"_ustr)
             return calcInsert(doc, op.target, op.newText);
         if (op.opType == u"delete"_ustr)
@@ -1385,6 +1396,9 @@ ApplyResult dispatchByDocType(
             return calcReplace(doc, op.target, op.newText);
         if (op.opType == u"format"_ustr)
             return calcFormat(doc, op.target, op.newText);
+        ApplyResult r;
+        r.error = u"Unsupported operation for calc: "_ustr + op.opType;
+        return r;
     }
 
     if (docType == u"impress"_ustr)
@@ -1405,6 +1419,9 @@ ApplyResult dispatchByDocType(
             return impressReplace(supp, op.target, op.newText);
         if (op.opType == u"format"_ustr)
             return impressFormat(supp, op.target, op.newText);
+        ApplyResult r;
+        r.error = u"Unsupported operation for impress: "_ustr + op.opType;
+        return r;
     }
 
     ApplyResult r;

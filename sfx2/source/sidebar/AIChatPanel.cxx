@@ -2941,8 +2941,18 @@ void AIChatPanel::UpdatePendingPlanChip()
         m_xPendingPlanChip->set_tooltip_text(
             u"点击跳到「审核」页。批准后打开「插入图表」向导（需显式批准）"_ustr);
     else
-        m_xPendingPlanChip->set_tooltip_text(
-            u"点击跳到「审核」页 · 可用「批准写回 / 查看 Diff / 拒绝」"_ustr);
+    {
+        const OUString surface
+            = kqoffice::ai::chat::AgentChatSelectionCapture::captureCurrent().surface;
+        OUString tip = u"点击跳到「审核」页 · 可用「批准写回 / 查看 Diff / 拒绝」"_ustr;
+        if (surface == u"calc"_ustr)
+            tip += u"\n表格：UNO 轻量写回（单元格/公式/图表向导；无原生 ApplyEngine）"_ustr;
+        else if (surface == u"impress"_ustr)
+            tip += u"\n演示：UNO 轻量写回（大纲成片/形状文案；无原生 ApplyEngine）"_ustr;
+        else if (surface == u"writer"_ustr)
+            tip += u"\n文字：优先 Writer 原生写回引擎（undo 分组）"_ustr;
+        m_xPendingPlanChip->set_tooltip_text(tip);
+    }
 }
 
 void AIChatPanel::UpdateApprovalChrome()
@@ -4120,20 +4130,50 @@ void AIChatPanel::StagePendingApplyPlan(const OUString& rProviderContent,
     m_sPendingEvidenceId = rEvidenceId;
     const bool bWriterEngine
         = kqoffice::ai::chat::DocumentAIApply::hasWriterApplyEngineHook();
+    // Honest engine path by surface (Writer native vs Calc/Impress UNO-only).
+    OUString enginePathToken;
+    OUString enginePathZh;
+    if (m_aPendingPlan.planId == u"ap-chart-insert"_ustr
+        || (!m_aPendingPlan.operations.empty()
+            && m_aPendingPlan.operations.front().opType == u"chart_insert"_ustr))
+    {
+        enginePathToken = u"calc-chart-dispatch"_ustr;
+        enginePathZh = u"批准后打开插入图表向导（须显式批准）"_ustr;
+    }
+    else if (sel.surface == u"calc"_ustr)
+    {
+        enginePathToken = u"uno-diff-applier"_ustr;
+        enginePathZh = u"表格 · UNO 轻量写回（无原生 Calc ApplyEngine；公式/单元格/图表）"_ustr;
+    }
+    else if (sel.surface == u"impress"_ustr)
+    {
+        enginePathToken = u"uno-diff-applier"_ustr;
+        enginePathZh = u"演示 · UNO 轻量写回（无原生 Impress ApplyEngine；大纲/幻灯文案）"_ustr;
+    }
+    else
+    {
+        enginePathToken = bWriterEngine ? u"writer-apply-engine"_ustr : u"uno-diff-applier"_ustr;
+        enginePathZh = bWriterEngine ? u"文字 · Writer 原生写回引擎"_ustr
+                                     : u"文字 · UNO 回退写回（原生引擎未加载）"_ustr;
+    }
     AppendTranscript(u"System"_ustr,
                      u"plan-staged plan="_ustr + m_aPendingPlan.planId + u" ops="_ustr
                          + OUString::number(
                              static_cast<sal_Int32>(m_aPendingPlan.operations.size()))
                          + u" evidence="_ustr + m_sPendingEvidenceId
-                         + u" writer-engine="_ustr
+                         + u" surface="_ustr + sel.surface + u" apply-path="_ustr
+                         + enginePathToken + u" writer-engine="_ustr
                          + (bWriterEngine ? u"ready"_ustr : u"fallback-uno"_ustr)
                          + u" awaiting-approval=true main-document-mutation=false "
-                           "explicit-human-approval-required=true"_ustr);
-    if (m_aPendingPlan.planId == u"ap-chart-insert"_ustr)
+                           "explicit-human-approval-required=true · "_ustr
+                         + enginePathZh);
+    if (m_aPendingPlan.planId == u"ap-chart-insert"_ustr
+        || (!m_aPendingPlan.operations.empty()
+            && m_aPendingPlan.operations.front().opType == u"chart_insert"_ustr))
         m_xStatusLabel->set_label(u"图表计划已暂存 — 批准后打开插入图表向导: "_ustr
                                   + m_aPendingPlan.planId);
     else
-        m_xStatusLabel->set_label(u"计划已暂存，请到「审核」页批准写回: "_ustr
+        m_xStatusLabel->set_label(u"计划已暂存 · "_ustr + enginePathZh + u" · 请到「审核」批准: "_ustr
                                   + m_aPendingPlan.planId);
     UpdatePendingPlanChip();
     UpdateSelectionChip();
@@ -4241,7 +4281,9 @@ bool AIChatPanel::ApplyPendingPlanWithApproval()
         }
         else
         {
-            SetAgentStepBar(u"步骤：✓ 已批准写回 · "_ustr + aResult.engine);
+            const OUString sEngineZh
+                = kqoffice::ai::chat::DocumentAIApply::userFacingEngineZh(aResult.engine);
+            SetAgentStepBar(u"步骤：✓ 已批准写回 · "_ustr + sEngineZh);
             if (aResult.surface == u"impress"_ustr)
             {
                 AppendTranscript(
@@ -4258,20 +4300,25 @@ bool AIChatPanel::ApplyPendingPlanWithApproval()
         ClearPendingPlan();
         m_sLastOutcomeDetail.clear();
         SetState(AIChatPanelState::Applied);
-        m_xStatusLabel->set_label(u"已写回（可撤销）· "_ustr + aResult.engine + u" · "_ustr
-                                  + sPlanId
-                                  + (evid.isEmpty() ? OUString()
-                                                    : (u" · 证据 "_ustr + evid)));
+        {
+            const OUString sEngineZh
+                = kqoffice::ai::chat::DocumentAIApply::userFacingEngineZh(aResult.engine);
+            m_xStatusLabel->set_label(u"已写回（可撤销）· "_ustr + sEngineZh + u" · "_ustr
+                                      + sPlanId
+                                      + (evid.isEmpty() ? OUString()
+                                                        : (u" · 证据 "_ustr + evid)));
+        }
         kqoffice::ai::workbench::WorkTelemetryStore::recordSimple(u"ai_apply"_ustr, 1);
         RecordWorkspaceActivity(u"action-invoked"_ustr, u"reviews"_ustr, sPlanId, evid,
                                 OUString(), bChart ? u"chart-insert"_ustr : u"diff-review"_ustr);
         return true;
     }
 
-    const OUString sFailReason
-        = ShortenUserDetail(aResult.error.isEmpty()
-                                ? (aResult.engine.isEmpty() ? u"未知原因"_ustr : aResult.engine)
-                                : aResult.error);
+    const OUString sFailReason = ShortenUserDetail(
+        kqoffice::ai::chat::DocumentAIApply::userFacingErrorZh(
+            aResult.error, aResult.engine, aResult.surface));
+    const OUString sEngineZh
+        = kqoffice::ai::chat::DocumentAIApply::userFacingEngineZh(aResult.engine);
     m_sLastOutcomeDetail = sFailReason;
     SetAgentStepBar(u"步骤：写回失败 · 主文档未改 · "_ustr + sFailReason);
     // Audit evidence for failed apply (UI only shows short Chinese summary).
@@ -4295,10 +4342,12 @@ bool AIChatPanel::ApplyPendingPlanWithApproval()
                          + u" engine="_ustr + aResult.engine + u" surface="_ustr
                          + aResult.surface
                          + u" main-document-mutation=false explicit-human-approval=true"
-                           " · 写回失败 · 主文档未改"_ustr
+                           " · 写回失败 · 主文档未改 · "_ustr
+                         + sEngineZh
                          + (failEvid.isEmpty() ? OUString()
                                                : (u" · 证据 "_ustr + failEvid)));
-    m_xStatusLabel->set_label(u"写回失败 · 主文档未改 · "_ustr + sFailReason
+    m_xStatusLabel->set_label(u"写回失败 · 主文档未改 · "_ustr + sFailReason + u" · "_ustr
+                              + sEngineZh
                               + (failEvid.isEmpty() ? OUString()
                                                     : (u" · 证据 "_ustr + failEvid))
                               + u" · 计划="_ustr + sPlanId);

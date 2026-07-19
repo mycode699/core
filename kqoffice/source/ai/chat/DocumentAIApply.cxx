@@ -236,6 +236,94 @@ OUString DocumentAIApply::chatPlanToWriterRuntimeJson(const ApplyPlan& rPlan)
     return b.makeStringAndClear();
 }
 
+OUString DocumentAIApply::userFacingEngineZh(const OUString& rEngine)
+{
+    if (rEngine == u"writer-apply-engine"_ustr)
+        return u"Writer 原生写回"_ustr;
+    if (rEngine == u"uno-diff-applier"_ustr)
+        return u"UNO 轻量写回"_ustr;
+    if (rEngine == u"calc-chart-dispatch"_ustr)
+        return u"图表向导"_ustr;
+    if (rEngine == u"none"_ustr || rEngine.isEmpty())
+        return u"无写回引擎"_ustr;
+    return rEngine;
+}
+
+OUString DocumentAIApply::userFacingSurfaceZh(const OUString& rSurface)
+{
+    if (rSurface == u"writer"_ustr)
+        return u"文字"_ustr;
+    if (rSurface == u"calc"_ustr)
+        return u"表格"_ustr;
+    if (rSurface == u"impress"_ustr)
+        return u"演示"_ustr;
+    if (rSurface == u"none"_ustr || rSurface.isEmpty() || rSurface == u"unknown"_ustr)
+        return u"无文档"_ustr;
+    return rSurface;
+}
+
+OUString DocumentAIApply::userFacingErrorZh(const OUString& rError, const OUString& rEngine,
+                                            const OUString& rSurface)
+{
+    // Already Chinese — pass through (keep machine tokens only when pure ASCII/kebab).
+    for (sal_Int32 i = 0; i < rError.getLength(); ++i)
+    {
+        const sal_Unicode c = rError[i];
+        if (c >= 0x4E00 && c <= 0x9FFF)
+            return rError;
+    }
+
+    const OUString s = rError;
+    if (s.isEmpty())
+    {
+        if (rSurface == u"calc"_ustr || rSurface == u"impress"_ustr)
+            return u"写回失败 · 当前应用仅支持 UNO 轻量写回（无原生 ApplyEngine）"_ustr;
+        if (rEngine == u"uno-diff-applier"_ustr)
+            return u"UNO 写回失败 · 主文档未改"_ustr;
+        return u"写回失败 · 主文档未改"_ustr;
+    }
+
+    if (s.indexOf(u"writer-apply-symbol-not-loaded"_ustr) >= 0)
+        return u"Writer 写回引擎未加载 · 将尝试 UNO 回退"_ustr;
+    if (s.indexOf(u"writer-apply-dlsym-unavailable"_ustr) >= 0)
+        return u"当前平台无法加载 Writer 写回引擎"_ustr;
+    if (s.indexOf(u"writer-apply-failed"_ustr) >= 0
+        || s.indexOf(u"writer-apply-status="_ustr) >= 0)
+        return u"Writer 原生写回失败 · 已尝试或将尝试其他路径"_ustr;
+    if (s.indexOf(u"no-active-writer-docshell"_ustr) >= 0)
+        return u"当前不是 Writer 文档 · 无法使用原生写回引擎"_ustr;
+    if (s.indexOf(u"writer-runtime-json-parse-failed"_ustr) >= 0
+        || s.indexOf(u"empty-runtime-json"_ustr) >= 0)
+        return u"写回计划解析失败"_ustr;
+    if (s.indexOf(u"preview-only-plan-blocked"_ustr) >= 0)
+        return u"预览计划不可写回 · 请生成可批准的正式计划"_ustr;
+    if (s.indexOf(u"InsertObjectChart"_ustr) >= 0 || s.indexOf(u"chart-insert"_ustr) >= 0)
+        return u"打开图表向导失败 · 请确认当前为表格选区"_ustr;
+    if (s.indexOf(u"No current document"_ustr) >= 0
+        || s.indexOf(u"getCurrentComponent returned null"_ustr) >= 0)
+        return u"没有活动文档 · 请先打开文字/表格/演示"_ustr;
+    if (s.indexOf(u"Unrecognized document type"_ustr) >= 0
+        || s.indexOf(u"Unsupported document type"_ustr) >= 0)
+        return u"当前文档类型不支持 AI 写回"_ustr;
+    if (s.indexOf(u"Unsupported operation"_ustr) >= 0)
+        return u"当前应用不支持该写回操作类型"_ustr;
+    if (s.indexOf(u"Empty opType"_ustr) >= 0 || s.indexOf(u"Empty target"_ustr) >= 0)
+        return u"写回计划不完整（缺少操作或目标）"_ustr;
+    if (s.indexOf(u"expected cell:"_ustr) >= 0 || s.indexOf(u"Calc "_ustr) >= 0)
+        return u"表格写回失败 · 目标须为单元格（如 cell:A1）；暂无原生 Calc ApplyEngine"_ustr;
+    if (s.indexOf(u"expected slide:"_ustr) >= 0 || s.indexOf(u"Impress "_ustr) >= 0)
+        return u"演示写回失败 · 目标须为幻灯/形状；暂无原生 Impress ApplyEngine"_ustr;
+    if (s.indexOf(u"Writer "_ustr) >= 0 || s.indexOf(u"para:"_ustr) >= 0)
+        return u"文字写回失败 · 请检查段落目标后重试"_ustr;
+    if (s.indexOf(u"No operation to undo"_ustr) >= 0)
+        return u"没有可撤销的 AI 写回"_ustr;
+
+    // Keep short English tokens readable for diagnostics without flooding the status bar.
+    if (s.getLength() <= 48)
+        return u"写回失败（"_ustr + s + u"）"_ustr;
+    return u"写回失败 · 详见系统记录"_ustr;
+}
+
 DocumentAIApplyResult DocumentAIApply::applyApproved(const ApplyPlan& rPlan)
 {
     return applyApprovedWithRawFallback(rPlan, rPlan.rawOutput);
