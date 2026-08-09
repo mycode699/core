@@ -374,10 +374,16 @@ AIChatPanel::AIChatPanel(weld::Widget* pParent)
                 LINK(this, AIChatPanel, OnScenarioPinClicked));
     }
 
-    // Sidebar first-show often has a tight/zero allocation. The aichatpanel UI is
-    // notebook-heavy; without a floor, VclBox/TabControl layout aborts on macOS.
+    // Sidebar first-show often has a tight/zero allocation. Floor size + keep the
+    // agent/content/review workspace host hidden so InterimItemWindow layout only
+    // measures the chat surface (avoids TabControl/VclScrolledWindow abort on macOS).
     if (m_xContainer)
         m_xContainer->set_size_request(280, 240);
+    if (std::unique_ptr<weld::Widget> xDeferred
+        = m_xBuilder->weld_widget(u"deferred_workspace_host"_ustr))
+    {
+        xDeferred->set_visible(false);
+    }
 
     if (m_xTranscriptView)
         m_xTranscriptView->set_editable(false);
@@ -556,12 +562,16 @@ AIChatPanel::AIChatPanel(weld::Widget* pParent)
         m_xAiSettingsButton->connect_clicked(LINK(this, AIChatPanel, OnAiSettingsClicked));
 
     // Family UI tokens (same DNA as Start Center / 可圈笔记)
+    try
     {
         const auto th = sfx2::sc_theme::tokens();
         if (m_xContainer)
             m_xContainer->set_background(th.canvas);
         if (m_xStatusLabel)
             m_xStatusLabel->set_font_color(th.textSecondary);
+    }
+    catch (...)
+    {
     }
     if (m_xRunScenarioBtn)
         m_xRunScenarioBtn->connect_clicked(LINK(this, AIChatPanel, OnRunScenarioClicked));
@@ -602,19 +612,12 @@ AIChatPanel::AIChatPanel(weld::Widget* pParent)
     if (m_xRoutingDiagBtn)
         m_xRoutingDiagBtn->connect_clicked(LINK(this, AIChatPanel, OnRoutingDiagClicked));
 
-    // Critical path only: chat history + chrome. Workspace trees + gateway probe
-    // are deferred so opening 可圈 AI does not stall first paint (cold-open / M21).
-    LoadDocumentHistory();
-    ReloadScenarioPicker();
-    UpdateSelectionChip();
-    UpdatePendingPlanChip();
-    UpdateApprovalChrome();
+    // Critical path only after first paint. Calling weld set_sensitive/Enable during
+    // construction (before InterimItemWindow is shown) aborts on macOS VCL.
     if (m_xRoutingDiagLabel)
         m_xRoutingDiagLabel->set_label(u"可圈 AI：探测中…"_ustr);
     if (m_xStatusLabel)
         m_xStatusLabel->set_label(u"可圈 AI 已就绪 · 模型探测后台进行中…"_ustr);
-    ConsumePendingScenarioRun();
-    ConsumePendingPromptInject();
     // Keep consuming injects while panel is alive (速览→AI / 记事本→AI when already open).
     // 1.2s is enough for handoff injects without burning main-thread timers.
     m_aInjectPoll.SetTimeout(1200);
@@ -629,62 +632,10 @@ AIChatPanel::AIChatPanel(weld::Widget* pParent)
     m_aScheduleTick.SetTimeout(60'000);
     m_aScheduleTick.SetInvokeHandler(LINK(this, AIChatPanel, OnScheduleTick));
     m_aScheduleTick.Start();
-    // Immediate due scan is deferred with m_aDeferredWarmup — avoid extra work during
-    // first Show()/TabControl layout which has aborted on macOS with this heavy UI.
-    // Drag files onto prompt entry → @文件: attach (does not open document).
-    if (m_xPromptEntry)
-    {
-        class AIChatAttachDropHelper final : public DropTargetHelper
-        {
-            AIChatPanel& m_rPanel;
-
-        public:
-            AIChatAttachDropHelper(
-                AIChatPanel& rPanel,
-                const css::uno::Reference<css::datatransfer::dnd::XDropTarget>& xDrop)
-                : DropTargetHelper(xDrop)
-                , m_rPanel(rPanel)
-            {
-            }
-
-            sal_Int8 AcceptDrop(const AcceptDropEvent& /*rEvt*/) override
-            {
-                if (IsDropFormatSupported(SotClipboardFormatId::FILE_LIST)
-                    || IsDropFormatSupported(SotClipboardFormatId::SIMPLE_FILE))
-                    return DND_ACTION_COPY;
-                return DND_ACTION_NONE;
-            }
-
-            sal_Int8 ExecuteDrop(const ExecuteDropEvent& rEvt) override
-            {
-                TransferableDataHelper aHelper(rEvt.maDropEvent.Transferable);
-                std::vector<OUString> paths;
-                FileList aFileList;
-                if (aHelper.GetFileList(SotClipboardFormatId::FILE_LIST, aFileList))
-                {
-                    const sal_uInt32 nCount = aFileList.Count();
-                    for (sal_uInt32 i = 0; i < nCount; ++i)
-                        paths.push_back(aFileList.GetFile(i));
-                }
-                else
-                {
-                    OUString path;
-                    if (aHelper.GetString(SotClipboardFormatId::SIMPLE_FILE, path)
-                        && !path.isEmpty())
-                        paths.push_back(path);
-                }
-                if (paths.empty())
-                    return DND_ACTION_NONE;
-                m_rPanel.AttachLocalFilePaths(paths);
-                return DND_ACTION_COPY;
-            }
-        };
-        m_xAttachDropHelper = std::make_unique<AIChatAttachDropHelper>(
-            *this, m_xPromptEntry->get_drop_target());
-    }
-    SetState(AIChatPanelState::Idle);
-    UpdateActions();
-    FocusPrompt();
+    // Drop-target attach + Enable chrome deferred to OnDeferredWarmupTick (macOS).
+    // Do not call SetState/UpdateActions/FocusPrompt/UpdateApprovalChrome here —
+    // weld set_sensitive → vcl::Window::Enable during ctor aborts on macOS.
+    m_eState = AIChatPanelState::Idle;
     g_pActiveAIChatPanel = this;
 }
 
@@ -717,6 +668,22 @@ void AIChatPanel::EnsureWorkspaceDataLoaded()
 IMPL_LINK_NOARG(AIChatPanel, OnDeferredWarmupTick, Timer*, void)
 {
     m_aDeferredWarmup.Stop();
+    // First-paint chrome (deferred from ctor — Enable is unsafe until shown).
+    try
+    {
+        LoadDocumentHistory();
+        ReloadScenarioPicker();
+        UpdateSelectionChip();
+        UpdatePendingPlanChip();
+        UpdateApprovalChrome();
+        UpdateActions();
+        FocusPrompt();
+        ConsumePendingScenarioRun();
+        ConsumePendingPromptInject();
+    }
+    catch (...)
+    {
+    }
     // One due-task scan after first paint (moved out of ctor for macOS layout safety).
     try
     {
@@ -874,7 +841,7 @@ void AIChatPanel::AppendTerminalEvidence(const OUString& rStatus, const OUString
 
 void AIChatPanel::LoadDocumentHistory()
 {
-    if (!m_xHistoryStore)
+    if (!m_xHistoryStore || !m_xTranscriptView)
         return;
 
     const OUString sTranscript = m_xHistoryStore->LoadTranscript();
@@ -895,7 +862,8 @@ void AIChatPanel::ClearDocumentHistory()
         return;
 
     const bool bCleared = m_xHistoryStore->Clear();
-    m_xTranscriptView->set_text(OUString());
+    if (m_xTranscriptView)
+        m_xTranscriptView->set_text(OUString());
     ClearWorkPlan();
     if (m_xHistoryStore)
         kqoffice::ai::chat::DocumentAIRewriteMemory::clear(m_xHistoryStore->GetDocumentKey());
@@ -2347,19 +2315,26 @@ void AIChatPanel::SaveReviewSessionSnapshot(const OUString& rOpenArtifactId,
 
 void AIChatPanel::FocusPrompt()
 {
+    if (!m_xPromptEntry)
+        return;
     m_xPromptEntry->grab_focus();
     m_xPromptEntry->set_position(-1);
 }
 
 void AIChatPanel::UpdateActions()
 {
+    if (!m_xPromptEntry)
+        return;
     const bool bHasPrompt = !m_xPromptEntry->get_text().trim().isEmpty();
     const bool bBusy = IsRunBusy();
     // DuMate: keep composer editable while running so user can append/replace task.
     m_xPromptEntry->set_sensitive(!bBusy);
-    m_xSendButton->set_sensitive(bHasPrompt && !bBusy);
-    m_xCancelButton->set_sensitive(bBusy);
-    m_xRetryButton->set_sensitive(!m_sLastPrompt.isEmpty() && !bBusy);
+    if (m_xSendButton)
+        m_xSendButton->set_sensitive(bHasPrompt && !bBusy);
+    if (m_xCancelButton)
+        m_xCancelButton->set_sensitive(bBusy);
+    if (m_xRetryButton)
+        m_xRetryButton->set_sensitive(!m_sLastPrompt.isEmpty() && !bBusy);
     if (m_xRetryButton)
     {
         if (m_bStaleNeedsRegen)
@@ -2374,7 +2349,8 @@ void AIChatPanel::UpdateActions()
             m_xRetryButton->set_tooltip_text(u"恢复上一条指令以便重试。"_ustr);
         }
     }
-    m_xClearHistoryButton->set_sensitive(!bBusy);
+    if (m_xClearHistoryButton)
+        m_xClearHistoryButton->set_sensitive(!bBusy);
     // Intent chips stay clickable when idle/awaiting; disabled while busy.
     auto setIntent = [&](weld::Button* p) {
         if (p)
@@ -3724,6 +3700,9 @@ void AIChatPanel::PresentWorkPlan(const kqoffice::ai::chat::WorkPlan& rPlan)
 
 void AIChatPanel::UpdateApprovalChrome()
 {
+    // set_sensitive → Window::Enable can throw during InterimItemWindow construction.
+    try
+    {
     const bool bBusy = m_eState == AIChatPanelState::Requesting
                        || m_eState == AIChatPanelState::Streaming;
     const bool bPending = m_bHasPendingPlan && !bBusy;
@@ -3784,6 +3763,11 @@ void AIChatPanel::UpdateApprovalChrome()
         m_xRejectSelectedButton->set_label(u"拒绝"_ustr);
 
     UpdatePendingPlanChip();
+    }
+    catch (...)
+    {
+        // Ignore Enable/layout exceptions during early chrome updates.
+    }
 }
 
 void AIChatPanel::ShowReviewTab()
