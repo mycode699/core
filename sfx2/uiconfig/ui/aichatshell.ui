@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Stage1 shell: minimal AI sidebar (no agent/workspace stores).
+     Proves InterimItemWindow Show; full UI remains aichatpanel_full.ui. -->
+<interface domain="sfx">
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkBox" id="AIChatShellPanel">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">8</property>
+    <property name="border-width">10</property>
+
+    <child>
+      <object class="GtkLabel" id="title_label">
+        <property name="visible">True</property>
+        <property name="halign">start</property>
+        <property name="label" translatable="yes" context="aichatshell|title">可圈 AI</property>
+        <attributes>
+          <attribute name="weight" value="bold"/>
+        </attributes>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkLabel" id="status_label">
+        <property name="visible">True</property>
+        <property name="halign">start</property>
+        <property name="wrap">True</property>
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes" context="aichatshell|status">可圈 AI 就绪 · 写回须批准</property>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkLabel" id="hint_label">
+        <property name="visible">True</property>
+        <property name="halign">start</property>
+        <property name="wrap">True</property>
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes" context="aichatshell|hint">选区后描述任务并发送；主文档写回须人工批准。</property>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkBox" id="approval_row">
+        <property name="visible">True</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">6</property>
+        <child>
+          <object class="GtkButton" id="chat_approve_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="aichatshell|approve">批准写回</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="chat_diff_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="aichatshell|diff">查看 Diff</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="chat_reject_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="aichatshell|reject">拒绝</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="chat_undo_btn">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="aichatshell|undo">撤销写回</property>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkBox" id="scenario_row">
+        <property name="visible">True</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">4</property>
+        <child>
+          <object class="GtkButton" id="scenario_btn_0">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="aichatshell|sc0">公文润色</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="scenario_btn_1">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="aichatshell|sc1">内容质检</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="scenario_btn_2">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="aichatshell|sc2">排版优化</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="scenario_btn_3">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="aichatshell|sc3">写作</property>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkScrolledWindow" id="transcript_scroller">
+        <property name="visible">True</property>
+        <property name="hexpand">True</property>
+        <property name="vexpand">True</property>
+        <property name="height-request">140</property>
+        <property name="shadow-type">in</property>
+        <child>
+          <object class="GtkTextView" id="transcript_view">
+            <property name="visible">True</property>
+            <property name="editable">False</property>
+            <property name="wrap-mode">word-char</property>
+            <property name="cursor-visible">False</property>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkEntry" id="prompt_entry">
+        <property name="visible">True</property>
+        <property name="hexpand">True</property>
+        <property name="placeholder-text" translatable="yes" context="aichatshell|prompt_ph">描述你要做的事…</property>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkBox" id="action_row">
+        <property name="visible">True</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">4</property>
+        <child>
+          <object class="GtkButton" id="send_button">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="aichatshell|send">发送</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="clear_button">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes" context="aichatshell|clear">清空</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="trust_label">
+            <property name="visible">True</property>
+            <property name="hexpand">True</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes" context="aichatshell|trust">本地优先 · 不静默上传 · 写回须批准</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

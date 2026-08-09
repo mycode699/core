@@ -155,6 +155,7 @@ $(eval $(call gb_Library_add_exception_objects,sfx,\
     sfx2/source/dispatch/AIInlineEditDispatcher \
     sfx2/source/dispatch/AIInputDispatcher \
     sfx2/source/dispatch/WorkPendantDispatcher \
+    sfx2/source/dispatch/KqNotebookDispatcher \
     sfx2/source/appl/WorkTelemetryHub \
     sfx2/source/dispatch/CoworkPanelDispatcher \
     sfx2/source/config/evntconf \
@@ -173,6 +174,7 @@ $(eval $(call gb_Library_add_exception_objects,sfx,\
 	sfx2/source/control/templatedefaultview \
     sfx2/source/control/templateviewitem \
     sfx2/source/control/templatelocalview \
+    sfx2/source/control/templatemarketview \
     sfx2/source/control/templatecontaineritem \
     sfx2/source/control/templatedlglocalview \
     sfx2/source/control/listview \
@@ -296,7 +298,9 @@ $(eval $(call gb_Library_add_exception_objects,sfx,\
     sfx2/source/sidebar/AIChatEditionPolicyRuntime \
     sfx2/source/sidebar/AIChatHistoryStore \
     sfx2/source/sidebar/AIChatI18nManualRuntime \
+    sfx2/source/sidebar/AIChatDocumentToolsContentBridge \
     sfx2/source/sidebar/AIChatKnowledgeExtractionRuntime \
+    sfx2/source/sidebar/AIChatKnowledgeFtsEngine \
     sfx2/source/sidebar/AIChatKnowledgeIndexStore \
     sfx2/source/sidebar/AIChatKnowledgeRetrievalRuntime \
     sfx2/source/sidebar/AIChatKnowledgeResultContentBridge \
@@ -304,6 +308,7 @@ $(eval $(call gb_Library_add_exception_objects,sfx,\
     sfx2/source/sidebar/AIChatMarkdownRenderer \
     sfx2/source/sidebar/AIChatOnboardingRuntime \
     sfx2/source/sidebar/AIChatPanel \
+    sfx2/source/sidebar/AIChatShellPanel \
     sfx2/source/sidebar/AIChatComposer \
     sfx2/source/sidebar/AIChatSlashCommands \
     sfx2/source/sidebar/AIChatPanelFactory \
@@ -406,6 +411,7 @@ $(eval $(call gb_Library_add_objcxxobjects,sfx,\
 ))
 $(eval $(call gb_Library_add_libs,sfx,\
     -lobjc \
+    -lsqlite3 \
 ))
 $(eval $(call gb_Library_use_system_darwin_frameworks,sfx,\
     Cocoa \
@@ -414,6 +420,15 @@ $(eval $(call gb_Library_use_system_darwin_frameworks,sfx,\
     ImageIO \
     CoreGraphics \
 ))
+endif
+
+# Local Knowledge FTS5 (Linux / other Unix): system sqlite3 when present.
+ifneq ($(OS),WNT)
+ifneq ($(OS),MACOSX)
+$(eval $(call gb_Library_add_libs,sfx,\
+    -lsqlite3 \
+))
+endif
 endif
 
 ifeq ($(OS),WNT)

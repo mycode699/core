@@ -12,9 +12,11 @@ $(eval $(call gb_UIConfig_UIConfig,sfx))
 $(eval $(call gb_UIConfig_add_uifiles,sfx,\
 	sfx2/uiconfig/ui/addtargetdialog \
 	sfx2/uiconfig/ui/aichatpanel \
+	sfx2/uiconfig/ui/aichatshell \
 	sfx2/uiconfig/ui/aiinlineedit \
 	sfx2/uiconfig/ui/workdashboard \
 	sfx2/uiconfig/ui/localnotebook \
+	sfx2/uiconfig/ui/kqnotebook \
 	sfx2/uiconfig/ui/workpendant \
 	sfx2/uiconfig/ui/autoredactdialog \
 	sfx2/uiconfig/ui/bookmarkdialog \

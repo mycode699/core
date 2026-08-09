@@ -8,6 +8,7 @@
  */
 
 #include "AIChatPanel.hxx"
+#include "AIChatShellPanel.hxx"
 
 #include <comphelper/compbase.hxx>
 #include <comphelper/namedvaluecollection.hxx>
@@ -18,6 +19,8 @@
 #include <com/sun/star/lang/XServiceInfo.hpp>
 #include <com/sun/star/ui/XUIElementFactory.hpp>
 #include <com/sun/star/uno/XComponentContext.hpp>
+
+#include <cstdlib>
 
 using namespace css;
 using namespace css::uno;
@@ -56,6 +59,13 @@ public:
     }
 };
 
+/// Stage1 default: shell (safe Show on macOS). Opt into full panel with KQ_AICHAT_FULL=1.
+bool UseFullAIChatPanel()
+{
+    const char* env = std::getenv("KQ_AICHAT_FULL");
+    return env && env[0] == '1' && env[1] == '\0';
+}
+
 Reference<ui::XUIElement> SAL_CALL AIChatPanelFactory::createUIElement(
     const OUString& rResourceURL,
     const Sequence<beans::PropertyValue>& rArguments)
@@ -82,7 +92,12 @@ Reference<ui::XUIElement> SAL_CALL AIChatPanelFactory::createUIElement(
     if (!rResourceURL.endsWith(u"/AIChatPanel"_ustr))
         return Reference<ui::XUIElement>();
 
-    std::unique_ptr<PanelLayout> xPanel = std::make_unique<sfx2::sidebar::AIChatPanel>(pParent);
+    std::unique_ptr<PanelLayout> xPanel;
+    if (UseFullAIChatPanel())
+        xPanel = std::make_unique<sfx2::sidebar::AIChatPanel>(pParent);
+    else
+        xPanel = std::make_unique<sfx2::sidebar::AIChatShellPanel>(pParent);
+
     return sfx2::sidebar::SidebarPanelBase::Create(rResourceURL, xFrame, std::move(xPanel),
                                                    ui::LayoutSize(0, -1, -1));
 }
