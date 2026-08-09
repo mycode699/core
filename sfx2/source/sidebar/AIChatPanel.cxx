@@ -4552,10 +4552,31 @@ void AIChatPanel::SubmitPrompt()
         using kqoffice::ai::chat::DocumentAIWorkPlan;
         using kqoffice::ai::chat::WorkPlanAction;
         const WorkPlanAction act = DocumentAIWorkPlan::classifyAction(rawUserPrompt);
+        // Whitelist: while a plan is pending, still allow memory/diff/undo/slash
+        // utilities instead of treating them as revise notes (Stage1 audit P1).
+        auto isWorkPlanPassthrough = [&](const OUString& t) -> bool {
+            if (t.startsWith(u"/"_ustr))
+            {
+                if (t.startsWith(u"/diff"_ustr) || t.startsWith(u"/查看差异"_ustr)
+                    || t.startsWith(u"/memory"_ustr) || t.startsWith(u"/改稿记忆"_ustr)
+                    || t.startsWith(u"/记住"_ustr) || t.startsWith(u"/忘记"_ustr)
+                    || t.startsWith(u"/compact"_ustr) || t.startsWith(u"/压缩记忆"_ustr)
+                    || t.startsWith(u"/undo-apply"_ustr) || t.startsWith(u"/撤销写回"_ustr)
+                    || t.startsWith(u"/connectors"_ustr) || t.startsWith(u"/连接器"_ustr)
+                    || t.startsWith(u"/vision"_ustr) || t.startsWith(u"/视觉"_ustr))
+                    return true;
+            }
+            return false;
+        };
         // New free-form turn after a prior approved plan run → drop old gate.
         if (m_bWorkPlanApproved && act == WorkPlanAction::None)
         {
             ClearWorkPlan();
+        }
+        else if (!m_bWorkPlanApproved && act == WorkPlanAction::None
+                 && isWorkPlanPassthrough(rawUserPrompt))
+        {
+            // Fall through to utility handlers below (diff / memory / undo).
         }
         else if (act == WorkPlanAction::Show)
         {
@@ -4615,8 +4636,10 @@ void AIChatPanel::SubmitPrompt()
             {
                 auto mc = kqoffice::ai::chat::DocumentAIRewriteMemory::load(
                     m_xHistoryStore->GetDocumentKey());
+                // Only user revise notes → memory (not default scopeOut boilerplate).
                 kqoffice::ai::chat::DocumentAIRewriteMemory::ingestWorkPlanNotes(
-                    mc, m_aWorkPlan.scopeOut, m_aWorkPlan.reviseNotes, m_aWorkPlan.objective);
+                    mc, /*scopeOut*/ OUString(), m_aWorkPlan.reviseNotes,
+                    m_aWorkPlan.objective);
                 if (!m_aWorkPlan.skillId.isEmpty())
                     kqoffice::ai::chat::DocumentAIRewriteMemory::noteSkill(
                         mc, m_aWorkPlan.skillId, m_aWorkPlan.skillTitleZh);
@@ -4715,7 +4738,22 @@ void AIChatPanel::SubmitPrompt()
             if (memAct == RewriteMemoryAction::Forget)
             {
                 const OUString target = DocumentAIRewriteMemory::extractForgetTarget(rawUserPrompt);
-                if (target == u"*"_ustr || target.isEmpty())
+                // Bare "/忘记" without target: show usage — do NOT wipe all (Stage1 audit).
+                if (target.isEmpty()
+                    && !rawUserPrompt.startsWith(u"/忘记全部"_ustr)
+                    && rawUserPrompt.trim() != u"忘记全部"_ustr
+                    && rawUserPrompt.trim() != u"清空记忆"_ustr)
+                {
+                    AppendAssistantMarkdown(
+                        u"用法：\n"
+                        u"- `/忘记 金额` — 删除含该关键词的约束\n"
+                        u"- `/忘记全部` — 清空本文档全部改稿记忆\n"_ustr);
+                    if (m_xStatusLabel)
+                        m_xStatusLabel->set_label(u"请指定要忘记的关键词，或 /忘记全部"_ustr);
+                    m_xPromptEntry->set_text(OUString());
+                    return;
+                }
+                if (target == u"*"_ustr)
                 {
                     DocumentAIRewriteMemory::clear(docKey);
                     AppendTranscript(u"System"_ustr, u"已清空本文档改稿记忆 · 主文档未改"_ustr,
@@ -5615,12 +5653,14 @@ void AIChatPanel::SubmitPrompt()
 
     // Complex-task start confirm (not normal rewrite/summarize/chat):
     // agent pipeline, forced/scenario capability agent|plan (e.g. design-apply), or agent intent.
+    // Skip after user already confirmed a work plan this turn (avoid double dialog).
     {
         const OUString taskCap = !m_sForcedCapability.isEmpty()
                                      ? m_sForcedCapability
                                      : DetectComposerIntent(sWorkPrompt);
-        const bool bComplexTaskStart = bAgentPipeline || taskCap == u"agent"_ustr
-                                       || taskCap == u"plan"_ustr;
+        const bool bComplexTaskStart
+            = !bSkipWorkPlanGate
+              && (bAgentPipeline || taskCap == u"agent"_ustr || taskCap == u"plan"_ustr);
         if (!ConfirmComplexAiTaskStart(bComplexTaskStart))
             return;
     }
@@ -6421,11 +6461,56 @@ void AIChatPanel::StagePendingApplyPlan(const OUString& rProviderContent,
 
     // If LLM did not emit structured ops but user has a selection, stage a
     // single replace so approve can write back via DocumentAIApply.
+    // CRITICAL (Stage1 audit): do NOT stage selection-replace for consult /
+    // quality-review replies — otherwise 内容质检/版式审 would offer Diff that
+    // overwrites the selection with the advisory report (false write path).
     if (!kqoffice::ai::chat::AgentChatDiffExtractor::validate(aPlan))
     {
-        if (!sel.text.isEmpty() && !rProviderContent.isEmpty()
-            && (sel.surface == u"writer"_ustr || sel.surface == u"calc"_ustr
-                || sel.surface == u"impress"_ustr))
+        const bool bHasStructuredWriteMarker
+            = kqoffice::ai::chat::AgentChatDiffExtractor::looksLikeReviewFixList(rProviderContent)
+              || kqoffice::ai::chat::AgentChatDiffExtractor::looksLikeWriterHeadingOutline(
+                  rProviderContent)
+              || kqoffice::ai::chat::AgentChatDiffExtractor::looksLikeCalcFormulaWriteback(
+                  rProviderContent)
+              || kqoffice::ai::chat::AgentChatDiffExtractor::looksLikeCalcCleanWriteback(
+                  rProviderContent)
+              || rProviderContent.indexOf(u"===可圈"_ustr) >= 0
+              || rProviderContent.indexOf(u"## 1."_ustr) >= 0; // impress write-back body
+
+        const OUString capLow = m_sForcedCapability.toAsciiLowerCase();
+        const bool bConsultCap
+            = capLow == u"review"_ustr || capLow == u"chat"_ustr || capLow == u"summarize"_ustr
+              || capLow == u"consult"_ustr;
+        const bool bConsultIntent
+            = kqoffice::ai::chat::DocumentAIDocumentTools::wantsConsultIntent(
+                m_sLastPrompt, m_sForcedCapability, !sel.text.isEmpty());
+        // Advisory / scorecard bodies (no write markers)
+        const OUString bodyLow = rProviderContent.toAsciiLowerCase();
+        const bool bAdvisoryProse
+            = !bHasStructuredWriteMarker
+              && (rProviderContent.indexOf(u"咨询"_ustr) >= 0
+                  || rProviderContent.indexOf(u"打分"_ustr) >= 0
+                  || rProviderContent.indexOf(u"分项"_ustr) >= 0
+                  || rProviderContent.indexOf(u"方案A"_ustr) >= 0
+                  || rProviderContent.indexOf(u"方案B"_ustr) >= 0
+                  || rProviderContent.indexOf(u"硬规则"_ustr) >= 0
+                  || (rProviderContent.indexOf(u"建议"_ustr) >= 0
+                      && rProviderContent.indexOf(u"FIX|"_ustr) < 0)
+                  || bodyLow.indexOf(u"score"_ustr) >= 0);
+
+        const bool bAllowSelectionReplace
+            = !sel.text.isEmpty() && !rProviderContent.isEmpty()
+              && (sel.surface == u"writer"_ustr || sel.surface == u"calc"_ustr
+                  || sel.surface == u"impress"_ustr)
+              && !bConsultCap && !bConsultIntent && !bAdvisoryProse
+              && (bHasStructuredWriteMarker
+                  || kqoffice::ai::chat::DocumentAIDocumentTools::wantsEditIntent(
+                      m_sLastPrompt, m_sForcedCapability, true)
+                  || capLow == u"rewrite"_ustr || capLow == u"edit"_ustr
+                  || capLow == u"polish"_ustr || capLow == u"quick-edit"_ustr
+                  || capLow == u"translate"_ustr || capLow == u"translation"_ustr);
+
+        if (bAllowSelectionReplace)
         {
             kqoffice::ai::chat::DiffOperation op;
             op.opType = u"replace"_ustr;
@@ -6465,6 +6550,15 @@ void AIChatPanel::StagePendingApplyPlan(const OUString& rProviderContent,
             aPlan.operations.clear();
             aPlan.operations.push_back(op);
             aPlan.rawOutput = rProviderContent;
+        }
+        else if (!sel.text.isEmpty() && (bConsultCap || bConsultIntent || bAdvisoryProse)
+                 && !bHasStructuredWriteMarker)
+        {
+            AppendTranscript(
+                u"System"_ustr,
+                u"plan-stage-skip-selection-replace · consult/advisory · "
+                u"有选区但不把建议正文当作替换稿 · 主文档未改"_ustr,
+                /*bPersistHistory*/ false);
         }
     }
 
