@@ -6,6 +6,8 @@
     <property name="can-focus">False</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
+    <property name="width-request">280</property>
+    <property name="height-request">240</property>
     <property name="border-width">0</property>
     <property name="orientation">vertical</property>
     <property name="spacing">0</property>
@@ -48,7 +50,7 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">end</property>
-            <property name="label" translatable="yes" context="aichat|status_ready">就绪</property>
+            <property name="label" translatable="yes" context="aichat|status_ready">可圈 AI · 就绪</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
@@ -65,8 +67,21 @@
           </packing>
         </child>
         <child>
+          <object class="GtkButton" id="open_kq_notebook_btn">
+            <property name="label" translatable="yes" context="aichat|open_kq_notebook">可圈笔记</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="tooltip-text" translatable="yes" context="aichat|open_kq_notebook_tip">打开可圈笔记工作台（来源 · 问答 · Studio）</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkButton" id="ai_settings_button">
-            <property name="label" translatable="yes" context="aichat|settings">设置</property>
+            <property name="label" translatable="yes" context="aichat|settings">可圈 AI 设置</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="tooltip-text" translatable="yes" context="aichat|settings_tip">打开「工具 → 选项 → 语言设置 → 可圈 AI」配置多角色模型</property>
@@ -74,7 +89,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
-            <property name="position">2</property>
+            <property name="position">3</property>
           </packing>
         </child>
       </object>
@@ -92,7 +107,7 @@
         <property name="margin-start">8</property>
         <property name="margin-end">8</property>
         <property name="margin-bottom">2</property>
-        <property name="label" translatable="yes" context="aichat|agent_step_bar">步骤：待命</property>
+        <property name="label" translatable="yes" context="aichat|agent_step_bar">可圈 AI · 步骤：待命</property>
         <property name="wrap">True</property>
         <property name="xalign">0</property>
         <child>
@@ -117,7 +132,7 @@
         <property name="margin-start">8</property>
         <property name="margin-end">8</property>
         <property name="margin-bottom">4</property>
-        <property name="label" translatable="yes" context="aichat|activity_card">活动：待命 · 选中文字可改写，或直接输入</property>
+        <property name="label" translatable="yes" context="aichat|activity_card">可圈 AI 待命 · 选中文字可改写，或直接输入</property>
         <property name="wrap">True</property>
         <property name="xalign">0</property>
         <child>
@@ -148,7 +163,7 @@
           <object class="GtkLabel" id="design_flow_label">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="aichat|design_flow_label">设计流</property>
+            <property name="label" translatable="yes" context="aichat|design_flow_label">可圈 AI 设计流</property>
             <property name="halign">start</property>
           </object>
           <packing>
@@ -238,6 +253,7 @@
                 <property name="can-focus">True</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
+                <property name="height-request">120</property>
                 <property name="shadow-type">none</property>
                 <child>
                   <object class="GtkTextView" id="transcript_view">
@@ -314,6 +330,15 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkButton" id="task_bootstrap_chip">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="label">理解：待命</property>
+                        <property name="halign">end</property>
+                        <property name="tooltip-text" translatable="yes" context="aichatpanel|task_bootstrap_chip.tooltip_text">语义启动复述（任务理解）。点击可刷新选区上下文；主文档不自动改</property>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkButton" id="pending_plan_chip">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
@@ -338,7 +363,7 @@
                         <property name="visible">True</property>
                         <property name="hexpand">True</property>
                         <property name="halign">start</property>
-                        <property name="label" translatable="yes" context="aichat|approval_hint">写回需你批准 · 主文档尚未修改</property>
+                        <property name="label" translatable="yes" context="aichat|approval_hint">可圈 AI 写回需你批准 · 主文档尚未修改</property>
                         <property name="wrap">True</property>
                         <property name="xalign">0</property>
                       </object>
@@ -387,6 +412,20 @@
                         <property name="position">3</property>
                       </packing>
                     </child>
+                    <child>
+                      <object class="GtkButton" id="chat_undo_btn">
+                        <property name="label" translatable="yes" context="aichat|chat_undo">撤销写回</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="sensitive">False</property>
+                        <property name="tooltip-text" translatable="yes" context="aichat|chat_undo_tip">撤销最近一次 AI 批准写回（等同编辑→撤销 / ⌘Z·Ctrl+Z）</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">4</property>
+                      </packing>
+                    </child>
                   </object>
                 </child>
                 <child>
@@ -398,7 +437,7 @@
                       <object class="GtkButton" id="routing_diag_btn">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
-                        <property name="label" translatable="yes" context="aichat|routing_diag">模型诊断</property>
+                        <property name="label" translatable="yes" context="aichat|routing_diag">可圈 AI 诊断</property>
                         <property name="tooltip-text" translatable="yes" context="aichatpanel|routing_diag_btn.tooltip_text">探测 Ollama 与五槽（主/轻量/Agent/规划/审查）解析；轻量槽用于后台总结，审查槽用于校对类方案</property>
                       </object>
                     </child>
@@ -445,7 +484,7 @@
                     </child>
                     <child>
                       <object class="GtkRadioButton" id="tab_general">
-                        <property name="label" translatable="yes" context="aichat|tab_general">通用</property>
+                        <property name="label" translatable="yes" context="aichat|tab_general">PDF·通用</property>
                         <property name="visible">True</property>
                         <property name="draw-indicator">False</property>
                         <property name="group">tab_writer</property>
@@ -633,7 +672,7 @@
                     <property name="label" translatable="yes" context="aichat|intent_rewrite">改写</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
-                    <property name="tooltip-text" translatable="yes" context="aichat|intent_rewrite_tip">改写当前选区或粘贴内容（需批准后写回）</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|intent_rewrite_tip">有选区时一键生成改写建议（须批准后写回主文档）</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -642,15 +681,29 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="intent_shorten_btn">
-                    <property name="label" translatable="yes" context="aichat|intent_shorten">精简</property>
+                  <object class="GtkButton" id="intent_formal_btn">
+                    <property name="label" translatable="yes" context="aichat|intent_formal">正式</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|intent_formal_tip">将选区改成正式/公文语气（一键生成，须批准后写回）</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
                     <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="intent_shorten_btn">
+                    <property name="label" translatable="yes" context="aichat|intent_shorten">精简</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|intent_shorten_tip">精简选区（一键生成，须批准后写回）</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">3</property>
                   </packing>
                 </child>
                 <child>
@@ -662,7 +715,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">3</property>
+                    <property name="position">4</property>
                   </packing>
                 </child>
                 <child>
@@ -674,8 +727,35 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">4</property>
+                    <property name="position">5</property>
                   </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="intent_outline_btn">
+                    <property name="label" translatable="yes" context="aichat|intent_outline">大纲</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|intent_outline_tip">基于全文骨架生成结构大纲与问题清单（主文档不自动改）</property>
+                  </object>
+                  <packing><property name="expand">False</property><property name="fill">False</property></packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="intent_proofread_btn">
+                    <property name="label" translatable="yes" context="aichat|intent_proofread">审阅</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|intent_proofread_tip">全文审阅：语气/冗余/事实风险清单</property>
+                  </object>
+                  <packing><property name="expand">False</property><property name="fill">False</property></packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="intent_continue_btn">
+                    <property name="label" translatable="yes" context="aichat|intent_continue">续写</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|intent_continue_tip">从选区或文末续写（须批准后写回）</property>
+                  </object>
+                  <packing><property name="expand">False</property><property name="fill">False</property></packing>
                 </child>
                 <child>
                   <object class="GtkButton" id="intent_plan_btn">
@@ -686,7 +766,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">5</property>
+                    <property name="position">6</property>
                   </packing>
                 </child>
                 <child>
@@ -699,7 +779,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">6</property>
+                    <property name="position">7</property>
                   </packing>
                 </child>
               </object>
@@ -941,7 +1021,7 @@
                     <property name="receives-default">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="clear_history_button-atkobject">
-                        <property name="AtkObject::accessible-description" translatable="yes" context="aichat|extended_tip|clear_history">清除当前文档的本地可圈 AI 对话记录。</property>
+                        <property name="AtkObject::accessible-description" translatable="yes" context="aichat|extended_tip|clear_history">Clears local AI chat history for the current document.</property>
                       </object>
                     </child>
                   </object>
@@ -988,7 +1068,7 @@
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
                 <property name="wrap">True</property>
-                <property name="label" translatable="yes" context="aichat|agent_hint">任务：规划 → 执行 → 待你审批。主文档默认不变，批准后才写回。可在「对话」勾选「多步任务」后发送，或点「运行任务」。</property>
+                <property name="label" translatable="yes" context="aichat|agent_hint">Agent Mode：绑定 → 规划 →（点「继续」）→ 执行 → 审查 → 校验 → 批准写回。主文档默认不变。勾选「多步任务」发送，或点「运行任务」。</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1006,7 +1086,32 @@
                     <property name="label" translatable="yes" context="aichat|agent_run">运行任务</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
-                    <property name="tooltip-text" translatable="yes" context="aichat|agent_run_tip">使用输入框内容启动规划→执行→待批（不直接改主文档）</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|agent_run_tip">启动 Agent Mode：绑定→规划；完成后点「继续」执行；不直接改主文档</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="agent_continue_btn">
+                    <property name="label" translatable="yes" context="aichat|agent_continue">继续</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|agent_continue_tip">规划完成后继续：执行→审查→校验；仍不自动改主文档</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="agent_approve_btn">
+                    <property name="label" translatable="yes" context="aichat|agent_approve">批准写回</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|agent_approve_tip">与审核页相同：显式批准后写入主文档</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="agent_stop_btn">
+                    <property name="label" translatable="yes" context="aichat|agent_stop">停止</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="tooltip-text" translatable="yes" context="aichat|agent_stop_tip">请求停止当前多步任务（主文档未改）</property>
                   </object>
                 </child>
                 <child>
@@ -1633,8 +1738,8 @@
                         <property name="headers-visible">True</property>
                         <child internal-child="accessible">
                           <object class="AtkObject" id="artifact_tree-atkobject">
-                            <property name="AtkObject::accessible-name" translatable="yes" context="aichatpanel|artifact_tree">生成内容列表</property>
-                            <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|artifact_tree">列出当前工作区登记的 AI 生成内容，可打开预览或送审。</property>
+                            <property name="AtkObject::accessible-name" translatable="yes" context="aichatpanel|artifact_tree">AI artifacts · 生成内容列表</property>
+                            <property name="AtkObject::accessible-description" translatable="yes" context="aichatpanel|extended_tip|artifact_tree">Lists registered AI workspace artifacts. 列出当前工作区登记的 AI 生成内容，可打开预览或送审。</property>
                           </object>
                         </child>
                         <child>
@@ -2009,5 +2114,10 @@
         <property name="position">4</property>
       </packing>
     </child>
+  </object>
+  <!-- native composer action box (send/cancel/retry host) -->
+  <object class="GtkBox" id="action_box">
+    <property name="visible">True</property>
+    <property name="orientation">horizontal</property>
   </object>
 </interface>

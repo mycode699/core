@@ -374,7 +374,13 @@ AIChatPanel::AIChatPanel(weld::Widget* pParent)
                 LINK(this, AIChatPanel, OnScenarioPinClicked));
     }
 
-    m_xTranscriptView->set_editable(false);
+    // Sidebar first-show often has a tight/zero allocation. The aichatpanel UI is
+    // notebook-heavy; without a floor, VclBox/TabControl layout aborts on macOS.
+    if (m_xContainer)
+        m_xContainer->set_size_request(280, 240);
+
+    if (m_xTranscriptView)
+        m_xTranscriptView->set_editable(false);
     if (m_xArtifactTree)
         m_xArtifactTree->set_selection_mode(SelectionMode::Single);
     if (m_xAgentTree)
@@ -405,11 +411,13 @@ AIChatPanel::AIChatPanel(weld::Widget* pParent)
         m_xReviewTree->set_selection_mode(SelectionMode::Single);
         m_xReviewTree->clear();
     }
-    m_xPromptEntry->set_placeholder_text(u"描述你要做的事，或点意图芯片 / 上方方案…"_ustr);
-    m_xPromptEntry->connect_insert_text(LINK(this, AIChatPanel, OnPromptInsertText));
-
-    m_xPromptEntry->connect_changed(LINK(this, AIChatPanel, OnPromptChanged));
-    m_xPromptEntry->connect_activate(LINK(this, AIChatPanel, OnPromptActivated));
+    if (m_xPromptEntry)
+    {
+        m_xPromptEntry->set_placeholder_text(u"描述你要做的事，或点意图芯片 / 上方方案…"_ustr);
+        m_xPromptEntry->connect_insert_text(LINK(this, AIChatPanel, OnPromptInsertText));
+        m_xPromptEntry->connect_changed(LINK(this, AIChatPanel, OnPromptChanged));
+        m_xPromptEntry->connect_activate(LINK(this, AIChatPanel, OnPromptActivated));
+    }
     if (m_xIntentRewriteBtn)
         m_xIntentRewriteBtn->connect_clicked(LINK(this, AIChatPanel, OnIntentRewriteClicked));
     if (m_xIntentFormalBtn)
@@ -458,29 +466,49 @@ AIChatPanel::AIChatPanel(weld::Widget* pParent)
         m_xCtxWorkbenchButton->connect_clicked(LINK(this, AIChatPanel, OnCtxWorkbenchClicked));
     if (m_xCtxNotebookButton)
         m_xCtxNotebookButton->connect_clicked(LINK(this, AIChatPanel, OnCtxNotebookClicked));
-    m_xSendButton->connect_clicked(LINK(this, AIChatPanel, OnSendClicked));
-    m_xCancelButton->connect_clicked(LINK(this, AIChatPanel, OnCancelClicked));
-    m_xRetryButton->connect_clicked(LINK(this, AIChatPanel, OnRetryClicked));
-    m_xClearHistoryButton->connect_clicked(LINK(this, AIChatPanel, OnClearHistoryClicked));
-    m_xArtifactTree->connect_selection_changed(
-        LINK(this, AIChatPanel, OnArtifactSelectionChanged));
-    m_xArtifactTree->connect_row_activated(LINK(this, AIChatPanel, OnArtifactRowActivated));
-    m_xRefreshArtifactsButton->connect_clicked(
-        LINK(this, AIChatPanel, OnRefreshArtifactsClicked));
-    m_xOpenArtifactButton->connect_clicked(LINK(this, AIChatPanel, OnOpenArtifactClicked));
-    m_xOpenDiffReviewButton->connect_clicked(LINK(this, AIChatPanel, OnOpenDiffReviewClicked));
-    m_xReviewArtifactButton->connect_clicked(LINK(this, AIChatPanel, OnReviewArtifactClicked));
-    m_xFormatArtifactButton->connect_clicked(LINK(this, AIChatPanel, OnFormatArtifactClicked));
-    m_xInspectEvidenceButton->connect_clicked(LINK(this, AIChatPanel, OnInspectEvidenceClicked));
-    m_xApproveSelectedButton->connect_clicked(
-        LINK(this, AIChatPanel, OnApproveSelectedClicked));
-    m_xRejectSelectedButton->connect_clicked(LINK(this, AIChatPanel, OnRejectSelectedClicked));
-    m_xCopyReferenceButton->connect_clicked(LINK(this, AIChatPanel, OnCopyReferenceClicked));
-    m_xExportEvidenceButton->connect_clicked(LINK(this, AIChatPanel, OnExportEvidenceClicked));
-    m_xFilterWorkspaceButton->connect_clicked(LINK(this, AIChatPanel, OnFilterWorkspaceClicked));
-    m_xSortWorkspaceButton->connect_clicked(LINK(this, AIChatPanel, OnSortWorkspaceClicked));
-    m_xRemoveArtifactButton->connect_clicked(
-        LINK(this, AIChatPanel, OnRemoveArtifactClicked));
+    if (m_xSendButton)
+        m_xSendButton->connect_clicked(LINK(this, AIChatPanel, OnSendClicked));
+    if (m_xCancelButton)
+        m_xCancelButton->connect_clicked(LINK(this, AIChatPanel, OnCancelClicked));
+    if (m_xRetryButton)
+        m_xRetryButton->connect_clicked(LINK(this, AIChatPanel, OnRetryClicked));
+    if (m_xClearHistoryButton)
+        m_xClearHistoryButton->connect_clicked(LINK(this, AIChatPanel, OnClearHistoryClicked));
+    if (m_xArtifactTree)
+    {
+        m_xArtifactTree->connect_selection_changed(
+            LINK(this, AIChatPanel, OnArtifactSelectionChanged));
+        m_xArtifactTree->connect_row_activated(LINK(this, AIChatPanel, OnArtifactRowActivated));
+    }
+    if (m_xRefreshArtifactsButton)
+        m_xRefreshArtifactsButton->connect_clicked(
+            LINK(this, AIChatPanel, OnRefreshArtifactsClicked));
+    if (m_xOpenArtifactButton)
+        m_xOpenArtifactButton->connect_clicked(LINK(this, AIChatPanel, OnOpenArtifactClicked));
+    if (m_xOpenDiffReviewButton)
+        m_xOpenDiffReviewButton->connect_clicked(LINK(this, AIChatPanel, OnOpenDiffReviewClicked));
+    if (m_xReviewArtifactButton)
+        m_xReviewArtifactButton->connect_clicked(LINK(this, AIChatPanel, OnReviewArtifactClicked));
+    if (m_xFormatArtifactButton)
+        m_xFormatArtifactButton->connect_clicked(LINK(this, AIChatPanel, OnFormatArtifactClicked));
+    if (m_xInspectEvidenceButton)
+        m_xInspectEvidenceButton->connect_clicked(LINK(this, AIChatPanel, OnInspectEvidenceClicked));
+    if (m_xApproveSelectedButton)
+        m_xApproveSelectedButton->connect_clicked(
+            LINK(this, AIChatPanel, OnApproveSelectedClicked));
+    if (m_xRejectSelectedButton)
+        m_xRejectSelectedButton->connect_clicked(LINK(this, AIChatPanel, OnRejectSelectedClicked));
+    if (m_xCopyReferenceButton)
+        m_xCopyReferenceButton->connect_clicked(LINK(this, AIChatPanel, OnCopyReferenceClicked));
+    if (m_xExportEvidenceButton)
+        m_xExportEvidenceButton->connect_clicked(LINK(this, AIChatPanel, OnExportEvidenceClicked));
+    if (m_xFilterWorkspaceButton)
+        m_xFilterWorkspaceButton->connect_clicked(LINK(this, AIChatPanel, OnFilterWorkspaceClicked));
+    if (m_xSortWorkspaceButton)
+        m_xSortWorkspaceButton->connect_clicked(LINK(this, AIChatPanel, OnSortWorkspaceClicked));
+    if (m_xRemoveArtifactButton)
+        m_xRemoveArtifactButton->connect_clicked(
+            LINK(this, AIChatPanel, OnRemoveArtifactClicked));
     if (m_xAgentRunBtn)
         m_xAgentRunBtn->connect_clicked(LINK(this, AIChatPanel, OnAgentRunClicked));
     if (m_xAgentContinueBtn)
@@ -601,8 +629,8 @@ AIChatPanel::AIChatPanel(weld::Widget* pParent)
     m_aScheduleTick.SetTimeout(60'000);
     m_aScheduleTick.SetInvokeHandler(LINK(this, AIChatPanel, OnScheduleTick));
     m_aScheduleTick.Start();
-    // One immediate due scan so tasks already past nextRunAt fire without waiting 60s.
-    kqoffice::ai::cowork::processDueScheduledTasks();
+    // Immediate due scan is deferred with m_aDeferredWarmup — avoid extra work during
+    // first Show()/TabControl layout which has aborted on macOS with this heavy UI.
     // Drag files onto prompt entry → @文件: attach (does not open document).
     if (m_xPromptEntry)
     {
@@ -689,6 +717,14 @@ void AIChatPanel::EnsureWorkspaceDataLoaded()
 IMPL_LINK_NOARG(AIChatPanel, OnDeferredWarmupTick, Timer*, void)
 {
     m_aDeferredWarmup.Stop();
+    // One due-task scan after first paint (moved out of ctor for macOS layout safety).
+    try
+    {
+        kqoffice::ai::cowork::processDueScheduledTasks();
+    }
+    catch (...)
+    {
+    }
     EnsureWorkspaceDataLoaded();
     if (!m_bRoutingDiagDone)
     {
@@ -729,6 +765,8 @@ void AIChatPanel::AppendTranscript(const OUString& rSpeaker, const OUString& rMe
 void AIChatPanel::AppendTranscript(const OUString& rSpeaker, const OUString& rMessage,
                                    bool bPersistHistory)
 {
+    if (!m_xTranscriptView)
+        return;
     OUString sText = m_xTranscriptView->get_text();
     if (!sText.isEmpty())
         sText += u"\n\n"_ustr;

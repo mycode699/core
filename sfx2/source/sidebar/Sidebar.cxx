@@ -29,14 +29,39 @@
 #include <sfx2/viewfrm.hxx>
 #include <sfx2/viewsh.hxx>
 #include <com/sun/star/frame/XDispatch.hpp>
+#include <sal/log.hxx>
+#include <tools/link.hxx>
+#include <vcl/svapp.hxx>
+
+#include <memory>
 
 using namespace css;
 
 namespace sfx2::sidebar {
 
-void Sidebar::ShowDeck(std::u16string_view rsDeckId, SfxViewFrame* pViewFrame, bool bToggle)
+namespace
 {
-    if (!pViewFrame)
+bool IsLiveViewFrame(const SfxViewFrame* pFrame)
+{
+    for (SfxViewFrame* pCandidate = SfxViewFrame::GetFirst(nullptr, false); pCandidate;
+         pCandidate = SfxViewFrame::GetNext(*pCandidate, nullptr, false))
+    {
+        if (pCandidate == pFrame)
+            return true;
+    }
+    return false;
+}
+
+struct PendingShowDeck
+{
+    SfxViewFrame* pFrame = nullptr;
+    OUString aDeckId;
+    bool bToggle = false;
+};
+
+void ShowDeckOnMainThread(SfxViewFrame* pViewFrame, std::u16string_view rsDeckId, bool bToggle)
+{
+    if (!pViewFrame || !IsLiveViewFrame(pViewFrame))
         return;
 
     SfxChildWindow* pSidebarChildWindow = pViewFrame->GetChildWindow(SID_SIDEBAR);
@@ -44,8 +69,8 @@ void Sidebar::ShowDeck(std::u16string_view rsDeckId, SfxViewFrame* pViewFrame, b
     if (!bInitiallyVisible)
         pViewFrame->ShowChildWindow(SID_SIDEBAR);
 
-    SidebarController* pController =
-            SidebarController::GetSidebarControllerForFrame(pViewFrame->GetFrame().GetFrameInterface());
+    SidebarController* pController = SidebarController::GetSidebarControllerForFrame(
+        pViewFrame->GetFrame().GetFrameInterface());
     if (!pController)
         return;
 
@@ -53,7 +78,8 @@ void Sidebar::ShowDeck(std::u16string_view rsDeckId, SfxViewFrame* pViewFrame, b
     {
         // close the sidebar if it was already visible and showing this sidebar deck
         const util::URL aURL(Tools::GetURL(u".uno:Sidebar"_ustr));
-        css::uno::Reference<frame::XDispatch> xDispatch(Tools::GetDispatch(pViewFrame->GetFrame().GetFrameInterface(), aURL));
+        css::uno::Reference<frame::XDispatch> xDispatch(
+            Tools::GetDispatch(pViewFrame->GetFrame().GetFrameInterface(), aURL));
         if (xDispatch.is())
             xDispatch->dispatch(aURL, css::uno::Sequence<beans::PropertyValue>());
     }
@@ -62,6 +88,42 @@ void Sidebar::ShowDeck(std::u16string_view rsDeckId, SfxViewFrame* pViewFrame, b
         pController->OpenThenSwitchToDeck(rsDeckId);
         pController->GetFocusManager().GrabFocusPanel();
     }
+}
+
+void ShowDeckAsync(void*, void* pArg)
+{
+    std::unique_ptr<PendingShowDeck> pPending(static_cast<PendingShowDeck*>(pArg));
+    if (!pPending)
+        return;
+    ShowDeckOnMainThread(pPending->pFrame, pPending->aDeckId, pPending->bToggle);
+}
+} // namespace
+
+void Sidebar::ShowDeck(std::u16string_view rsDeckId, SfxViewFrame* pViewFrame, bool bToggle)
+{
+    if (!pViewFrame)
+        return;
+
+    // Remote UNO / binaryurp dispatches run on cppu_threadpool threads. Aqua VCL
+    // (and layout of AIChatPanel) must not run off the main thread — that aborts
+    // in Window::Show / VclBox::setAllocation. Defer to the UI thread.
+    if (!Application::IsMainThread())
+    {
+        auto pPending = std::make_unique<PendingShowDeck>();
+        pPending->pFrame = pViewFrame;
+        pPending->aDeckId = OUString(rsDeckId);
+        pPending->bToggle = bToggle;
+        if (Application::PostUserEvent(LINK_NONMEMBER(nullptr, ShowDeckAsync), pPending.get()))
+        {
+            pPending.release();
+            return;
+        }
+        SAL_WARN("sfx.sidebar", "Sidebar::ShowDeck: failed to post main-thread switch for "
+                                    << OUString(rsDeckId));
+        return;
+    }
+
+    ShowDeckOnMainThread(pViewFrame, rsDeckId, bToggle);
 }
 
 void Sidebar::ShowPanel (

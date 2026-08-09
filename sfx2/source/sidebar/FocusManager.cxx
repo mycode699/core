@@ -70,6 +70,8 @@ void FocusManager::ClearPanels()
     aPanels.swap(maPanels);
     for (auto const& panel : aPanels)
     {
+        if (!panel)
+            continue;
         if (panel->GetTitleBar())
         {
             UnregisterWindow(panel->GetTitleBar()->GetToolBox());
@@ -77,7 +79,8 @@ void FocusManager::ClearPanels()
         }
 
         weld::Container* pContents = panel->GetContents();
-        UnregisterWindow(*pContents);
+        if (pContents)
+            UnregisterWindow(*pContents);
     }
 }
 
@@ -107,6 +110,8 @@ void FocusManager::SetPanels (const SharedPanelContainer& rPanels)
     ClearPanels();
     for (auto const& panel : rPanels)
     {
+        if (!panel)
+            continue;
         if (panel->GetTitleBar())
         {
             RegisterWindow(panel->GetTitleBar()->GetToolBox());
@@ -115,7 +120,8 @@ void FocusManager::SetPanels (const SharedPanelContainer& rPanels)
 
         // Register also as key event listener at the panel.
         weld::Container* pContents = panel->GetContents();
-        RegisterWindow(*pContents);
+        if (pContents)
+            RegisterWindow(*pContents);
 
         maPanels.emplace_back(panel);
     }
