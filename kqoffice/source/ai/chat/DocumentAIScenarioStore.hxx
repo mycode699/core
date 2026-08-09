@@ -30,6 +30,9 @@ struct ScenarioOptions
 };
 
 /// One configurable scenario (default or user-defined).
+/// Quality-core scenarios ship as Grok-style **skill packs**: rich promptTemplate
+/// (steps / hard rules / output / trust chain) plus description + whenToUse for
+/// natural-language matching (not only slash commands).
 struct DocumentAIScenario
 {
     OUString id; ///< unique stable id
@@ -37,10 +40,16 @@ struct DocumentAIScenario
     OUString category; ///< writer | calc | impress | general
     OUString preferredSurface; ///< writer | calc | impress | any
     OUString capabilityHint; ///< rewrite | chat | plan | review | agent | summarize
-    OUString promptTemplate; ///< may contain {selection}
+    OUString promptTemplate; ///< may contain {selection}; skill packs use full process body
     OUString slashCommand; ///< optional, e.g. /公文润色
+    /// Short skill blurb: what it does (UI + matching context).
+    OUString description;
+    /// Trigger phrases for auto-match, separated by | (e.g. 公文润色|庄重|删繁就简).
+    OUString whenToUse;
     ScenarioOptions options;
     sal_Int32 sortOrder = 100;
+    /// Bumped when factory skill pack text changes; load() refreshes builtins below this.
+    sal_Int32 skillVersion = 0;
     bool builtin = false; ///< factory default; cannot hard-delete (only disable)
     bool enabled = true; ///< master enable; false → hidden from buttons
 };
@@ -124,9 +133,26 @@ public:
     /// Expand prompt with selection / options.
     static OUString expandPrompt(const DocumentAIScenario& rScenario, const OUString& rSelectionText);
 
+    /// Expand skill pack and append the user's free-form utterance (NL path).
+    static OUString expandSkillWithUtterance(const DocumentAIScenario& rScenario,
+                                             const OUString& rSelectionText,
+                                             const OUString& rUserUtterance);
+
     /// Match slash command against catalog (enabled only).
     static const DocumentAIScenario* matchSlash(const ScenarioCatalog& rCatalog,
                                                 const OUString& rUserInput);
+
+    /// Match free-form Chinese/English against skill whenToUse / title / slash stem.
+    /// rSurfaceFilter: writer|calc|impress|any — prefers same surface, allows general.
+    /// Returns best enabled skill with score >= threshold, or nullptr.
+    /// Optional pScoreOut receives match score (higher = stronger).
+    static const DocumentAIScenario* matchNaturalLanguage(const ScenarioCatalog& rCatalog,
+                                                          const OUString& rUserInput,
+                                                          const OUString& rSurfaceFilter,
+                                                          sal_Int32* pScoreOut = nullptr);
+
+    /// Current factory skill-pack revision (builtins with lower skillVersion get refreshed).
+    static sal_Int32 skillPackVersion();
 
     /// Serialize / parse (for tests & options export).
     static OUString serializeJson(const ScenarioCatalog& rCatalog);

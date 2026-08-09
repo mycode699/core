@@ -43,6 +43,7 @@ $(eval $(call gb_Library_add_exception_objects,kqoffice_ai,\
     kqoffice/source/ai/provider/OllamaAdapter \
     kqoffice/source/ai/provider/OpenAICompatibleAdapter \
     kqoffice/source/ai/provider/Provider \
+    kqoffice/source/ai/provider/ProviderStreamHelper \
     kqoffice/source/ai/provider/RuntimePlanStub \
     kqoffice/source/ai/provider/ServiceModePolicy \
     kqoffice/source/ai/cowork/AgentDelegation \
@@ -64,10 +65,20 @@ $(eval $(call gb_Library_add_exception_objects,kqoffice_ai,\
     kqoffice/source/ai/chat/AgentChatStreamingClient \
     kqoffice/source/ai/chat/DocumentAIApply \
     kqoffice/source/ai/chat/DocumentAIContext \
+    kqoffice/source/ai/chat/DocumentAIFormulaDryRun \
+    kqoffice/source/ai/chat/DocumentAIMCPTools \
+    kqoffice/source/ai/chat/DocumentAIMCPStdio \
+    kqoffice/source/ai/chat/DocumentAIVerify \
+    kqoffice/source/ai/chat/DocumentAITaskBootstrap \
+    kqoffice/source/ai/chat/DocumentAIWorkPlan \
+    kqoffice/source/ai/chat/DocumentAIRewriteMemory \
+    kqoffice/source/ai/chat/DocumentAIDocumentTools \
     kqoffice/source/ai/chat/DocumentAILocalRag \
     kqoffice/source/ai/chat/DocumentAIMaterialReader \
     kqoffice/source/ai/chat/DocumentAIInputPrefs \
     kqoffice/source/ai/chat/DocumentAIScreenCapture \
+    kqoffice/source/ai/chat/DocumentAIVisionEvidence \
+    kqoffice/source/ai/chat/DocumentAIEnterpriseConnectors \
     kqoffice/source/ai/chat/DocumentAIVoiceInput \
     kqoffice/source/ai/chat/DocumentAIScenarioStore \
     kqoffice/source/ai/chat/DocumentAIScenarios \
@@ -90,7 +101,11 @@ $(eval $(call gb_Library_add_exception_objects,kqoffice_ai,\
     kqoffice/source/ai/filemgr/BatchJob \
     kqoffice/source/ai/workbench/WorkTelemetryStore \
     kqoffice/source/ai/notebook/LocalNotebookStore \
+    kqoffice/source/ai/notebook/LocalSpeechHub \
+    kqoffice/source/ai/notebook/MediaTranscriptService \
     kqoffice/source/ai/notebook/NotebookMaterialStore \
+    kqoffice/source/ai/notebook/NotebookProjectStore \
+    kqoffice/source/ai/notebook/NotebookStudioPipeline \
 ))
 
 ifeq ($(OS),MACOSX)

@@ -212,7 +212,35 @@ DocumentAIScenario makeBuiltin(const OUString& id, const OUString& title, const 
     s.options.useAgentPipeline = agent;
     return s;
 }
+
+/// Attach Grok-style skill metadata (description + whenToUse + skillVersion).
+void asSkill(DocumentAIScenario& s, const OUString& description, const OUString& whenToUse,
+             sal_Int32 skillVer = 2)
+{
+    s.description = description;
+    s.whenToUse = whenToUse;
+    s.skillVersion = skillVer;
+}
+
+/// Shared trust-chain footer for every write-capable skill pack.
+const OUString& skillTrustFooter()
+{
+    static const OUString k
+        = u"\n## 信任链（硬约束）\n"
+          u"- 本步只**提议**改动；主文档须用户点「批准写回」后才变。\n"
+          u"- 一次批准只覆盖本批计划，不是永久授权后续静默改稿。\n"
+          u"- 不编造原文没有的数据/文号/人名；缺信息用【待填】。\n"
+          u"- 本地优先：不要求上传云端，不静默外联。\n"_ustr;
+    return k;
+}
 } // namespace
+
+sal_Int32 DocumentAIScenarioStore::skillPackVersion()
+{
+    // Factory skill-pack revision. Bump when quality-core skill bodies change so
+    // load() can refresh persisted builtins without deleting the user's config.
+    return 2;
+}
 
 OUString DocumentAIScenarioStore::defaultConfigPath()
 {
@@ -228,12 +256,31 @@ OUString DocumentAIScenarioStore::defaultConfigPath()
 std::vector<DocumentAIScenario> DocumentAIScenarioStore::builtinDefaults()
 {
     std::vector<DocumentAIScenario> v;
-    // —— Writer ——
+    // —— Writer · Skill packs (Grok-style process: steps / rules / output / trust) ——
     v.push_back(makeBuiltin(
         u"official-polish"_ustr, u"公文润色"_ustr, u"writer"_ustr, u"writer"_ustr, u"rewrite"_ustr,
         u"/公文润色"_ustr,
-        u"【公文润色】庄重准确、删繁就简。保留关键数据。输出改写全文或 ApplyPlan。\n原文：\n{selection}"_ustr,
+        u"【Skill · 公文润色】庄重准确、删繁就简的高质量改稿。\n"
+        u"## 何时使用\n"
+        u"用户要润色通知/请示/报告/纪要/函，或说「更正式」「删废话」「公文体」。\n"
+        u"## 步骤\n"
+        u"1) 通读选区/正文，标出冗余、口语、歧义、缺失要素；\n"
+        u"2) 输出 **3 条改动要点**（每条一句，说明改了什么、为何）；\n"
+        u"3) 给出可整段粘贴的改写稿；\n"
+        u"4) 若有明确句对替换，可附 ApplyPlan JSON（replace + target），未批准不写回。\n"
+        u"## 硬规则\n"
+        u"- 不编造数据/文号/人名/单位；缺信息用【待填】；\n"
+        u"- 不改变事实与政策口径；不擅自升格/降格语气到戏谑；\n"
+        u"- 优先删繁就简，避免堆砌四字空话。\n"
+        u"## 输出格式\n"
+        u"### 改动要点\n- …\n### 改写稿\n（可粘贴正文）\n"
+        u"可选：```json {\"plan_id\":\"…\",\"operations\":[…]} ```\n"_ustr
+            + skillTrustFooter() + u"## 素材\n{selection}"_ustr,
         10));
+    asSkill(v.back(),
+            u"庄重准确的公文润色：改动要点 + 可粘贴改写稿，不编造事实。"_ustr,
+            u"公文润色|润色公文|通知润色|请示润色|正式一点|更正式|删繁就简|公文体|机关文|"
+            u"庄重|公务文书|polish official"_ustr);
     v.back().options.pinned = true; // default 常用
     // —— 公文包（垂类）——
     v.push_back(makeBuiltin(
@@ -242,17 +289,23 @@ std::vector<DocumentAIScenario> DocumentAIScenarioStore::builtinDefaults()
         u"【通知公告】按机关公文习惯起草。结构：标题 / 主送 / 正文（事由-事项-要求）/ "
         u"落款日期。语气庄重；缺信息用【待填】。\n素材：\n{selection}"_ustr,
         12));
+    asSkill(v.back(), u"起草通知/公告：标题主送正文落款，庄重不编造。"_ustr,
+            u"通知|公告|发通知|写通知|通知公告|下发通知"_ustr);
     v.push_back(makeBuiltin(
         u"official-request"_ustr, u"请示函"_ustr, u"writer"_ustr, u"writer"_ustr, u"plan"_ustr,
         u"/请示"_ustr,
         u"【请示/函】写清：缘由、依据、具体请求、办结时限。一文一事。\n素材：\n{selection}"_ustr,
         13));
+    asSkill(v.back(), u"起草请示或函：缘由依据请求时限，一文一事。"_ustr,
+            u"请示|写请示|函|商请|报请|请示函"_ustr);
     v.push_back(makeBuiltin(
         u"official-summary"_ustr, u"工作总结"_ustr, u"writer"_ustr, u"writer"_ustr, u"plan"_ustr,
         u"/工作总结"_ustr,
         u"【工作总结】结构：总体概述 → 主要成绩（条列+数据）→ 问题不足 → 下阶段计划。\n"
         u"素材：\n{selection}"_ustr,
         14));
+    asSkill(v.back(), u"工作总结骨架：成绩/问题/计划，数据不编造。"_ustr,
+            u"工作总结|写总结|年度总结|季度总结|阶段总结"_ustr);
     v.push_back(makeBuiltin(
         u"official-pack"_ustr, u"公文包"_ustr, u"writer"_ustr, u"writer"_ustr, u"review"_ustr,
         u"/公文包"_ustr,
@@ -263,39 +316,173 @@ std::vector<DocumentAIScenario> DocumentAIScenarioStore::builtinDefaults()
         u"4) 一版可直接使用的改写稿。\n"
         u"材料：\n{selection}"_ustr,
         11));
+    asSkill(v.back(), u"公文要素清单+文种判定+可直接用改写稿。"_ustr,
+            u"公文包|文种|要素检查|公文检查|公文清单"_ustr);
     v.back().options.pinned = true;
     v.push_back(makeBuiltin(
         u"rewrite-smooth"_ustr, u"通顺改写"_ustr, u"writer"_ustr, u"writer"_ustr, u"rewrite"_ustr,
         u"/通顺改写"_ustr,
-        u"【通顺改写】提升可读性，不改变事实与语气强度。\n原文：\n{selection}"_ustr, 20));
+        u"【Skill · 通顺改写】提升可读性与衔接，不改变事实与语气强度。\n"
+        u"## 硬规则\n- 不编造；不升格/降格语气；保留专有名词。\n"
+        u"## 输出\n可粘贴改写稿；可选 FIX| 仅当有明确句对。\n"_ustr
+            + skillTrustFooter() + u"## 原文\n{selection}"_ustr,
+        20));
+    asSkill(v.back(), u"通顺改写：更好读，不改事实与语气强度。"_ustr,
+            u"通顺|改通顺|读起来别扭|不通顺|rewrite smooth|理顺|改顺"_ustr);
     v.push_back(makeBuiltin(
         u"shorten"_ustr, u"精简压缩"_ustr, u"writer"_ustr, u"writer"_ustr, u"summarize"_ustr,
         u"/精简"_ustr,
-        u"【精简】保留核心信息，压缩到约一半篇幅。\n原文：\n{selection}"_ustr, 30));
+        u"【Skill · 精简】保留核心信息，压缩到约一半篇幅。\n"
+        u"## 硬规则\n- 不删关键数据/结论；不编造。\n"
+        u"## 输出\n精简稿 + 可选 3 条删了什么。\n"_ustr
+            + skillTrustFooter() + u"## 原文\n{selection}"_ustr,
+        30));
+    asSkill(v.back(), u"精简压缩到约一半，保留核心信息与数据。"_ustr,
+            u"精简|缩短|压缩|太长了|短一点|再短|shorten|condense|缩写"_ustr);
     v.push_back(makeBuiltin(
         u"expand"_ustr, u"扩写丰富"_ustr, u"writer"_ustr, u"writer"_ustr, u"rewrite"_ustr,
         u"/扩写"_ustr,
-        u"【扩写】在不编造事实前提下补充细节与过渡。\n原文：\n{selection}"_ustr, 40));
+        u"【Skill · 扩写】在不编造事实前提下补充细节与过渡。\n"
+        u"## 硬规则\n- 缺信息用【待填】；不发明数据/案例。\n"
+        u"## 输出\n扩写稿。\n"_ustr
+            + skillTrustFooter() + u"## 原文\n{selection}"_ustr,
+        40));
+    asSkill(v.back(), u"扩写细节与过渡，不编造事实。"_ustr,
+            u"扩写|写长一点|丰富一点|展开写|expand|加长|补充细节"_ustr);
     v.push_back(makeBuiltin(
         u"translate-en"_ustr, u"译为英文"_ustr, u"writer"_ustr, u"writer"_ustr, u"rewrite"_ustr,
         u"/译英"_ustr,
-        u"【翻译】将下列中文译为专业英文，保持格式。\n原文：\n{selection}"_ustr, 50));
+        u"【Skill · 译英】专业英文，保持格式与专有名词。\n"
+        u"缺信息【TBD】；不擅自本地化品牌名。\n"_ustr
+            + skillTrustFooter() + u"## 原文\n{selection}"_ustr,
+        50));
+    asSkill(v.back(), u"中文译专业英文，保持格式。"_ustr,
+            u"译英|翻译成英文|英译|translate to english|英文版|翻成英文"_ustr);
     v.push_back(makeBuiltin(
         u"translate-zh"_ustr, u"译为中文"_ustr, u"writer"_ustr, u"writer"_ustr, u"rewrite"_ustr,
         u"/译中"_ustr,
-        u"【翻译】将下列内容译为简洁中文。\n原文：\n{selection}"_ustr, 60));
+        u"【Skill · 译中】简洁中文，保持格式。\n"_ustr
+            + skillTrustFooter() + u"## 原文\n{selection}"_ustr,
+        60));
+    asSkill(v.back(), u"译为简洁中文，保持格式。"_ustr,
+            u"译中|翻译成中文|中译|translate to chinese|中文版|翻成中文"_ustr);
     v.push_back(makeBuiltin(
         u"proofread"_ustr, u"校对审阅"_ustr, u"writer"_ustr, u"writer"_ustr, u"review"_ustr,
         u"/校对"_ustr,
-        u"【校对】标出错别字、标点、逻辑问题，并给出修改稿。\n原文：\n{selection}"_ustr, 70));
+        u"【Skill · 校对审阅】按严重度找错并给可写回 FIX。\n"
+        u"## 何时使用\n"
+        u"用户要校对、找错别字、标点、逻辑硬伤，或「帮我审一下」。\n"
+        u"## 步骤\n"
+        u"1) 通读；按 **严重 / 中等 / 轻微** 列问题；\n"
+        u"2) 每条：位置线索 + 问题类型（错别字/标点/逻辑/语气）+ 改法；\n"
+        u"3) 对可确定的替换，输出可写回块（未批准不改主文档）。\n"
+        u"## 硬规则\n"
+        u"- FIX 左半「原句片段」须能在原文中定位（足够长、勿截断关键词）；\n"
+        u"- 拿不准的标「待人工确认」，不要硬改专有名词；\n"
+        u"- 不借校对扩写或改立场。\n"
+        u"## 输出格式\n"
+        u"### 问题清单\n"
+        u"- [严重] …\n"
+        u"### 可写回（可选）\n"
+        u"===可圈审阅修复===\n"
+        u"FIX|原句片段|改正句\n"
+        u"（每行一条）\n"_ustr
+            + skillTrustFooter() + u"## 素材\n{selection}"_ustr,
+        8));
+    asSkill(v.back(),
+            u"校对错别字/标点/逻辑，输出 FIX| 写回块，须批准才改主文档。"_ustr,
+            u"校对|审阅|找错|错别字|标点|病句|proofread|review text|帮我审|"
+            u"检查文字|改错"_ustr);
+    // —— Writer · 内容/排版/设计质检（核心改稿面）——
+    v.push_back(makeBuiltin(
+        u"layout-polish"_ustr, u"排版优化"_ustr, u"writer"_ustr, u"writer"_ustr, u"plan"_ustr,
+        u"/排版优化"_ustr,
+        u"【Skill · 排版优化】只调结构与标题层级，不改写事实。\n"
+        u"## 何时使用\n"
+        u"标题层级乱、目录感差、列表不统一、段落过长、要「整理大纲/设标题样式」。\n"
+        u"## 步骤\n"
+        u"1) 诊断现状问题 ≤5 条（层级/列表/段长/跳级）；\n"
+        u"2) 给出建议标题树（H1–H3）；\n"
+        u"3) 输出可写回块（文字须与文档标题原文一致，便于软匹配定位）。\n"
+        u"## 硬规则\n"
+        u"- **不改写正文事实**，只提议标题层级/结构；\n"
+        u"- H1| 后文字尽量等于文档中已有标题原文；定位不了只给建议，勿瞎写 para 号；\n"
+        u"- 有段落号时优先 para:N|H1|标题。\n"
+        u"## 输出格式\n"
+        u"### 现状问题\n1) …\n### 建议标题树\n- H1 …\n### 可写回\n"
+        u"===可圈大纲写回===\n"
+        u"para:12|H1|标题原文\n"
+        u"H1|标题原文\n"
+        u"H2|小节原文\n"_ustr
+            + skillTrustFooter() + u"## 素材\n{selection}"_ustr,
+        6));
+    asSkill(v.back(),
+            u"标题层级与结构优化，输出可圈大纲写回块（H1|/para:），须批准。"_ustr,
+            u"排版优化|排版|标题层级|层级乱|大纲写回|设标题|目录结构|layout|"
+            u"typography|整理结构|标题样式|H1|H2"_ustr);
+    v.back().options.pinned = true;
+    v.push_back(makeBuiltin(
+        u"content-quality"_ustr, u"内容质检"_ustr, u"writer"_ustr, u"writer"_ustr, u"review"_ustr,
+        u"/内容质检"_ustr,
+        u"【Skill · 内容质检】四维打分 + 最小改动建议（咨询为主，可附润色稿）。\n"
+        u"## 何时使用\n"
+        u"用户要质检、打分、查逻辑/冗余/语气，或「这篇写得怎么样」。\n"
+        u"## 步骤\n"
+        u"1) 四维 1–5 分：结构清晰 / 事实可核 / 语气得体 / 冗余控制；\n"
+        u"2) Top 5 问题（位置线索 + 改法）；\n"
+        u"3) 一版「最小改动」润色稿（可粘贴）；有明确句对时可附 FIX| 块。\n"
+        u"## 硬规则\n"
+        u"- 禁止编造原文没有的数据；\n"
+        u"- 质检默认**不强制写回**；无 FIX/大纲块时以咨询收口；\n"
+        u"- 打分要有一句依据，忌空泛「还可以」。\n"
+        u"## 输出格式\n"
+        u"### 总分与分项\n结构 x/5 · 事实 x/5 · 语气 x/5 · 冗余 x/5 · 总分\n"
+        u"### Top 问题\n1) …\n### 最小改动稿\n…\n"_ustr
+            + skillTrustFooter() + u"## 素材\n{selection}"_ustr,
+        7));
+    asSkill(v.back(),
+            u"结构/事实/语气/冗余四维质检与最小改动稿，默认咨询不强制写回。"_ustr,
+            u"内容质检|质检|打分|质量怎么样|写得怎么样|冗余|逻辑检查|"
+            u"content quality|质量评估|文章质量"_ustr);
+    v.back().options.pinned = true;
+    v.push_back(makeBuiltin(
+        u"doc-design-review"_ustr, u"版式设计审"_ustr, u"writer"_ustr, u"writer"_ustr, u"chat"_ustr,
+        u"/版式设计审"_ustr,
+        u"【Skill · 版式设计审 · 咨询】视觉层级建议，**不自动改样式**。\n"
+        u"## 何时使用\n"
+        u"页边距、标题对比、列表密度、表格可读性、页眉页脚、商务/汇报观感。\n"
+        u"## 步骤\n"
+        u"1) 快速诊断观感问题 3–5 条；\n"
+        u"2) 给出 **3 套克制方案**：A 极简 / B 商务 / C 汇报；\n"
+        u"3) 每套 **4 条**可执行设置建议（字号层级、间距、列表、表格）。\n"
+        u"## 硬规则\n"
+        u"- 本技能**只咨询**，不输出可圈大纲/FIX 写回块，不改主文档样式；\n"
+        u"- 方案克制，避免花哨装饰建议。\n"
+        u"## 输出格式\n"
+        u"### 观感诊断\n…\n### 方案A 极简\n1)…\n### 方案B 商务\n…\n### 方案C 汇报\n…\n"_ustr
+            + skillTrustFooter() + u"## 素材\n{selection}"_ustr,
+        16));
+    asSkill(v.back(),
+            u"三套克制版式方案（咨询不改样式）：极简/商务/汇报。"_ustr,
+            u"版式设计审|版式|视觉层级|页边距|页眉页脚|商务排版|设计审|"
+            u"好看一点|排版观感"_ustr);
     v.push_back(makeBuiltin(
         u"minutes"_ustr, u"会议纪要"_ustr, u"writer"_ustr, u"writer"_ustr, u"summarize"_ustr,
         u"/会议纪要"_ustr,
-        u"【会议纪要】整理为：议题 / 结论 / 负责人 / 截止时间。\n素材：\n{selection}"_ustr, 80));
+        u"【Skill · 会议纪要】议题 / 结论 / 负责人 / 截止时间。\n"
+        u"缺信息【待填】；不编造出席人与决议。\n"_ustr
+            + skillTrustFooter() + u"## 素材\n{selection}"_ustr,
+        80));
+    asSkill(v.back(), u"会议纪要：议题结论负责人截止时间。"_ustr,
+            u"会议纪要|纪要|会议记录|整理会议|minutes|开会记录"_ustr);
     v.push_back(makeBuiltin(
         u"report-structure"_ustr, u"汇报结构"_ustr, u"writer"_ustr, u"writer"_ustr, u"plan"_ustr,
         u"/汇报结构"_ustr,
-        u"【汇报结构】输出：背景-进展-问题-计划-所需支持。\n素材：\n{selection}"_ustr, 90));
+        u"【Skill · 汇报结构】背景-进展-问题-计划-所需支持。\n"_ustr
+            + skillTrustFooter() + u"## 素材\n{selection}"_ustr,
+        90));
+    asSkill(v.back(), u"汇报结构骨架：背景进展问题计划支持。"_ustr,
+            u"汇报结构|汇报提纲|工作汇报|述职结构|汇报框架"_ustr);
     // 空白页 AI 起草（开始中心 / 侧栏一键）
     v.push_back(makeBuiltin(
         u"blank-draft-writer"_ustr, u"AI 起草文档"_ustr, u"writer"_ustr, u"writer"_ustr,
@@ -311,18 +498,31 @@ std::vector<DocumentAIScenario> DocumentAIScenarioStore::builtinDefaults()
     v.back().options.autoSubmit = false; // 填入提示后等用户补充主题再发送
     v.back().options.attachSelection = true;
 
-    // —— Calc ——
+    // —— Calc · Skill packs ——
     v.push_back(makeBuiltin(
         u"formula-assist"_ustr, u"公式助手"_ustr, u"calc"_ustr, u"calc"_ustr, u"chat"_ustr,
         u"/公式助手"_ustr,
-        u"【公式助手 / 就地公式栏感】为当前单元格或选区给出可写入的公式。要求：\n"
-        u"1) 第一行必须是以 = 开头的完整公式（单独一行，便于 Ctrl+K / 侧栏写回单元格）；\n"
-        u"2) 再简要说明用途与引用区域；\n"
-        u"3) 可选输出 ApplyPlan JSON：\n"
-        u"```json\n{\"plan_id\":\"ap-formula\",\"operations\":[{\"op_type\":\"replace\","
-        u"\"target\":\"cell:A1\",\"new_text\":\"=SUM(A1:A10)\"}]}\n```\n"
-        u"选区：\n{selection}"_ustr,
+        u"【Skill · 公式助手】为单元格/选区给出可写入公式（先公式后解释）。\n"
+        u"## 何时使用\n"
+        u"用户要写公式、求和、条件统计、比率、查找引用等。\n"
+        u"## 步骤\n"
+        u"1) 判断目标单元格与引用区域；\n"
+        u"2) **第一行**输出以 = 开头的完整公式（单独一行）；\n"
+        u"3) 说明用途与引用；可选 ApplyPlan / 可圈公式写回块。\n"
+        u"## 硬规则\n"
+        u"- 第一行必须是可写入公式；勿用中文全角＝；\n"
+        u"- 不臆造表中不存在的列/区域；不确定标【待确认区域】；\n"
+        u"- 写回前会走 dry-run；失败须用户二次确认。\n"
+        u"## 输出格式\n"
+        u"=SUM(A1:A10)\n"
+        u"说明：…\n"
+        u"可选：===可圈公式写回===\ncell:B2|=SUM(A1:A10)\n"_ustr
+            + skillTrustFooter() + u"## 选区\n{selection}"_ustr,
         110));
+    asSkill(v.back(),
+            u"生成可写入公式（首行=公式），支持写回块与 dry-run。"_ustr,
+            u"公式助手|公式|求和|SUM|AVERAGE|COUNTIF|写公式|formula|"
+            u"单元格公式|怎么算"_ustr);
     v.back().options.pinned = true;
     v.push_back(makeBuiltin(
         u"blank-draft-calc"_ustr, u"AI 建表"_ustr, u"calc"_ustr, u"calc"_ustr, u"plan"_ustr,
@@ -339,17 +539,69 @@ std::vector<DocumentAIScenario> DocumentAIScenarioStore::builtinDefaults()
     v.push_back(makeBuiltin(
         u"data-clean"_ustr, u"数据清洗"_ustr, u"calc"_ustr, u"calc"_ustr, u"extract"_ustr,
         u"/数据清洗"_ustr,
-        u"【数据清洗】指出空值/重复/格式问题，给出处理步骤与示例公式。\n选区：\n{selection}"_ustr,
-        120));
+        u"【Skill · 数据清洗】问题清单 + 可写回清洗公式。\n"
+        u"## 何时使用\n"
+        u"空值、重复、空格、类型混乱、异常值、要 TRIM/去重/规范化。\n"
+        u"## 步骤\n"
+        u"1) 问题清单（类型 + **单元格引用**）；\n"
+        u"2) 处理步骤（强调先备份）；\n"
+        u"3) 可写回块（公式优先，未批准不改表）。\n"
+        u"## 硬规则\n"
+        u"- 每条问题尽量带 cell/range 引用；\n"
+        u"- 不删除用户未要求删除的数据行（除非明确「去重删除」）；\n"
+        u"- 清洗写回优先公式，便于撤销。\n"
+        u"## 输出格式\n"
+        u"### 问题\n1) A1 空值 …\n### 步骤\n…\n### 可写回\n"
+        u"===可圈清洗写回===\n"
+        u"cell:A1|=TRIM(A1)\n"_ustr
+            + skillTrustFooter() + u"## 选区\n{selection}"_ustr,
+        108));
+    asSkill(v.back(),
+            u"空值/重复/异常清洗清单 + 可圈清洗写回公式块。"_ustr,
+            u"数据清洗|清洗|去空格|TRIM|去重|空值|异常值|clean data|规范化|"
+            u"脏数据"_ustr);
+    v.back().options.pinned = true;
+    v.push_back(makeBuiltin(
+        u"table-format"_ustr, u"表格美化"_ustr, u"calc"_ustr, u"calc"_ustr, u"plan"_ustr,
+        u"/表格美化"_ustr,
+        u"【Skill · 表格美化】表头/格式/冻结/打印可读性，不编造业务数据。\n"
+        u"## 何时使用\n"
+        u"表难看、表头不清、要冻结首行、数字格式、打印区域、条件格式建议。\n"
+        u"## 步骤\n"
+        u"1) 表头与冻结建议；\n"
+        u"2) 数字/日期/百分比格式；\n"
+        u"3) 列宽与打印；\n"
+        u"4) 2–4 条校验/辅助公式（= 开头单独行）；可选写回块。\n"
+        u"## 硬规则\n"
+        u"- **不编造**业务数值；\n"
+        u"- 建议可执行，忌空泛「调好看点」。\n"
+        u"## 输出格式\n"
+        u"### 表头与冻结\n…\n### 数字格式\n…\n### 公式\n=…\n"_ustr
+            + skillTrustFooter() + u"## 选区\n{selection}"_ustr,
+        109));
+    asSkill(v.back(),
+            u"表头/冻结/数字格式/打印与校验公式，提升表格可读性。"_ustr,
+            u"表格美化|表头|冻结|冻结首行|数字格式|打印区域|表格排版|"
+            u"table format|好看表格|列宽"_ustr);
+    v.back().options.pinned = true;
     v.push_back(makeBuiltin(
         u"data-summary"_ustr, u"数据汇总"_ustr, u"calc"_ustr, u"calc"_ustr, u"summarize"_ustr,
         u"/数据汇总"_ustr,
-        u"【数据汇总】描述分布、极值、异常，建议透视/汇总公式。\n选区：\n{selection}"_ustr,
+        u"【Skill · 数据汇总】分布、极值、异常 + 可写公式（每行一个 =）。\n"
+        u"## 硬规则\n- 异常带单元格引用；禁止臆造表中没有的数。\n"
+        u"## 输出\n要点 + =公式行；可选 ===可圈公式写回===\n"_ustr
+            + skillTrustFooter() + u"## 选区\n{selection}"_ustr,
         130));
+    asSkill(v.back(), u"数据分布/极值/异常 + 汇总公式，不编造数。"_ustr,
+            u"数据汇总|汇总|统计一下|分布|极值|aggregate|summarize data|算合计"_ustr);
     v.push_back(makeBuiltin(
         u"explain-cells"_ustr, u"解释单元格"_ustr, u"calc"_ustr, u"calc"_ustr, u"chat"_ustr,
         u"/解释单元格"_ustr,
-        u"【解释】用通俗语言解释选中内容含义与可能用途。\n选区：\n{selection}"_ustr, 140));
+        u"【Skill · 解释单元格】通俗解释选中含义与可能用途；不写回。\n"
+        u"## 选区\n{selection}"_ustr,
+        140));
+    asSkill(v.back(), u"通俗解释选中单元格/区域含义。"_ustr,
+            u"解释单元格|这格什么意思|解释公式|单元格含义|explain cell"_ustr);
 
     // —— Impress · Wave UI-4 设计流（墨刀/Claude Design 心智）——
     // 禁止「一句话黑盒成片」：先大纲 → 多方案卡片 → 用户选一 → 批准写回 → 导出 PPTX。
@@ -372,6 +624,8 @@ std::vector<DocumentAIScenario> DocumentAIScenarioStore::builtinDefaults()
     v.back().options.pinned = true;
     v.back().options.autoSubmit = false;
     v.back().options.requireApproval = true;
+    asSkill(v.back(), u"演示设计流①：只出大纲页序，禁止写回幻灯。"_ustr,
+            u"先写大纲|演示大纲|ppt大纲|幻灯大纲|页序|design outline|做ppt大纲"_ustr);
 
     // ② 多方案：并列 方案A/B/C，仍不写回。
     v.push_back(makeBuiltin(
@@ -392,6 +646,8 @@ std::vector<DocumentAIScenario> DocumentAIScenarioStore::builtinDefaults()
         201));
     v.back().options.pinned = true;
     v.back().options.autoSubmit = false;
+    asSkill(v.back(), u"演示设计流②：3 套结构方案对比，不写回。"_ustr,
+            u"多方案|方案对比|三套方案|design variants|方案A|方案B"_ustr);
 
     // ③ 选一写回：仅在用户已选定方案后，产出 ## 写回体；须批准。
     v.push_back(makeBuiltin(
@@ -413,6 +669,8 @@ std::vector<DocumentAIScenario> DocumentAIScenarioStore::builtinDefaults()
     v.back().options.pinned = true;
     v.back().options.autoSubmit = false;
     v.back().options.requireApproval = true;
+    asSkill(v.back(), u"演示设计流③：选定方案→可写回 ## 页结构，须批准。"_ustr,
+            u"选一写回|写回幻灯|生成幻灯|大纲成片|design apply|做成幻灯片"_ustr);
 
     // ④ 导出：操作指引（本地文件→导出），不调云、不黑盒。
     v.push_back(makeBuiltin(
@@ -429,6 +687,8 @@ std::vector<DocumentAIScenario> DocumentAIScenarioStore::builtinDefaults()
         203));
     v.back().options.autoSubmit = true; // 纯指引，可直接生成说明
     v.back().options.requireApproval = true;
+    asSkill(v.back(), u"导出 PPTX 操作指引（不执行导出）。"_ustr,
+            u"导出PPTX|导出pptx|导出演示|export pptx|另存pptx"_ustr);
 
     // 兼容旧 id：outline-to-slides = ③ 写回体（须批准，禁止 auto 黑盒）
     v.push_back(makeBuiltin(
@@ -457,11 +717,19 @@ std::vector<DocumentAIScenario> DocumentAIScenarioStore::builtinDefaults()
     v.push_back(makeBuiltin(
         u"slide-copy"_ustr, u"幻灯文案"_ustr, u"impress"_ustr, u"impress"_ustr, u"rewrite"_ustr,
         u"/幻灯文案"_ustr,
-        u"【幻灯文案】压缩为演讲友好短句，每行一要点。\n原文：\n{selection}"_ustr, 220));
+        u"【Skill · 幻灯文案】压缩为演讲友好短句，每行一要点。\n"_ustr
+            + skillTrustFooter() + u"## 原文\n{selection}"_ustr,
+        220));
+    asSkill(v.back(), u"幻灯文案压成短句要点。"_ustr,
+            u"幻灯文案|幻灯片文案|要点改短|slide copy|页文案"_ustr);
     v.push_back(makeBuiltin(
         u"speaker-notes"_ustr, u"讲稿备注"_ustr, u"impress"_ustr, u"impress"_ustr, u"chat"_ustr,
         u"/讲稿"_ustr,
-        u"【讲稿】为下列要点写 30–60 秒口播稿。\n要点：\n{selection}"_ustr, 230));
+        u"【Skill · 讲稿】30–60 秒口播稿。\n"_ustr
+            + skillTrustFooter() + u"## 要点\n{selection}"_ustr,
+        230));
+    asSkill(v.back(), u"为要点写 30–60 秒口播讲稿。"_ustr,
+            u"讲稿|口播|备注讲稿|speaker notes|演讲稿|旁白"_ustr);
     v.push_back(makeBuiltin(
         u"theme-layout-deck"_ustr, u"版式风格方案"_ustr, u"impress"_ustr, u"impress"_ustr,
         u"chat"_ustr, u"/版式方案"_ustr,
@@ -480,6 +748,75 @@ std::vector<DocumentAIScenario> DocumentAIScenarioStore::builtinDefaults()
         u"素材：\n{selection}"_ustr,
         235));
 
+    // —— PDF / 材料 Skill packs（本地提取 · 不宣称 Acrobat）——
+    v.push_back(makeBuiltin(
+        u"pdf-summarize"_ustr, u"PDF 摘要"_ustr, u"general"_ustr, u"any"_ustr, u"summarize"_ustr,
+        u"/PDF摘要"_ustr,
+        u"【Skill · PDF/材料摘要 · 本地】仅依据已提取文本，不宣称完整 PDF 编辑。\n"
+        u"## 何时使用\n"
+        u"用户 @文件:…pdf 或要摘要/要点/风险清单。\n"
+        u"## 步骤\n"
+        u"1) 一句话主题；\n"
+        u"2) 5–8 条要点（尽量带页/段线索）；\n"
+        u"3) 风险/待核实；\n"
+        u"4) 可落地下一步（打开编辑/转笔记/起草回函）。\n"
+        u"## 硬规则\n"
+        u"- 文本极少/扫描件：明确需 OCR，**不编造正文**；\n"
+        u"- 禁止外网检索补全 PDF 内容；\n"
+        u"- 不宣称 Acrobat 级编辑能力。\n"
+        u"## 输出格式\n"
+        u"### 主题\n…\n### 要点\n1)…\n### 风险\n…\n### 下一步\n…\n"_ustr
+            + skillTrustFooter() + u"## 素材\n{selection}"_ustr,
+        250));
+    asSkill(v.back(),
+            u"本地 PDF/材料摘要与要点，扫描件提示 OCR，不编造正文。"_ustr,
+            u"PDF摘要|pdf摘要|摘要pdf|材料摘要|文件摘要|总结这个pdf|"
+            u"pdf summary|@文件"_ustr);
+    v.back().options.pinned = true;
+    v.back().options.autoSubmit = false;
+    v.push_back(makeBuiltin(
+        u"pdf-qa"_ustr, u"PDF 问答"_ustr, u"general"_ustr, u"any"_ustr, u"chat"_ustr,
+        u"/PDF问答"_ustr,
+        u"【Skill · PDF/材料问答 · 本地】只根据已提取文本作答。\n"
+        u"## 何时使用\n"
+        u"针对 PDF/附件提问、核对条款、找某段是否出现。\n"
+        u"## 步骤\n"
+        u"1) 理解问题；\n"
+        u"2) 在提取文本中定位；引用原文短句；\n"
+        u"3) 找不到则明确「材料中未出现」，建议 @文件 或 OCR。\n"
+        u"## 硬规则\n"
+        u"- 禁止外网检索；不编造条款；\n"
+        u"- 引用优先短句，勿大段抄袭式复述当证据。\n"
+        u"## 输出格式\n"
+        u"### 结论\n…\n### 依据（原文短句）\n…\n"_ustr
+            + skillTrustFooter() + u"## 问题与素材\n{selection}"_ustr,
+        275));
+    asSkill(v.back(),
+            u"基于本地提取文本的 PDF 问答，找不到就明说。"_ustr,
+            u"PDF问答|pdf问答|问pdf|材料里有没有|合同条款|pdf qa|"
+            u"这个文件说了"_ustr);
+    v.push_back(makeBuiltin(
+        u"pdf-to-outline"_ustr, u"PDF 转大纲"_ustr, u"general"_ustr, u"any"_ustr, u"plan"_ustr,
+        u"/PDF转大纲"_ustr,
+        u"【Skill · PDF→可编辑大纲】整理为 Writer 大纲或演示页序（默认不写回幻灯）。\n"
+        u"## 何时使用\n"
+        u"把 PDF/材料变成可编辑大纲、目录、演示页标题。\n"
+        u"## 步骤\n"
+        u"1) 提取结构；\n"
+        u"2) 输出 H1/H2 条列（或页序标题）；\n"
+        u"3) 关键数据保留；缺页【待补】。\n"
+        u"## 硬规则\n"
+        u"- 默认不用 ## 幻灯写回体，除非用户明确要写回演示；\n"
+        u"- 不编造材料中没有的章节。\n"
+        u"## 输出格式\n"
+        u"# 标题\n## 节\n- 要点\n"_ustr
+            + skillTrustFooter() + u"## 素材\n{selection}"_ustr,
+        278));
+    asSkill(v.back(),
+            u"PDF/材料转 Writer 大纲或演示页序，保留关键数据。"_ustr,
+            u"PDF转大纲|pdf大纲|转大纲|材料大纲|提取目录|pdf outline|"
+            u"整理成大纲"_ustr);
+
     // —— General / multi-step / local RAG ——
     v.push_back(makeBuiltin(
         u"analyze-screenshot"_ustr, u"分析截图"_ustr, u"general"_ustr, u"any"_ustr, u"chat"_ustr,
@@ -491,53 +828,76 @@ std::vector<DocumentAIScenario> DocumentAIScenarioStore::builtinDefaults()
     v.push_back(makeBuiltin(
         u"ask-document"_ustr, u"问本文档"_ustr, u"general"_ustr, u"any"_ustr, u"chat"_ustr,
         u"/问本文档"_ustr,
-        u"【问本文档 · 本地检索】仅根据当前打开文档回答，禁止编造文档中不存在的内容；"
-        u"引用要点时标明位置（段落/单元格/幻灯）。\n"
+        u"【Skill · 问本文档 · 本地】仅根据当前打开文档回答，禁止编造文档中不存在的内容；"
+        u"引用要点时标明位置（段落/单元格/幻灯）；先结论后依据。\n"
         u"问题：\n{selection}"_ustr,
         290));
+    asSkill(v.back(), u"只根据本文档回答，标明位置，不编造。"_ustr,
+            u"问本文档|文档里|这篇说了|根据文档|ask document|文档问答|本文档"_ustr);
     v.back().options.pinned = true;
     v.back().options.includeDocContext = true;
     v.push_back(makeBuiltin(
         u"chart-assist"_ustr, u"图表助手"_ustr, u"calc"_ustr, u"calc"_ustr, u"plan"_ustr,
         u"/图表"_ustr,
-        u"【图表助手】根据选区建议图表。要求：\n"
-        u"1) 推荐图表类型（柱/线/饼/组合）与理由；\n"
-        u"2) 指出数据系列、分类轴、是否需要合计行；\n"
-        u"3) 给出插入步骤（用户可批准后用「插入图表」命令）；\n"
-        u"4) 若需辅助列/公式，单独一行输出 = 公式。\n"
-        u"选区：\n{selection}"_ustr,
+        u"【Skill · 图表助手】推荐类型+系列+插入步骤；可选 = 辅助公式。\n"
+        u"不编造业务数据。\n"_ustr
+            + skillTrustFooter() + u"## 选区\n{selection}"_ustr,
         125));
+    asSkill(v.back(), u"根据选区推荐图表类型与插入步骤。"_ustr,
+            u"图表|做图|柱状图|折线图|饼图|chart|插入图表|可视化"_ustr);
     v.push_back(makeBuiltin(
         u"slide-page-edit"_ustr, u"本页改写"_ustr, u"impress"_ustr, u"impress"_ustr,
         u"rewrite"_ustr, u"/本页"_ustr,
-        u"【页级指令】只改当前幻灯页文案（标题+要点），保持页数不变。\n"
-        u"输出整页替换文本：第一行标题，其后每行一个要点；可附「讲稿：」。\n"
-        u"当前页/选区：\n{selection}"_ustr,
+        u"【Skill · 本页改写】只改当前页标题+要点，页数不变。\n"
+        u"输出：第一行标题，其后每行要点；可附讲稿。\n"_ustr
+            + skillTrustFooter() + u"## 当前页\n{selection}"_ustr,
         225));
+    asSkill(v.back(), u"只改当前幻灯页文案，保持页数。"_ustr,
+            u"本页改写|改这一页|当前页|本页文案|page edit"_ustr);
     v.push_back(makeBuiltin(
         u"multi-step-agent"_ustr, u"多步协作"_ustr, u"general"_ustr, u"any"_ustr, u"agent"_ustr,
         u"/多步"_ustr,
         u"【多步协作】规划→执行→审查完成下列目标（禁止暗改主文档）。\n目标：\n{selection}"_ustr,
         300, /*agent*/ true));
+    asSkill(v.back(), u"多步规划→执行→审查，写回须批准。"_ustr,
+            u"多步|多步协作|分步做|agent|plan-act|子代理|协作任务"_ustr);
     v.back().options.pinned = true;
     v.push_back(makeBuiltin(
         u"explain-selection"_ustr, u"解释选区"_ustr, u"general"_ustr, u"any"_ustr, u"chat"_ustr,
         u"/解释"_ustr,
-        u"【解释】解释下列内容的含义、结构与可改进点。\n内容：\n{selection}"_ustr, 310));
+        u"【Skill · 解释选区】含义、结构与可改进点；不写回。\n内容：\n{selection}"_ustr, 310));
+    asSkill(v.back(), u"解释选区含义与可改进点。"_ustr,
+            u"解释选区|解释一下|什么意思|explain selection|解读这段"_ustr);
     v.push_back(makeBuiltin(
         u"checklist-review"_ustr, u"清单审查"_ustr, u"general"_ustr, u"any"_ustr, u"review"_ustr,
         u"/清单审查"_ustr,
-        u"【清单审查】用检查清单评估完整性/风险/表述，输出通过项与待改项。\n内容：\n{selection}"_ustr,
+        u"【Skill · 清单审查】完整性/风险/表述：通过项与待改项。\n内容：\n{selection}"_ustr,
         320));
+    asSkill(v.back(), u"检查清单式审查：通过项与待改项。"_ustr,
+            u"清单审查|检查清单| completeness|checklist|风险清单|过一遍清单"_ustr);
 
     // —— 业务场景包 v1（飞书应用目录 → Office 模板工厂；非多维表运行时）——
     // 命名用「模板/台账/清单」，禁止「系统/平台」默认文案。requireApproval 已默认 true。
+    // Skill v2: auto whenToUse from title + slash stem for NL match (本地模板，非 SaaS).
+    auto attachBizSkill = [&](const OUString& title, const OUString& slash) {
+        OUString stem = slash;
+        if (stem.startsWith(u"/"_ustr))
+            stem = stem.copy(1);
+        OUStringBuffer triggers;
+        triggers.append(title);
+        triggers.append(u"|"_ustr);
+        triggers.append(stem);
+        triggers.append(u"|模板|台账|表单|本地模板"_ustr);
+        asSkill(v.back(), title + u" · 本地模板（非在线业务系统）"_ustr,
+                triggers.makeStringAndClear());
+    };
     auto bizWriter = [&](const OUString& id, const OUString& title, const OUString& slash,
                          const OUString& prompt, sal_Int32 order) {
         v.push_back(makeBuiltin(id, title, u"writer"_ustr, u"writer"_ustr, u"plan"_ustr, slash,
                                 prompt, order));
         v.back().options.autoSubmit = false;
         v.back().options.attachSelection = true;
+        attachBizSkill(title, slash);
     };
     auto bizCalc = [&](const OUString& id, const OUString& title, const OUString& slash,
                        const OUString& prompt, sal_Int32 order) {
@@ -545,6 +905,7 @@ std::vector<DocumentAIScenario> DocumentAIScenarioStore::builtinDefaults()
                                 order));
         v.back().options.autoSubmit = false;
         v.back().options.attachSelection = true;
+        attachBizSkill(title, slash);
     };
     auto bizImpress = [&](const OUString& id, const OUString& title, const OUString& slash,
                           const OUString& prompt, sal_Int32 order) {
@@ -552,6 +913,7 @@ std::vector<DocumentAIScenario> DocumentAIScenarioStore::builtinDefaults()
                                 prompt, order));
         v.back().options.autoSubmit = false;
         v.back().options.attachSelection = true;
+        attachBizSkill(title, slash);
     };
 
     const OUString kCalcRules
@@ -731,6 +1093,12 @@ OUString DocumentAIScenarioStore::serializeJson(const ScenarioCatalog& rCatalog)
         b.append(u",\n");
         appendJsonString(b, u"promptTemplate", s.promptTemplate);
         b.append(u",\n");
+        appendJsonString(b, u"description", s.description);
+        b.append(u",\n");
+        appendJsonString(b, u"whenToUse", s.whenToUse);
+        b.append(u",\n");
+        appendJsonInt(b, u"skillVersion", s.skillVersion);
+        b.append(u",\n");
         appendJsonInt(b, u"sortOrder", s.sortOrder);
         b.append(u",\n");
         appendJsonBool(b, u"builtin", s.builtin);
@@ -806,6 +1174,9 @@ ScenarioCatalog DocumentAIScenarioStore::parseJson(const OUString& rJson)
         s.capabilityHint = jsonStringField(frag, u"capabilityHint");
         s.slashCommand = jsonStringField(frag, u"slashCommand");
         s.promptTemplate = jsonStringField(frag, u"promptTemplate");
+        s.description = jsonStringField(frag, u"description");
+        s.whenToUse = jsonStringField(frag, u"whenToUse");
+        s.skillVersion = jsonIntField(frag, u"skillVersion", 0);
         s.sortOrder = jsonIntField(frag, u"sortOrder", 100);
         s.builtin = jsonBoolField(frag, u"builtin", false);
         s.enabled = jsonBoolField(frag, u"enabled", true);
@@ -834,6 +1205,29 @@ void mergeMissingBuiltins(ScenarioCatalog& cat)
                      DocumentAIScenarioStore::lessByPinThenOrder);
 }
 
+/// Refresh factory skill packs when skillVersion lags (preserve pin/enabled/options).
+void refreshBuiltinSkillPacks(ScenarioCatalog& cat)
+{
+    const auto builtins = DocumentAIScenarioStore::builtinDefaults();
+    for (const auto& b : builtins)
+    {
+        if (b.skillVersion <= 0)
+            continue;
+        DocumentAIScenario* p = DocumentAIScenarioStore::findMutable(cat, b.id);
+        if (!p || !p->builtin)
+            continue;
+        if (p->skillVersion >= b.skillVersion)
+            continue;
+        p->promptTemplate = b.promptTemplate;
+        p->description = b.description;
+        p->whenToUse = b.whenToUse;
+        p->titleZh = b.titleZh;
+        p->slashCommand = b.slashCommand;
+        p->capabilityHint = b.capabilityHint;
+        p->skillVersion = b.skillVersion;
+    }
+}
+
 bool DocumentAIScenarioStore::lessByPinThenOrder(const DocumentAIScenario& a,
                                                  const DocumentAIScenario& b)
 {
@@ -856,7 +1250,10 @@ ScenarioCatalog DocumentAIScenarioStore::load()
     if (cat.items.empty())
         cat.items = builtinDefaults();
     else
+    {
         mergeMissingBuiltins(cat);
+        refreshBuiltinSkillPacks(cat);
+    }
     // Upgrade path: older configs without opt_pinned → seed a few favorites
     // only when nothing is pinned yet (do not override explicit user choices).
     bool anyPinned = false;
@@ -870,10 +1267,14 @@ ScenarioCatalog DocumentAIScenarioStore::load()
     }
     if (!anyPinned)
     {
+        // Quality-core favorites (text / table / design / PDF)
         for (auto& s : cat.items)
         {
-            if (s.id == u"official-polish"_ustr || s.id == u"formula-assist"_ustr
-                || s.id == u"outline-to-slides"_ustr || s.id == u"multi-step-agent"_ustr)
+            if (s.id == u"official-polish"_ustr || s.id == u"layout-polish"_ustr
+                || s.id == u"content-quality"_ustr || s.id == u"formula-assist"_ustr
+                || s.id == u"data-clean"_ustr || s.id == u"table-format"_ustr
+                || s.id == u"design-outline"_ustr || s.id == u"pdf-summarize"_ustr
+                || s.id == u"ask-document"_ustr)
                 s.options.pinned = true;
         }
     }
@@ -1012,6 +1413,57 @@ DocumentAIScenarioStore::listExecutableButtonsForSurface(const ScenarioCatalog& 
     return out;
 }
 
+namespace
+{
+/// Put quality-core scenario ids first (stable among non-front items).
+void promoteQualityFront(std::vector<DocumentAIScenario>& out, const OUString& want)
+{
+    std::vector<OUString> front;
+    if (want == u"writer"_ustr)
+        front = { u"layout-polish"_ustr, u"content-quality"_ustr, u"proofread"_ustr,
+                  u"official-polish"_ustr };
+    else if (want == u"calc"_ustr)
+        front = { u"formula-assist"_ustr, u"data-clean"_ustr, u"table-format"_ustr,
+                  u"data-summary"_ustr };
+    else if (want == u"impress"_ustr)
+        front = { u"design-outline"_ustr, u"design-variants"_ustr, u"design-apply"_ustr,
+                  u"design-export"_ustr };
+    else if (want == u"general"_ustr || want.isEmpty())
+        front = { u"pdf-summarize"_ustr, u"pdf-qa"_ustr, u"ask-document"_ustr,
+                  u"pdf-to-outline"_ustr };
+    if (front.empty() || out.empty())
+        return;
+    std::vector<DocumentAIScenario> ordered;
+    ordered.reserve(out.size());
+    for (const auto& id : front)
+    {
+        for (const auto& s : out)
+        {
+            if (s.id == id)
+            {
+                ordered.push_back(s);
+                break;
+            }
+        }
+    }
+    for (const auto& s : out)
+    {
+        bool already = false;
+        for (const auto& id : front)
+        {
+            if (s.id == id)
+            {
+                already = true;
+                break;
+            }
+        }
+        if (!already)
+            ordered.push_back(s);
+    }
+    out.swap(ordered);
+}
+} // namespace
+
 std::vector<DocumentAIScenario>
 DocumentAIScenarioStore::listExecutableButtonsForCategory(const ScenarioCatalog& rCatalog,
                                                           const OUString& rCategory)
@@ -1039,6 +1491,8 @@ DocumentAIScenarioStore::listExecutableButtonsForCategory(const ScenarioCatalog&
             out.push_back(s);
     }
     std::stable_sort(out.begin(), out.end(), lessByPinThenOrder);
+    // Quality-core: fix first 4 grid slots for writing / table / design / PDF tabs.
+    promoteQualityFront(out, want);
     return out;
 }
 
@@ -1236,6 +1690,19 @@ OUString DocumentAIScenarioStore::expandPrompt(const DocumentAIScenario& rScenar
     return tmpl.replaceAt(pos, needle.getLength(), body);
 }
 
+OUString DocumentAIScenarioStore::expandSkillWithUtterance(const DocumentAIScenario& rScenario,
+                                                           const OUString& rSelectionText,
+                                                           const OUString& rUserUtterance)
+{
+    OUString base = expandPrompt(rScenario, rSelectionText);
+    const OUString u = rUserUtterance.trim();
+    if (u.isEmpty())
+        return base;
+    if (base.isEmpty())
+        return u"用户原话："_ustr + u;
+    return base + u"\n\n## 用户原话\n"_ustr + u;
+}
+
 // C ABI for automation / scripts
 extern "C" void kqoffice_ai_queue_scenario_run(const char* pUtf8Id)
 {
@@ -1257,6 +1724,127 @@ const DocumentAIScenario* DocumentAIScenarioStore::matchSlash(const ScenarioCata
             return &s;
     }
     return nullptr;
+}
+
+namespace
+{
+/// Split whenToUse on | 、 , ； and line breaks.
+void collectTriggers(const OUString& whenToUse, std::vector<OUString>& out)
+{
+    OUStringBuffer cur;
+    auto flush = [&]() {
+        const OUString t = cur.makeStringAndClear().trim();
+        if (t.getLength() >= 2)
+            out.push_back(t);
+    };
+    for (sal_Int32 i = 0; i < whenToUse.getLength(); ++i)
+    {
+        const sal_Unicode c = whenToUse[i];
+        if (c == u'|' || c == u'、' || c == u',' || c == u';' || c == u'；' || c == u'\n'
+            || c == u'\r')
+            flush();
+        else
+            cur.append(c);
+    }
+    flush();
+}
+
+bool surfaceCompatible(const DocumentAIScenario& s, const OUString& filter)
+{
+    if (filter.isEmpty() || filter == u"any"_ustr || filter == u"all"_ustr)
+        return true;
+    const OUString pref = s.preferredSurface.toAsciiLowerCase().trim();
+    const OUString cat = s.category.toAsciiLowerCase().trim();
+    if (pref.isEmpty() || pref == u"any"_ustr || pref == filter)
+        return true;
+    if (cat == filter || cat == u"general"_ustr)
+        return true;
+    return false;
+}
+
+sal_Int32 scoreSkillMatch(const DocumentAIScenario& s, const OUString& userLow)
+{
+    if (!s.enabled)
+        return 0;
+    sal_Int32 score = 0;
+    std::vector<OUString> triggers;
+    collectTriggers(s.whenToUse, triggers);
+    for (const auto& tr : triggers)
+    {
+        const OUString tlow = tr.toAsciiLowerCase();
+        if (tlow.getLength() < 2)
+            continue;
+        if (userLow.indexOf(tlow) >= 0)
+        {
+            // Longer phrases score higher (more specific).
+            score += 2 + std::min<sal_Int32>(4, tlow.getLength() / 2);
+        }
+    }
+    if (!s.titleZh.isEmpty())
+    {
+        const OUString titleLow = s.titleZh.toAsciiLowerCase();
+        if (titleLow.getLength() >= 2 && userLow.indexOf(titleLow) >= 0)
+            score += 5;
+    }
+    if (!s.slashCommand.isEmpty())
+    {
+        OUString stem = s.slashCommand;
+        if (stem.startsWith(u"/"_ustr))
+            stem = stem.copy(1);
+        const OUString stemLow = stem.toAsciiLowerCase();
+        if (stemLow.getLength() >= 2 && userLow.indexOf(stemLow) >= 0)
+            score += 4;
+    }
+    // Skill packs preferred over thin prompts when scores tie later.
+    if (s.skillVersion > 0)
+        score += 1;
+    return score;
+}
+} // namespace
+
+const DocumentAIScenario* DocumentAIScenarioStore::matchNaturalLanguage(
+    const ScenarioCatalog& rCatalog, const OUString& rUserInput, const OUString& rSurfaceFilter,
+    sal_Int32* pScoreOut)
+{
+    if (pScoreOut)
+        *pScoreOut = 0;
+    const OUString raw = rUserInput.trim();
+    if (raw.isEmpty() || raw.getLength() < 2)
+        return nullptr;
+    // Slash path has its own matcher.
+    if (raw.startsWith(u"/"_ustr))
+        return nullptr;
+    // Ultra-short continue tokens — do not steal session flow.
+    const OUString low = raw.toAsciiLowerCase();
+    if (low == u"继续"_ustr || low == u"continue"_ustr || low == u"ok"_ustr || low == u"好的"_ustr
+        || low == u"嗯"_ustr)
+        return nullptr;
+
+    const OUString filter = rSurfaceFilter.toAsciiLowerCase().trim();
+    const DocumentAIScenario* best = nullptr;
+    sal_Int32 bestScore = 0;
+    for (const auto& s : rCatalog.items)
+    {
+        if (!s.enabled)
+            continue;
+        if (s.whenToUse.isEmpty() && s.skillVersion <= 0)
+            continue; // only skill-tagged or whenToUse-bearing items
+        if (!surfaceCompatible(s, filter))
+            continue;
+        const sal_Int32 sc = scoreSkillMatch(s, low);
+        if (sc > bestScore)
+        {
+            bestScore = sc;
+            best = &s;
+        }
+    }
+    // Threshold: need a real phrase hit (title alone is 5; single 2-char trigger ~3).
+    constexpr sal_Int32 kMinScore = 4;
+    if (!best || bestScore < kMinScore)
+        return nullptr;
+    if (pScoreOut)
+        *pScoreOut = bestScore;
+    return best;
 }
 
 // —— Legacy facade ——
