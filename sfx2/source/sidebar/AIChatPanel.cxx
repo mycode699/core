@@ -241,6 +241,8 @@ bool AIChatPanel::RunQuickIntent(const OUString& rIntentId, const OUString& rSee
 }
 
 AIChatPanel::AIChatPanel(weld::Widget* pParent)
+    // Slim Stage1 UI first (safe Show). Multi-tab layout lives in aichatpanel_full.ui
+    // for a later lazy UI swap; stores/logic still load on this panel after paint.
     : PanelLayout(pParent, u"AIChatPanel"_ustr, u"sfx/ui/aichatpanel.ui"_ustr)
     , m_xStatusLabel(m_xBuilder->weld_label(u"status_label"_ustr))
     , m_xAgentStepBar(m_xBuilder->weld_label(u"agent_step_bar"_ustr))
@@ -1769,6 +1771,8 @@ void AIChatPanel::RegisterLocalFileArtifact(const OUString& rPath, const OUStrin
 
 OUString AIChatPanel::GetSelectedArtifactId() const
 {
+    if (!m_xArtifactTree)
+        return OUString();
     const int nSelected = m_xArtifactTree->get_selected_index();
     if (nSelected < 0)
         return OUString();
@@ -1795,37 +1799,50 @@ void AIChatPanel::UpdateArtifactDetails()
     const bool bBusy = m_eState == AIChatPanelState::Requesting
                        || m_eState == AIChatPanelState::Streaming;
     const bool bHasRetryPrompt = !m_sLastPrompt.isEmpty();
+    auto setSens = [](const std::unique_ptr<weld::Button>& p, bool b) {
+        if (p)
+            p->set_sensitive(b);
+    };
 
-    m_xOpenArtifactButton->set_sensitive(AIChatWorkspaceActionBarStore::IsCommandEnabled(
-        u"open-preview"_ustr, pSelected, bBusy, bHasRetryPrompt));
-    m_xOpenDiffReviewButton->set_sensitive(AIChatWorkspaceActionBarStore::IsCommandEnabled(
-        u"open-diff-review"_ustr, pSelected, bBusy, bHasRetryPrompt));
-    m_xReviewArtifactButton->set_sensitive(
-        bHasSelection && AIChatContentReviewStore::IsSupportedSourceType(pSelected->Type));
-    m_xFormatArtifactButton->set_sensitive(
-        bHasSelection && AIChatFormattingReviewStore::IsSupportedFormattingScope(pSelected->Type));
-    m_xInspectEvidenceButton->set_sensitive(AIChatWorkspaceActionBarStore::IsCommandEnabled(
-        u"export-evidence"_ustr, pSelected, bBusy, bHasRetryPrompt)
-        && bHasSelection && AIChatEvidenceInspector::IsSupportedSourceType(pSelected->Type));
+    setSens(m_xOpenArtifactButton,
+            AIChatWorkspaceActionBarStore::IsCommandEnabled(u"open-preview"_ustr, pSelected, bBusy,
+                                                            bHasRetryPrompt));
+    setSens(m_xOpenDiffReviewButton,
+            AIChatWorkspaceActionBarStore::IsCommandEnabled(u"open-diff-review"_ustr, pSelected,
+                                                            bBusy, bHasRetryPrompt));
+    setSens(m_xReviewArtifactButton,
+            bHasSelection && AIChatContentReviewStore::IsSupportedSourceType(pSelected->Type));
+    setSens(m_xFormatArtifactButton,
+            bHasSelection
+                && AIChatFormattingReviewStore::IsSupportedFormattingScope(pSelected->Type));
+    setSens(m_xInspectEvidenceButton,
+            AIChatWorkspaceActionBarStore::IsCommandEnabled(u"export-evidence"_ustr, pSelected,
+                                                            bBusy, bHasRetryPrompt)
+                && bHasSelection
+                && AIChatEvidenceInspector::IsSupportedSourceType(pSelected->Type));
     // Pending chat ApplyPlan can be approved/rejected without a review-queue row.
     const bool bPendingPlanReady = m_bHasPendingPlan && !bBusy;
-    m_xApproveSelectedButton->set_sensitive(
-        bPendingPlanReady
-        || AIChatWorkspaceActionBarStore::IsCommandEnabled(u"approve-selected"_ustr, pSelected,
+    setSens(m_xApproveSelectedButton,
+            bPendingPlanReady
+                || AIChatWorkspaceActionBarStore::IsCommandEnabled(
+                    u"approve-selected"_ustr, pSelected, bBusy, bHasRetryPrompt));
+    setSens(m_xRejectSelectedButton,
+            bPendingPlanReady
+                || AIChatWorkspaceActionBarStore::IsCommandEnabled(
+                    u"reject-selected"_ustr, pSelected, bBusy, bHasRetryPrompt));
+    setSens(m_xCopyReferenceButton,
+            AIChatWorkspaceActionBarStore::IsCommandEnabled(u"copy-reference"_ustr, pSelected,
                                                             bBusy, bHasRetryPrompt));
-    m_xRejectSelectedButton->set_sensitive(
-        bPendingPlanReady
-        || AIChatWorkspaceActionBarStore::IsCommandEnabled(u"reject-selected"_ustr, pSelected,
+    setSens(m_xExportEvidenceButton,
+            AIChatWorkspaceActionBarStore::IsCommandEnabled(u"export-evidence"_ustr, pSelected,
                                                             bBusy, bHasRetryPrompt));
-    m_xCopyReferenceButton->set_sensitive(AIChatWorkspaceActionBarStore::IsCommandEnabled(
-        u"copy-reference"_ustr, pSelected, bBusy, bHasRetryPrompt));
-    m_xExportEvidenceButton->set_sensitive(AIChatWorkspaceActionBarStore::IsCommandEnabled(
-        u"export-evidence"_ustr, pSelected, bBusy, bHasRetryPrompt));
-    m_xFilterWorkspaceButton->set_sensitive(AIChatWorkspaceActionBarStore::IsCommandEnabled(
-        u"filter"_ustr, pSelected, bBusy, bHasRetryPrompt));
-    m_xSortWorkspaceButton->set_sensitive(AIChatWorkspaceActionBarStore::IsCommandEnabled(
-        u"sort"_ustr, pSelected, bBusy, bHasRetryPrompt));
-    m_xRemoveArtifactButton->set_sensitive(bHasSelection);
+    setSens(m_xFilterWorkspaceButton,
+            AIChatWorkspaceActionBarStore::IsCommandEnabled(u"filter"_ustr, pSelected, bBusy,
+                                                            bHasRetryPrompt));
+    setSens(m_xSortWorkspaceButton,
+            AIChatWorkspaceActionBarStore::IsCommandEnabled(u"sort"_ustr, pSelected, bBusy,
+                                                            bHasRetryPrompt));
+    setSens(m_xRemoveArtifactButton, bHasSelection);
 
     if (!bHasSelection)
     {

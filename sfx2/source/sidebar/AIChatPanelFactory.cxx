@@ -25,6 +25,29 @@
 using namespace css;
 using namespace css::uno;
 
+namespace sfx2::sidebar
+{
+namespace
+{
+bool g_bPreferFullAfterShell = false;
+}
+
+void RequestFullAIChatPanelNext() { g_bPreferFullAfterShell = true; }
+
+bool PreferFullAIChatPanel()
+{
+    // Force shell-only for GUI stability testing.
+    if (const char* shellOnly = std::getenv("KQ_AICHAT_SHELL_ONLY");
+        shellOnly && shellOnly[0] == '1' && shellOnly[1] == '\0')
+        return false;
+    // Immediate full panel (skip shell).
+    if (const char* full = std::getenv("KQ_AICHAT_FULL");
+        full && full[0] == '1' && full[1] == '\0')
+        return true;
+    return g_bPreferFullAfterShell;
+}
+} // namespace sfx2::sidebar
+
 namespace
 {
 
@@ -59,13 +82,6 @@ public:
     }
 };
 
-/// Stage1 default: shell (safe Show on macOS). Opt into full panel with KQ_AICHAT_FULL=1.
-bool UseFullAIChatPanel()
-{
-    const char* env = std::getenv("KQ_AICHAT_FULL");
-    return env && env[0] == '1' && env[1] == '\0';
-}
-
 Reference<ui::XUIElement> SAL_CALL AIChatPanelFactory::createUIElement(
     const OUString& rResourceURL,
     const Sequence<beans::PropertyValue>& rArguments)
@@ -92,8 +108,9 @@ Reference<ui::XUIElement> SAL_CALL AIChatPanelFactory::createUIElement(
     if (!rResourceURL.endsWith(u"/AIChatPanel"_ustr))
         return Reference<ui::XUIElement>();
 
+    // Stage1: open shell first (safe Show). Idle upgrade sets PreferFull and recreates.
     std::unique_ptr<PanelLayout> xPanel;
-    if (UseFullAIChatPanel())
+    if (sfx2::sidebar::PreferFullAIChatPanel())
         xPanel = std::make_unique<sfx2::sidebar::AIChatPanel>(pParent);
     else
         xPanel = std::make_unique<sfx2::sidebar::AIChatShellPanel>(pParent);

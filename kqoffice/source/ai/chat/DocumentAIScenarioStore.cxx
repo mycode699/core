@@ -1666,10 +1666,14 @@ OUString DocumentAIScenarioStore::takePendingRun()
     if (path.isEmpty())
         return OUString();
     const OUString body = readFileUtf8(path).trim();
-    if (!body.isEmpty())
+    // Always remove the queue file after take (do not leave an empty stub).
+    // Matches shell ReadHomeFile(bRemove) and GUI smoke "file gone" checks.
     {
-        // Truncate file after take
-        writeFileUtf8(path, std::string());
+        OUString url;
+        if (osl::FileBase::getFileURLFromSystemPath(path, url) == osl::FileBase::E_None)
+            osl::File::remove(url);
+        else if (!body.isEmpty())
+            writeFileUtf8(path, std::string());
     }
     return body;
 }

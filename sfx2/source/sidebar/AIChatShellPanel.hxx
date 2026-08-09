@@ -32,6 +32,7 @@ public:
 
 private:
     DECL_LINK(OnInjectPollTick, Timer*, void);
+    DECL_LINK(OnUpgradeTick, Timer*, void);
     DECL_LINK(OnSendClicked, weld::Button&, void);
     DECL_LINK(OnClearClicked, weld::Button&, void);
     DECL_LINK(OnScenario0, weld::Button&, void);
@@ -48,6 +49,7 @@ private:
     void SeedScenario(std::u16string_view rLabel);
     void ConsumePendingPromptInject();
     void ConsumePendingScenarioRun();
+    void TryUpgradeToFullPanel();
 
     std::unique_ptr<weld::Label> m_xStatusLabel;
     std::unique_ptr<weld::Label> m_xHintLabel;
@@ -65,6 +67,8 @@ private:
     std::unique_ptr<weld::Button> m_xScenario3;
 
     AutoTimer m_aInjectPoll;
+    Timer m_aUpgradeTimer;
+    bool m_bUpgradeStarted = false;
 };
 
 } // namespace sfx2::sidebar

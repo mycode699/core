@@ -532,11 +532,11 @@ private:
     /// When append arrives mid-run, hold the replacement prompt until stop completes.
     OUString m_sQueuedReplacePrompt;
     /// Poll pending-prompt-inject while AI panel stays open (workbench/notebook inject).
-    Timer m_aInjectPoll;
+    AutoTimer m_aInjectPoll;
     /// Defer Ollama routing probe + workspace tree hydrate off the open critical path.
     Timer m_aDeferredWarmup;
     /// 60s local scheduled-task dispatcher (kqoffice ScheduledTaskDispatcher::processDue).
-    Timer m_aScheduleTick;
+    AutoTimer m_aScheduleTick;
     bool m_bWorkspaceDataLoaded = false;
     bool m_bRoutingDiagDone = false;
 };

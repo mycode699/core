@@ -146,6 +146,12 @@ public:
     bool WasFloatingDeckClosed() const { return mbFloatingDeckClosed; }
     void SetFloatingDeckClosed(bool bWasClosed) { mbFloatingDeckClosed = bWasClosed; }
 
+    /** Force next SwitchToDeck to rebuild deck + panels (e.g. shell → full AIChat). */
+    void RequestForceNewDeck()
+    {
+        mnRequestedForceFlags |= SwitchFlag_ForceNewDeck | SwitchFlag_ForceNewPanels;
+    }
+
     void CreateDeck(std::u16string_view rDeckId);
     void CreateDeck(std::u16string_view rDeckId, const Context& rContext, bool bForceCreate = false);
 

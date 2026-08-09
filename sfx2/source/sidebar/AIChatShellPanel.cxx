@@ -1,9 +1,12 @@
 /* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 #include "AIChatShellPanel.hxx"
+#include "AIChatPanelFactory.hxx"
 
 #include <osl/file.hxx>
 #include <sal/log.hxx>
+#include <sfx2/sidebar/SidebarController.hxx>
+#include <sfx2/viewfrm.hxx>
 #include <vcl/timer.hxx>
 #include <vcl/weld/Builder.hxx>
 #include <vcl/weld/Entry.hxx>
@@ -70,6 +73,7 @@ AIChatShellPanel::AIChatShellPanel(weld::Widget* pParent)
     , m_xScenario2(m_xBuilder->weld_button(u"scenario_btn_2"_ustr))
     , m_xScenario3(m_xBuilder->weld_button(u"scenario_btn_3"_ustr))
     , m_aInjectPoll("AIChatShellInjectPoll")
+    , m_aUpgradeTimer("AIChatShellUpgrade")
 {
     if (m_xTranscriptView)
         m_xTranscriptView->set_editable(false);
@@ -102,11 +106,22 @@ AIChatShellPanel::AIChatShellPanel(weld::Widget* pParent)
     m_aInjectPoll.SetTimeout(800);
     m_aInjectPoll.SetInvokeHandler(LINK(this, AIChatShellPanel, OnInjectPollTick));
     m_aInjectPoll.Start();
+
+    // After first paint settles, try to upgrade to full AIChatPanel (multi-tab).
+    // Skip when KQ_AICHAT_SHELL_ONLY=1 (GUI smoke / stability).
+    if (const char* shellOnly = std::getenv("KQ_AICHAT_SHELL_ONLY");
+        !(shellOnly && shellOnly[0] == '1' && shellOnly[1] == '\0'))
+    {
+        m_aUpgradeTimer.SetTimeout(1800);
+        m_aUpgradeTimer.SetInvokeHandler(LINK(this, AIChatShellPanel, OnUpgradeTick));
+        m_aUpgradeTimer.Start();
+    }
 }
 
 AIChatShellPanel::~AIChatShellPanel()
 {
     m_aInjectPoll.Stop();
+    m_aUpgradeTimer.Stop();
 }
 
 void AIChatShellPanel::SetStatus(const OUString& rStatus)
@@ -179,6 +194,41 @@ IMPL_LINK_NOARG(AIChatShellPanel, OnInjectPollTick, Timer*, void)
 {
     ConsumePendingPromptInject();
     ConsumePendingScenarioRun();
+}
+
+void AIChatShellPanel::TryUpgradeToFullPanel()
+{
+    if (m_bUpgradeStarted)
+        return;
+    m_bUpgradeStarted = true;
+    m_aUpgradeTimer.Stop();
+
+    // Prefer full factory on next create, then force-rebuild AIChat deck.
+    RequestFullAIChatPanelNext();
+
+    SfxViewFrame* pFrame = SfxViewFrame::Current();
+    if (!pFrame)
+    {
+        SetStatus(u"完整面板升级延后（无活动窗口）"_ustr);
+        return;
+    }
+    SidebarController* pCtrl = SidebarController::GetSidebarControllerForFrame(
+        pFrame->GetFrame().GetFrameInterface());
+    if (!pCtrl)
+    {
+        SetStatus(u"完整面板升级延后（无侧栏控制器）"_ustr);
+        return;
+    }
+
+    SetStatus(u"正在加载完整可圈 AI 工作台…"_ustr);
+    AppendLine(u"系统: 空闲升级 — 切换到完整 AI 面板（多步/内容/审核）。"_ustr);
+    pCtrl->RequestForceNewDeck();
+    pCtrl->SwitchToDeck(u"AIChatDeck"_ustr);
+}
+
+IMPL_LINK_NOARG(AIChatShellPanel, OnUpgradeTick, Timer*, void)
+{
+    TryUpgradeToFullPanel();
 }
 
 IMPL_LINK_NOARG(AIChatShellPanel, OnSendClicked, weld::Button&, void)
