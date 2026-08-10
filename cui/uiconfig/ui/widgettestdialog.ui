@@ -172,7 +172,7 @@
                 </child>
                 <child>
                   <object class="GtkLinkButton" id="link_btn_1">
-                    <property name="label" translatable="no">LibreOffice</property>
+                    <property name="label" translatable="no">可圈办公</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
@@ -187,7 +187,7 @@
                 </child>
                 <child>
                   <object class="GtkLinkButton" id="link_btn_2">
-                    <property name="label" translatable="no">LibreOffice</property>
+                    <property name="label" translatable="no">可圈办公</property>
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
                     <property name="can-focus">True</property>

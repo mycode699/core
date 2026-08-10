@@ -425,7 +425,7 @@
           <object class="GtkLabel" id="libreofficethemeslb">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes" context="appearancetabpage|libreofficethemeslb">%PRODUCTNAME 主题</property>
+            <property name="label" translatable="yes" context="appearancetabpage|libreofficethemeslb">%PRODUCTNAME / CoC Office 主题</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
