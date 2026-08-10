@@ -3,6 +3,8 @@
 #include "VaultStore.hxx"
 #include "VaultManager.hxx"
 
+#include <AiPaths.hxx>
+
 #include <osl/file.hxx>
 #include <rtl/ustrbuf.hxx>
 
@@ -15,10 +17,7 @@ namespace
 {
 OUString homeConfigBase()
 {
-    const char* home = std::getenv("HOME");
-    if (!home || !*home)
-        return u"/tmp/kqoffice-vault"_ustr;
-    return OUString::fromUtf8(home) + u"/.config/kqoffice"_ustr;
+    return kqoffice::ai::kqofficeAiConfigDir();
 }
 
 bool ensureDir(const OUString& rSysPath)
@@ -41,7 +40,7 @@ bool writeIfMissing(const OUString& rSysPath, const OUString& rUtf8Body)
         probe.close();
         return true; // already exists
     }
-    if (!ensureDir(rSysPath.copy(0, rSysPath.lastIndexOf('/'))))
+    if (!ensureDir(kqoffice::ai::kqofficeParentDir(rSysPath)))
         return false;
     osl::File f(url);
     auto e = f.open(osl_File_OpenFlag_Write | osl_File_OpenFlag_Create);
@@ -121,8 +120,8 @@ VaultPaths VaultStore::pathsFor(const OUString& rRoot)
 {
     VaultPaths p;
     p.root = rRoot.isEmpty() ? rootDir() : rRoot;
-    // strip trailing slash
-    while (p.root.endsWith(u"/") && p.root.getLength() > 1)
+    // strip trailing slash (posix + win)
+    while (p.root.getLength() > 1 && (p.root.endsWith(u"/") || p.root.endsWith(u"\\")))
         p.root = p.root.copy(0, p.root.getLength() - 1);
     p.raw = p.root + u"/raw"_ustr;
     p.wiki = p.root + u"/wiki"_ustr;

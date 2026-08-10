@@ -35,6 +35,13 @@ $(eval $(call gb_Library_use_libraries,kqoffice_ai,\
     salhelper \
 ))
 
+ifeq ($(OS),WNT)
+$(eval $(call gb_Library_use_system_win32_libs,kqoffice_ai,\
+    psapi \
+    shell32 \
+))
+endif
+
 $(eval $(call gb_Library_set_componentfile,kqoffice_ai,kqoffice/util/kqoffice_ai,services))
 
 $(eval $(call gb_Library_add_exception_objects,kqoffice_ai,\
@@ -88,6 +95,7 @@ $(eval $(call gb_Library_add_exception_objects,kqoffice_ai,\
     kqoffice/source/ai/control/PermissionCenter \
     kqoffice/source/ai/control/PermissionGrant \
     kqoffice/source/ai/control/ResourceBudgetWatchdog \
+    kqoffice/source/ai/control/AiPaths \
     kqoffice/source/ai/control/AiResourceEnvelope \
     kqoffice/source/ai/control/SafeRestore \
     kqoffice/source/ai/control/SessionStore \

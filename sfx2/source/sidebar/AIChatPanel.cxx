@@ -78,6 +78,7 @@
 #include <vector>
 #include <EvidenceRecorder.hxx>
 #include <ModelRoles.hxx>
+#include <AiPaths.hxx>
 #include <AiResourceEnvelope.hxx>
 #include <MembershipClient.hxx>
 #include <ModelRoutingConfig.hxx>
@@ -1500,17 +1501,17 @@ OUString FormatSchedulePlanLabel(const kqoffice::ai::cowork::ScheduledTask& t, s
 
 bool WritePendingPromptInject(const OUString& rText)
 {
-    const char* home = std::getenv("HOME");
-    if (!home || !*home || rText.isEmpty())
+    if (rText.isEmpty())
         return false;
-    const OUString path
-        = OUString::fromUtf8(home) + u"/.config/kqoffice/pending-prompt-inject"_ustr;
-    const sal_Int32 slash = path.lastIndexOf(u'/');
-    if (slash > 0)
+    const OUString cfg = kqoffice::ai::kqofficeAiConfigDir();
+    if (cfg.isEmpty())
+        return false;
+    const OUString path = cfg + u"/pending-prompt-inject"_ustr;
+    const OUString parent = kqoffice::ai::kqofficeParentDir(path);
+    if (!parent.isEmpty())
     {
         OUString dirUrl;
-        if (osl::FileBase::getFileURLFromSystemPath(path.copy(0, slash), dirUrl)
-            == osl::FileBase::E_None)
+        if (osl::FileBase::getFileURLFromSystemPath(parent, dirUrl) == osl::FileBase::E_None)
             osl::Directory::createPath(dirUrl);
     }
     OUString url;
@@ -5165,12 +5166,12 @@ void AIChatPanel::SubmitPrompt()
                 path = arg;
             else
                 name = arg;
-            // expand ~
-            if (path.startsWith(u"~/"_ustr))
+            // expand ~ (mac HOME / Win USERPROFILE)
+            if (path.startsWith(u"~/"_ustr) || path.startsWith(u"~\\"_ustr))
             {
-                const char* home = std::getenv("HOME");
-                if (home && *home)
-                    path = OUString::fromUtf8(home) + path.copy(1);
+                const OUString home = kqoffice::ai::kqofficeUserHomeDir();
+                if (!home.isEmpty())
+                    path = home + path.copy(1);
             }
             const auto cr = VaultManager::createVault(name, path);
             md = cr.messageZh;
@@ -5194,11 +5195,11 @@ void AIChatPanel::SubmitPrompt()
                 path = sPrompt.copy(OUString(u"/vault-location"_ustr).getLength()).trim();
             else
                 path = sPrompt.copy(OUString(u"/资料盘位置"_ustr).getLength()).trim();
-            if (path.startsWith(u"~/"_ustr))
+            if (path.startsWith(u"~/"_ustr) || path.startsWith(u"~\\"_ustr))
             {
-                const char* home = std::getenv("HOME");
-                if (home && *home)
-                    path = OUString::fromUtf8(home) + path.copy(1);
+                const OUString home = kqoffice::ai::kqofficeUserHomeDir();
+                if (!home.isEmpty())
+                    path = home + path.copy(1);
             }
             if (path.isEmpty())
                 md = u"用法：`/资料盘位置 /新绝对路径`\n类似下载软件修改默认下载目录；**不会自动迁移旧文件**。\n"_ustr;
@@ -8780,11 +8781,10 @@ IMPL_LINK_NOARG(AIChatPanel, OnScheduleTick, Timer*, void)
 
 void AIChatPanel::ConsumePendingPromptInject()
 {
-    const char* home = std::getenv("HOME");
-    if (!home || !*home)
+    const OUString cfg = kqoffice::ai::kqofficeAiConfigDir();
+    if (cfg.isEmpty())
         return;
-    const OUString path
-        = OUString::fromUtf8(home) + u"/.config/kqoffice/pending-prompt-inject"_ustr;
+    const OUString path = cfg + u"/pending-prompt-inject"_ustr;
     OUString url;
     if (osl::FileBase::getFileURLFromSystemPath(path, url) != osl::FileBase::E_None)
         return;

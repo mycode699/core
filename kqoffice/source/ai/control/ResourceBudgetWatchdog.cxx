@@ -14,6 +14,9 @@
 
 #if defined(MACOSX) || defined(__APPLE__) || defined(__linux__)
 #include <sys/resource.h>
+#elif defined(_WIN32)
+#include <windows.h>
+#include <psapi.h>
 #endif
 
 namespace kqoffice::ai::control
@@ -32,6 +35,12 @@ sal_Int64 ProcessMaxRssMb()
     if (getrusage(RUSAGE_SELF, &ru) != 0)
         return 0;
     return static_cast<sal_Int64>(ru.ru_maxrss) / 1024;
+#elif defined(_WIN32)
+    PROCESS_MEMORY_COUNTERS_EX pmc{};
+    if (!::GetProcessMemoryInfo(::GetCurrentProcess(),
+                                reinterpret_cast<PROCESS_MEMORY_COUNTERS*>(&pmc), sizeof(pmc)))
+        return 0;
+    return static_cast<sal_Int64>(pmc.WorkingSetSize) / (1024 * 1024);
 #else
     return 0;
 #endif
@@ -79,7 +88,7 @@ BudgetViolation ResourceBudgetWatchdog::check(const OUString& surfaceId)
         violation.currentValue = static_cast<double>(rssMb);
         violation.limit = static_cast<double>(b.maxRssMb);
         violation.recommendedAction = escalate(violation);
-        violation.message = u"process maxrss "_ustr + OUString::number(rssMb) + u"MB > budget "_ustr
+        violation.message = u"process rss "_ustr + OUString::number(rssMb) + u"MB > budget "_ustr
                             + OUString::number(b.maxRssMb) + u"MB"_ustr;
         return violation;
     }
@@ -112,7 +121,6 @@ BudgetAction ResourceBudgetWatchdog::escalate(const BudgetViolation& violation)
         return violation.recommendedAction;
     }
 
-    // Default escalation based on resource type
     if (violation.resource == "cpu")
     {
         if (violation.currentValue > violation.limit * 1.5)
@@ -167,7 +175,6 @@ bool ResourceBudgetWatchdog::enforce(const OUString& surfaceId, BudgetAction act
             SAL_WARN("kqoffice.ai.control",
                 "ResourceBudgetWatchdog: throttling " << surfaceId
                 << " (soft — defer AI polish / shrink batches via envelope)");
-            // Soft path: AiResourceEnvelope::underSoftMemoryPressure drives batch sizes.
             return true;
 
         case BudgetAction::Detach:
@@ -181,7 +188,6 @@ bool ResourceBudgetWatchdog::enforce(const OUString& surfaceId, BudgetAction act
             return true;
 
         case BudgetAction::Kill:
-            // Desktop policy: do not SIGKILL the host process from AI watchdog.
             SAL_WARN("kqoffice.ai.control",
                 "ResourceBudgetWatchdog: kill requested for " << surfaceId
                 << " — demoted to throttle (protect host)");

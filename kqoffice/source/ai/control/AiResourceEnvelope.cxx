@@ -1,6 +1,7 @@
 /* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 #include "AiResourceEnvelope.hxx"
+#include "AiPaths.hxx"
 
 #include <osl/file.hxx>
 #include <osl/time.h>
@@ -16,6 +17,9 @@
 
 #if defined(MACOSX) || defined(__APPLE__) || defined(__linux__)
 #include <sys/resource.h>
+#elif defined(_WIN32)
+#include <windows.h>
+#include <psapi.h>
 #endif
 
 namespace kqoffice::ai::control
@@ -58,16 +62,16 @@ OUString InjectPath()
 {
     if (const char* env = std::getenv("KQOFFICE_AI_PENDING_PROMPT_INJECT"); env && *env)
         return OUString::fromUtf8(env);
-    const char* home = std::getenv("HOME");
-    if (!home || !*home)
+    const OUString cfg = kqofficeAiConfigDir();
+    if (cfg.isEmpty())
         return {};
-    return OUString::fromUtf8(home) + u"/.config/kqoffice/pending-prompt-inject"_ustr;
+    return cfg + u"/pending-prompt-inject"_ustr;
 }
 
 // Idle membership poll stretches when no inject for a while.
 sal_Int32 g_idleMembershipStreak = 0;
 
-/// Process max RSS in MB (best-effort). 0 = unknown.
+/// Process working set / max RSS in MB (best-effort). 0 = unknown.
 sal_Int64 ProcessRssMb()
 {
 #if defined(MACOSX) || defined(__APPLE__)
@@ -82,6 +86,13 @@ sal_Int64 ProcessRssMb()
         return 0;
     // Linux: ru_maxrss is kilobytes
     return static_cast<sal_Int64>(ru.ru_maxrss) / 1024;
+#elif defined(_WIN32)
+    PROCESS_MEMORY_COUNTERS_EX pmc{};
+    if (!::GetProcessMemoryInfo(::GetCurrentProcess(),
+                                reinterpret_cast<PROCESS_MEMORY_COUNTERS*>(&pmc), sizeof(pmc)))
+        return 0;
+    // Working set is the live RSS-like metric for desktop QoE.
+    return static_cast<sal_Int64>(pmc.WorkingSetSize) / (1024 * 1024);
 #else
     return 0;
 #endif

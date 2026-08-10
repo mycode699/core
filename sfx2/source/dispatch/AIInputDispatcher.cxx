@@ -8,6 +8,7 @@
 #include <DocumentAIScreenCapture.hxx>
 #include <DocumentAIVoiceInput.hxx>
 #include <AgentChatSelectionCapture.hxx>
+#include <AiPaths.hxx>
 #include <AiResourceEnvelope.hxx>
 #include <MembershipClient.hxx>
 #include <VaultManager.hxx>
@@ -61,28 +62,27 @@ OUString membershipActionFromSlash(const OUString& t)
 
 OUString membershipInjectPath()
 {
-    const char* home = std::getenv("HOME");
-    if (!home || !*home)
+    const OUString cfg = kqoffice::ai::kqofficeAiConfigDir();
+    if (cfg.isEmpty())
         return {};
-    return OUString::fromUtf8(home) + u"/.config/kqoffice/pending-prompt-inject"_ustr;
+    return cfg + u"/pending-prompt-inject"_ustr;
 }
 
 OUString membershipResultPath()
 {
-    const char* home = std::getenv("HOME");
-    if (!home || !*home)
+    const OUString cfg = kqoffice::ai::kqofficeAiConfigDir();
+    if (cfg.isEmpty())
         return {};
-    return OUString::fromUtf8(home) + u"/.config/kqoffice/last-membership-result.txt"_ustr;
+    return cfg + u"/last-membership-result.txt"_ustr;
 }
 
 bool writeUtf8File(const OUString& rSysPath, const OUString& rText)
 {
-    const sal_Int32 slash = rSysPath.lastIndexOf(u'/');
-    if (slash > 0)
+    const OUString parent = kqoffice::ai::kqofficeParentDir(rSysPath);
+    if (!parent.isEmpty())
     {
         OUString dirUrl;
-        if (osl::FileBase::getFileURLFromSystemPath(rSysPath.copy(0, slash), dirUrl)
-            == osl::FileBase::E_None)
+        if (osl::FileBase::getFileURLFromSystemPath(parent, dirUrl) == osl::FileBase::E_None)
             osl::Directory::createPath(dirUrl);
     }
     OUString url;
@@ -139,33 +139,7 @@ OUString readAndMaybeRemoveInject(bool bRemoveIfMembership)
 // (panel polls pending injection file — simple & cross-module).
 void queuePromptInjection(const OUString& rText)
 {
-    const char* home = std::getenv("HOME");
-    if (!home || !*home)
-        return;
-    const OUString path
-        = OUString::fromUtf8(home) + u"/.config/kqoffice/pending-prompt-inject"_ustr;
-    const sal_Int32 slash = path.lastIndexOf(u'/');
-    if (slash > 0)
-    {
-        OUString dirUrl;
-        if (osl::FileBase::getFileURLFromSystemPath(path.copy(0, slash), dirUrl)
-            == osl::FileBase::E_None)
-            osl::Directory::createPath(dirUrl);
-    }
-    OUString url;
-    if (osl::FileBase::getFileURLFromSystemPath(path, url) != osl::FileBase::E_None)
-        return;
-    osl::File f(url);
-    osl::FileBase::RC e = f.open(osl_File_OpenFlag_Write | osl_File_OpenFlag_Create);
-    if (e != osl::FileBase::E_None)
-        e = f.open(osl_File_OpenFlag_Write);
-    if (e != osl::FileBase::E_None)
-        return;
-    f.setSize(0);
-    const OString utf8 = OUStringToOString(rText, RTL_TEXTENCODING_UTF8);
-    sal_uInt64 n = 0;
-    f.write(utf8.getStr(), utf8.getLength(), n);
-    f.close();
+    (void)writeUtf8File(membershipInjectPath(), rText);
 }
 } // namespace
 

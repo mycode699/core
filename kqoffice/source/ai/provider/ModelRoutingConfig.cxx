@@ -109,6 +109,7 @@ void applyEnvOverrides(ModelRoutingSnapshot& r)
     setIf(r.agentModel, "KQOFFICE_AI_AGENT_MODEL");
     setIf(r.planModel, "KQOFFICE_AI_PLAN_MODEL");
     setIf(r.reviewModel, "KQOFFICE_AI_REVIEW_MODEL");
+    setIf(r.visionModel, "KQOFFICE_AI_VISION_MODEL");
     // Legacy env aliases → same five slots
     setIf(r.lightModel, "KQOFFICE_AI_SMALL_FAST_MODEL");
     setIf(r.agentModel, "KQOFFICE_AI_SUBAGENT_MODEL");
@@ -142,10 +143,21 @@ OUString defaultModelRoutingConfigPath()
     if (!overridePath.isEmpty())
         return overridePath;
 
+    // Include AiPaths via ModelRoles-compatible layout: prefer env HOME/APPDATA.
+#if defined(_WIN32)
+    const char* app = std::getenv("APPDATA");
+    if (app && *app)
+        return OUString::fromUtf8(app) + u"/kqoffice/model-routing.json"_ustr;
+#endif
     const char* home = std::getenv("HOME");
-    if (!home || !*home)
-        return OUString();
-    return OUString::fromUtf8(home) + u"/.config/kqoffice/model-routing.json"_ustr;
+    if (home && *home)
+        return OUString::fromUtf8(home) + u"/.config/kqoffice/model-routing.json"_ustr;
+#if defined(_WIN32)
+    const char* up = std::getenv("USERPROFILE");
+    if (up && *up)
+        return OUString::fromUtf8(up) + u"/.config/kqoffice/model-routing.json"_ustr;
+#endif
+    return OUString();
 }
 
 ModelRoutingSnapshot parseModelRoutingJson(const OUString& rJson)
@@ -162,6 +174,7 @@ ModelRoutingSnapshot parseModelRoutingJson(const OUString& rJson)
     s.agentModel = jsonStringField(rJson, u"agentModel");
     s.planModel = jsonStringField(rJson, u"planModel");
     s.reviewModel = jsonStringField(rJson, u"reviewModel");
+    s.visionModel = jsonStringField(rJson, u"visionModel");
 
     // Legacy aliases (Clavue 9-slot / earlier kqoffice)
     s.smallFastModel = jsonStringField(rJson, u"smallFastModel");
@@ -245,6 +258,8 @@ OUString serializeModelRoutingJson(const ModelRoutingSnapshot& r)
     appendJsonString(b, u"planModel", r.planModel);
     b.append(u",\n");
     appendJsonString(b, u"reviewModel", r.reviewModel);
+    b.append(u",\n");
+    appendJsonString(b, u"visionModel", r.visionModel);
     b.append(u"\n}\n");
     return b.makeStringAndClear();
 }

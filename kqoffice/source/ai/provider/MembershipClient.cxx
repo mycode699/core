@@ -7,6 +7,7 @@
 #include "ModelRoutingConfig.hxx"
 #include "OpenAICompatibleAdapter.hxx"
 
+#include <AiPaths.hxx>
 #include <AiResourceEnvelope.hxx>
 
 #include <osl/time.h>
@@ -18,7 +19,14 @@
 #include <fstream>
 #include <mutex>
 #include <string>
+
+#if defined(_WIN32)
+#include <windows.h>
+#include <io.h>
+#include <fcntl.h>
+#else
 #include <unistd.h>
+#endif
 
 namespace kqoffice::ai
 {
@@ -83,29 +91,50 @@ OUString membershipBaseUrl()
     return base;
 }
 
+bool makeTempFile(std::string& outPath)
+{
+#if defined(_WIN32)
+    char dir[MAX_PATH];
+    char path[MAX_PATH];
+    const DWORD n = ::GetTempPathA(MAX_PATH, dir);
+    if (n == 0 || n >= MAX_PATH)
+        return false;
+    if (::GetTempFileNameA(dir, "kqm", 0, path) == 0)
+        return false;
+    outPath.assign(path);
+    return true;
+#else
+    const OUString base = kqofficeTempDir() + u"/kqoffice-mbr-XXXXXX"_ustr;
+    const OString o = OUStringToOString(base, RTL_TEXTENCODING_UTF8);
+    std::string buf(o.getStr(), static_cast<size_t>(o.getLength()));
+    const int fd = ::mkstemp(buf.data());
+    if (fd < 0)
+        return false;
+    ::close(fd);
+    outPath.swap(buf);
+    return true;
+#endif
+}
+
+void writeFileBytes(const std::string& path, const char* data, size_t len)
+{
+    std::ofstream out(path, std::ios::binary | std::ios::trunc);
+    if (out && data && len)
+        out.write(data, static_cast<std::streamsize>(len));
+}
+
 std::string curlJson(const OUString& rUrl, const OUString& rMethod, const OUString& rBodyJson)
 {
     const OUString key = OpenAICompatibleAdapter::apiKeyFromEnv();
     if (key.isEmpty())
         return {};
 
-    char outPath[] = "/tmp/kqoffice-mbr-XXXXXX";
-    char hdrPath[] = "/tmp/kqoffice-mbr-hdr-XXXXXX";
-    char bodyPath[] = "/tmp/kqoffice-mbr-body-XXXXXX";
-    const int outFd = ::mkstemp(outPath);
-    const int hdrFd = ::mkstemp(hdrPath);
-    const int bodyFd = ::mkstemp(bodyPath);
-    if (outFd < 0 || hdrFd < 0 || bodyFd < 0)
-    {
-        if (outFd >= 0)
-            ::close(outFd);
-        if (hdrFd >= 0)
-            ::close(hdrFd);
-        if (bodyFd >= 0)
-            ::close(bodyFd);
+    std::string outPath;
+    std::string hdrPath;
+    std::string bodyPath;
+    if (!makeTempFile(outPath) || !makeTempFile(hdrPath) || !makeTempFile(bodyPath))
         return {};
-    }
-    ::close(outFd);
+
     {
         OStringBuffer hb;
         hb.append("Authorization: Bearer ");
@@ -114,31 +143,35 @@ std::string curlJson(const OUString& rUrl, const OUString& rMethod, const OUStri
         if (!rBodyJson.isEmpty())
             hb.append("Content-Type: application/json\r\n");
         const OString hdr = hb.makeStringAndClear();
-        (void)::write(hdrFd, hdr.getStr(), static_cast<size_t>(hdr.getLength()));
-        ::close(hdrFd);
+        writeFileBytes(hdrPath, hdr.getStr(), static_cast<size_t>(hdr.getLength()));
     }
     if (!rBodyJson.isEmpty())
     {
         const OString b = OUStringToOString(rBodyJson, RTL_TEXTENCODING_UTF8);
-        (void)::write(bodyFd, b.getStr(), static_cast<size_t>(b.getLength()));
+        writeFileBytes(bodyPath, b.getStr(), static_cast<size_t>(b.getLength()));
     }
-    ::close(bodyFd);
 
     OStringBuffer cmd;
+    // Windows 10+ ships curl.exe; Unix uses PATH curl.
     cmd.append("curl -sS --http1.1 --max-time 15 -X ");
     cmd.append(OUStringToOString(rMethod, RTL_TEXTENCODING_ASCII_US));
-    cmd.append(" -H @");
-    cmd.append(hdrPath);
+    cmd.append(" -H @\"");
+    cmd.append(hdrPath.c_str());
+    cmd.append("\"");
     if (!rBodyJson.isEmpty())
     {
-        cmd.append(" --data-binary @");
-        cmd.append(bodyPath);
+        cmd.append(" --data-binary @\"");
+        cmd.append(bodyPath.c_str());
+        cmd.append("\"");
     }
-    cmd.append(" -o ");
-    cmd.append(outPath);
-    cmd.append(" '");
+    cmd.append(" -o \"");
+    cmd.append(outPath.c_str());
+    cmd.append("\" \"");
     cmd.append(OUStringToOString(rUrl, RTL_TEXTENCODING_UTF8));
-    cmd.append("' 2>/dev/null");
+    cmd.append("\"");
+#if !defined(_WIN32)
+    cmd.append(" 2>/dev/null");
+#endif
     (void)::system(cmd.makeStringAndClear().getStr());
 
     std::string body;
@@ -147,9 +180,9 @@ std::string curlJson(const OUString& rUrl, const OUString& rMethod, const OUStri
         if (in)
             body.assign((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
     }
-    ::unlink(outPath);
-    ::unlink(hdrPath);
-    ::unlink(bodyPath);
+    std::remove(outPath.c_str());
+    std::remove(hdrPath.c_str());
+    std::remove(bodyPath.c_str());
     return body;
 }
 

@@ -312,28 +312,42 @@ OUString OpenAICompatibleAdapter::apiKeyFromEnv()
         if (!s.isEmpty())
             return s;
     }
-    // Fallback: local key file (not for git; operator-managed).
-    const char* home = std::getenv("HOME");
-    if (home && *home)
-    {
-        const std::string path = std::string(home) + "/.config/kqoffice/api-key";
+    // Fallback: local key file (mac ~/.config · Win %APPDATA%\kqoffice).
+    auto tryKeyFile = [](const std::string& path) -> OUString {
         std::ifstream in(path);
-        if (in)
-        {
-            std::string line;
-            if (std::getline(in, line))
-            {
-                // strip CR
-                while (!line.empty()
-                       && (line.back() == '\r' || line.back() == '\n' || line.back() == ' '
-                           || line.back() == '\t'))
-                    line.pop_back();
-                if (!line.empty())
-                    return OStringToOUString(
-                        OString(line.data(), static_cast<sal_Int32>(line.size())),
-                        RTL_TEXTENCODING_UTF8);
-            }
-        }
+        if (!in)
+            return {};
+        std::string line;
+        if (!std::getline(in, line))
+            return {};
+        while (!line.empty()
+               && (line.back() == '\r' || line.back() == '\n' || line.back() == ' '
+                   || line.back() == '\t'))
+            line.pop_back();
+        if (line.empty())
+            return {};
+        return OStringToOUString(OString(line.data(), static_cast<sal_Int32>(line.size())),
+                                 RTL_TEXTENCODING_UTF8);
+    };
+#if defined(_WIN32)
+    if (const char* app = std::getenv("APPDATA"); app && *app)
+    {
+        const OUString k = tryKeyFile(std::string(app) + "/kqoffice/api-key");
+        if (!k.isEmpty())
+            return k;
+    }
+    if (const char* up = std::getenv("USERPROFILE"); up && *up)
+    {
+        const OUString k = tryKeyFile(std::string(up) + "/.config/kqoffice/api-key");
+        if (!k.isEmpty())
+            return k;
+    }
+#endif
+    if (const char* home = std::getenv("HOME"); home && *home)
+    {
+        const OUString k = tryKeyFile(std::string(home) + "/.config/kqoffice/api-key");
+        if (!k.isEmpty())
+            return k;
     }
     return OUString();
 }

@@ -3,6 +3,7 @@
 #include "VaultManager.hxx"
 #include "VaultStore.hxx"
 
+#include <AiPaths.hxx>
 #include <AiResourceEnvelope.hxx>
 #include <PermissionCenter.hxx>
 
@@ -16,19 +17,19 @@
 #include <string>
 #include <vector>
 
+#if defined(_WIN32)
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#include <windows.h>
+#include <shellapi.h>
+#endif
+
 namespace kqoffice::ai::vault
 {
 namespace
 {
-OUString Home()
-{
-    const char* h = std::getenv("HOME");
-    if (h && *h)
-        return OUString::fromUtf8(h);
-    return u"/tmp"_ustr;
-}
-
-OUString ConfigBase() { return Home() + u"/.config/kqoffice"_ustr; }
+OUString ConfigBase() { return kqoffice::ai::kqofficeAiConfigDir(); }
 
 bool EnsureDir(const OUString& rSys)
 {
@@ -55,7 +56,8 @@ bool DirExists(const OUString& rSys)
 
 bool WriteUtf8(const OUString& rSys, const OUString& rBody)
 {
-    if (!EnsureDir(rSys.copy(0, std::max<sal_Int32>(0, rSys.lastIndexOf('/')))))
+    const OUString parent = kqoffice::ai::kqofficeParentDir(rSys);
+    if (!parent.isEmpty() && !EnsureDir(parent))
         return false;
     OUString url;
     if (osl::FileBase::getFileURLFromSystemPath(rSys, url) != osl::FileBase::E_None)
@@ -277,10 +279,10 @@ OUString VaultManager::installDefaultRootSuggestion()
 {
     if (const char* env = std::getenv("KQOFFICE_VAULT_INSTALL_DEFAULT"); env && *env)
         return OUString::fromUtf8(env);
-    // Thunder/Quark/WPS style: user Documents, product-named folder
-    const OUString docs = Home() + u"/Documents/可圈资料盘"_ustr;
-    // Prefer Documents if parent exists
-    if (DirExists(Home() + u"/Documents"_ustr) || EnsureDir(Home() + u"/Documents"_ustr))
+    // Thunder/Quark/WPS style: user Documents, product-named folder (mac + Win).
+    const OUString docsRoot = kqoffice::ai::kqofficeUserDocumentsDir();
+    const OUString docs = docsRoot + u"/可圈资料盘"_ustr;
+    if (DirExists(docsRoot) || EnsureDir(docsRoot))
         return docs;
     return VaultStore::defaultRootDir();
 }
@@ -623,16 +625,42 @@ VaultManagerResult VaultManager::revealInFileManager(const OUString& rId)
         return r;
     }
     VaultStore::ensureLayout(v->rootPath);
-#if defined(MACOSX)
-    const OString cmd = "open "
-                        + OUStringToOString(v->rootPath, RTL_TEXTENCODING_UTF8);
+#if defined(_WIN32)
+    {
+        const OUString path = v->rootPath;
+        // ShellExecuteW: open folder in Explorer (no cmd.exe quoting issues).
+        const sal_Int32 n = path.getLength();
+        std::wstring wpath;
+        wpath.reserve(static_cast<size_t>(n));
+        for (sal_Int32 i = 0; i < n; ++i)
+            wpath.push_back(static_cast<wchar_t>(path[i]));
+        const HINSTANCE hi
+            = ::ShellExecuteW(nullptr, L"explore", wpath.c_str(), nullptr, nullptr, SW_SHOWNORMAL);
+        r.ok = (reinterpret_cast<intptr_t>(hi) > 32);
+        if (!r.ok)
+        {
+            // Fallback: explorer.exe path
+            const OString cmd = "explorer \""
+                                + OUStringToOString(path, RTL_TEXTENCODING_UTF8) + "\"";
+            r.ok = (std::system(cmd.getStr()) == 0);
+        }
+    }
+#elif defined(MACOSX) || defined(__APPLE__)
+    {
+        const OString cmd
+            = "open " + OUStringToOString(v->rootPath, RTL_TEXTENCODING_UTF8);
+        (void)std::system(cmd.getStr());
+        r.ok = true;
+    }
 #else
-    const OString cmd = "xdg-open "
-                        + OUStringToOString(v->rootPath, RTL_TEXTENCODING_UTF8)
-                        + " >/dev/null 2>&1 &";
+    {
+        const OString cmd = "xdg-open "
+                            + OUStringToOString(v->rootPath, RTL_TEXTENCODING_UTF8)
+                            + " >/dev/null 2>&1 &";
+        (void)std::system(cmd.getStr());
+        r.ok = true;
+    }
 #endif
-    (void)std::system(cmd.getStr());
-    r.ok = true;
     r.rootPath = v->rootPath;
     r.messageZh = u"已在文件管理器中打开："_ustr + v->rootPath;
     return r;

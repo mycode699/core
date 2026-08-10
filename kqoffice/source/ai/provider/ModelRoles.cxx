@@ -9,6 +9,7 @@
 #include "OllamaAdapter.hxx"
 #include "OpenAICompatibleAdapter.hxx"
 
+#include <AiPaths.hxx>
 #include <AiResourceEnvelope.hxx>
 
 #include <osl/time.h>
@@ -347,10 +348,9 @@ namespace
 {
 OUString homeConfigDir()
 {
-    const char* home = std::getenv("HOME");
-    if (home && *home)
-        return OUString::createFromAscii(home) + u"/.config/kqoffice"_ustr;
-    return u"~/.config/kqoffice"_ustr;
+    // mac: ~/.config/kqoffice · Win: %APPDATA%/kqoffice
+    const OUString d = kqofficeAiConfigDir();
+    return d.isEmpty() ? u"~/.config/kqoffice"_ustr : d;
 }
 
 /// Best-effort membership quota via cached MembershipClient (no duplicate curl).
@@ -485,7 +485,8 @@ void fillRecoveryGuide(ModelRoutingDiagnostics& d)
 }
 } // namespace
 
-OUString kqofficeAiConfigDir() { return homeConfigDir(); }
+// Defined in AiPaths.cxx — keep export from this TU for link stability with older call sites.
+// (Primary implementation: kqoffice::ai::kqofficeAiConfigDir in AiPaths.)
 
 OUString formatModelHealthRecoveryGuide(const ModelRoutingDiagnostics& rDiag,
                                         const OUString& rFailDetail)

@@ -43,8 +43,9 @@ public:
     static OUString registryDir();
 
     /// Suggested install default root (like 下载路径):
-    ///   macOS: ~/Documents/可圈资料盘
-    ///   else:  ~/.config/kqoffice/vault
+    ///   macOS/Linux: ~/Documents/可圈资料盘
+    ///   Windows:     %USERPROFILE%\\Documents\\可圈资料盘 (or OneDrive\\Documents)
+    ///   fallback:    <config>/vault  (%APPDATA%\\kqoffice\\vault on Win)
     /// Override: KQOFFICE_VAULT_INSTALL_DEFAULT
     static OUString installDefaultRootSuggestion();
 
