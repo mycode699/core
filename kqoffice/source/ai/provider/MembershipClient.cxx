@@ -7,12 +7,16 @@
 #include "ModelRoutingConfig.hxx"
 #include "OpenAICompatibleAdapter.hxx"
 
+#include <AiResourceEnvelope.hxx>
+
+#include <osl/time.h>
 #include <rtl/strbuf.hxx>
 #include <rtl/ustrbuf.hxx>
 
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
+#include <mutex>
 #include <string>
 #include <unistd.h>
 
@@ -20,6 +24,54 @@ namespace kqoffice::ai
 {
 namespace
 {
+std::mutex& MbrCacheMutex()
+{
+    static std::mutex m;
+    return m;
+}
+
+MembershipBoostResult g_statusCache;
+sal_Int64 g_statusCacheMs = 0;
+bool g_statusCacheValid = false;
+
+sal_Int64 NowMs()
+{
+    TimeValue tv{};
+    osl_getSystemTime(&tv);
+    return static_cast<sal_Int64>(tv.Seconds) * 1000
+           + static_cast<sal_Int64>(tv.Nanosec) / 1000000;
+}
+
+void InvalidateStatusCache()
+{
+    std::lock_guard<std::mutex> g(MbrCacheMutex());
+    g_statusCacheValid = false;
+    g_statusCacheMs = 0;
+}
+
+bool TryGetStatusCache(MembershipBoostResult& out)
+{
+    std::lock_guard<std::mutex> g(MbrCacheMutex());
+    if (!g_statusCacheValid)
+        return false;
+    const sal_Int64 ttl = kqoffice::ai::control::AiResourceEnvelope::membershipStatusCacheTtlMs();
+    if ((NowMs() - g_statusCacheMs) > ttl)
+    {
+        g_statusCacheValid = false;
+        return false;
+    }
+    out = g_statusCache;
+    return true;
+}
+
+void PutStatusCache(const MembershipBoostResult& r)
+{
+    std::lock_guard<std::mutex> g(MbrCacheMutex());
+    g_statusCache = r;
+    g_statusCacheMs = NowMs();
+    g_statusCacheValid = true;
+}
+
 OUString membershipBaseUrl()
 {
     const ModelRoutingSnapshot r = loadModelRoutingSnapshot();
@@ -213,8 +265,13 @@ MembershipBoostResult membershipBoostAction(const OUString& rAction)
         return r;
     }
 
+    const bool isStatus = (act == u"status"_ustr || act == u"me"_ustr || act.isEmpty());
+    // Soft network envelope: status/chip reuse process cache (default 45s).
+    if (isStatus && TryGetStatusCache(r))
+        return r;
+
     std::string body;
-    if (act == u"status"_ustr || act == u"me"_ustr || act.isEmpty())
+    if (isStatus)
     {
         body = curlJson(base + u"/api/membership/auth/me"_ustr, u"GET"_ustr, OUString());
         if (body.empty())
@@ -222,12 +279,14 @@ MembershipBoostResult membershipBoostAction(const OUString& rAction)
     }
     else if (act == u"checkin"_ustr || act == u"check-in"_ustr || act == u"签到"_ustr)
     {
+        InvalidateStatusCache();
         body = curlJson(base + u"/api/membership/boost"_ustr, u"POST"_ustr,
                         u"{\"action\":\"checkin\"}"_ustr);
     }
     else if (act == u"rush"_ustr || act == u"rush_grab"_ustr || act == u"grab"_ustr
              || act == u"抢包"_ustr)
     {
+        InvalidateStatusCache();
         body = curlJson(base + u"/api/membership/boost"_ustr, u"POST"_ustr,
                         u"{\"action\":\"rush_grab\"}"_ustr);
     }
@@ -330,6 +389,13 @@ MembershipBoostResult membershipBoostAction(const OUString& rAction)
     }
     out.append(u"\n管理：https://www.03122.com/zh-CN/account/"_ustr);
     r.messageZh = out.makeStringAndClear();
+    if (isStatus)
+        PutStatusCache(r);
+    else
+    {
+        // Mutations change packs/day; next status should re-fetch.
+        InvalidateStatusCache();
+    }
     return r;
 }
 

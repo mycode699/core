@@ -8,6 +8,7 @@
 #include <DocumentAIScreenCapture.hxx>
 #include <DocumentAIVoiceInput.hxx>
 #include <AgentChatSelectionCapture.hxx>
+#include <AiResourceEnvelope.hxx>
 #include <MembershipClient.hxx>
 #include <VaultManager.hxx>
 
@@ -178,13 +179,14 @@ AIInputDispatcher::AIInputDispatcher()
 {
     // Background poll: membership slash inject works even when AI panel not open.
     // Safe — MembershipClient never mutates the main document.
-    m_aMembershipInjectPoll.SetTimeout(900);
+    using kqoffice::ai::control::AiResourceEnvelope;
+    m_aMembershipInjectPoll.SetTimeout(AiResourceEnvelope::membershipInjectPollMs());
     m_aMembershipInjectPoll.SetInvokeHandler(
         LINK(this, AIInputDispatcher, OnMembershipInjectPoll));
     m_aMembershipInjectPoll.Start();
 
     // Install-default 资料盘 + folder permission seed (WPS/Quark download-path style).
-    // Idempotent; no UI modal. User can later relocate/authorize via slash.
+    // Idempotent + process-cached; no UI modal.
     try
     {
         (void)kqoffice::ai::vault::VaultManager::ensureInstallDefaults();
@@ -196,6 +198,14 @@ AIInputDispatcher::AIInputDispatcher()
 
 void AIInputDispatcher::PollMembershipInject()
 {
+    using kqoffice::ai::control::AiResourceEnvelope;
+    // Adaptive cadence: stretch when idle (resource envelope).
+    m_aMembershipInjectPoll.SetTimeout(AiResourceEnvelope::membershipInjectPollMs());
+
+    // Cheap skip: no inject file → no disk read of membership secrets path churn.
+    if (!AiResourceEnvelope::pendingInjectLikelyPresent())
+        return;
+
     // If full panel is active it owns inject + auto-send for membership.
     if (sfx2::sidebar::AIChatPanel::GetActivePanel())
         return;

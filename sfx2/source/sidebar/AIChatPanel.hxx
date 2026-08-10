@@ -187,6 +187,7 @@ private:
     DECL_LINK(OnCtxNotebookClicked, weld::Button&, void);
     DECL_LINK(OnPromptInsertText, OUString&, bool);
     DECL_LINK(OnInjectPollTick, Timer*, void);
+    /// Multi-phase cold-open: chrome → local vault → network probe → related materials.
     DECL_LINK(OnDeferredWarmupTick, Timer*, void);
     /// Periodic local scheduled-task due scan (injects pending-prompt-inject).
     DECL_LINK(OnScheduleTick, Timer*, void);
@@ -533,12 +534,14 @@ private:
     OUString m_sQueuedReplacePrompt;
     /// Poll pending-prompt-inject while AI panel stays open (workbench/notebook inject).
     AutoTimer m_aInjectPoll;
-    /// Defer Ollama routing probe + workspace tree hydrate off the open critical path.
+    /// Phased cold-open (chrome / local / network / polish) — never block first keystroke.
     Timer m_aDeferredWarmup;
-    /// 60s local scheduled-task dispatcher (kqoffice ScheduledTaskDispatcher::processDue).
+    /// Envelope-cadence scheduled-task dispatcher (kqoffice processDue).
     AutoTimer m_aScheduleTick;
     bool m_bWorkspaceDataLoaded = false;
     bool m_bRoutingDiagDone = false;
+    /// 0=pending chrome, 1=after chrome, 2=after local, 3=after network, 4=done.
+    sal_Int32 m_nWarmupPhase = 0;
 };
 
 } // namespace sfx2::sidebar

@@ -88,6 +88,7 @@ $(eval $(call gb_Library_add_exception_objects,kqoffice_ai,\
     kqoffice/source/ai/control/PermissionCenter \
     kqoffice/source/ai/control/PermissionGrant \
     kqoffice/source/ai/control/ResourceBudgetWatchdog \
+    kqoffice/source/ai/control/AiResourceEnvelope \
     kqoffice/source/ai/control/SafeRestore \
     kqoffice/source/ai/control/SessionStore \
     kqoffice/source/ai/control/SurfaceLifecycleManager \

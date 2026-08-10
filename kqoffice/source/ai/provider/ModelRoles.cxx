@@ -4,10 +4,14 @@
  */
 
 #include "ModelRoles.hxx"
+#include "MembershipClient.hxx"
 #include "ModelRoutingConfig.hxx"
 #include "OllamaAdapter.hxx"
 #include "OpenAICompatibleAdapter.hxx"
 
+#include <AiResourceEnvelope.hxx>
+
+#include <osl/time.h>
 #include <rtl/strbuf.hxx>
 #include <rtl/ustrbuf.hxx>
 #include <rtl/ustring.hxx>
@@ -15,6 +19,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
+#include <mutex>
 #include <string>
 #include <unistd.h>
 
@@ -348,7 +353,7 @@ OUString homeConfigDir()
     return u"~/.config/kqoffice"_ustr;
 }
 
-/// Best-effort membership /auth/me (api.03122.com). Never throws; never logs the token.
+/// Best-effort membership quota via cached MembershipClient (no duplicate curl).
 void enrichMembershipQuota(ModelRoutingDiagnostics& d)
 {
     d.membershipSessionOk = false;
@@ -364,188 +369,34 @@ void enrichMembershipQuota(ModelRoutingDiagnostics& d)
     if (!d.apiKeyPresent)
         return;
 
-    const OUString key = OpenAICompatibleAdapter::apiKeyFromEnv();
-    if (key.isEmpty())
-        return;
-
-    char outPath[] = "/tmp/kqoffice-me-XXXXXX";
-    char hdrPath[] = "/tmp/kqoffice-me-hdr-XXXXXX";
-    const int outFd = ::mkstemp(outPath);
-    const int hdrFd = ::mkstemp(hdrPath);
-    if (outFd < 0 || hdrFd < 0)
-    {
-        if (outFd >= 0)
-            ::close(outFd);
-        if (hdrFd >= 0)
-            ::close(hdrFd);
-        return;
-    }
-    ::close(outFd);
-    {
-        OStringBuffer hb;
-        hb.append("Authorization: Bearer ");
-        hb.append(OUStringToOString(key, RTL_TEXTENCODING_UTF8));
-        hb.append("\r\nAccept: application/json\r\n");
-        const OString hdr = hb.makeStringAndClear();
-        const ssize_t w = ::write(hdrFd, hdr.getStr(), static_cast<size_t>(hdr.getLength()));
-        (void)w;
-        ::close(hdrFd);
-    }
-
-    OStringBuffer cmd;
-    cmd.append("curl -sS --http1.1 --max-time 5 -H @");
-    cmd.append(hdrPath);
-    cmd.append(" -o ");
-    cmd.append(outPath);
-    cmd.append(" '");
-    // Prefer configured base (may be https://api.03122.com)
-    OUString meUrl = d.baseUrl;
-    while (meUrl.endsWith(u"/"))
-        meUrl = meUrl.copy(0, meUrl.getLength() - 1);
-    meUrl += u"/api/membership/auth/me"_ustr;
-    cmd.append(OUStringToOString(meUrl, RTL_TEXTENCODING_UTF8));
-    cmd.append("' 2>/dev/null");
-    (void)::system(cmd.makeStringAndClear().getStr());
-
-    std::string body;
-    {
-        std::ifstream in(outPath, std::ios::binary);
-        if (in)
-            body.assign((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
-    }
-    ::unlink(outPath);
-    ::unlink(hdrPath);
-    if (body.empty() || body.find("\"ok\"") == std::string::npos)
-        return;
-
-    auto findNumAfter = [&](const char* key) -> sal_Int32 {
-        const std::string k = std::string("\"") + key + "\"";
-        size_t p = body.find(k);
-        if (p == std::string::npos)
-            return -1;
-        p = body.find(':', p + k.size());
-        if (p == std::string::npos)
-            return -1;
-        ++p;
-        while (p < body.size() && (body[p] == ' ' || body[p] == '\t'))
-            ++p;
-        if (p >= body.size() || body[p] == 'n') // null
-            return -1;
-        try
-        {
-            return static_cast<sal_Int32>(std::stol(body.substr(p)));
-        }
-        catch (...)
-        {
-            return -1;
-        }
-    };
-    auto findStrAfter = [&](const char* key) -> OUString {
-        const std::string k = std::string("\"") + key + "\"";
-        size_t p = body.find(k);
-        if (p == std::string::npos)
-            return OUString();
-        p = body.find(':', p + k.size());
-        if (p == std::string::npos)
-            return OUString();
-        p = body.find('"', p + 1);
-        if (p == std::string::npos)
-            return OUString();
-        size_t q = body.find('"', p + 1);
-        if (q == std::string::npos || q <= p)
-            return OUString();
-        return OStringToOUString(OString(body.data() + p + 1, static_cast<sal_Int32>(q - p - 1)),
-                                 RTL_TEXTENCODING_UTF8);
-    };
-
-    // Prefer day window remaining (hits free-plan cap first)
-    sal_Int32 dayRem = -1;
-    {
-        size_t day = body.find("\"day\"");
-        if (day != std::string::npos)
-        {
-            size_t fast = body.find("\"fast\"", day);
-            if (fast != std::string::npos && fast < day + 400)
-            {
-                size_t rem = body.find("\"remaining\"", fast);
-                if (rem != std::string::npos && rem < fast + 120)
-                {
-                    size_t c = body.find(':', rem);
-                    if (c != std::string::npos)
-                    {
-                        try
-                        {
-                            dayRem = static_cast<sal_Int32>(std::stol(body.substr(c + 1)));
-                        }
-                        catch (...)
-                        {
-                            dayRem = -1;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    if (dayRem < 0)
-        dayRem = findNumAfter("fastRemaining");
-
-    // boost.packs — first "packs" after "boost"
-    sal_Int32 packs = -1;
-    {
-        size_t b = body.find("\"boost\"");
-        if (b != std::string::npos)
-        {
-            size_t p = body.find("\"packs\"", b);
-            if (p != std::string::npos && p < b + 200)
-            {
-                size_t c = body.find(':', p);
-                if (c != std::string::npos)
-                {
-                    try
-                    {
-                        packs = static_cast<sal_Int32>(std::stol(body.substr(c + 1)));
-                    }
-                    catch (...)
-                    {
-                        packs = -1;
-                    }
-                }
-            }
-        }
-    }
-
-    d.membershipEmail = findStrAfter("email");
-    // only trust email if user object present
-    if (body.find("\"user\":null") != std::string::npos
-        || body.find("\"user\": null") != std::string::npos)
-        d.membershipEmail.clear();
-
-    d.membershipDayFastRem = dayRem;
-    d.membershipBoostPacks = packs;
-    d.membershipSessionOk = !d.membershipEmail.isEmpty() || dayRem >= 0;
+    // Reuses process-level status cache (AiResourceEnvelope TTL) — no second HTTP.
+    const MembershipBoostResult br = membershipBoostAction(u"status"_ustr);
+    d.membershipEmail = br.email;
+    d.membershipDayFastRem = br.dayFastRem;
+    d.membershipBoostPacks = br.packs;
+    d.membershipSessionOk = !br.email.isEmpty() || br.dayFastRem >= 0 || br.ok;
 
     OUStringBuffer line;
     line.append(u"会员"_ustr);
     if (!d.membershipEmail.isEmpty())
     {
         line.append(u" · "_ustr);
-        // truncate email for chip
         OUString em = d.membershipEmail;
         if (em.getLength() > 22)
             em = em.copy(0, 20) + u"…"_ustr;
         line.append(em);
     }
-    if (dayRem >= 0)
+    if (d.membershipDayFastRem >= 0)
     {
         line.append(u" · 今日剩 "_ustr);
-        line.append(dayRem);
+        line.append(d.membershipDayFastRem);
     }
-    if (packs >= 0)
+    if (d.membershipBoostPacks >= 0)
     {
         line.append(u" · 加油包 "_ustr);
-        line.append(packs);
+        line.append(d.membershipBoostPacks);
     }
-    if (dayRem == 0)
+    if (d.membershipDayFastRem == 0)
         line.append(u" · 额度不足可签到/升级"_ustr);
     d.membershipQuotaLineZh = line.makeStringAndClear();
 }
@@ -658,6 +509,26 @@ OUString formatModelHealthRecoveryGuide(const ModelRoutingDiagnostics& rDiag,
 
 ModelRoutingDiagnostics diagnoseModelRouting()
 {
+    // Soft process cache: warm-open often probes twice within one frame budget.
+    static std::mutex s_diagMu;
+    static ModelRoutingDiagnostics s_diagCache;
+    static sal_Int64 s_diagMs = 0;
+    static bool s_diagValid = false;
+    {
+        std::lock_guard<std::mutex> g(s_diagMu);
+        if (s_diagValid)
+        {
+            TimeValue tv{};
+            osl_getSystemTime(&tv);
+            const sal_Int64 now = static_cast<sal_Int64>(tv.Seconds) * 1000
+                                  + static_cast<sal_Int64>(tv.Nanosec) / 1000000;
+            const sal_Int64 ttl
+                = kqoffice::ai::control::AiResourceEnvelope::routingDiagnoseCacheTtlMs();
+            if ((now - s_diagMs) <= ttl)
+                return s_diagCache;
+        }
+    }
+
     ModelRoutingDiagnostics d;
     ensureDefaultModelRoutingTemplate();
     const ModelRoutingSnapshot routing = loadModelRoutingSnapshot();
@@ -810,6 +681,15 @@ ModelRoutingDiagnostics diagnoseModelRouting()
     }
     d.summaryZh = b.makeStringAndClear();
     fillRecoveryGuide(d);
+    {
+        std::lock_guard<std::mutex> g(s_diagMu);
+        s_diagCache = d;
+        TimeValue tv{};
+        osl_getSystemTime(&tv);
+        s_diagMs = static_cast<sal_Int64>(tv.Seconds) * 1000
+                   + static_cast<sal_Int64>(tv.Nanosec) / 1000000;
+        s_diagValid = true;
+    }
     return d;
 }
 

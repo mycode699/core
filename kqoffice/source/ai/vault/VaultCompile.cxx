@@ -3,6 +3,7 @@
 #include "VaultCompile.hxx"
 #include "VaultStore.hxx"
 
+#include <AiResourceEnvelope.hxx>
 #include <ModelRoutingConfig.hxx>
 #include <OpenAICompatibleAdapter.hxx>
 
@@ -13,6 +14,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+// std::min used with maxCompileItemsPerPass
 
 namespace kqoffice::ai::vault
 {
@@ -164,8 +166,10 @@ OUString TryLlmSummary(const OUString& rTitle, const OUString& rBody)
     if (model.isEmpty() || model == u"auto"_ustr)
         model = u"gpt-4o-mini"_ustr;
     OUString body = rBody;
-    if (body.getLength() > 6000)
-        body = body.copy(0, 6000);
+    const sal_Int32 maxEx
+        = kqoffice::ai::control::AiResourceEnvelope::maxCompileExcerptChars();
+    if (body.getLength() > maxEx)
+        body = body.copy(0, maxEx);
     const OUString prompt
         = u"你是资料盘整理助手。根据以下材料写中文 Markdown：\n"
           u"1) 标题行 # 标题\n2) ## 摘要（不超过200字）\n3) ## 要点（3-6条）\n"
@@ -221,7 +225,8 @@ VaultCompileResult VaultCompile::compilePending(const OUString& rVaultRoot, sal_
     }
     const VaultPaths vp = VaultStore::pathsFor(rVaultRoot);
     const auto files = ListImportSnippets(vp.raw + u"/imports"_ustr);
-    const sal_Int32 lim = nMax > 0 ? nMax : 8;
+    const sal_Int32 envLim = kqoffice::ai::control::AiResourceEnvelope::maxCompileItemsPerPass();
+    const sal_Int32 lim = nMax > 0 ? std::min(nMax, envLim) : envLim;
     std::vector<OUString> titles;
     for (const auto& f : files)
     {

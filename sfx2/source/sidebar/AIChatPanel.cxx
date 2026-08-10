@@ -78,6 +78,7 @@
 #include <vector>
 #include <EvidenceRecorder.hxx>
 #include <ModelRoles.hxx>
+#include <AiResourceEnvelope.hxx>
 #include <MembershipClient.hxx>
 #include <ModelRoutingConfig.hxx>
 #include <ProviderStreamHelper.hxx>
@@ -630,17 +631,19 @@ AIChatPanel::AIChatPanel(weld::Widget* pParent)
     if (m_xStatusLabel)
         m_xStatusLabel->set_label(u"可圈 AI 已就绪 · 模型探测后台进行中…"_ustr);
     // Keep consuming injects while panel is alive (速览→AI / 记事本→AI when already open).
-    // 1.2s is enough for handoff injects without burning main-thread timers.
-    m_aInjectPoll.SetTimeout(1200);
+    // Adaptive interval via AiResourceEnvelope (idle stretches to save main-thread wakeups).
+    m_aInjectPoll.SetTimeout(kqoffice::ai::control::AiResourceEnvelope::panelInjectPollMs());
     m_aInjectPoll.SetInvokeHandler(LINK(this, AIChatPanel, OnInjectPollTick));
     m_aInjectPoll.Start();
-    // Warm workspace + routing after first frame (faster than 900ms; still off open path).
-    m_aDeferredWarmup.SetTimeout(450);
+    // Warm workspace + routing after first frame (still off open path).
+    m_aDeferredWarmup.SetTimeout(
+        static_cast<sal_uInt64>(kqoffice::ai::control::AiResourceEnvelope::deferredWarmupMs()));
     m_aDeferredWarmup.SetInvokeHandler(LINK(this, AIChatPanel, OnDeferredWarmupTick));
     m_aDeferredWarmup.Start();
-    // Local scheduled tasks: scan due ledger every 60s while AI panel is open.
+    // Local scheduled tasks: scan due ledger on envelope cadence while AI panel is open.
     // Dispatch writes pending-prompt-inject; m_aInjectPoll consumes it into the prompt.
-    m_aScheduleTick.SetTimeout(60'000);
+    m_aScheduleTick.SetTimeout(
+        static_cast<sal_uInt64>(kqoffice::ai::control::AiResourceEnvelope::scheduleScanIntervalMs()));
     m_aScheduleTick.SetInvokeHandler(LINK(this, AIChatPanel, OnScheduleTick));
     m_aScheduleTick.Start();
     // Drop-target attach + Enable chrome deferred to OnDeferredWarmupTick (macOS).
@@ -679,90 +682,157 @@ void AIChatPanel::EnsureWorkspaceDataLoaded()
 IMPL_LINK_NOARG(AIChatPanel, OnDeferredWarmupTick, Timer*, void)
 {
     m_aDeferredWarmup.Stop();
-    // First-paint chrome (deferred from ctor — Enable is unsafe until shown).
-    try
+    using kqoffice::ai::control::AiResourceEnvelope;
+
+    // ── Phase 0: chrome only (first keystroke / inject). No network, no FTS. ──
+    if (m_nWarmupPhase <= 0)
     {
-        LoadDocumentHistory();
-        ReloadScenarioPicker();
-        UpdateSelectionChip();
-        UpdatePendingPlanChip();
-        UpdateApprovalChrome();
-        UpdateActions();
-        FocusPrompt();
-        ConsumePendingScenarioRun();
-        ConsumePendingPromptInject();
-    }
-    catch (...)
-    {
-    }
-    // One due-task scan after first paint (moved out of ctor for macOS layout safety).
-    try
-    {
-        kqoffice::ai::cowork::processDueScheduledTasks();
-    }
-    catch (...)
-    {
-    }
-    EnsureWorkspaceDataLoaded();
-    // Soft-touch 资料盘: install defaults + permission seed + related materials.
-    try
-    {
-        (void)kqoffice::ai::vault::VaultManager::ensureInstallDefaults();
-        kqoffice::ai::vault::VaultStore::ensureLayout();
-        OUString seed;
         try
         {
-            const auto sk = kqoffice::ai::chat::DocumentAIDocumentTools::buildSkeleton();
-            seed = sk.surface;
-            if (!sk.blocks.empty() && !sk.blocks.front().preview.isEmpty())
-                seed = sk.blocks.front().preview;
-            else if (!sk.statsLine.isEmpty())
-                seed = sk.statsLine;
+            LoadDocumentHistory();
+            ReloadScenarioPicker();
+            UpdateSelectionChip();
+            UpdatePendingPlanChip();
+            UpdateApprovalChrome();
+            UpdateActions();
+            FocusPrompt();
+            ConsumePendingScenarioRun();
+            ConsumePendingPromptInject();
         }
         catch (...)
         {
         }
-        if (!seed.isEmpty())
-        {
-            const auto rel = AIChatVaultRelated(seed, 3);
-            if (rel.Success && !rel.Hits.empty() && m_xStatusLabel)
-            {
-                m_xStatusLabel->set_label(u"相关资料 "_ustr
-                                          + OUString::number(static_cast<sal_Int32>(rel.Hits.size()))
-                                          + u" · "_ustr + AIChatVaultStatusLineZh());
-            }
-        }
-    }
-    catch (...)
-    {
-    }
-    if (!m_bRoutingDiagDone)
-    {
-        m_bRoutingDiagDone = true;
-        // Gateway/Ollama probe kept off the first paint path (M21 cold-open).
-        RunRoutingDiagnostics(/*bAppendTranscript*/ false);
-        // Ready banner after quiet probe: tell user they can act without waiting more.
-        const kqoffice::ai::ModelRoutingDiagnostics d = kqoffice::ai::diagnoseModelRouting();
         if (m_xStatusLabel)
         {
-            if (d.healthy)
+            m_xStatusLabel->set_label(
+                u"可圈 AI 已打开 · 可输入 · 模型探测后台进行中…"_ustr);
+        }
+        m_nWarmupPhase = 1;
+        m_aDeferredWarmup.SetTimeout(320);
+        m_aDeferredWarmup.Start();
+        return;
+    }
+
+    // ── Phase 1: local IO only (schedule + vault seed + workspace trees). ──
+    if (m_nWarmupPhase == 1)
+    {
+        try
+        {
+            kqoffice::ai::cowork::processDueScheduledTasks();
+        }
+        catch (...)
+        {
+        }
+        EnsureWorkspaceDataLoaded();
+        try
+        {
+            (void)kqoffice::ai::vault::VaultManager::ensureInstallDefaults();
+        }
+        catch (...)
+        {
+        }
+        if (m_xStatusLabel)
+        {
+            const OUString cur = m_xStatusLabel->get_label();
+            if (cur.indexOf(u"探测"_ustr) >= 0 || cur.indexOf(u"可输入"_ustr) >= 0)
             {
-                const OUString model
-                    = d.primaryResolved.isEmpty() ? u"auto"_ustr : d.primaryResolved;
-                m_xStatusLabel->set_label(
-                    u"可圈 AI 就绪 · "_ustr + model
-                    + u" · 选中文字即可改写/正式语气 · 写回须批准"_ustr);
+                m_xStatusLabel->set_label(u"可圈 AI · 本地就绪 · 模型探测中… · "_ustr
+                                          + kqoffice::ai::vault::VaultManager::statusChipZh());
             }
-            else
+        }
+        m_nWarmupPhase = 2;
+        // Network phase stays well after first keystroke budget.
+        m_aDeferredWarmup.SetTimeout(900);
+        m_aDeferredWarmup.Start();
+        return;
+    }
+
+    // ── Phase 2: membership/gateway probe (may curl; cached). ──
+    if (m_nWarmupPhase == 2)
+    {
+        if (!m_bRoutingDiagDone)
+        {
+            m_bRoutingDiagDone = true;
+            try
             {
-                // Keep short recovery hint from RunRoutingDiagnostics; ensure not stuck on 探测中.
-                const OUString cur = m_xStatusLabel->get_label();
-                if (cur.indexOf(u"探测"_ustr) >= 0 || cur.startsWith(u"可圈 AI 已就绪"_ustr))
+                RunRoutingDiagnostics(/*bAppendTranscript*/ false);
+            }
+            catch (...)
+            {
+            }
+            try
+            {
+                // Uses process diagnose cache — cheap if RunRoutingDiagnostics already probed.
+                const kqoffice::ai::ModelRoutingDiagnostics d
+                    = kqoffice::ai::diagnoseModelRouting();
+                if (m_xStatusLabel)
                 {
-                    m_xStatusLabel->set_label(
-                        u"可圈 AI 已打开 · 模型未就绪 · 点「修复模型」配置"_ustr);
+                    if (d.healthy)
+                    {
+                        const OUString model
+                            = d.primaryResolved.isEmpty() ? u"auto"_ustr : d.primaryResolved;
+                        m_xStatusLabel->set_label(
+                            u"可圈 AI 就绪 · "_ustr + model
+                            + u" · 选中文字即可改写/正式语气 · 写回须批准"_ustr);
+                    }
+                    else
+                    {
+                        const OUString cur = m_xStatusLabel->get_label();
+                        if (cur.indexOf(u"探测"_ustr) >= 0 || cur.indexOf(u"可输入"_ustr) >= 0
+                            || cur.startsWith(u"可圈 AI 已就绪"_ustr)
+                            || cur.startsWith(u"可圈 AI · 本地就绪"_ustr))
+                        {
+                            m_xStatusLabel->set_label(
+                                u"可圈 AI 已打开 · 模型未就绪 · 点「修复模型」配置"_ustr);
+                        }
+                    }
                 }
             }
+            catch (...)
+            {
+            }
+        }
+        m_nWarmupPhase = 3;
+        m_aDeferredWarmup.SetTimeout(500);
+        m_aDeferredWarmup.Start();
+        return;
+    }
+
+    // ── Phase 3: optional related-materials FTS (rate + soft-pressure gated). ──
+    if (m_nWarmupPhase == 3)
+    {
+        m_nWarmupPhase = 4;
+        try
+        {
+            if (AiResourceEnvelope::allowRelatedMaterialsProbe())
+            {
+                OUString seed;
+                try
+                {
+                    const auto sk = kqoffice::ai::chat::DocumentAIDocumentTools::buildSkeleton();
+                    if (!sk.blocks.empty() && !sk.blocks.front().preview.isEmpty())
+                        seed = sk.blocks.front().preview;
+                    else if (!sk.statsLine.isEmpty())
+                        seed = sk.statsLine;
+                }
+                catch (...)
+                {
+                }
+                if (!seed.isEmpty() && seed.getLength() >= 4)
+                {
+                    const auto rel = AIChatVaultRelated(seed, 3);
+                    if (rel.Success && !rel.Hits.empty() && m_xStatusLabel)
+                    {
+                        m_xStatusLabel->set_label(
+                            u"相关资料 "_ustr
+                            + OUString::number(static_cast<sal_Int32>(rel.Hits.size()))
+                            + u" · "_ustr + AIChatVaultStatusLineZh());
+                    }
+                }
+            }
+        }
+        catch (...)
+        {
         }
     }
 }
@@ -5043,6 +5113,7 @@ void AIChatPanel::SubmitPrompt()
         || sPrompt.startsWith(u"/整理资料"_ustr) || sPrompt.startsWith(u"/资料体检"_ustr)
         || sPrompt.startsWith(u"/导出资料包"_ustr) || sPrompt.startsWith(u"/笔记入库"_ustr)
         || sPrompt.startsWith(u"/资料盘状态"_ustr) || sPrompt.startsWith(u"/资料盘重建索引"_ustr)
+        || sPrompt.startsWith(u"/资料盘全量索引"_ustr) || sPrompt.startsWith(u"/vault-reindex-all"_ustr)
         || sPrompt.startsWith(u"/新建资料盘"_ustr) || sPrompt.startsWith(u"/切换资料盘"_ustr)
         || sPrompt.startsWith(u"/资料盘位置"_ustr) || sPrompt.startsWith(u"/授权资料盘"_ustr)
         || sPrompt.startsWith(u"/打开资料盘"_ustr) || sPrompt.startsWith(u"/资料盘管理"_ustr)
@@ -5066,7 +5137,7 @@ void AIChatPanel::SubmitPrompt()
 
         if (sPrompt.startsWith(u"/vault-manage"_ustr) || sPrompt.startsWith(u"/资料盘管理"_ustr))
         {
-            md = VaultManager::managementSummaryZh();
+            md = AIChatVaultDashboardZh();
         }
         else if (sPrompt.startsWith(u"/vault-init"_ustr) || sPrompt.startsWith(u"/资料盘初始化"_ustr))
         {
@@ -5198,11 +5269,33 @@ void AIChatPanel::SubmitPrompt()
                 }
             }
         }
+        else if (sPrompt.startsWith(u"/vault-reindex-all"_ustr)
+                 || sPrompt.startsWith(u"/资料盘全量索引"_ustr))
+        {
+            if (m_xStatusLabel)
+                m_xStatusLabel->set_label(u"资料盘全量索引中… · 分轮保护 IO"_ustr);
+            const auto ix = AIChatVaultReindexAllPasses(8);
+            md = ix.MessageZh;
+            if (m_xStatusLabel)
+            {
+                m_xStatusLabel->set_label(
+                    ix.MoreRemaining ? u"资料盘索引未完 · 可再执行全量索引"_ustr
+                                     : u"资料盘索引完成 · 主文档未改"_ustr);
+            }
+        }
         else if (sPrompt.startsWith(u"/vault-reindex"_ustr)
                  || sPrompt.startsWith(u"/资料盘重建索引"_ustr))
         {
+            if (m_xStatusLabel)
+                m_xStatusLabel->set_label(u"资料盘索引中… · 单轮有界"_ustr);
             const auto ix = AIChatVaultReindexAll();
             md = ix.MessageZh;
+            if (m_xStatusLabel)
+            {
+                m_xStatusLabel->set_label(
+                    ix.MoreRemaining ? u"资料盘单轮完成 · 还有剩余可再执行"_ustr
+                                     : u"资料盘索引完成 · 主文档未改"_ustr);
+            }
         }
         else if (sPrompt.startsWith(u"/vault-compile"_ustr) || sPrompt.startsWith(u"/整理资料"_ustr))
         {
@@ -5245,7 +5338,7 @@ void AIChatPanel::SubmitPrompt()
                   + u"\n\n"_ustr;
             md += u"**收录与检索**\n"_ustr;
             md += u"- `/收入资料 <路径>` · `/搜资料 <关键词>`\n"_ustr;
-            md += u"- `/整理资料` · `/资料盘重建索引` · `/笔记入库`\n"_ustr;
+            md += u"- `/整理资料` · `/资料盘重建索引` · `/资料盘全量索引` · `/笔记入库`\n"_ustr;
             md += u"- `/资料体检` · `/导出资料包 [标题]`\n\n"_ustr;
             md += u"**管理（路径/权限，类迅雷·WPS）**\n"_ustr;
             md += u"- `/资料盘管理` — 全部盘与命令\n"_ustr;
@@ -8641,12 +8734,26 @@ void AIChatPanel::AppendPromptText(const OUString& rText)
 
 IMPL_LINK_NOARG(AIChatPanel, OnInjectPollTick, Timer*, void)
 {
+    // Stretch poll when idle to cut main-thread timer noise.
+    m_aInjectPoll.SetTimeout(kqoffice::ai::control::AiResourceEnvelope::panelInjectPollMs());
+    // Cheap skip when no inject/scenario files present.
+    if (!kqoffice::ai::control::AiResourceEnvelope::pendingInjectLikelyPresent())
+    {
+        // Still allow rare scenario-run file under different path — keep light check.
+        ConsumePendingScenarioRun();
+        return;
+    }
     ConsumePendingPromptInject();
     ConsumePendingScenarioRun();
 }
 
 IMPL_LINK_NOARG(AIChatPanel, OnScheduleTick, Timer*, void)
 {
+    using kqoffice::ai::control::AiResourceEnvelope;
+    // Keep cadence aligned with envelope (may change under soft pressure defaults).
+    m_aScheduleTick.SetTimeout(
+        static_cast<sal_uInt64>(AiResourceEnvelope::scheduleScanIntervalMs()));
+
     // Ledger → pending-prompt-inject. Non-throwing; pure file I/O + markRun.
     try
     {
@@ -8655,14 +8762,17 @@ IMPL_LINK_NOARG(AIChatPanel, OnScheduleTick, Timer*, void)
     catch (...)
     {
     }
-    // M12: bounded material-path poll (60s schedule tick ≈ policy poll interval).
-    // Debounce 5s inside PollWatchedPaths; no per-file FD; fail-closed visible via status.
-    try
+    // M12: bounded material-path poll. Skip under soft memory pressure.
+    // Debounce 5s inside PollWatchedPaths; no per-file FD.
+    if (AiResourceEnvelope::allowHeavyBackgroundWork())
     {
-        AIChatKnowledgeFtsEngine::PollWatchedPaths(OUString(), /*bForce*/ false);
-    }
-    catch (...)
-    {
+        try
+        {
+            AIChatKnowledgeFtsEngine::PollWatchedPaths(OUString(), /*bForce*/ false);
+        }
+        catch (...)
+        {
+        }
     }
     // Consume immediately if inject was written this tick.
     ConsumePendingPromptInject();

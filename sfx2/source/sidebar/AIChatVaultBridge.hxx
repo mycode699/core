@@ -33,14 +33,25 @@ struct AIChatVaultIndexResult
 {
     bool Success = false;
     sal_Int32 Indexed = 0;
+    sal_Int32 FilesConsidered = 0;
+    sal_Int32 FilesTotal = 0;
+    sal_Int32 FilesSkippedCurrent = 0;
+    sal_Int32 Passes = 1;
+    bool MoreRemaining = false;
     OUString MessageZh;
 };
 
 /// Stable FTS workspace identity for the 资料盘.
 OUString AIChatVaultWorkspaceId();
 
-/// Ensure vault layout, then index all raw/imports snippets into FTS.
+/// Count files under vault raw/imports (cheap dir list).
+sal_Int32 AIChatVaultImportFileCount();
+
+/// One bounded pass (envelope max files). Prefer multi-pass for large vaults.
 AIChatVaultIndexResult AIChatVaultReindexAll();
+
+/// Multi-pass reindex until done or maxPasses (default 8). Progress text in MessageZh.
+AIChatVaultIndexResult AIChatVaultReindexAllPasses(sal_Int32 nMaxPasses = 8);
 
 /// Index a single local text file into the vault FTS workspace.
 AIChatVaultIndexResult AIChatVaultIndexPath(const OUString& rSystemPath, const OUString& rBody);
@@ -53,5 +64,8 @@ AIChatVaultSearchResult AIChatVaultRelated(const OUString& rSeedQuery, sal_Int32
 
 /// One-line status for UI.
 OUString AIChatVaultStatusLineZh();
+
+/// Rich dashboard block for /资料盘管理 (path, auth, index progress, envelope).
+OUString AIChatVaultDashboardZh();
 
 } // namespace sfx2::sidebar

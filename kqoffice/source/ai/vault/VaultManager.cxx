@@ -3,6 +3,7 @@
 #include "VaultManager.hxx"
 #include "VaultStore.hxx"
 
+#include <AiResourceEnvelope.hxx>
 #include <PermissionCenter.hxx>
 
 #include <osl/file.hxx>
@@ -292,15 +293,36 @@ VaultManagerResult VaultManager::ensureInstallDefaults()
 
     if (reg.installDefaultsApplied && !reg.vaults.empty() && !reg.activeId.isEmpty())
     {
-        // refresh permission flags
-        for (auto& v : reg.vaults)
-            v.permissionGranted = IsGranted(v.rootPath);
-        (void)SaveRegistry(reg);
-        // still ensure layout for active
-        VaultStore::ensureLayout(activeRoot());
+        // Process-local cache: avoid registry rewrite + permission IO on every call.
+        using kqoffice::ai::control::AiResourceEnvelope;
+        static bool s_ready = false;
+        static OUString s_cachedRoot;
+        static OUString s_cachedId;
+        if (s_ready && !s_cachedRoot.isEmpty())
+        {
+            r.ok = true;
+            r.vaultId = s_cachedId;
+            r.rootPath = s_cachedRoot;
+            r.messageZh = u"资料盘已就绪"_ustr;
+            return r;
+        }
+        const auto* act = Find(reg, reg.activeId);
+        const OUString root
+            = (act && !act->rootPath.isEmpty()) ? act->rootPath
+                                                : VaultStore::defaultRootDir();
+        VaultStore::ensureLayout(root);
+        if (AiResourceEnvelope::allowEvery("vault-perm-refresh", 5 * 60 * 1000))
+        {
+            for (auto& v : reg.vaults)
+                v.permissionGranted = IsGranted(v.rootPath);
+            (void)SaveRegistry(reg);
+        }
+        s_cachedId = reg.activeId;
+        s_cachedRoot = root;
+        s_ready = true;
         r.ok = true;
-        r.vaultId = reg.activeId;
-        r.rootPath = activeRoot();
+        r.vaultId = s_cachedId;
+        r.rootPath = s_cachedRoot;
         r.messageZh = u"资料盘已就绪（安装默认）"_ustr;
         return r;
     }
@@ -650,8 +672,9 @@ OUString VaultManager::managementSummaryZh()
     b.append(u"- `/新建资料盘 名称 | /路径`\n"_ustr);
     b.append(u"- `/切换资料盘 <id>`\n"_ustr);
     b.append(u"- `/资料盘位置 /新路径` — 改默认路径（不自动搬家）\n"_ustr);
-    b.append(u"- `/授权资料盘` · `/撤销资料盘授权`\n"_ustr);
+    b.append(u"- `/授权资料盘` · `/撤销资料盘授权` — 按目录授权（迅雷/夸克/WPS 式）\n"_ustr);
     b.append(u"- `/打开资料盘` — Finder/文件管理器\n"_ustr);
+    b.append(u"- `/资料盘重建索引` — 单轮有界 · `/资料盘全量索引` — 多轮进度\n"_ustr);
     b.append(u"- `/资料盘初始化` — 重跑安装默认\n\n"_ustr);
     b.append(u"权限说明：仅授权您选择的资料盘目录（及子目录），**不会**默认获取整盘访问。\n"_ustr);
     return b.makeStringAndClear();
