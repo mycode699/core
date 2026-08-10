@@ -144,14 +144,14 @@ $(gb_CustomTarget_workdir)/instsetoo_native/setup/$(call gb_Helper_get_rcfile,so
 		&& echo 'HideEula=1' \
 		&& echo 'Logo=1' \
 		&& echo 'NativeProgress=false' \
-		&& echo 'ProgressBarColor=0,0,0' \
-		&& echo 'ProgressFrameColor=102,102,102' \
+		&& echo 'ProgressBarColor=29,79,255' \
+		&& echo 'ProgressFrameColor=21,62,214' \
 		&& echo 'ProgressPosition=30,145' \
 		&& echo 'ProgressSize=385,8' \
 		&& echo 'ProgressPositionHigh=30,200' \
 		&& echo 'ProgressSizeHigh=650,12' \
 		&& echo 'ProgressTextBaseline=170' \
-		&& echo 'ProgressTextColor=0,0,0' \
+		&& echo 'ProgressTextColor=31,35,41' \
 		&& echo 'SecureUserConfig=true' \
 		&& echo 'SecureUserConfigCompress=true' \
 		&& echo 'SecureUserConfigExtensions=true' \
@@ -182,12 +182,12 @@ define instsetoo_native_genversionini
 [Version]
 AllLanguages=$(if $(gb_WITH_LANG),$(gb_WITH_LANG),en-US)
 buildid=$(shell cd $(SRCDIR) && git log -1 --format=%H)
-ExtensionUpdateURL=https://updateexte.libreoffice.org/ExtensionUpdateService/check.Update
-UpdateChannel=$(if $(ENABLE_ONLINE_UPDATE_MAR),LOOnlineUpdater)
+ExtensionUpdateURL=
+UpdateChannel=
 ReferenceOOoMajorMinor=4.1
-UpdateID=$(PRODUCTNAME)_$(LIBO_VERSION_MAJOR)_en-US
-UpdateURL=$(if $(ENABLE_ONLINE_UPDATE),https://update.libreoffice.org/check.php$(if $(filter-out WNT,$(OS)),?pkgfmt=$(PKGFORMAT)))
-UpdateUserAgent=<PRODUCT> ($${buildid}; $${_OS}; $${_ARCH}; <OPTIONAL_OS_HW_DATA>)
+UpdateID=$(PRODUCTNAME)_$(LIBO_VERSION_MAJOR)_zh-CN
+UpdateURL=
+UpdateUserAgent=<PRODUCT> ($${buildid}; $${_OS}; $${_ARCH}; CoCOffice; <OPTIONAL_OS_HW_DATA>)
 Vendor=$(OOO_VENDOR)
 endef
 

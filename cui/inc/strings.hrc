@@ -355,10 +355,10 @@
 
 #define RID_CUISTR_CANNOTCONVERTURL_ERR             NC_("RID_SVXSTR_CANNOTCONVERTURL_ERR", "The URL <%1> cannot be converted to a filesystem path.")
 
-#define RID_CUISTR_ABOUT_COPYRIGHT                  NC_("aboutdialog|copyright", "Copyright © 2000–2026 相关贡献者及权利人。")
-#define RID_CUISTR_ABOUT_VENDOR                     NC_("aboutdialog|vendor", "当前发行版本由 %OOOVENDOR 提供。")
-#define RID_CUISTR_ABOUT_BASED_ON                   NC_("aboutdialog|libreoffice", "%PRODUCTNAME 面向中文办公场景，提供完整的办公处理能力。")
-#define RID_CUISTR_ABOUT_DERIVED                    NC_("aboutdialog|derived", "%PRODUCTNAME 基于成熟办公内核深度优化，重点强化中文文档、表格、演示与模板体验。")
+#define RID_CUISTR_ABOUT_COPYRIGHT                  NC_("aboutdialog|copyright", "Copyright © 2024–2026 CoC Office / 可圈办公. All rights reserved.")
+#define RID_CUISTR_ABOUT_VENDOR                     NC_("aboutdialog|vendor", "本发行版由 %OOOVENDOR（CoC Office）构建与维护。")
+#define RID_CUISTR_ABOUT_BASED_ON                   NC_("aboutdialog|libreoffice", "%PRODUCTNAME（CoC Office）是面向中文场景的现代办公套件：文档 · 表格 · 演示 · 可圈 AI。")
+#define RID_CUISTR_ABOUT_DERIVED                    NC_("aboutdialog|derived", "%PRODUCTNAME 由 CoC Office 团队打造，强调本地优先、写回确认与专业中文办公体验。官网：https://www.03122.com")
 #define RID_CUISTR_ABOUT_UILOCALE                   NC_("aboutdialog|uilocale", "界面语言：$LOCALE")
 
 #define RID_CUISTR_EDIT_PATHS                       NC_("optpathspage|editpaths", "Edit Paths: %1")

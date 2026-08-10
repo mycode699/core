@@ -10,9 +10,10 @@
 PRODUCTLIST := libreoffice libreofficedev
 PKGVERSION := $(LIBO_VERSION_MAJOR).$(LIBO_VERSION_MINOR).$(LIBO_VERSION_MICRO)
 PKGVERSIONSHORT := $(LIBO_VERSION_MAJOR).$(LIBO_VERSION_MINOR)
-PRODUCTNAME.libreoffice := 可圈office
-PRODUCTNAME.libreofficedev := LibreOfficeDev
-UNIXFILENAME.libreoffice := kequanoffice$(PKGVERSIONSHORT)
-UNIXFILENAME.libreofficedev := libreofficedev$(PKGVERSIONSHORT)
+# User-facing brand: 可圈办公 / CoC Office (cocoffice). Internal product key remains libreoffice.
+PRODUCTNAME.libreoffice := 可圈办公
+PRODUCTNAME.libreofficedev := CoCOfficeDev
+UNIXFILENAME.libreoffice := cocoffice$(PKGVERSIONSHORT)
+UNIXFILENAME.libreofficedev := cocofficedev$(PKGVERSIONSHORT)
 
 # vim: set noet sw=4 ts=4:

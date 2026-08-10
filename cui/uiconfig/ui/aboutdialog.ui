@@ -99,7 +99,7 @@
                 <property name="hexpand">True</property>
                 <property name="vexpand">False</property>
                 <property name="margin-bottom">4</property>
-                <property name="label" translatable="yes" context="aboutdialog|description">%PRODUCTNAME 是面向中文办公场景的日常办公软件，提供文档、表格、演示与模板处理能力。</property>
+                <property name="label" translatable="yes" context="aboutdialog|description">%PRODUCTNAME（CoC Office）面向中文办公场景，融合文档、表格、演示与可圈 AI，本地优先、写回确认，帮助你高效完成日常工作。</property>
                 <property name="wrap">True</property>
                 <property name="max-width-chars">52</property>
                 <property name="xalign">0</property>
@@ -137,7 +137,7 @@
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkLinkButton" id="btnWebsite">
-                    <property name="label" translatable="yes" context="aboutdialog|website">帮助</property>
+                    <property name="label" translatable="yes" context="aboutdialog|website">产品主页</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
@@ -153,7 +153,7 @@
                 </child>
                 <child>
                   <object class="GtkLinkButton" id="btnReleaseNotes">
-                    <property name="label" translatable="yes" context="aboutdialog|releasenotes">更新</property>
+                    <property name="label" translatable="yes" context="aboutdialog|releasenotes">更新说明</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>

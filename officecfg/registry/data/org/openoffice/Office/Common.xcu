@@ -34,7 +34,7 @@
   <node oor:name="Help">
     <node oor:name="StartCenter">
       <prop oor:name="InfoURL" oor:type="xs:string">
-        <value/>
+        <value>https://www.03122.com</value>
       </prop>
       <!-- Office/WPS-calm workbench: neutral #F5F7FA tiles, near-black text #1F2329.
            Avoid saturated lavender wash that reads as unfinished consumer UI. -->
@@ -374,13 +374,13 @@
       <value/>
     </prop>
     <prop oor:name="DonationURL" oor:type="xs:string">
-      <value/>
+      <value>https://www.03122.com</value>
     </prop>
     <prop oor:name="ReleaseNotesURL" oor:type="xs:string">
-      <value/>
+      <value>https://www.03122.com/zh-CN/blog/</value>
     </prop>
     <prop oor:name="CreditsURL" oor:type="xs:string">
-      <value/>
+      <value>https://www.03122.com</value>
     </prop>
     <prop oor:name="HyphenationMissingURL" oor:type="xs:string">
       <value/>

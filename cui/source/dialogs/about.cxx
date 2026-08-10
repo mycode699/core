@@ -146,12 +146,14 @@ AboutDialog::AboutDialog(weld::Window* pParent)
         localizeWebserviceURI(sURL);
     lclSetLinkOrHide(m_pWebsiteButton.get(), sURL);
 
-    // See also SID_WHATSNEW in sfx2/source/appl/appserv.cxx
+    // CoC Office / 可圈办公 release notes (no LibreOffice query params).
     sURL = officecfg::Office::Common::Menus::ReleaseNotesURL::get();
     if (!sURL.isEmpty())
     {
-        sURL += "?LOvers=" + utl::ConfigManager::getProductVersion()
-                + "&LOlocale=" + LanguageTag(utl::ConfigManager::getUILocale()).getBcp47();
+        sURL += (sURL.indexOf(u'?') >= 0 ? u"&"_ustr : u"?"_ustr)
+                + u"product=cocoffice&ver="_ustr
+                + utl::ConfigManager::getProductVersion() + u"&locale="_ustr
+                + LanguageTag(utl::ConfigManager::getUILocale()).getBcp47();
     }
     lclSetLinkOrHide(m_pReleaseNotesButton.get(), sURL);
 
@@ -280,10 +282,11 @@ IMPL_LINK_NOARG(AboutDialog, HandleClick, weld::Button&, void)
     css::uno::Reference<css::datatransfer::clipboard::XClipboard> xClipboard
         = m_pVersionLabel->get_clipboard();
 
-    OUString sInfo = u"版本："_ustr + m_pVersionLabel->get_label()
-                     + u"\n构建 ID："_ustr + GetBuildString() + u"\n"_ustr
-                     + Application::GetHWOSConfInfo(0) + u"\n语言区域："_ustr
-                     + GetLocaleString() + u"\n"_ustr + GetMiscString();
+    OUString sInfo = u"产品：可圈办公 · CoC Office (cocoffice)\n版本："_ustr
+                     + m_pVersionLabel->get_label() + u"\n构建 ID："_ustr
+                     + GetBuildString() + u"\n"_ustr + Application::GetHWOSConfInfo(0)
+                     + u"\n语言区域："_ustr + GetLocaleString() + u"\n"_ustr
+                     + GetMiscString() + u"\n官网：https://www.03122.com"_ustr;
 
     vcl::unohelper::TextDataObject::CopyStringTo(sInfo, xClipboard);
 }
