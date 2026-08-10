@@ -46,6 +46,7 @@ $(eval $(call gb_Library_set_include,sfx,\
     -I$(SRCDIR)/kqoffice/source/ai/provider \
     -I$(SRCDIR)/kqoffice/source/ai/workbench \
     -I$(SRCDIR)/kqoffice/source/ai/notebook \
+    -I$(SRCDIR)/kqoffice/source/ai/vault \
     -I$(WORKDIR)/SdiTarget/sfx2/sdi \
     $$(INCLUDE) \
 ))
@@ -301,6 +302,7 @@ $(eval $(call gb_Library_add_exception_objects,sfx,\
     sfx2/source/sidebar/AIChatDocumentToolsContentBridge \
     sfx2/source/sidebar/AIChatKnowledgeExtractionRuntime \
     sfx2/source/sidebar/AIChatKnowledgeFtsEngine \
+    sfx2/source/sidebar/AIChatVaultBridge \
     sfx2/source/sidebar/AIChatKnowledgeIndexStore \
     sfx2/source/sidebar/AIChatKnowledgeRetrievalRuntime \
     sfx2/source/sidebar/AIChatKnowledgeResultContentBridge \

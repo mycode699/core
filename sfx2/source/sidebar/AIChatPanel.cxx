@@ -78,8 +78,17 @@
 #include <vector>
 #include <EvidenceRecorder.hxx>
 #include <ModelRoles.hxx>
+#include <MembershipClient.hxx>
 #include <ModelRoutingConfig.hxx>
 #include <ProviderStreamHelper.hxx>
+#include <VaultStore.hxx>
+#include <VaultManager.hxx>
+#include <VaultIngest.hxx>
+#include <VaultCompile.hxx>
+#include <VaultLint.hxx>
+#include <VaultPack.hxx>
+
+#include "AIChatVaultBridge.hxx"
 
 #include <AICanvasIntegration.hxx>
 #include <AICanvasMode.hxx>
@@ -695,6 +704,38 @@ IMPL_LINK_NOARG(AIChatPanel, OnDeferredWarmupTick, Timer*, void)
     {
     }
     EnsureWorkspaceDataLoaded();
+    // Soft-touch 资料盘: install defaults + permission seed + related materials.
+    try
+    {
+        (void)kqoffice::ai::vault::VaultManager::ensureInstallDefaults();
+        kqoffice::ai::vault::VaultStore::ensureLayout();
+        OUString seed;
+        try
+        {
+            const auto sk = kqoffice::ai::chat::DocumentAIDocumentTools::buildSkeleton();
+            seed = sk.surface;
+            if (!sk.blocks.empty() && !sk.blocks.front().preview.isEmpty())
+                seed = sk.blocks.front().preview;
+            else if (!sk.statsLine.isEmpty())
+                seed = sk.statsLine;
+        }
+        catch (...)
+        {
+        }
+        if (!seed.isEmpty())
+        {
+            const auto rel = AIChatVaultRelated(seed, 3);
+            if (rel.Success && !rel.Hits.empty() && m_xStatusLabel)
+            {
+                m_xStatusLabel->set_label(u"相关资料 "_ustr
+                                          + OUString::number(static_cast<sal_Int32>(rel.Hits.size()))
+                                          + u" · "_ustr + AIChatVaultStatusLineZh());
+            }
+        }
+    }
+    catch (...)
+    {
+    }
     if (!m_bRoutingDiagDone)
     {
         m_bRoutingDiagDone = true;
@@ -4245,7 +4286,12 @@ void AIChatPanel::RunRoutingDiagnostics(bool bAppendTranscript)
     }
     if (m_xStatusLabel)
     {
-        OUString status = d.summaryZh.replaceAll(u"\n"_ustr, u" · "_ustr);
+        // Prefer short membership quota chip when official gateway is configured.
+        OUString status;
+        if (!d.membershipQuotaLineZh.isEmpty())
+            status = d.membershipQuotaLineZh;
+        else
+            status = d.summaryZh.replaceAll(u"\n"_ustr, u" · "_ustr);
         if (status.getLength() > 96)
             status = status.copy(0, 96) + u"…"_ustr;
         m_xStatusLabel->set_label(status);
@@ -4602,7 +4648,20 @@ void AIChatPanel::SubmitPrompt()
                     || t.startsWith(u"/compact"_ustr) || t.startsWith(u"/压缩记忆"_ustr)
                     || t.startsWith(u"/undo-apply"_ustr) || t.startsWith(u"/撤销写回"_ustr)
                     || t.startsWith(u"/connectors"_ustr) || t.startsWith(u"/连接器"_ustr)
-                    || t.startsWith(u"/vision"_ustr) || t.startsWith(u"/视觉"_ustr))
+                    || t.startsWith(u"/vision"_ustr) || t.startsWith(u"/视觉"_ustr)
+                    // Membership: quota / 签到 / 抢包 (no main-doc mutation)
+                    || t.startsWith(u"/quota"_ustr) || t.startsWith(u"/会员额度"_ustr)
+                    || t == u"/额度"_ustr || t.startsWith(u"/checkin"_ustr)
+                    || t.startsWith(u"/签到"_ustr) || t.startsWith(u"/rush"_ustr)
+                    || t.startsWith(u"/抢包"_ustr) || t.startsWith(u"/加油包"_ustr)
+                    || t.startsWith(u"/vault"_ustr) || t.startsWith(u"/资料盘"_ustr)
+                    || t.startsWith(u"/搜资料"_ustr) || t.startsWith(u"/收入资料"_ustr)
+                    || t.startsWith(u"/整理资料"_ustr) || t.startsWith(u"/资料体检"_ustr)
+                    || t.startsWith(u"/导出资料包"_ustr) || t.startsWith(u"/笔记入库"_ustr)
+                    || t.startsWith(u"/新建资料盘"_ustr) || t.startsWith(u"/切换资料盘"_ustr)
+                    || t.startsWith(u"/资料盘位置"_ustr) || t.startsWith(u"/授权资料盘"_ustr)
+                    || t.startsWith(u"/打开资料盘"_ustr) || t.startsWith(u"/资料盘管理"_ustr)
+                    || t.startsWith(u"/资料盘初始化"_ustr) || t.startsWith(u"/撤销资料盘授权"_ustr))
                     return true;
             }
             return false;
@@ -4977,6 +5036,267 @@ void AIChatPanel::SubmitPrompt()
 
     if (!ValidateContextMentions(sPrompt))
         return;
+
+    // ── 资料盘 (local vault; never mutates main doc) ──
+    if (sPrompt.startsWith(u"/vault"_ustr) || sPrompt.startsWith(u"/资料盘"_ustr)
+        || sPrompt.startsWith(u"/搜资料"_ustr) || sPrompt.startsWith(u"/收入资料"_ustr)
+        || sPrompt.startsWith(u"/整理资料"_ustr) || sPrompt.startsWith(u"/资料体检"_ustr)
+        || sPrompt.startsWith(u"/导出资料包"_ustr) || sPrompt.startsWith(u"/笔记入库"_ustr)
+        || sPrompt.startsWith(u"/资料盘状态"_ustr) || sPrompt.startsWith(u"/资料盘重建索引"_ustr)
+        || sPrompt.startsWith(u"/新建资料盘"_ustr) || sPrompt.startsWith(u"/切换资料盘"_ustr)
+        || sPrompt.startsWith(u"/资料盘位置"_ustr) || sPrompt.startsWith(u"/授权资料盘"_ustr)
+        || sPrompt.startsWith(u"/打开资料盘"_ustr) || sPrompt.startsWith(u"/资料盘管理"_ustr)
+        || sPrompt.startsWith(u"/资料盘初始化"_ustr) || sPrompt.startsWith(u"/撤销资料盘授权"_ustr)
+        || sPrompt.startsWith(u"/vault-manage"_ustr) || sPrompt.startsWith(u"/vault-create"_ustr)
+        || sPrompt.startsWith(u"/vault-switch"_ustr) || sPrompt.startsWith(u"/vault-location"_ustr)
+        || sPrompt.startsWith(u"/vault-auth"_ustr) || sPrompt.startsWith(u"/vault-open"_ustr)
+        || sPrompt.startsWith(u"/vault-init"_ustr))
+    {
+        using kqoffice::ai::vault::VaultStore;
+        using kqoffice::ai::vault::VaultManager;
+        using kqoffice::ai::vault::VaultIngest;
+        using kqoffice::ai::vault::VaultCompile;
+        using kqoffice::ai::vault::VaultLint;
+        using kqoffice::ai::vault::VaultPack;
+
+        // Install defaults + permission seed (idempotent; WPS/Quark path style)
+        (void)VaultManager::ensureInstallDefaults();
+        VaultStore::ensureLayout();
+        OUString md;
+
+        if (sPrompt.startsWith(u"/vault-manage"_ustr) || sPrompt.startsWith(u"/资料盘管理"_ustr))
+        {
+            md = VaultManager::managementSummaryZh();
+        }
+        else if (sPrompt.startsWith(u"/vault-init"_ustr) || sPrompt.startsWith(u"/资料盘初始化"_ustr))
+        {
+            // Force re-seed by ensuring layout + re-authorize default
+            const auto ir = VaultManager::ensureInstallDefaults();
+            const auto ar = VaultManager::authorizeVault(OUString());
+            md = ir.messageZh + u"\n"_ustr + ar.messageZh;
+        }
+        else if (sPrompt.startsWith(u"/vault-create"_ustr) || sPrompt.startsWith(u"/新建资料盘"_ustr))
+        {
+            OUString arg;
+            if (sPrompt.startsWith(u"/vault-create"_ustr))
+                arg = sPrompt.copy(OUString(u"/vault-create"_ustr).getLength()).trim();
+            else
+                arg = sPrompt.copy(OUString(u"/新建资料盘"_ustr).getLength()).trim();
+            OUString name;
+            OUString path;
+            const sal_Int32 bar = arg.indexOf(u'|');
+            if (bar >= 0)
+            {
+                name = arg.copy(0, bar).trim();
+                path = arg.copy(bar + 1).trim();
+            }
+            else if (arg.startsWith(u"/"_ustr) || arg.startsWith(u"~"_ustr))
+                path = arg;
+            else
+                name = arg;
+            // expand ~
+            if (path.startsWith(u"~/"_ustr))
+            {
+                const char* home = std::getenv("HOME");
+                if (home && *home)
+                    path = OUString::fromUtf8(home) + path.copy(1);
+            }
+            const auto cr = VaultManager::createVault(name, path);
+            md = cr.messageZh;
+        }
+        else if (sPrompt.startsWith(u"/vault-switch"_ustr) || sPrompt.startsWith(u"/切换资料盘"_ustr))
+        {
+            OUString id;
+            if (sPrompt.startsWith(u"/vault-switch"_ustr))
+                id = sPrompt.copy(OUString(u"/vault-switch"_ustr).getLength()).trim();
+            else
+                id = sPrompt.copy(OUString(u"/切换资料盘"_ustr).getLength()).trim();
+            if (id.isEmpty())
+                md = u"用法：`/切换资料盘 <id>`\n先 `/资料盘管理` 查看 id。\n"_ustr;
+            else
+                md = VaultManager::switchVault(id).messageZh;
+        }
+        else if (sPrompt.startsWith(u"/vault-location"_ustr) || sPrompt.startsWith(u"/资料盘位置"_ustr))
+        {
+            OUString path;
+            if (sPrompt.startsWith(u"/vault-location"_ustr))
+                path = sPrompt.copy(OUString(u"/vault-location"_ustr).getLength()).trim();
+            else
+                path = sPrompt.copy(OUString(u"/资料盘位置"_ustr).getLength()).trim();
+            if (path.startsWith(u"~/"_ustr))
+            {
+                const char* home = std::getenv("HOME");
+                if (home && *home)
+                    path = OUString::fromUtf8(home) + path.copy(1);
+            }
+            if (path.isEmpty())
+                md = u"用法：`/资料盘位置 /新绝对路径`\n类似下载软件修改默认下载目录；**不会自动迁移旧文件**。\n"_ustr;
+            else
+                md = VaultManager::setVaultLocation(OUString(), path).messageZh;
+        }
+        else if (sPrompt.startsWith(u"/vault-auth-revoke"_ustr)
+                 || sPrompt.startsWith(u"/撤销资料盘授权"_ustr))
+        {
+            md = VaultManager::revokeVaultAuth(OUString()).messageZh;
+        }
+        else if (sPrompt.startsWith(u"/vault-auth"_ustr) || sPrompt.startsWith(u"/授权资料盘"_ustr))
+        {
+            md = VaultManager::authorizeVault(OUString()).messageZh;
+        }
+        else if (sPrompt.startsWith(u"/vault-open"_ustr) || sPrompt.startsWith(u"/打开资料盘"_ustr))
+        {
+            md = VaultManager::revealInFileManager(OUString()).messageZh;
+        }
+        else if (sPrompt.startsWith(u"/vault-search"_ustr) || sPrompt.startsWith(u"/搜资料"_ustr))
+        {
+            OUString q;
+            if (sPrompt.startsWith(u"/vault-search"_ustr))
+                q = sPrompt.copy(OUString(u"/vault-search"_ustr).getLength()).trim();
+            else
+                q = sPrompt.copy(OUString(u"/搜资料"_ustr).getLength()).trim();
+            if (q.isEmpty())
+                md = u"用法：`/搜资料 <关键词>`\n本地资料盘全文检索 · 主文档未改\n"_ustr;
+            else
+            {
+                const auto sr = AIChatVaultSearch(q, 8);
+                md = u"## 资料盘检索\n\n"_ustr + sr.MessageZh + u"\n\n"_ustr;
+                if (!sr.PromptBlock.isEmpty())
+                    md += sr.PromptBlock;
+                else
+                {
+                    for (const auto& h : sr.Hits)
+                    {
+                        md += u"- **"_ustr + h.Title + u"**\n  "_ustr + h.Snippet + u"\n"_ustr;
+                    }
+                }
+            }
+        }
+        else if (sPrompt.startsWith(u"/vault-ingest"_ustr) || sPrompt.startsWith(u"/收入资料"_ustr))
+        {
+            OUString path;
+            if (sPrompt.startsWith(u"/vault-ingest"_ustr))
+                path = sPrompt.copy(OUString(u"/vault-ingest"_ustr).getLength()).trim();
+            else
+                path = sPrompt.copy(OUString(u"/收入资料"_ustr).getLength()).trim();
+            // allow @文件:path
+            if (path.startsWith(u"@文件:"_ustr))
+                path = path.copy(OUString(u"@文件:"_ustr).getLength()).trim();
+            if (path.isEmpty())
+                md = u"用法：`/收入资料 /绝对路径/文件或文件夹`\n"_ustr;
+            else
+            {
+                const auto ir = VaultIngest::ingestPath(path);
+                md = ir.messageZh + u"\n"_ustr;
+                if (ir.ok && !ir.snippetPath.isEmpty())
+                {
+                    const auto body
+                        = kqoffice::ai::chat::DocumentAIMaterialReader::extractPath(ir.snippetPath,
+                                                                                    48000);
+                    const auto ix = AIChatVaultIndexPath(
+                        ir.snippetPath, body.text.isEmpty() ? ir.title : body.text);
+                    md += ix.MessageZh + u"\n"_ustr;
+                }
+            }
+        }
+        else if (sPrompt.startsWith(u"/vault-reindex"_ustr)
+                 || sPrompt.startsWith(u"/资料盘重建索引"_ustr))
+        {
+            const auto ix = AIChatVaultReindexAll();
+            md = ix.MessageZh;
+        }
+        else if (sPrompt.startsWith(u"/vault-compile"_ustr) || sPrompt.startsWith(u"/整理资料"_ustr))
+        {
+            const auto cr = VaultCompile::compilePending(OUString(), 8);
+            md = cr.messageZh + u"\n\n整理完成后可 `/资料盘重建索引` 刷新检索。\n"_ustr;
+            if (cr.ok && cr.processed > 0)
+                (void)AIChatVaultReindexAll();
+        }
+        else if (sPrompt.startsWith(u"/vault-lint"_ustr) || sPrompt.startsWith(u"/资料体检"_ustr))
+        {
+            const auto lr = VaultLint::run();
+            md = lr.messageZh;
+        }
+        else if (sPrompt.startsWith(u"/vault-pack"_ustr) || sPrompt.startsWith(u"/导出资料包"_ustr))
+        {
+            OUString title;
+            if (sPrompt.startsWith(u"/vault-pack"_ustr))
+                title = sPrompt.copy(OUString(u"/vault-pack"_ustr).getLength()).trim();
+            else
+                title = sPrompt.copy(OUString(u"/导出资料包"_ustr).getLength()).trim();
+            const auto pr = VaultPack::exportThemePack(title);
+            md = pr.messageZh;
+        }
+        else if (sPrompt.startsWith(u"/vault-notebook"_ustr) || sPrompt.startsWith(u"/笔记入库"_ustr))
+        {
+            const sal_Int32 n = VaultIngest::ingestNotebookMaterials(OUString(), 100);
+            const auto ix = AIChatVaultReindexAll();
+            md = u"已从可圈笔记收入 "_ustr + OUString::number(n) + u" 条材料\n"_ustr + ix.MessageZh;
+        }
+        else
+        {
+            // /vault /资料盘 /vault-status
+            const auto act = VaultManager::activeVault();
+            md = u"## 资料盘\n\n"_ustr;
+            md += VaultManager::statusChipZh() + u"\n\n"_ustr;
+            md += u"**当前**：「"_ustr + act.name + u"」\n"_ustr;
+            md += u"- 路径：`"_ustr + act.rootPath + u"`\n"_ustr;
+            md += u"- 权限："_ustr
+                  + (VaultManager::isVaultAuthorized(act.id) ? u"已授权"_ustr : u"未授权"_ustr)
+                  + u"\n\n"_ustr;
+            md += u"**收录与检索**\n"_ustr;
+            md += u"- `/收入资料 <路径>` · `/搜资料 <关键词>`\n"_ustr;
+            md += u"- `/整理资料` · `/资料盘重建索引` · `/笔记入库`\n"_ustr;
+            md += u"- `/资料体检` · `/导出资料包 [标题]`\n\n"_ustr;
+            md += u"**管理（路径/权限，类迅雷·WPS）**\n"_ustr;
+            md += u"- `/资料盘管理` — 全部盘与命令\n"_ustr;
+            md += u"- `/新建资料盘 名称 | /路径` · `/切换资料盘 <id>`\n"_ustr;
+            md += u"- `/资料盘位置 /新路径` · `/授权资料盘` · `/打开资料盘`\n"_ustr;
+            md += u"- `/资料盘初始化` — 安装默认位置\n\n"_ustr;
+            md += u"仅授权所选目录，非整盘。主文档写回仍须批准。\n"_ustr;
+            const auto recent = VaultIngest::listRecentTitles(OUString(), 8);
+            if (!recent.empty())
+            {
+                md += u"\n**最近收录**\n"_ustr;
+                for (const auto& t : recent)
+                    md += u"- "_ustr + t + u"\n"_ustr;
+            }
+        }
+
+        AppendAssistantMarkdown(md);
+        if (m_xStatusLabel)
+            m_xStatusLabel->set_label(VaultManager::statusChipZh());
+        m_xPromptEntry->set_text(OUString());
+        return;
+    }
+
+    // ── Membership quota / 加油包 (api.03122.com; never mutates main doc) ──
+    if (sPrompt.startsWith(u"/quota"_ustr) || sPrompt.startsWith(u"/会员额度"_ustr)
+        || sPrompt == u"/额度"_ustr || sPrompt.startsWith(u"/checkin"_ustr)
+        || sPrompt.startsWith(u"/签到"_ustr) || sPrompt.startsWith(u"/rush"_ustr)
+        || sPrompt.startsWith(u"/抢包"_ustr) || sPrompt.startsWith(u"/加油包"_ustr))
+    {
+        OUString action = u"status"_ustr;
+        if (sPrompt.startsWith(u"/checkin"_ustr) || sPrompt.startsWith(u"/签到"_ustr))
+            action = u"checkin"_ustr;
+        else if (sPrompt.startsWith(u"/rush"_ustr) || sPrompt.startsWith(u"/抢包"_ustr))
+            action = u"rush_grab"_ustr;
+
+        const kqoffice::ai::MembershipBoostResult br
+            = kqoffice::ai::membershipBoostAction(action);
+        AppendTranscript(u"System"_ustr, br.messageZh, /*bPersistHistory*/ false);
+        AppendAssistantMarkdown(br.messageZh);
+        // Refresh status chip after boost mutation
+        if (m_xStatusLabel)
+        {
+            const OUString chip = kqoffice::ai::membershipQuotaChipZh();
+            if (!chip.isEmpty())
+                m_xStatusLabel->set_label(chip);
+            else
+                m_xStatusLabel->set_label(br.ok ? u"会员操作完成"_ustr : u"会员操作失败"_ustr);
+        }
+        m_xPromptEntry->set_text(OUString());
+        return;
+    }
 
     // ── Diff one-shot (pending plan → Diff review; no mutation) ──
     if (sPrompt.startsWith(u"/diff"_ustr) || sPrompt.startsWith(u"/查看差异"_ustr)
@@ -8381,8 +8701,18 @@ void AIChatPanel::ConsumePendingPromptInject()
     if (text.isEmpty())
         return;
     AppendPromptText(text);
+
+    // Membership slash inject (api.03122.com only; never mutates main doc) — always auto-send.
+    const bool bMembershipSlash
+        = text.startsWith(u"/quota"_ustr) || text.startsWith(u"/会员额度"_ustr)
+          || text == u"/额度"_ustr || text.startsWith(u"/checkin"_ustr)
+          || text.startsWith(u"/签到"_ustr) || text.startsWith(u"/rush"_ustr)
+          || text.startsWith(u"/抢包"_ustr) || text.startsWith(u"/加油包"_ustr);
+
     OUString source = u"inject"_ustr;
-    if (text.indexOf(u"【可圈定时任务】"_ustr) >= 0)
+    if (bMembershipSlash)
+        source = u"membership"_ustr;
+    else if (text.indexOf(u"【可圈定时任务】"_ustr) >= 0)
         source = u"schedule"_ustr;
     else if (text.indexOf(u"【可圈工作中台"_ustr) >= 0)
         source = u"workbench"_ustr;
@@ -8399,8 +8729,8 @@ void AIChatPanel::ConsumePendingPromptInject()
                          + OUString::number(text.getLength()),
                      /*bPersistHistory*/ false);
 
-    // Optional auto-send for due scheduled tasks only (default off — human review).
-    bool bAutoSend = false;
+    // Auto-send: membership slash always; schedule only when prefs allow (default off).
+    bool bAutoSend = bMembershipSlash;
     if (source == u"schedule"_ustr)
     {
         const auto prefs = kqoffice::ai::chat::DocumentAIInputPrefs::load();
@@ -8412,7 +8742,13 @@ void AIChatPanel::ConsumePendingPromptInject()
 
     if (m_xStatusLabel)
     {
-        if (source == u"schedule"_ustr)
+        if (source == u"membership"_ustr)
+        {
+            m_xStatusLabel->set_label(
+                bAutoSend ? u"会员指令已注入并自动发送 · 主文档未改"_ustr
+                          : u"会员指令已注入 — 可发送"_ustr);
+        }
+        else if (source == u"schedule"_ustr)
         {
             m_xStatusLabel->set_label(
                 bAutoSend ? u"定时任务已注入并自动发送"_ustr
@@ -8428,9 +8764,11 @@ void AIChatPanel::ConsumePendingPromptInject()
 
     if (bAutoSend)
     {
-        AppendTranscript(u"System"_ustr,
-                         u"schedule-auto-send=1 · 主文档写回仍须批准"_ustr,
-                         /*bPersistHistory*/ false);
+        AppendTranscript(
+            u"System"_ustr,
+            bMembershipSlash ? u"membership-auto-send=1 · 主文档未改 · api.03122.com"_ustr
+                             : u"schedule-auto-send=1 · 主文档写回仍须批准"_ustr,
+            /*bPersistHistory*/ false);
         SubmitPrompt();
     }
 }

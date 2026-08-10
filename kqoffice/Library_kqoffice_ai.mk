@@ -20,6 +20,8 @@ $(eval $(call gb_Library_set_include,kqoffice_ai,\
     -I$(SRCDIR)/kqoffice/source/ai/provider \
     -I$(SRCDIR)/kqoffice/source/ai/workbench \
     -I$(SRCDIR)/kqoffice/source/ai/notebook \
+    -I$(SRCDIR)/kqoffice/source/ai/vault \
+    -I$(SRCDIR)/kqoffice/source/ai/control \
     $$(INCLUDE) \
 ))
 
@@ -38,6 +40,7 @@ $(eval $(call gb_Library_set_componentfile,kqoffice_ai,kqoffice/util/kqoffice_ai
 $(eval $(call gb_Library_add_exception_objects,kqoffice_ai,\
     kqoffice/source/ai/provider/AgentStepRunner \
     kqoffice/source/ai/provider/EvidenceRecorder \
+    kqoffice/source/ai/provider/MembershipClient \
     kqoffice/source/ai/provider/ModelRoles \
     kqoffice/source/ai/provider/ModelRoutingConfig \
     kqoffice/source/ai/provider/OllamaAdapter \
@@ -106,6 +109,12 @@ $(eval $(call gb_Library_add_exception_objects,kqoffice_ai,\
     kqoffice/source/ai/notebook/NotebookMaterialStore \
     kqoffice/source/ai/notebook/NotebookProjectStore \
     kqoffice/source/ai/notebook/NotebookStudioPipeline \
+    kqoffice/source/ai/vault/VaultStore \
+    kqoffice/source/ai/vault/VaultManager \
+    kqoffice/source/ai/vault/VaultIngest \
+    kqoffice/source/ai/vault/VaultCompile \
+    kqoffice/source/ai/vault/VaultLint \
+    kqoffice/source/ai/vault/VaultPack \
 ))
 
 ifeq ($(OS),MACOSX)
