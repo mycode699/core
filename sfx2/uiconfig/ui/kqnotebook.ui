@@ -1,0 +1,677 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 可圈笔记 · family calm three-column workspace (sc_theme tokens) -->
+<interface domain="sfx">
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkDialog" id="KqNotebookDialog">
+    <property name="can-focus">False</property>
+    <property name="title" translatable="yes" context="kqnotebook|title">可圈笔记</property>
+    <property name="modal">False</property>
+    <property name="window-position">center</property>
+    <property name="default-width">1120</property>
+    <property name="default-height">720</property>
+    <property name="type-hint">dialog</property>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can-focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">0</property>
+        <child>
+          <object class="GtkBox" id="header_box">
+            <property name="visible">True</property>
+            <property name="orientation">horizontal</property>
+            <property name="spacing">10</property>
+            <property name="margin-start">14</property>
+            <property name="margin-end">14</property>
+            <property name="margin-top">12</property>
+            <property name="margin-bottom">10</property>
+            <child>
+              <object class="GtkLabel" id="brand_label">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="kqnotebook|brand">可圈笔记</property>
+                <property name="mnemonic-widget">chat_entry</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                  <attribute name="scale" value="1.15"/>
+                </attributes>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="brand_sub">
+                <property name="visible">True</property>
+                <property name="hexpand">True</property>
+                <property name="xalign">0</property>
+                <property name="label" translatable="yes" context="kqnotebook|subtitle">本地优先 · 可圈 AI 问答 · Studio · 写回前确认</property>
+                <attributes>
+                  <attribute name="scale" value="0.9"/>
+                </attributes>
+              </object>
+            </child>
+            <child>
+              <object class="GtkComboBoxText" id="nb_combo">
+                <property name="visible">True</property>
+                <property name="width-request">200</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_new_nb">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="kqnotebook|new_nb">新建笔记本</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_rename_nb">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="kqnotebook|rename_nb">重命名</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_close">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="stock">关闭</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="main_cols">
+            <property name="visible">True</property>
+            <property name="orientation">horizontal</property>
+            <property name="spacing">10</property>
+            <property name="margin-start">12</property>
+            <property name="margin-end">12</property>
+            <property name="margin-bottom">12</property>
+            <property name="vexpand">True</property>
+            <!-- ===== Sources (left) ===== -->
+            <child>
+              <object class="GtkFrame" id="sources_frame">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="kqnotebook|sources">来源</property>
+                <property name="shadow-type">none</property>
+                <property name="width-request">280</property>
+                <child>
+                  <object class="GtkBox" id="sources_box">
+                    <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">6</property>
+                    <property name="margin">8</property>
+                    <child>
+                      <object class="GtkLabel" id="sources_hint">
+                        <property name="visible">True</property>
+                        <property name="wrap">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes" context="kqnotebook|sources_hint">文件 / 音视频转写 / 会议录音。下方可编辑转写并 AI 编排。问答只依据勾选来源。</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="src_toolbar">
+                        <property name="visible">True</property>
+                        <property name="spacing">4</property>
+                        <child>
+                          <object class="GtkButton" id="btn_add_file">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|add_file">+ 添加文件</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_add_paste">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|add_paste">粘贴文本</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_add_url">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|add_url">+ 网页 URL</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_add_transcript">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|add_transcript">字幕/转录</property>
+                            <property name="tooltip-text" translatable="yes" context="kqnotebook|add_transcript_tip">粘贴 YouTube/本地视频字幕、SRT/VTT 或纯文本转录；也可打开 .srt/.vtt 文件</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_local_asr">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|local_asr">本机转写</property>
+                            <property name="tooltip-text" translatable="yes" context="kqnotebook|local_asr_tip">对选中的本地视频/音频用本机 ffmpeg+whisper 转写（可选，不上传）</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_src_all">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|src_all">全选</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_src_preview">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|src_preview">预览</property>
+                            <property name="tooltip-text" translatable="yes" context="kqnotebook|src_preview_tip">查看选中来源正文片段（引用定位）</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_src_remove">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|src_remove">移除</property>
+                            <property name="tooltip-text" translatable="yes" context="kqnotebook|src_remove_tip">从当前笔记本移除此来源（不删材料库文件）</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkScrolledWindow">
+                        <property name="visible">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="shadow-type">none</property>
+                        <child>
+                          <object class="GtkTreeView" id="source_list">
+                            <property name="visible">True</property>
+                            <property name="headers_visible">False</property>
+                            <child internal-child="accessible">
+                              <object class="AtkObject" id="source_list-atkobject">
+                                <property name="AtkObject::accessible-name" translatable="yes" context="kqnotebook|source_list">来源列表</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="src_status">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes" context="kqnotebook|src_status">0 个来源</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="tx_label">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes" context="kqnotebook|tx_label">转写编辑 · 可改可编排</property>
+                        <property name="mnemonic-widget">transcript_edit</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="tx_toolbar">
+                        <property name="visible">True</property>
+                        <property name="spacing">3</property>
+                        <property name="homogeneous">False</property>
+                        <child>
+                          <object class="GtkButton" id="btn_tx_load">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|tx_load">加载</property>
+                            <property name="tooltip-text" translatable="yes" context="kqnotebook|tx_load_tip">加载选中来源正文到编辑器</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_tx_save">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|tx_save">保存</property>
+                            <property name="tooltip-text" translatable="yes" context="kqnotebook|tx_save_tip">把编辑后的转写写回选中来源</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_tx_media">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|tx_media">音视频转写</property>
+                            <property name="tooltip-text" translatable="yes" context="kqnotebook|tx_media_tip">打开音视频 → 多格式转换 → 本机转文字</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_tx_mp3">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|tx_mp3">→MP3</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_tx_wav">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|tx_wav">→WAV</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_tx_chapters">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|tx_chapters">分章</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_tx_ai_minutes">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|tx_minutes">AI纪要</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_tx_ai_polish">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|tx_polish">AI润色</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_tx_ai_todo">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|tx_todo">AI待办</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_tx_speak">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|tx_speak">朗读</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_tx_diarize">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|tx_diarize">说话人</property>
+                            <property name="tooltip-text" translatable="yes" context="kqnotebook|tx_diarize_tip">说话人分离：优先 whisperx，否则静音分段/文本启发式</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkComboBoxText" id="spk_count">
+                            <property name="visible">True</property>
+                            <property name="tooltip-text" translatable="yes" context="kqnotebook|spk_count_tip">说话人数量</property>
+                            <items>
+                              <item translatable="yes" context="kqnotebook|spk2">2人</item>
+                              <item translatable="yes" context="kqnotebook|spk3">3人</item>
+                              <item translatable="yes" context="kqnotebook|spk4">4人</item>
+                            </items>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkEntry" id="speaker_names">
+                            <property name="visible">True</property>
+                            <property name="width-request">120</property>
+                            <property name="placeholder-text" translatable="yes" context="kqnotebook|spk_names_ph">张三,李四</property>
+                            <property name="tooltip-text" translatable="yes" context="kqnotebook|spk_names_tip">改名：用逗号分隔，对应说话人1,2…</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_tx_rename">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|tx_rename">改名</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_tx_play_cue">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|tx_play">试听</property>
+                            <property name="tooltip-text" translatable="yes" context="kqnotebook|tx_play_tip">从时间轴选中条目的时间点试听原音（需 ffplay）</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_tx_merge_adj">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|tx_merge_adj">并同人</property>
+                            <property name="tooltip-text" translatable="yes" context="kqnotebook|tx_merge_adj_tip">合并所有相邻的同一说话人轮次</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_tx_merge_next">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|tx_merge_next">并下条</property>
+                            <property name="tooltip-text" translatable="yes" context="kqnotebook|tx_merge_next_tip">将选中时间轴条目与下一条合并</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_tx_cycle_spk">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|tx_cycle">换人</property>
+                            <property name="tooltip-text" translatable="yes" context="kqnotebook|tx_cycle_tip">循环切换选中条目的说话人（按人数）</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_tx_del_cue">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|tx_del">删条</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_tx_up">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|tx_up">↑</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_tx_down">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|tx_down">↓</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkScrolledWindow">
+                        <property name="visible">True</property>
+                        <property name="height-request">120</property>
+                        <property name="shadow-type">none</property>
+                        <child>
+                          <object class="GtkTextView" id="transcript_edit">
+                            <property name="visible">True</property>
+                            <property name="editable">True</property>
+                            <property name="wrap-mode">word-char</property>
+                            <property name="left-margin">4</property>
+                            <property name="right-margin">4</property>
+                            <child internal-child="accessible">
+                              <object class="AtkObject" id="transcript_edit-atkobject">
+                                <property name="AtkObject::accessible-name" translatable="yes" context="kqnotebook|transcript_edit">转写编辑器</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="tl_label">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes" context="kqnotebook|tl_label">时间轴 · 点击跳转到正文</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkScrolledWindow">
+                        <property name="visible">True</property>
+                        <property name="height-request">90</property>
+                        <property name="shadow-type">none</property>
+                        <child>
+                          <object class="GtkTreeView" id="timeline_list">
+                            <property name="visible">True</property>
+                            <property name="headers_visible">False</property>
+                            <child internal-child="accessible">
+                              <object class="AtkObject" id="timeline_list-atkobject">
+                                <property name="AtkObject::accessible-name" translatable="yes" context="kqnotebook|timeline_list">说话人时间轴</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <!-- ===== Chat (center) ===== -->
+            <child>
+              <object class="GtkFrame" id="chat_frame">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="kqnotebook|chat">对话</property>
+                <property name="shadow-type">none</property>
+                <property name="hexpand">True</property>
+                <child>
+                  <object class="GtkBox" id="chat_box">
+                    <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">6</property>
+                    <property name="margin">8</property>
+                    <child>
+                      <object class="GtkLabel" id="chat_guide">
+                        <property name="visible">True</property>
+                        <property name="wrap">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes" context="kqnotebook|chat_guide">基于所选来源提问。回答会标注引用来源编号。</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="chip_row">
+                        <property name="visible">True</property>
+                        <property name="spacing">4</property>
+                        <child>
+                          <object class="GtkButton" id="chip_summary">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|chip_sum">总结来源</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="chip_key">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|chip_key">关键要点</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="chip_compare">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|chip_cmp">对比来源</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="chip_faq">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|chip_faq">常见问题</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkScrolledWindow">
+                        <property name="visible">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="shadow-type">none</property>
+                        <child>
+                          <object class="GtkTextView" id="chat_view">
+                            <property name="visible">True</property>
+                            <property name="editable">False</property>
+                            <property name="wrap-mode">word-char</property>
+                            <property name="left-margin">8</property>
+                            <property name="right-margin">8</property>
+                            <child internal-child="accessible">
+                              <object class="AtkObject" id="chat_view-atkobject">
+                                <property name="AtkObject::accessible-name" translatable="yes" context="kqnotebook|chat_view">对话记录</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="composer">
+                        <property name="visible">True</property>
+                        <property name="spacing">6</property>
+                        <child>
+                          <object class="GtkButton" id="btn_voice">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|voice">🎤 语音</property>
+                            <property name="tooltip-text" translatable="yes" context="kqnotebook|voice_tip">语音输入：点按开始/结束 · 本机转写填入输入框（可装 whisper）</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_meeting">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|meeting">🎙 会议</property>
+                            <property name="tooltip-text" translatable="yes" context="kqnotebook|meeting_tip">会议边录边出字：分段录音实时出字 → 结束入库 · 本机不上传</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkEntry" id="chat_entry">
+                            <property name="visible">True</property>
+                            <property name="hexpand">True</property>
+                            <property name="placeholder-text" translatable="yes" context="kqnotebook|chat_ph">针对来源提问…（Enter 发送 · 可语音输入）</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_send">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|send">发送</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btn_tts_reply">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes" context="kqnotebook|tts_reply">🔊 朗读</property>
+                            <property name="tooltip-text" translatable="yes" context="kqnotebook|tts_reply_tip">朗读最近一条可圈 AI 回答，或 Studio 当前正文</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="chat_status">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes" context="kqnotebook|chat_status">可圈 AI · 就绪</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <!-- ===== Studio (right) ===== -->
+            <child>
+              <object class="GtkFrame" id="studio_frame">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="kqnotebook|studio">Studio</property>
+                <property name="shadow-type">none</property>
+                <property name="width-request">280</property>
+                <child>
+                  <object class="GtkBox" id="studio_box">
+                    <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">6</property>
+                    <property name="margin">8</property>
+                    <child>
+                      <object class="GtkLabel" id="studio_hint">
+                        <property name="visible">True</property>
+                        <property name="wrap">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes" context="kqnotebook|studio_hint">基于当前勾选来源一键生成学习材料。</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="btn_audio">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes" context="kqnotebook|audio">🎙 音频概览（双主播脚本）</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="btn_video">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes" context="kqnotebook|video">🎬 视频概览（分镜脚本）</property>
+                        <property name="tooltip-text" translatable="yes" context="kqnotebook|video_tip">基于来源（含本地视频字幕）生成旁白+分镜+字幕建议</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="btn_guide">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes" context="kqnotebook|guide">📘 学习指南</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="btn_brief">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes" context="kqnotebook|brief">📄 简报文档</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="btn_studio_faq">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes" context="kqnotebook|studio_faq">❓ FAQ</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="btn_timeline">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes" context="kqnotebook|timeline">⏱ 时间线</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="btn_flashcards">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes" context="kqnotebook|flashcards">🃏 闪卡</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="btn_mindmap">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes" context="kqnotebook|mindmap">🕸 思维导图</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="btn_save_note">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes" context="kqnotebook|save_note">保存为笔记</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="btn_speak">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes" context="kqnotebook|speak">🔊 双声朗读</property>
+                        <property name="tooltip-text" translatable="yes" context="kqnotebook|speak_tip">A/B 主播用不同系统音色顺序朗读</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="btn_export_audio">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes" context="kqnotebook|export_audio">💾 导出双声AIFF · 成品包</property>
+                        <property name="tooltip-text" translatable="yes" context="kqnotebook|export_audio_tip">双声真交替 AIFF 到「下载」；并写入本地成品包（script/README/朗读脚本 · 不上传）</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="btn_to_writer">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes" context="kqnotebook|to_writer">📝 写入文字（Writer）</property>
+                        <property name="tooltip-text" translatable="yes" context="kqnotebook|to_writer_tip">将当前 Studio 制品写入 Writer；确认后插入文档，可撤销</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="btn_to_impress">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes" context="kqnotebook|to_impress">🎞 大纲成片（Impress）</property>
+                        <property name="tooltip-text" translatable="yes" context="kqnotebook|to_impress_tip">将制品转为受控多页大纲并写回演示；禁止黑盒整片</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="art_label">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes" context="kqnotebook|art_label">制品库</property>
+                        <property name="mnemonic-widget">artifact_list</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkScrolledWindow">
+                        <property name="visible">True</property>
+                        <property name="height-request">100</property>
+                        <property name="shadow-type">none</property>
+                        <child>
+                          <object class="GtkTreeView" id="artifact_list">
+                            <property name="visible">True</property>
+                            <property name="headers_visible">False</property>
+                            <child internal-child="accessible">
+                              <object class="AtkObject" id="artifact_list-atkobject">
+                                <property name="AtkObject::accessible-name" translatable="yes" context="kqnotebook|artifact_list">制品列表</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkScrolledWindow">
+                        <property name="visible">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="shadow-type">none</property>
+                        <child>
+                          <object class="GtkTextView" id="studio_view">
+                            <property name="visible">True</property>
+                            <property name="editable">False</property>
+                            <property name="wrap-mode">word-char</property>
+                            <property name="left-margin">6</property>
+                            <property name="right-margin">6</property>
+                            <child internal-child="accessible">
+                              <object class="AtkObject" id="studio_view-atkobject">
+                                <property name="AtkObject::accessible-name" translatable="yes" context="kqnotebook|studio_view">Studio 产出</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
