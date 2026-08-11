@@ -94,6 +94,22 @@ $(eval $(call gb_Library_add_exception_objects,kqoffice_ai,\
     kqoffice/source/ai/chat/DocumentAIScenarios \
     kqoffice/source/ai/control/PermissionCenter \
     kqoffice/source/ai/control/PermissionGrant \
+    kqoffice/source/ai/control/WritebackPermission \
+    kqoffice/source/ai/control/ErrorClassifier \
+    kqoffice/source/ai/control/DiagnosticBundle \
+    kqoffice/source/ai/control/ComposerQueue \
+    kqoffice/source/ai/control/WorkbenchPhase \
+    kqoffice/source/ai/control/ContextUsage \
+    kqoffice/source/ai/control/AiFirstRunGate \
+    kqoffice/source/ai/control/WorkbenchStatus \
+    kqoffice/source/ai/control/FactRouter \
+    kqoffice/source/ai/control/ProviderSlotManifest \
+    kqoffice/source/ai/control/PolicyEvolutionGuard \
+    kqoffice/source/ai/control/EventLedger \
+    kqoffice/source/ai/control/ExternalWriteDenier \
+    kqoffice/source/ai/control/StallDetector \
+    kqoffice/source/ai/control/SandboxCage \
+    kqoffice/source/ai/control/HandoffBrief \
     kqoffice/source/ai/control/ResourceBudgetWatchdog \
     kqoffice/source/ai/control/AiPaths \
     kqoffice/source/ai/control/AiResourceEnvelope \
