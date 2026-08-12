@@ -16,6 +16,7 @@ $(eval $(call gb_Module_Module,kqoffice))
 
 $(eval $(call gb_Module_add_targets,kqoffice,\
     Library_kqoffice_ai \
+    Executable_kqoffice_mcp \
 ))
 
 $(eval $(call gb_Module_add_check_targets,kqoffice,\

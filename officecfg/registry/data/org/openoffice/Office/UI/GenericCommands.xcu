@@ -7878,20 +7878,146 @@ bit 3 (0x8): #define UICOMMANDDESCRIPTION_PROPERTIES_TOGGLEBUTTON 8
         </prop>
         <prop oor:name="TooltipLabel" oor:type="xs:string">
           <value xml:lang="en-US">Open the compact workbench pendant</value>
-          <value xml:lang="zh-CN">打开效率挂坠：今日统计与截图/语音/中台快捷入口</value>
+          <value xml:lang="zh-CN">打开可圈效率挂坠：今日统计与截图/语音/可圈 AI 快捷入口</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>
         </prop>
       </node>
-      <node oor:name=".uno:CoworkTaskManager" oor:op="replace">
+      <node oor:name=".uno:KQNotebook" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
-          <value xml:lang="en-US">Async Tasks...</value>
-          <value xml:lang="zh-CN">异步任务(~T)</value>
+          <value xml:lang="en-US">可圈笔记</value>
+          <value xml:lang="zh-CN">可圈笔记</value>
         </prop>
         <prop oor:name="TooltipLabel" oor:type="xs:string">
-          <value xml:lang="en-US">Open the async task manager (cowork)</value>
-          <value xml:lang="zh-CN">打开异步任务管理器，查看和管理 AI 委托任务</value>
+          <value xml:lang="en-US">Open 可圈笔记 — NotebookLM-style sources, chat, Studio</value>
+          <value xml:lang="zh-CN">打开可圈笔记：来源 · 问答 · Studio（本地优先）</value>
+        </prop>
+        <prop oor:name="Properties" oor:type="xs:int">
+          <value>1</value>
+        </prop>
+      </node>
+      <node oor:name=".uno:KQAISendSelection" oor:op="replace">
+        <prop oor:name="Label" oor:type="xs:string">
+          <value xml:lang="en-US">Send Selection to 可圈 AI</value>
+          <value xml:lang="zh-CN">发给可圈 AI 正式改写</value>
+        </prop>
+        <prop oor:name="TooltipLabel" oor:type="xs:string">
+          <value xml:lang="en-US">Send selection to 可圈 AI for formal rewrite (approve before write-back; Cmd/Ctrl+Shift+J)</value>
+          <value xml:lang="zh-CN">将选区送入可圈 AI，一键正式改写（须批准后写回）；快捷键 Cmd/Ctrl+Shift+J</value>
+        </prop>
+        <prop oor:name="Properties" oor:type="xs:int">
+          <value>1</value>
+        </prop>
+      </node>
+      <node oor:name=".uno:KQAIDocOutline" oor:op="replace">
+        <prop oor:name="Label" oor:type="xs:string">
+          <value xml:lang="en-US">可圈 AI · Document Outline</value>
+          <value xml:lang="zh-CN">可圈 AI · 文档大纲</value>
+        </prop>
+        <prop oor:name="TooltipLabel" oor:type="xs:string">
+          <value xml:lang="zh-CN">基于当前文稿生成结构大纲与问题清单（主文档须批准后写回）</value>
+        </prop>
+        <prop oor:name="Properties" oor:type="xs:int"><value>1</value></prop>
+      </node>
+      <node oor:name=".uno:KQAIDocProofread" oor:op="replace">
+        <prop oor:name="Label" oor:type="xs:string">
+          <value xml:lang="en-US">可圈 AI · Proofread</value>
+          <value xml:lang="zh-CN">可圈 AI · 全文审阅</value>
+        </prop>
+        <prop oor:name="TooltipLabel" oor:type="xs:string">
+          <value xml:lang="zh-CN">审阅语气、冗余与事实风险，输出可执行修改建议</value>
+        </prop>
+        <prop oor:name="Properties" oor:type="xs:int"><value>1</value></prop>
+      </node>
+      <node oor:name=".uno:KQAIDocContinue" oor:op="replace">
+        <prop oor:name="Label" oor:type="xs:string">
+          <value xml:lang="en-US">可圈 AI · Continue Writing</value>
+          <value xml:lang="zh-CN">可圈 AI · 续写</value>
+        </prop>
+        <prop oor:name="TooltipLabel" oor:type="xs:string">
+          <value xml:lang="zh-CN">从选区或文末续写（须批准后写回）</value>
+        </prop>
+        <prop oor:name="Properties" oor:type="xs:int"><value>1</value></prop>
+      </node>
+      <node oor:name=".uno:KQAIDocSummary" oor:op="replace">
+        <prop oor:name="Label" oor:type="xs:string">
+          <value xml:lang="en-US">可圈 AI · Document Summary</value>
+          <value xml:lang="zh-CN">可圈 AI · 全文总结</value>
+        </prop>
+        <prop oor:name="TooltipLabel" oor:type="xs:string">
+          <value xml:lang="zh-CN">一句话摘要 + 要点 + 行动项（仅依据文档）</value>
+        </prop>
+        <prop oor:name="Properties" oor:type="xs:int"><value>1</value></prop>
+      </node>
+      <node oor:name=".uno:KQAICalcFormula" oor:op="replace">
+        <prop oor:name="Label" oor:type="xs:string">
+          <value xml:lang="en-US">可圈 AI · Formula</value>
+          <value xml:lang="zh-CN">可圈 AI · 公式</value>
+        </prop>
+        <prop oor:name="TooltipLabel" oor:type="xs:string">
+          <value xml:lang="zh-CN">为选区生成 = 公式与说明（须批准后写入单元格）</value>
+        </prop>
+        <prop oor:name="Properties" oor:type="xs:int"><value>1</value></prop>
+      </node>
+      <node oor:name=".uno:KQAICalcClean" oor:op="replace">
+        <prop oor:name="Label" oor:type="xs:string">
+          <value xml:lang="en-US">可圈 AI · Data Clean</value>
+          <value xml:lang="zh-CN">可圈 AI · 数据清洗</value>
+        </prop>
+        <prop oor:name="TooltipLabel" oor:type="xs:string">
+          <value xml:lang="zh-CN">空值/重复/类型/异常清单 + 公式建议</value>
+        </prop>
+        <prop oor:name="Properties" oor:type="xs:int"><value>1</value></prop>
+      </node>
+      <node oor:name=".uno:KQAICalcInterpret" oor:op="replace">
+        <prop oor:name="Label" oor:type="xs:string">
+          <value xml:lang="en-US">可圈 AI · Interpret Data</value>
+          <value xml:lang="zh-CN">可圈 AI · 数据解读</value>
+        </prop>
+        <prop oor:name="TooltipLabel" oor:type="xs:string">
+          <value xml:lang="zh-CN">结论、趋势与风险（仅依据表内数据）</value>
+        </prop>
+        <prop oor:name="Properties" oor:type="xs:int"><value>1</value></prop>
+      </node>
+      <node oor:name=".uno:KQAIImpressOutline" oor:op="replace">
+        <prop oor:name="Label" oor:type="xs:string">
+          <value xml:lang="en-US">可圈 AI · Deck Outline</value>
+          <value xml:lang="zh-CN">可圈 AI · 大纲成片</value>
+        </prop>
+        <prop oor:name="TooltipLabel" oor:type="xs:string">
+          <value xml:lang="zh-CN">受控多页大纲（含讲稿）；批准后写回，禁止黑盒整片</value>
+        </prop>
+        <prop oor:name="Properties" oor:type="xs:int"><value>1</value></prop>
+      </node>
+      <node oor:name=".uno:KQAIImpressNotes" oor:op="replace">
+        <prop oor:name="Label" oor:type="xs:string">
+          <value xml:lang="en-US">可圈 AI · Speaker Notes</value>
+          <value xml:lang="zh-CN">可圈 AI · 讲稿备注</value>
+        </prop>
+        <prop oor:name="TooltipLabel" oor:type="xs:string">
+          <value xml:lang="zh-CN">仅写各页讲稿/备注，不改幻灯正文</value>
+        </prop>
+        <prop oor:name="Properties" oor:type="xs:int"><value>1</value></prop>
+      </node>
+      <node oor:name=".uno:KQAIImpressPage" oor:op="replace">
+        <prop oor:name="Label" oor:type="xs:string">
+          <value xml:lang="en-US">可圈 AI · This Slide</value>
+          <value xml:lang="zh-CN">可圈 AI · 本页改写</value>
+        </prop>
+        <prop oor:name="TooltipLabel" oor:type="xs:string">
+          <value xml:lang="zh-CN">只改当前页标题/要点（须批准）</value>
+        </prop>
+        <prop oor:name="Properties" oor:type="xs:int"><value>1</value></prop>
+      </node>
+      <node oor:name=".uno:CoworkTaskManager" oor:op="replace">
+        <prop oor:name="Label" oor:type="xs:string">
+          <value xml:lang="en-US">可圈 AI Async Tasks...</value>
+          <value xml:lang="zh-CN">可圈 AI 异步任务(~T)</value>
+        </prop>
+        <prop oor:name="TooltipLabel" oor:type="xs:string">
+          <value xml:lang="en-US">Open 可圈 AI async task manager</value>
+          <value xml:lang="zh-CN">打开可圈 AI 异步任务管理器，查看和管理委托任务</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>
@@ -7900,6 +8026,7 @@ bit 3 (0x8): #define UICOMMANDDESCRIPTION_PROPERTIES_TOGGLEBUTTON 8
       <node oor:name=".uno:SafeMode" oor:op="replace">
         <prop oor:name="Label" oor:type="xs:string">
           <value xml:lang="en-US">~Restart in Safe Mode...</value>
+          <value xml:lang="zh-CN">以安全模式重新启动(~S)...</value>
         </prop>
         <prop oor:name="Properties" oor:type="xs:int">
           <value>1</value>

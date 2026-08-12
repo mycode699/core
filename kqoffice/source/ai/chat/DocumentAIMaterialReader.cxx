@@ -422,30 +422,49 @@ MaterialExtractResult DocumentAIMaterialReader::extractPath(const OUString& rSys
         }
         case MaterialKind::Pdf:
         {
-            const OUString harvested
+            OUString harvested
                 = notebook::NotebookMaterialStore::extractPdfTextLightweight(r.path, nMaxChars);
+            // Fallback: system pdftotext when lightweight harvest is thin (still local).
+            if (harvested.getLength() < 40 && commandExists(u"pdftotext"_ustr))
+            {
+                const OUString cmd = u"pdftotext -layout -enc UTF-8 \""_ustr + r.path
+                                     + u"\" - 2>/dev/null"_ustr;
+                const OUString via = runShellCapture(cmd);
+                if (via.getLength() > harvested.getLength())
+                    harvested = via.getLength() > nMaxChars
+                                    ? via.copy(0, nMaxChars) + u"\n…"_ustr
+                                    : via;
+            }
             if (harvested.getLength() >= 20)
             {
-                r.text = harvested;
+                r.text = u"[PDF 本地文本 · 不上传]\n路径: "_ustr + r.path + u"\n\n"_ustr
+                         + harvested;
                 r.method = u"pdf-lightweight"_ustr;
                 r.success = true;
-                r.messageZh = u"已轻量提取 PDF 文本"_ustr;
+                r.messageZh = u"已提取 PDF 文本 · /PDF摘要 · /PDF问答 · /PDF转大纲"_ustr;
                 r.extractedCount = 1;
             }
             else
             {
-                r.text = u"[PDF · 文本层较少]\n路径: "_ustr + r.path
-                         + u"\n说明：已尝试本地字符串提取；扫描版 PDF 需配置 OCR（tesseract 或 "
-                           u"KQOFFICE_AI_OCR_CMD）"_ustr;
+                const auto prefs = DocumentAIInputPrefs::load();
+                OUString ocrHint
+                    = u"\n【扫描版 PDF 怎么办】\n"
+                      u"1) 安装 poppler `pdftotext` 或 tesseract（chi_sim+eng）\n"
+                      u"2) 选项 → 可圈 AI：开启 OCR，或设 KQOFFICE_AI_OCR_CMD\n"
+                      u"3) 也可将关键页导出为图片后 @截图: 再分析\n"
+                      u"不宣称完整 PDF 编辑；写回请先转 Writer/大纲。\n"_ustr;
+                if (!prefs.ocrEnabled)
+                    ocrHint += u"（当前 ocrEnabled=false）\n"_ustr;
+                r.text = u"[PDF · 文本层较少 · 本地]\n路径: "_ustr + r.path + ocrHint;
                 if (!harvested.isEmpty())
                 {
-                    r.text += u"\n\n"_ustr + harvested;
+                    r.text += u"\n已提取片段：\n"_ustr + harvested;
                     r.method = u"pdf-lightweight"_ustr;
                 }
                 else
                     r.method = u"path-only"_ustr;
                 r.success = true;
-                r.messageZh = u"PDF 文本较少，已附路径"_ustr;
+                r.messageZh = u"PDF 文本较少 · 见 OCR/pdftotext 提示 · 可 /PDF摘要"_ustr;
             }
             return r;
         }

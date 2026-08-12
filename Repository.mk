@@ -236,6 +236,7 @@ $(eval $(call gb_Helper_register_executables_for_install,OOO,writer_brand, \
 
 $(eval $(call gb_Helper_register_executables_for_install,OOO,ooo, \
 	gengal \
+	kqoffice_mcp \
 	$(if $(filter WNT,$(OS)),,uri-encode) \
 	$(if $(filter WNT,$(OS)), \
 		senddoc \
