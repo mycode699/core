@@ -271,7 +271,8 @@ protected:
     friend class ThumbnailViewAcc;
     friend class ThumbnailViewItemAcc;
 
-    SAL_DLLPRIVATE void CalculateItemPositions (bool bScrollBarUsed = false);
+    /// Layout items; RecentDocsView overrides for single-column list mode.
+    virtual void CalculateItemPositions(bool bScrollBarUsed = false);
     SAL_DLLPRIVATE void MakeItemVisible( sal_uInt16 nId );
 
     SAL_DLLPRIVATE void ImplInit();
