@@ -3,6 +3,8 @@
 #include "AIChatShellPanel.hxx"
 #include "AIChatPanelFactory.hxx"
 
+#include <MembershipClient.hxx>
+
 #include <osl/file.hxx>
 #include <sal/log.hxx>
 #include <sfx2/sidebar/SidebarController.hxx>
@@ -23,6 +25,24 @@ namespace sfx2::sidebar
 
 namespace
 {
+/// Pure membership slash — no main-doc mutation; safe to auto-run on shell.
+bool IsMembershipSlash(const OUString& t)
+{
+    return t.startsWith(u"/quota"_ustr) || t.startsWith(u"/会员额度"_ustr) || t == u"/额度"_ustr
+           || t.startsWith(u"/checkin"_ustr) || t.startsWith(u"/签到"_ustr)
+           || t.startsWith(u"/rush"_ustr) || t.startsWith(u"/抢包"_ustr)
+           || t.startsWith(u"/加油包"_ustr);
+}
+
+OUString MembershipActionFromSlash(const OUString& t)
+{
+    if (t.startsWith(u"/checkin"_ustr) || t.startsWith(u"/签到"_ustr))
+        return u"checkin"_ustr;
+    if (t.startsWith(u"/rush"_ustr) || t.startsWith(u"/抢包"_ustr))
+        return u"rush_grab"_ustr;
+    return u"status"_ustr;
+}
+
 OUString ReadHomeFile(std::u16string_view rRelPath, bool bRemove)
 {
     const char* home = std::getenv("HOME");
@@ -163,6 +183,23 @@ void AIChatShellPanel::ConsumePendingPromptInject()
         = ReadHomeFile(u"/.config/kqoffice/pending-prompt-inject"_ustr, /*bRemove*/ true);
     if (text.isEmpty())
         return;
+
+    // Membership slash: run immediately via MembershipClient (shell has no full SubmitPrompt).
+    if (IsMembershipSlash(text))
+    {
+        AppendLine(u"你: "_ustr + text);
+        const kqoffice::ai::MembershipBoostResult br
+            = kqoffice::ai::membershipBoostAction(MembershipActionFromSlash(text));
+        AppendLine(u"系统: "_ustr + br.messageZh);
+        if (m_xPromptEntry)
+            m_xPromptEntry->set_text(OUString());
+        const OUString chip = kqoffice::ai::membershipQuotaChipZh();
+        SetStatus(chip.isEmpty()
+                      ? (br.ok ? u"会员操作完成 · 主文档未改"_ustr : u"会员操作失败"_ustr)
+                      : chip);
+        return;
+    }
+
     if (m_xPromptEntry)
     {
         const OUString cur = m_xPromptEntry->get_text();
@@ -240,6 +277,19 @@ IMPL_LINK_NOARG(AIChatShellPanel, OnSendClicked, weld::Button&, void)
         return;
     }
     AppendLine(u"你: "_ustr + prompt);
+    if (IsMembershipSlash(prompt))
+    {
+        const kqoffice::ai::MembershipBoostResult br
+            = kqoffice::ai::membershipBoostAction(MembershipActionFromSlash(prompt));
+        AppendLine(u"系统: "_ustr + br.messageZh);
+        const OUString chip = kqoffice::ai::membershipQuotaChipZh();
+        SetStatus(chip.isEmpty()
+                      ? (br.ok ? u"会员操作完成 · 主文档未改"_ustr : u"会员操作失败"_ustr)
+                      : chip);
+        if (m_xPromptEntry)
+            m_xPromptEntry->set_text(OUString());
+        return;
+    }
     AppendLine(u"系统: Stage1 shell 不自动调用模型；请在完整 AI 面板或 headless 路径验证生成/写回。"_ustr);
     AppendLine(u"系统: 信任约束仍有效 — 主文档写回须批准，不静默上传。"_ustr);
     SetStatus(u"已记录本地对话（shell）· 写回仍须批准"_ustr);

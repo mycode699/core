@@ -13,6 +13,12 @@
 #include <AgentChatDiffExtractor.hxx>
 #include <DocumentAIVoiceInput.hxx>
 #include <DocumentAIWorkPlan.hxx>
+#include <ComposerQueue.hxx>
+#include <WorkbenchPhase.hxx>
+#include <ContextUsage.hxx>
+#include <AiFirstRunGate.hxx>
+#include <StallDetector.hxx>
+#include <SandboxCage.hxx>
 #include <com/sun/star/ai/ProviderResponse.hpp>
 #include <tools/link.hxx>
 #include <vcl/timer.hxx>
@@ -191,6 +197,7 @@ private:
     DECL_LINK(OnDeferredWarmupTick, Timer*, void);
     /// Periodic local scheduled-task due scan (injects pending-prompt-inject).
     DECL_LINK(OnScheduleTick, Timer*, void);
+    DECL_LINK(OnStreamStallTick, Timer*, void);
 
     static constexpr sal_Int32 kScenarioGridSlots = 12;
     static constexpr sal_Int32 kScenarioPinSlots = 4;
@@ -530,14 +537,37 @@ private:
     OUString m_sAgentGatePlanContent;
     /// Guards re-entrant SubmitPrompt (e.g. append via Reschedule while running).
     bool m_bSubmitInFlight = false;
-    /// When append arrives mid-run, hold the replacement prompt until stop completes.
+    /// FIFO follow-ups while a turn is busy (do not drop; process after turn ends).
+    kqoffice::ai::control::ComposerQueue m_aComposerQueue;
+    /// Legacy single replace slot (prefer m_aComposerQueue; kept for stop-and-go).
     OUString m_sQueuedReplacePrompt;
+    /// Unified workbench phase for step bar (plan → generate → await apply).
+    kqoffice::ai::control::WorkbenchPhase m_eWorkbenchPhase
+        = kqoffice::ai::control::WorkbenchPhase::Idle;
+    /// Current work-plan step index (1-based; 0 = none).
+    sal_Int32 m_nWorkPlanStepIndex = 0;
+    /// First-run welcome shown once per panel lifetime if gate pending.
+    bool m_bFirstRunWelcomeShown = false;
+    /// Pure stall-detector history for the active turn (capped by evaluator).
+    std::vector<kqoffice::ai::control::DetectorEvent> m_aStallHistory;
+    sal_Int32 m_nStallTimeUnit = 0;
+    /// Note progress / tool fail into stall history; may surface nudge once.
+    void NoteStallProgress(const OUString& rAction);
+    void NoteStallToolFail(const OUString& rAction, const OUString& rDetail);
+    void NoteStallToolOk(const OUString& rAction);
+    void MaybeSurfaceStallNudge();
+    void ClearStallHistory();
+    void ArmStreamStallTimer(bool bOn);
+    void NoteStallIdleTick();
     /// Poll pending-prompt-inject while AI panel stays open (workbench/notebook inject).
     AutoTimer m_aInjectPoll;
     /// Phased cold-open (chrome / local / network / polish) — never block first keystroke.
     Timer m_aDeferredWarmup;
     /// Envelope-cadence scheduled-task dispatcher (kqoffice processDue).
     AutoTimer m_aScheduleTick;
+    /// While streaming/tools busy: idle ticks feed StallDetector (no token progress).
+    AutoTimer m_aStreamStallTick;
+    bool m_bStreamStallArmed = false;
     bool m_bWorkspaceDataLoaded = false;
     bool m_bRoutingDiagDone = false;
     /// 0=pending chrome, 1=after chrome, 2=after local, 3=after network, 4=done.
