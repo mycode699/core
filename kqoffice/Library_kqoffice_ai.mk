@@ -40,6 +40,10 @@ $(eval $(call gb_Library_use_system_win32_libs,kqoffice_ai,\
     psapi \
     shell32 \
 ))
+# MSVC lacks POSIX gmtime_r/localtime_r used across AI provider/cowork/notebook.
+$(eval $(call gb_Library_add_cxxflags,kqoffice_ai,\
+    $(gb_CXXFLAGS_include)$(SRCDIR)/kqoffice/source/ai/PortableTime.hxx \
+))
 endif
 
 $(eval $(call gb_Library_set_componentfile,kqoffice_ai,kqoffice/util/kqoffice_ai,services))
