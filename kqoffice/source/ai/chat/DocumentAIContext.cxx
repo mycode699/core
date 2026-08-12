@@ -5,6 +5,7 @@
 
 #include <DocumentAIContext.hxx>
 #include <AgentChatMentionResolver.hxx>
+#include <DocumentAIDocumentTools.hxx>
 
 #include <rtl/ustrbuf.hxx>
 
@@ -74,8 +75,32 @@ DocumentAIBinding DocumentAIContext::bindUserInput(const OUString& rUserInput)
     if (out.chat.userQuery.isEmpty())
         out.chat.userQuery = rUserInput.trim();
 
+    // GenOffice-style default context: bounded skeleton, not full document body.
+    if (out.hasDocument)
+    {
+        const DocumentToolSkeleton sk = DocumentAIDocumentTools::buildSkeleton(
+            /*nMaxBlocks*/ 200, /*nMaxChars*/ 8000, /*nPreviewChars*/ 60);
+        out.documentSkeleton = sk.formatted;
+        out.documentSnapshotHash = sk.snapshotHash;
+        out.hasDocumentSkeleton = !sk.formatted.isEmpty();
+    }
+
     out.enrichedPrompt = AgentChatContextBuilder::toPromptString(out.chat);
+    if (out.hasDocumentSkeleton)
+    {
+        OUStringBuffer withSk;
+        withSk.append(out.documentSkeleton);
+        withSk.append(u"\n\n"_ustr);
+        withSk.append(out.enrichedPrompt);
+        out.enrichedPrompt = withSk.makeStringAndClear();
+    }
     out.providerContext = compactContextField(out.selection);
+    if (!out.documentSnapshotHash.isEmpty())
+    {
+        out.providerContext += u"\nsnapshot="_ustr + out.documentSnapshotHash;
+        if (out.hasDocumentSkeleton)
+            out.providerContext += u" skeleton=attached"_ustr;
+    }
 
     OUStringBuffer status;
     status.append(surfaceLabelZh(out.selection.surface));
@@ -100,6 +125,8 @@ DocumentAIBinding DocumentAIContext::bindUserInput(const OUString& rUserInput)
     {
         status.append(u" · 未打开文档"_ustr);
     }
+    if (out.hasDocumentSkeleton)
+        status.append(u" · 已附文档骨架"_ustr);
     out.statusLabel = status.makeStringAndClear();
     return out;
 }

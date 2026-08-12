@@ -23,7 +23,7 @@ namespace kqoffice::ai::chat
 {
 namespace
 {
-OUString makeTimestampName()
+OUString makeTimestampName(const OUString& rTag = OUString())
 {
     TimeValue tv{};
     osl_getSystemTime(&tv);
@@ -34,10 +34,21 @@ OUString makeTimestampName()
 #else
     localtime_r(&sec, &tm);
 #endif
-    char buf[64];
-    std::snprintf(buf, sizeof(buf), "kq-shot-%04d%02d%02d-%02d%02d%02d.png", tm.tm_year + 1900,
+    char buf[96];
+    std::snprintf(buf, sizeof(buf), "kq-shot-%04d%02d%02d-%02d%02d%02d", tm.tm_year + 1900,
                   tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
-    return OUString::fromUtf8(buf);
+    OUString name = OUString::fromUtf8(buf);
+    if (!rTag.isEmpty())
+    {
+        // Sanitize tag for filename (ASCII-ish).
+        OUString tag = rTag;
+        tag = tag.replaceAll(u"/"_ustr, u"-"_ustr).replaceAll(u" "_ustr, u"-"_ustr);
+        if (tag.getLength() > 32)
+            tag = tag.copy(0, 32);
+        name += u"-"_ustr + tag;
+    }
+    name += u".png"_ustr;
+    return name;
 }
 
 bool ensureDir(const OUString& rSysDir)
@@ -283,6 +294,96 @@ ScreenCaptureResult DocumentAIScreenCapture::capture(ScreenshotMode eMode)
                  + u"\") as «class PNGf»)' 2>/dev/null"_ustr);
 #endif
     }
+    return out;
+}
+
+ScreenCaptureResult DocumentAIScreenCapture::capturePassiveEvidence(const OUString& rTag)
+{
+    ScreenCaptureResult out;
+    out.mode = u"evidence-fullscreen"_ustr;
+    const auto prefs = DocumentAIInputPrefs::load();
+    if (!prefs.applyCaptureEvidence)
+    {
+        out.message = u"写回截屏证据已在设置中关闭"_ustr;
+        return out;
+    }
+    // Evidence path does not require interactive screenshotEnabled — separate toggle.
+    if (!isAvailable())
+    {
+        out.message = u"截图工具不可用 · 跳过写回证据"_ustr;
+        return out;
+    }
+    const OUString dir = DocumentAIInputPrefs::resolveCaptureDir(prefs) + u"/evidence"_ustr;
+    if (!ensureDir(dir))
+    {
+        out.message = u"无法创建证据目录："_ustr + dir;
+        return out;
+    }
+    const OUString path = dir + u"/"_ustr + makeTimestampName(rTag.isEmpty() ? u"apply"_ustr : rTag);
+
+#if defined(MACOSX)
+    // Non-interactive fullscreen — no user click required.
+    OUStringBuffer cmd;
+    cmd.append(u"screencapture -x \""_ustr);
+    cmd.append(path);
+    cmd.append(u"\""_ustr);
+    const int rc = runShell(cmd.makeStringAndClear());
+    if (rc == 0 && fileExistsSys(path))
+    {
+        out.success = true;
+        out.path = path;
+        out.fileUrl = toFileUrl(path);
+        out.promptAttachment = u"@截图:"_ustr + path;
+        out.message = u"写回证据截屏 · "_ustr + path;
+    }
+    else
+        out.message = u"写回证据截屏失败（macOS）"_ustr;
+#elif defined(_WIN32)
+    OUString cmd = u"powershell -NoProfile -Command \"Add-Type -AssemblyName System.Windows.Forms; "
+                   u"Add-Type -AssemblyName System.Drawing; "
+                   u"$b=[System.Windows.Forms.Screen]::PrimaryScreen.Bounds; "
+                   u"$bmp=New-Object System.Drawing.Bitmap $b.Width,$b.Height; "
+                   u"$g=[System.Drawing.Graphics]::FromImage($bmp); "
+                   u"$g.CopyFromScreen($b.Location,[System.Drawing.Point]::Empty,$b.Size); "
+                   u"$bmp.Save('"_ustr
+                   + path + u"',[System.Drawing.Imaging.ImageFormat]::Png)\""_ustr;
+    const int rc = runShell(cmd);
+    if (rc == 0 && fileExistsSys(path))
+    {
+        out.success = true;
+        out.path = path;
+        out.fileUrl = toFileUrl(path);
+        out.promptAttachment = u"@截图:"_ustr + path;
+        out.message = u"写回证据截屏 · "_ustr + path;
+    }
+    else
+        out.message = u"写回证据截屏失败（Windows）"_ustr;
+#else
+    // Prefer non-interactive root/fullscreen tools.
+    OUString cmd;
+    if (commandExists("import"))
+        cmd = u"import -window root \""_ustr + path + u"\""_ustr;
+    else if (commandExists("gnome-screenshot"))
+        cmd = u"gnome-screenshot -f \""_ustr + path + u"\""_ustr;
+    else if (commandExists("scrot"))
+        cmd = u"scrot \""_ustr + path + u"\""_ustr;
+    else
+    {
+        out.message = u"无非交互截图工具 · 跳过写回证据"_ustr;
+        return out;
+    }
+    const int rc = runShell(cmd);
+    if (rc == 0 && fileExistsSys(path))
+    {
+        out.success = true;
+        out.path = path;
+        out.fileUrl = toFileUrl(path);
+        out.promptAttachment = u"@截图:"_ustr + path;
+        out.message = u"写回证据截屏 · "_ustr + path;
+    }
+    else
+        out.message = u"写回证据截屏失败"_ustr;
+#endif
     return out;
 }
 

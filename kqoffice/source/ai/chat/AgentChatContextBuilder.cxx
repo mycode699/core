@@ -22,30 +22,40 @@ using namespace kqoffice::ai::chat;
 
 namespace
 {
+/// Product trust line shared by all surfaces (local-first · approve-before-write).
+OUString trustLine()
+{
+    return u"产品信任：本地优先；「批准写回」指用户确认后才把 AI 草案写入主文档，"_ustr
+           u"一次批准不是永久静默改稿授权。禁止声称已自动修改用户主文档。"_ustr
+           u"若用户问「批准写回」，按本产品写回链路解释，不要按会计坏账术语解释。"_ustr;
+}
+
 /// Build the system prompt based on document type (可圈office Chinese-first).
 OUString buildSystemPromptImpl(const OUString& docType,
                                const std::vector<MentionContext>& /*mentions*/)
 {
+    const OUString trust = trustLine();
     if (docType.equalsIgnoreAsciiCase("writer"))
     {
-        return u"你是可圈office 文字处理助手。根据用户选区与文档上下文，提供改写、"_ustr
+        return u"你是可圈办公文字处理助手。根据用户选区与文档上下文，提供改写、"_ustr
                u"润色、扩写、简写、翻译与结构建议。若建议修改正文，优先输出可解析的"_ustr
-               u"ApplyPlan/段落替换 JSON；否则给出清晰可执行的文案。禁止声称已修改用户主文档。"_ustr;
+               u"ApplyPlan/段落替换 JSON；否则给出清晰可执行的文案。"_ustr
+               + trust;
     }
     if (docType.equalsIgnoreAsciiCase("calc"))
     {
-        return u"你是可圈office 表格助手。根据选中单元格/区域，解释数据、给出公式、"_ustr
+        return u"你是可圈办公表格助手。根据选中单元格/区域，解释数据、给出公式、"_ustr
                u"清洗与汇总建议。引用单元格请用标准地址（如 B2、A1:C10）。"_ustr
-               u"禁止声称已修改用户工作表。"_ustr;
+               + trust;
     }
     if (docType.equalsIgnoreAsciiCase("impress"))
     {
-        return u"你是可圈office 演示助手。根据当前幻灯/对象文案，优化标题、要点与讲稿，"_ustr
-               u"给出版式与结构建议。禁止声称已修改用户演示文稿。"_ustr;
+        return u"你是可圈办公演示助手。根据当前幻灯/对象文案，优化标题、要点与讲稿，"_ustr
+               u"给出版式与结构建议。"_ustr
+               + trust;
     }
 
-    return u"你是可圈office 办公助手。结合当前文档类型与选区帮助用户完成编辑任务。"_ustr
-           u"禁止在未获用户批准时声称已修改主文档。"_ustr;
+    return u"你是可圈办公助手。结合当前文档类型与选区帮助用户完成编辑任务。"_ustr + trust;
 }
 
 /// Build the document context section for the prompt string.

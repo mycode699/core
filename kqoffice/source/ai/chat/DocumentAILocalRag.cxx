@@ -246,14 +246,22 @@ bool DocumentAILocalRag::wantsDocumentRag(const OUString& rUserInput)
     if (t.isEmpty())
         return false;
     if (t.startsWith(u"/问本文档"_ustr) || t.startsWith(u"/askdoc"_ustr)
-        || t.startsWith(u"/本文档"_ustr))
+        || t.startsWith(u"/本文档"_ustr) || t.startsWith(u"/问"_ustr)
+        || t.startsWith(u"/fts-search"_ustr))
         return true;
     const OUString low = t.toAsciiLowerCase();
     return low.indexOf(u"本文档"_ustr) >= 0 || low.indexOf(u"问文档"_ustr) >= 0
            || low.indexOf(u"全文"_ustr) >= 0 || low.indexOf(u"文档里"_ustr) >= 0
            || low.indexOf(u"文档中"_ustr) >= 0 || low.indexOf(u"根据文档"_ustr) >= 0
+           || low.indexOf(u"这份文件"_ustr) >= 0 || low.indexOf(u"这个文件"_ustr) >= 0
+           || low.indexOf(u"文档讲"_ustr) >= 0 || low.indexOf(u"文档说"_ustr) >= 0
+           || low.indexOf(u"内容是什么"_ustr) >= 0 || low.indexOf(u"总结一下文档"_ustr) >= 0
+           || low.indexOf(u"摘要一下"_ustr) >= 0 || low.indexOf(u"文档摘要"_ustr) >= 0
+           || low.indexOf(u"查找文档"_ustr) >= 0 || low.indexOf(u"在文档"_ustr) >= 0
            || low.indexOf(u"this document"_ustr) >= 0 || low.indexOf(u"ask document"_ustr) >= 0
-           || low.indexOf(u"in this doc"_ustr) >= 0 || low.indexOf(u"whole document"_ustr) >= 0;
+           || low.indexOf(u"in this doc"_ustr) >= 0 || low.indexOf(u"whole document"_ustr) >= 0
+           || low.indexOf(u"summarize this doc"_ustr) >= 0
+           || low.indexOf(u"what does this document"_ustr) >= 0;
 }
 
 OUString DocumentAILocalRag::captureDocumentText(sal_Int32 nMaxChars)
@@ -421,6 +429,77 @@ OUString DocumentAILocalRag::buildContextBlock(const OUString& rQuery, sal_Int32
     return out;
 }
 
+OUString DocumentAILocalRag::formatAnswerWithCitations(const OUString& rAnswer,
+                                                       const std::vector<LocalRagChunk>& rHits)
+{
+    if (rHits.empty())
+        return rAnswer;
+    OUStringBuffer b;
+    // Leading citation chips so UI can show 角标 quickly.
+    b.append(u"引用"_ustr);
+    for (size_t i = 0; i < rHits.size() && i < 8; ++i)
+    {
+        b.append(u"["_ustr);
+        b.append(static_cast<sal_Int32>(i + 1));
+        b.append(u"]"_ustr);
+    }
+    b.append(u"\n\n"_ustr);
+    b.append(rAnswer.isEmpty() ? u"（模型未返回正文）"_ustr : rAnswer);
+    b.append(u"\n\n—— 引用脚注 ——\n"_ustr);
+    for (size_t i = 0; i < rHits.size() && i < 8; ++i)
+    {
+        const auto& h = rHits[i];
+        b.append(u"["_ustr);
+        b.append(static_cast<sal_Int32>(i + 1));
+        b.append(u"] "_ustr);
+        b.append(h.position.isEmpty() ? u"（未知位置）"_ustr : h.position);
+        OUString snippet = h.text;
+        snippet = snippet.replaceAll(u"\n"_ustr, u" "_ustr);
+        if (snippet.getLength() > 80)
+            snippet = snippet.copy(0, 80) + u"…"_ustr;
+        if (!snippet.isEmpty())
+        {
+            b.append(u" — "_ustr);
+            b.append(snippet);
+        }
+        b.append(u"\n"_ustr);
+    }
+    return b.makeStringAndClear();
+}
+
+OUString DocumentAILocalRag::formatLocalCitationGraph(const std::vector<LocalRagChunk>& rHits,
+                                                      sal_Int32 nMaxEdges)
+{
+    if (rHits.size() < 2 || nMaxEdges <= 0)
+        return OUString();
+    OUStringBuffer b;
+    b.append(u"【本地引用图 · 共现边 · 无外传】\n"_ustr);
+    sal_Int32 edges = 0;
+    for (size_t i = 0; i < rHits.size() && edges < nMaxEdges; ++i)
+    {
+        for (size_t j = i + 1; j < rHits.size() && edges < nMaxEdges; ++j)
+        {
+            const OUString& a = rHits[i].position;
+            const OUString& c = rHits[j].position;
+            if (a.isEmpty() || c.isEmpty())
+                continue;
+            b.append(u"· ["_ustr);
+            b.append(static_cast<sal_Int32>(i + 1));
+            b.append(u"]"_ustr);
+            b.append(a);
+            b.append(u" ↔ ["_ustr);
+            b.append(static_cast<sal_Int32>(j + 1));
+            b.append(u"]"_ustr);
+            b.append(c);
+            b.append(u"\n"_ustr);
+            ++edges;
+        }
+    }
+    if (edges == 0)
+        return OUString();
+    return b.makeStringAndClear();
+}
+
 OUString DocumentAILocalRag::formatAnswerCard(const OUString& rQuery, const OUString& rAnswer,
                                               sal_Int32 nTopK)
 {
@@ -429,23 +508,28 @@ OUString DocumentAILocalRag::formatAnswerCard(const OUString& rQuery, const OUSt
     card.append(u"问题："_ustr);
     card.append(clip(rQuery, 200));
     card.append(u"\n\n—— 回答 ——\n"_ustr);
-    card.append(rAnswer.isEmpty() ? u"（模型未返回正文）"_ustr : rAnswer);
 
     auto hits = retrieve(rQuery, nTopK);
     if (!hits.empty())
+        card.append(formatAnswerWithCitations(rAnswer, hits));
+    else
+        card.append(rAnswer.isEmpty() ? u"（模型未返回正文）"_ustr : rAnswer);
+
+    if (!hits.empty())
     {
-        card.append(u"\n\n—— 可定位出处（在文档中查找下列位置）——\n"_ustr);
+        card.append(u"\n\n—— 可定位出处 ——\n"_ustr);
         sal_Int32 rank = 1;
         for (const auto& h : hits)
         {
             card.append(u"· ["_ustr);
             card.append(rank++);
-            card.append(u"] "_ustr);
+            card.append(u"] `"_ustr);
             card.append(h.position.isEmpty() ? u"（未知位置）"_ustr : h.position);
+            card.append(u"`"_ustr);
             OUString snippet = h.text;
             snippet = snippet.replaceAll(u"\n"_ustr, u" "_ustr);
-            if (snippet.getLength() > 72)
-                snippet = snippet.copy(0, 72) + u"…"_ustr;
+            if (snippet.getLength() > 96)
+                snippet = snippet.copy(0, 96) + u"…"_ustr;
             if (!snippet.isEmpty())
             {
                 card.append(u" — "_ustr);
@@ -453,14 +537,19 @@ OUString DocumentAILocalRag::formatAnswerCard(const OUString& rQuery, const OUSt
             }
             card.append(u"\n"_ustr);
         }
-        card.append(u"\n提示：复制位置标记，在 Writer/Calc/Impress 中对照查找；"
-                    u"主文档不会被自动改写。"_ustr);
+        const OUString graph = formatLocalCitationGraph(hits, 6);
+        if (!graph.isEmpty())
+        {
+            card.append(u"\n"_ustr);
+            card.append(graph);
+        }
+        card.append(u"\n提示：点「定位出处」跳到 **首条** 命中；主文档不会被自动改写。"_ustr);
     }
     else
     {
-        card.append(u"\n\n（未命中可定位片段 — 可换关键词再问）"_ustr);
+        card.append(u"\n\n（未命中可定位片段 — 可换关键词、或先 `/fts-reindex` 再建索引）"_ustr);
     }
-    card.append(u"\n\n操作：点侧栏「定位出处」跳到首条命中位置（只选中，不改文档）。"_ustr);
+    card.append(u"\n\n操作：**定位出处**（只选中，不改文档）· **无外传**。"_ustr);
     return card.makeStringAndClear();
 }
 

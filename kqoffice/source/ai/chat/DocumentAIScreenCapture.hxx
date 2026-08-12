@@ -36,6 +36,11 @@ public:
     /// Capture with explicit mode.
     static ScreenCaptureResult capture(ScreenshotMode eMode);
 
+    /// Non-interactive passive capture for apply evidence (fullscreen when possible).
+    /// Never uploads; local PNG under capture dir. Soft-fail if tools missing / user policy.
+    /// rTag e.g. "pre-apply" / "post-apply" becomes filename fragment.
+    static ScreenCaptureResult capturePassiveEvidence(const OUString& rTag);
+
     /// True if platform capture tool appears available.
     static bool isAvailable();
 

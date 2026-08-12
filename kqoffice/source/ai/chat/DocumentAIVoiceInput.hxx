@@ -41,6 +41,10 @@ public:
     /// WeChat-style toggle: start listening if idle, stop+transcribe if active.
     static VoiceCaptureResult togglePushToTalk();
 
+    /// Spokenly-style hold-to-talk: key-down → begin; key-up → end.
+    static VoiceCaptureResult beginPushToTalk();
+    static VoiceCaptureResult endPushToTalk();
+
     static bool isListening();
     static void cancelListening();
 

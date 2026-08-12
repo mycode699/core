@@ -11,6 +11,7 @@
 #include <rtl/ustring.hxx>
 #include <sal/types.h>
 
+#include <functional>
 #include <utility>
 #include <vector>
 
@@ -37,7 +38,7 @@ struct NotebookMaterial
 {
     OUString id;
     OUString title; ///< display name (filename or user title)
-    OUString kind; ///< text|markdown|csv|image|pdf|office|url|other
+    OUString kind; ///< text|markdown|csv|image|pdf|office|url|video|audio|subtitle|other
     OUString sourcePath; ///< original system path (may be empty for pasted text)
     OUString mimeOrExt; ///< e.g. txt, pdf, png
     OUString createdIso;
@@ -92,6 +93,41 @@ public:
     /// Import free-form text/paste as a material.
     static NotebookMaterial importText(const OUString& rTitle, const OUString& rBody,
                                        const OUString& rNoteId = OUString());
+
+    /// Import subtitle / transcript text (YouTube paste, .srt/.vtt content, or plain transcript).
+    /// rKindHint: subtitle|transcript|text (default transcript).
+    static NotebookMaterial importTranscript(const OUString& rTitle, const OUString& rBody,
+                                             const OUString& rKindHint = OUString());
+
+    /// Strip SRT/VTT timing lines → plain dialogue text (also works on already-plain text).
+    static OUString normalizeSubtitleOrTranscript(const OUString& rRaw);
+
+    /// Soft local ASR tooling (ffmpeg + whisper family). Never required; never cloud.
+    struct LocalAsrDiagnostics
+    {
+        bool hasFfmpeg = false;
+        bool hasWhisper = false;
+        OUString ffmpegPath;
+        OUString whisperPath; ///< CLI binary path (whisper / whisper-cli / …)
+        OUString whisperKind; ///< openai-whisper | whisper-cpp | mlx | unknown
+        OUString summary; ///< one-line status for UI
+        OUString installHint; ///< how to enable if missing
+    };
+    static LocalAsrDiagnostics diagnoseLocalAsr();
+
+    /**
+     * Transcribe local video/audio via optional CLI tools.
+     * Pipeline: ffmpeg → 16k mono wav → whisper* → plain text.
+     * Returns transcript (empty on failure); rStatusOut explains result/install.
+     * Blocks until done or timeout; rOnTick called ~every 0.5s (e.g. UI Reschedule).
+     */
+    static OUString
+    transcribeLocalMedia(const OUString& rMediaSystemPath, OUString& rStatusOut,
+                         sal_Int32 nTimeoutSec = 600,
+                         const std::function<void()>& rOnTick = std::function<void()>());
+
+    /// True if material kind is video or audio and has a local source path.
+    static bool isLocalMediaMaterial(const NotebookMaterial& rMat);
 
     /// Attach material id to a note (updates index only).
     static bool linkToNote(const OUString& rMaterialId, const OUString& rNoteId);

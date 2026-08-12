@@ -58,6 +58,16 @@ public:
     static OUString formatAnswerCard(const OUString& rQuery, const OUString& rAnswer,
                                      sal_Int32 nTopK = 4);
 
+    /// Q3: attach numbered citation markers [1]… to answer + footnote block (local only).
+    /// Does not mutate the document. Empty hits → returns rAnswer unchanged.
+    static OUString formatAnswerWithCitations(const OUString& rAnswer,
+                                             const std::vector<LocalRagChunk>& rHits);
+
+    /// Minimal cross-chunk "graph" lines: co-mention pairs among top hits (no network).
+    /// Returns short zh list for Studio / knowledge tab; empty if <2 hits.
+    static OUString formatLocalCitationGraph(const std::vector<LocalRagChunk>& rHits,
+                                             sal_Int32 nMaxEdges = 6);
+
     /// Jump view selection to a RAG position token (para:N / cell:A1 / slide:N / chunk:N).
     /// Does not mutate document content.
     static LocalRagLocateResult locatePosition(const OUString& rPosition);

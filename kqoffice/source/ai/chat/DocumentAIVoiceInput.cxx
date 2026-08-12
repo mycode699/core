@@ -1,6 +1,7 @@
 /* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 #include <DocumentAIVoiceInput.hxx>
+#include <NotebookMaterialStore.hxx>
 
 #include <osl/file.hxx>
 #include <osl/mutex.hxx>
@@ -211,18 +212,24 @@ OUString DocumentAIVoiceInput::statusHint()
     if (!p.voiceEnabled)
         return u"语音：已关闭（设置 → 可圈 AI）"_ustr;
     if (g_listening.load())
-        return u"语音：录音中… 再点一次结束并转写"_ustr;
+    {
+        if (p.voiceHoldToTalk)
+            return u"🎤 正在听… 松开快捷键结束并出字"_ustr;
+        return u"🎤 正在听… 再按 F4 / ⌘⇧空格 结束并出字"_ustr;
+    }
     switch (p.voiceBackend)
     {
         case VoiceBackend::LocalCommand:
-            return u"语音：本地转写命令 · 点按开始"_ustr;
+            return u"语音：本地转写 · F4 / ⌘⇧空格"_ustr;
         case VoiceBackend::PushToTalkRecord:
-            return u"语音：按住说话（点按开始/结束）· 本地录音+转写"_ustr;
+            if (p.voiceHoldToTalk)
+                return u"语音：按住 F4 或 ⌘⇧空格 说话 · 松开出字（本机）"_ustr;
+            return u"语音：F4 / ⌘⇧空格 切换录音 · 本机转写"_ustr;
         case VoiceBackend::SystemDictation:
         default:
             if (p.voiceShowFnHint)
-                return u"语音：系统听写（macOS 长按/双击 Fn · Windows Win+H）· 或配置本地 STT"_ustr;
-            return u"语音：系统听写模式"_ustr;
+                return u"语音：系统听写（Fn）或 F4 本机按住说"_ustr;
+            return u"语音：系统听写 / 快捷键本机录音"_ustr;
     }
 }
 
@@ -317,26 +324,28 @@ VoiceCaptureResult DocumentAIVoiceInput::togglePushToTalk()
     if (!fromEnv.isEmpty() && !g_listening.load())
         return captureOnce();
 
-    // System dictation: each click requests OS dictation (no record)
-    if (prefs.voiceBackend == VoiceBackend::SystemDictation
-        && prefs.voiceCmd.isEmpty()
-        && envOrEmpty("KQOFFICE_AI_VOICE_CMD").isEmpty())
-    {
-        return captureOnce();
-    }
-
-    // Local command without $AUDIO: one-shot
     OUString cmd = prefs.voiceCmd.trim();
     if (cmd.isEmpty())
         cmd = envOrEmpty("KQOFFICE_AI_VOICE_CMD").trim();
-    if (!cmd.isEmpty() && cmd.indexOf(u"$AUDIO"_ustr) < 0
-        && prefs.voiceBackend != VoiceBackend::PushToTalkRecord)
-    {
-        return captureOnce();
-    }
 
-    // Start path without record pipeline → system dictation
-    if (!g_listening.load() && (cmd.isEmpty() || cmd.indexOf(u"$AUDIO"_ustr) < 0))
+    // Prefer local mic+whisper (or $AUDIO cmd) for world-class offline STT
+    const auto asrDiag = kqoffice::ai::notebook::NotebookMaterialStore::diagnoseLocalAsr();
+    const bool canLocalAsr = asrDiag.hasWhisper && asrDiag.hasFfmpeg;
+    const bool hasAudioCmd = !cmd.isEmpty() && cmd.indexOf(u"$AUDIO"_ustr) >= 0;
+    const bool wantRecord = prefs.voiceBackend == VoiceBackend::PushToTalkRecord || hasAudioCmd
+                            || canLocalAsr;
+
+    // System dictation only when user chose it and no local record path
+    if (!wantRecord && prefs.voiceBackend == VoiceBackend::SystemDictation)
+        return captureOnce();
+
+    // Local command without $AUDIO: one-shot
+    if (!cmd.isEmpty() && !hasAudioCmd && prefs.voiceBackend != VoiceBackend::PushToTalkRecord
+        && !canLocalAsr)
+        return captureOnce();
+
+    // No record tools → system dictation guidance
+    if (!g_listening.load() && !wantRecord)
         return captureOnce();
 
     OUString audioPath;
@@ -378,17 +387,74 @@ VoiceCaptureResult DocumentAIVoiceInput::togglePushToTalk()
         return out;
     }
 
-    const OUString sttCmd = expandAudioPlaceholder(cmd, audioPath);
-    const OUString text = runCommandCaptureStdout(sttCmd).trim();
+    OUString text;
+    if (!cmd.isEmpty() && cmd.indexOf(u"$AUDIO"_ustr) >= 0)
+    {
+        const OUString sttCmd = expandAudioPlaceholder(cmd, audioPath);
+        text = runCommandCaptureStdout(sttCmd).trim();
+    }
+    // World-class default: local whisper when no custom STT command
     if (text.isEmpty())
     {
-        out.message = u"转写无结果 — 检查命令与 $AUDIO 占位符。录音文件："_ustr + audioPath;
+        OUString st;
+        text = kqoffice::ai::notebook::NotebookMaterialStore::transcribeLocalMedia(audioPath, st,
+                                                                                   300);
+        if (!text.isEmpty())
+        {
+            out.success = true;
+            out.text = text;
+            out.message = u"语音转写完成（本机 whisper）· 未上传云端"_ustr;
+            return out;
+        }
+        if (!cmd.isEmpty())
+        {
+            out.message = u"转写无结果 — 检查命令与 $AUDIO，或安装 whisper。"
+                          u"录音："_ustr
+                          + audioPath + u"\n"_ustr + st;
+            return out;
+        }
+        out.message = st.isEmpty()
+                          ? (u"转写无结果。录音："_ustr + audioPath
+                             + u"\n可: pip install -U openai-whisper  或配置本地 STT 命令。"_ustr)
+                          : st;
         return out;
     }
     out.success = true;
     out.text = text;
     out.message = u"语音转写完成 · 本地处理 · 未上传云端"_ustr;
     return out;
+}
+
+VoiceCaptureResult DocumentAIVoiceInput::beginPushToTalk()
+{
+    VoiceCaptureResult out;
+    if (g_listening.load())
+    {
+        out.success = true;
+        out.listening = true;
+        out.source = u"listening"_ustr;
+        out.message = statusHint();
+        return out;
+    }
+    // Start path of toggle
+    const auto r = togglePushToTalk();
+    if (r.listening)
+        return r;
+    // If toggle immediately produced text (env/cmd), pass through
+    return r;
+}
+
+VoiceCaptureResult DocumentAIVoiceInput::endPushToTalk()
+{
+    VoiceCaptureResult out;
+    if (!g_listening.load())
+    {
+        out.source = u"idle"_ustr;
+        out.message = u"未在录音"_ustr;
+        return out;
+    }
+    // Stop path of toggle
+    return togglePushToTalk();
 }
 
 } // namespace kqoffice::ai::chat

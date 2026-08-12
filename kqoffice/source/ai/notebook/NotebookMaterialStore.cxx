@@ -4,6 +4,8 @@
 
 #include <osl/file.hxx>
 #include <osl/mutex.hxx>
+#include <osl/process.h>
+#include <osl/thread.hxx>
 #include <osl/time.h>
 #include <rtl/string.hxx>
 #include <rtl/ustrbuf.hxx>
@@ -141,6 +143,145 @@ OUString extOf(const OUString& rPath)
     if (dot < 0 || dot + 1 >= name.getLength())
         return OUString();
     return name.copy(dot + 1).toAsciiLowerCase();
+}
+
+OUString baseNameNoExt(const OUString& rPath)
+{
+    const OUString name = fileNameOf(rPath);
+    const sal_Int32 dot = name.lastIndexOf(u'.');
+    if (dot > 0)
+        return name.copy(0, dot);
+    return name;
+}
+
+OUString parentDirOf(const OUString& rPath)
+{
+    sal_Int32 slash = rPath.lastIndexOf(u'/');
+#if defined(_WIN32)
+    const sal_Int32 bslash = rPath.lastIndexOf(u'\\');
+    if (bslash > slash)
+        slash = bslash;
+#endif
+    if (slash > 0)
+        return rPath.copy(0, slash);
+    return OUString();
+}
+
+bool fileExistsSys(const OUString& rSys)
+{
+    OUString url;
+    if (osl::FileBase::getFileURLFromSystemPath(rSys, url) != osl::FileBase::E_None)
+        return false;
+    osl::DirectoryItem item;
+    return osl::DirectoryItem::get(url, item) == osl::FileBase::E_None;
+}
+
+/// Strip SRT/VTT timing / index lines → dialogue.
+OUString stripSubtitleMarkup(const OUString& rRaw)
+{
+    OUStringBuffer out;
+    sal_Int32 lineStart = 0;
+    const sal_Int32 n = rRaw.getLength();
+    for (sal_Int32 i = 0; i <= n; ++i)
+    {
+        if (i != n && rRaw[i] != u'\n')
+            continue;
+        OUString line = rRaw.copy(lineStart, i - lineStart);
+        lineStart = i + 1;
+        // strip CR
+        if (line.endsWith(u"\r"_ustr))
+            line = line.copy(0, line.getLength() - 1);
+        const OUString t = line.trim();
+        if (t.isEmpty())
+            continue;
+        // WEBVTT header / NOTE / STYLE
+        if (t.startsWith(u"WEBVTT"_ustr) || t.startsWith(u"NOTE"_ustr) || t.startsWith(u"STYLE"_ustr)
+            || t.startsWith(u"REGION"_ustr) || t.startsWith(u"X-TIMESTAMP"_ustr))
+            continue;
+        // pure index number
+        bool pureNum = true;
+        for (sal_Int32 k = 0; k < t.getLength(); ++k)
+        {
+            if (t[k] < u'0' || t[k] > u'9')
+            {
+                pureNum = false;
+                break;
+            }
+        }
+        if (pureNum)
+            continue;
+        // timestamp line 00:00:01,000 --> 00:00:04,000
+        if (t.indexOf(u"-->"_ustr) >= 0)
+            continue;
+        // VTT cue settings with timestamps
+        if (t.indexOf(u':') >= 0 && t.indexOf(u'.') >= 0 && t.getLength() < 40
+            && t.indexOf(u' ') < 0)
+            continue;
+        // strip simple tags <c> </c> {\an8}
+        OUString cleaned;
+        {
+            OUStringBuffer cb;
+            bool inAngle = false;
+            bool inBrace = false;
+            for (sal_Int32 k = 0; k < t.getLength(); ++k)
+            {
+                const sal_Unicode c = t[k];
+                if (c == u'<')
+                {
+                    inAngle = true;
+                    continue;
+                }
+                if (c == u'>')
+                {
+                    inAngle = false;
+                    continue;
+                }
+                if (c == u'{')
+                {
+                    inBrace = true;
+                    continue;
+                }
+                if (c == u'}')
+                {
+                    inBrace = false;
+                    continue;
+                }
+                if (!inAngle && !inBrace)
+                    cb.append(c);
+            }
+            cleaned = cb.makeStringAndClear().trim();
+        }
+        if (cleaned.isEmpty())
+            continue;
+        out.append(cleaned);
+        out.append(u'\n');
+    }
+    return out.makeStringAndClear().trim();
+}
+
+OUString loadSidecarTranscript(const OUString& rMediaPath)
+{
+    const OUString dir = parentDirOf(rMediaPath);
+    const OUString base = baseNameNoExt(rMediaPath);
+    if (dir.isEmpty() || base.isEmpty())
+        return OUString();
+    const OUString sep = rMediaPath.indexOf(u'\\') >= 0 ? u"\\"_ustr : u"/"_ustr;
+    static const char* const kSuff[]
+        = { ".srt", ".vtt", ".zh.srt", ".zh-CN.srt", ".en.srt", ".txt", ".transcript.txt" };
+    for (const char* suf : kSuff)
+    {
+        const OUString cand = dir + sep + base + OUString::fromUtf8(suf);
+        if (!fileExistsSys(cand))
+            continue;
+        const OUString raw = readFileLimited(cand, kMaxReadBytes);
+        if (raw.isEmpty())
+            continue;
+        OUString plain = stripSubtitleMarkup(raw);
+        if (plain.isEmpty())
+            plain = raw;
+        return u"\n\n--- 同名字幕/转录（"_ustr + fileNameOf(cand) + u"）---\n"_ustr + plain;
+    }
+    return OUString();
 }
 
 void appendEsc(OUStringBuffer& b, const OUString& s)
@@ -636,6 +777,16 @@ OUString NotebookMaterialStore::detectKind(const OUString& rPathOrExt)
         || ext == u"docx"_ustr || ext == u"xls"_ustr || ext == u"xlsx"_ustr || ext == u"ppt"_ustr
         || ext == u"pptx"_ustr || ext == u"rtf"_ustr)
         return u"office"_ustr;
+    if (ext == u"mp4"_ustr || ext == u"mov"_ustr || ext == u"mkv"_ustr || ext == u"webm"_ustr
+        || ext == u"avi"_ustr || ext == u"m4v"_ustr || ext == u"wmv"_ustr || ext == u"mpeg"_ustr
+        || ext == u"mpg"_ustr)
+        return u"video"_ustr;
+    if (ext == u"mp3"_ustr || ext == u"wav"_ustr || ext == u"m4a"_ustr || ext == u"aac"_ustr
+        || ext == u"flac"_ustr || ext == u"ogg"_ustr || ext == u"opus"_ustr || ext == u"aiff"_ustr
+        || ext == u"aif"_ustr || ext == u"wma"_ustr)
+        return u"audio"_ustr;
+    if (ext == u"srt"_ustr || ext == u"vtt"_ustr || ext == u"ass"_ustr || ext == u"ssa"_ustr)
+        return u"subtitle"_ustr;
     if (ext == u"http"_ustr || ext == u"https"_ustr || rPathOrExt.startsWith(u"http://"_ustr)
         || rPathOrExt.startsWith(u"https://"_ustr))
         return u"url"_ustr;
@@ -970,6 +1121,28 @@ NotebookMaterial NotebookMaterialStore::importFile(const OUString& rSystemPath,
         extracted = u"[办公文稿材料] "_ustr + m.title + u"\n路径: "_ustr + rSystemPath
                     + u"\n（导入时将尝试 ZIP/XML 文本提取；失败则保留路径引用）"_ustr;
     }
+    else if (m.kind == u"subtitle"_ustr)
+    {
+        const OUString raw = readFileLimited(rSystemPath, kMaxReadBytes);
+        const OUString plain = stripSubtitleMarkup(raw);
+        extracted = u"[字幕材料] "_ustr + m.title + u"\n路径: "_ustr + rSystemPath + u"\n\n"_ustr
+                    + (plain.isEmpty() ? raw : plain);
+    }
+    else if (m.kind == u"video"_ustr || m.kind == u"audio"_ustr)
+    {
+        // Local media: keep path inventory + auto-attach same-basename .srt/.vtt/.txt
+        extracted = (m.kind == u"video"_ustr ? u"[本地视频材料] "_ustr : u"[本地音频材料] "_ustr)
+                    + m.title + u"\n路径: "_ustr + rSystemPath + u"\n大小: "_ustr
+                    + OUString::number(m.byteSize)
+                    + u" 字节\n说明: 可圈笔记不上传云端。问答依据「同名字幕/转录」或你粘贴的旁白文本。"
+                      u"\n建议: 将同名 .srt/.vtt 与媒体放在同一文件夹；或点「字幕/转录」粘贴文稿。\n"_ustr;
+        const OUString side = loadSidecarTranscript(rSystemPath);
+        if (!side.isEmpty())
+            extracted += side;
+        else
+            extracted += u"\n（未找到同名字幕。可用「字幕/转录」粘贴，或选中后点「本机转写」"
+                         u"（需本机 ffmpeg + whisper，不上传云端）。）"_ustr;
+    }
     else
     {
         // try text extract anyway
@@ -1010,6 +1183,399 @@ NotebookMaterial NotebookMaterialStore::importText(const OUString& rTitle, const
     if (!saveIndexEntry(m))
         return NotebookMaterial();
     return m;
+}
+
+OUString NotebookMaterialStore::normalizeSubtitleOrTranscript(const OUString& rRaw)
+{
+    if (rRaw.isEmpty())
+        return OUString();
+    // If looks like SRT/VTT (has -->), strip markup; else keep plain
+    if (rRaw.indexOf(u"-->"_ustr) >= 0 || rRaw.startsWith(u"WEBVTT"_ustr))
+    {
+        const OUString plain = stripSubtitleMarkup(rRaw);
+        return plain.isEmpty() ? rRaw : plain;
+    }
+    return rRaw;
+}
+
+NotebookMaterial NotebookMaterialStore::importTranscript(const OUString& rTitle,
+                                                         const OUString& rBody,
+                                                         const OUString& rKindHint)
+{
+    NotebookMaterial m;
+    if (rBody.isEmpty())
+        return m;
+    const OUString plain = normalizeSubtitleOrTranscript(rBody);
+    if (plain.isEmpty())
+        return m;
+    osl::MutexGuard g(matMutex());
+    ensureDirSys(rootDir());
+    ensureDirSys(materialsDir());
+    m.id = newId();
+    m.title = rTitle.isEmpty() ? u"字幕/转录"_ustr : rTitle;
+    if (rKindHint == u"subtitle"_ustr)
+        m.kind = u"subtitle"_ustr;
+    else if (rKindHint == u"text"_ustr)
+        m.kind = u"text"_ustr;
+    else
+        m.kind = u"subtitle"_ustr; // transcript treated as subtitle-class for grounding
+    m.mimeOrExt = u"transcript"_ustr;
+    m.createdIso = nowIso();
+    m.snippet = capSnippet(u"[字幕/转录] "_ustr + m.title + u"\n\n"_ustr + plain);
+    m.charCount = m.snippet.getLength();
+    m.byteSize = m.charCount;
+    if (!writeFile(snippetPath(m.id), m.snippet))
+        return NotebookMaterial();
+    if (!saveIndexEntry(m))
+        return NotebookMaterial();
+    return m;
+}
+
+namespace
+{
+OUString firstExistingPath(const std::vector<OUString>& cands)
+{
+    for (const auto& p : cands)
+    {
+        if (p.isEmpty())
+            continue;
+        if (fileExistsSys(p))
+            return p;
+    }
+    return OUString();
+}
+
+OUString whichOnPath(const char* name)
+{
+    // Lightweight: check common install locations + PATH via `command -v` is heavy;
+    // probe fixed prefixes first.
+    const OUString n = OUString::fromUtf8(name);
+    std::vector<OUString> cands;
+    cands.push_back(u"/opt/homebrew/bin/"_ustr + n);
+    cands.push_back(u"/usr/local/bin/"_ustr + n);
+    cands.push_back(u"/usr/bin/"_ustr + n);
+    const char* home = std::getenv("HOME");
+    if (home && *home)
+    {
+        const OUString h = OUString::fromUtf8(home);
+        cands.push_back(h + u"/.local/bin/"_ustr + n);
+        cands.push_back(h + u"/Library/Python/3.12/bin/"_ustr + n);
+        cands.push_back(h + u"/Library/Python/3.11/bin/"_ustr + n);
+        cands.push_back(h + u"/Library/Python/3.10/bin/"_ustr + n);
+    }
+    // PATH scan
+    const char* pathEnv = std::getenv("PATH");
+    if (pathEnv)
+    {
+        const OUString path = OUString::fromUtf8(pathEnv);
+        sal_Int32 start = 0;
+        while (start <= path.getLength())
+        {
+            sal_Int32 colon = path.indexOf(u':', start);
+            if (colon < 0)
+                colon = path.getLength();
+            if (colon > start)
+            {
+                OUString dir = path.copy(start, colon - start);
+                if (!dir.isEmpty())
+                    cands.push_back(dir + u"/"_ustr + n);
+            }
+            start = colon + 1;
+            if (colon >= path.getLength())
+                break;
+        }
+    }
+    return firstExistingPath(cands);
+}
+
+OUString shellSingleQuote(const OUString& s)
+{
+    OUStringBuffer b;
+    b.append(u'\'');
+    for (sal_Int32 i = 0; i < s.getLength(); ++i)
+    {
+        if (s[i] == u'\'')
+            b.append(u"'\\''"_ustr);
+        else
+            b.append(s[i]);
+    }
+    b.append(u'\'');
+    return b.makeStringAndClear();
+}
+} // namespace
+
+bool NotebookMaterialStore::isLocalMediaMaterial(const NotebookMaterial& rMat)
+{
+    return (rMat.kind == u"video"_ustr || rMat.kind == u"audio"_ustr)
+           && !rMat.sourcePath.isEmpty();
+}
+
+NotebookMaterialStore::LocalAsrDiagnostics NotebookMaterialStore::diagnoseLocalAsr()
+{
+    LocalAsrDiagnostics d;
+    d.ffmpegPath = whichOnPath("ffmpeg");
+    d.hasFfmpeg = !d.ffmpegPath.isEmpty();
+
+    // Prefer openai-whisper CLI, then whisper.cpp family, then mlx
+    struct Cand
+    {
+        const char* bin;
+        const char* kind;
+    };
+    static const Cand kWhisper[] = {
+        { "whisper", "openai-whisper" },
+        { "whisper-cli", "whisper-cpp" },
+        { "whisper-cpp", "whisper-cpp" },
+        { "main", "whisper-cpp" }, // rare; only if named main in path
+        { "mlx_whisper", "mlx" },
+        { "faster-whisper", "faster-whisper" },
+    };
+    for (const auto& c : kWhisper)
+    {
+        // skip bare "main" unless under whisper-ish dir
+        OUString p = whichOnPath(c.bin);
+        if (p.isEmpty())
+            continue;
+        if (OUString::fromUtf8(c.bin) == u"main"_ustr
+            && p.indexOf(u"whisper"_ustr) < 0 && p.indexOf(u"Whisper"_ustr) < 0)
+            continue;
+        d.whisperPath = p;
+        d.whisperKind = OUString::fromUtf8(c.kind);
+        d.hasWhisper = true;
+        break;
+    }
+
+    if (d.hasFfmpeg && d.hasWhisper)
+    {
+        d.summary = u"本机 ASR 就绪 · ffmpeg + "_ustr + d.whisperKind + u" ("_ustr
+                    + fileNameOf(d.whisperPath) + u")"_ustr;
+        d.installHint.clear();
+    }
+    else if (d.hasFfmpeg && !d.hasWhisper)
+    {
+        d.summary = u"已检测到 ffmpeg，未检测到 whisper"_ustr;
+        d.installHint = u"安装任选其一（本机，不上传）：\n"
+                        u"  pip install -U openai-whisper\n"
+                        u"  brew install whisper-cpp\n"
+                        u"装好后重启可圈办公，再点「本机转写」。"_ustr;
+    }
+    else if (!d.hasFfmpeg && d.hasWhisper)
+    {
+        d.summary = u"已检测到 whisper，未检测到 ffmpeg"_ustr;
+        d.installHint = u"请安装 ffmpeg：brew install ffmpeg"_ustr;
+    }
+    else
+    {
+        d.summary = u"未检测到本机 ASR 工具"_ustr;
+        d.installHint = u"推荐：\n"
+                        u"  brew install ffmpeg\n"
+                        u"  pip install -U openai-whisper\n"
+                        u"或 brew install whisper-cpp\n"
+                        u"仅在本机运行，媒体不会上传。"_ustr;
+    }
+    return d;
+}
+
+OUString NotebookMaterialStore::transcribeLocalMedia(const OUString& rMediaSystemPath,
+                                                     OUString& rStatusOut, sal_Int32 nTimeoutSec,
+                                                     const std::function<void()>& rOnTick)
+{
+    rStatusOut.clear();
+    if (rMediaSystemPath.isEmpty() || !fileExistsSys(rMediaSystemPath))
+    {
+        rStatusOut = u"媒体文件不存在"_ustr;
+        return OUString();
+    }
+    const LocalAsrDiagnostics diag = diagnoseLocalAsr();
+    if (!diag.hasFfmpeg || !diag.hasWhisper)
+    {
+        rStatusOut = diag.summary + u"\n"_ustr + diag.installHint;
+        return OUString();
+    }
+    if (nTimeoutSec < 30)
+        nTimeoutSec = 30;
+    if (nTimeoutSec > 3600)
+        nTimeoutSec = 3600;
+
+    const OUString work = rootDir() + u"/asr-work"_ustr;
+    ensureDirSys(work);
+    // unique job dir
+    const OUString job = work + u"/"_ustr + newId();
+    ensureDirSys(job);
+    const OUString wav = job + u"/audio.wav"_ustr;
+    const OUString result = job + u"/result.txt"_ustr;
+    const OUString status = job + u"/status.txt"_ustr;
+    const OUString script = job + u"/run.sh"_ustr;
+    const OUString log = job + u"/run.log"_ustr;
+
+    OUStringBuffer sh;
+    sh.append(u"#!/bin/bash\nset +e\n"
+              u"JOB="_ustr);
+    sh.append(shellSingleQuote(job));
+    sh.append(u"\nMEDIA="_ustr);
+    sh.append(shellSingleQuote(rMediaSystemPath));
+    sh.append(u"\nFFMPEG="_ustr);
+    sh.append(shellSingleQuote(diag.ffmpegPath));
+    sh.append(u"\nWHISPER="_ustr);
+    sh.append(shellSingleQuote(diag.whisperPath));
+    sh.append(u"\nKIND="_ustr);
+    sh.append(shellSingleQuote(diag.whisperKind));
+    sh.append(u"\nWAV=\"$JOB/audio.wav\"\n"
+              u"echo RUNNING > \"$JOB/status.txt\"\n"
+              u"\"$FFMPEG\" -y -i \"$MEDIA\" -ar 16000 -ac 1 -c:a pcm_s16le \"$WAV\" "
+              u">\"$JOB/ffmpeg.log\" 2>&1\n"
+              u"if [ ! -s \"$WAV\" ]; then echo FFMPEG_FAIL > \"$JOB/status.txt\"; exit 1; fi\n"
+              u"case \"$KIND\" in\n"
+              u"  openai-whisper)\n"
+              u"    \"$WHISPER\" \"$WAV\" --language Chinese --model base --task transcribe "
+              u"--output_format txt --output_dir \"$JOB\" >\"$JOB/whisper.log\" 2>&1\n"
+              u"    if [ -f \"$JOB/audio.txt\" ]; then cp \"$JOB/audio.txt\" \"$JOB/result.txt\"; fi\n"
+              u"    ;;\n"
+              u"  whisper-cpp)\n"
+              u"    # try common flags; models left to user env WHISPER_CPP_MODEL\n"
+              u"    MODEL=\"${WHISPER_CPP_MODEL:-}\"\n"
+              u"    if [ -z \"$MODEL\" ]; then\n"
+              u"      for m in /opt/homebrew/share/whisper-cpp/*.bin "
+              u"/usr/local/share/whisper-cpp/*.bin \"$HOME/.cache/whisper-cpp\"/*.bin; do\n"
+              u"        [ -f \"$m\" ] && MODEL=\"$m\" && break\n"
+              u"      done\n"
+              u"    fi\n"
+              u"    if [ -n \"$MODEL\" ]; then\n"
+              u"      \"$WHISPER\" -m \"$MODEL\" -f \"$WAV\" -l zh -otxt -of \"$JOB/out\" "
+              u">\"$JOB/whisper.log\" 2>&1\n"
+              u"      [ -f \"$JOB/out.txt\" ] && cp \"$JOB/out.txt\" \"$JOB/result.txt\"\n"
+              u"    else\n"
+              u"      \"$WHISPER\" -f \"$WAV\" -l zh -otxt -of \"$JOB/out\" "
+              u">\"$JOB/whisper.log\" 2>&1\n"
+              u"      [ -f \"$JOB/out.txt\" ] && cp \"$JOB/out.txt\" \"$JOB/result.txt\"\n"
+              u"    fi\n"
+              u"    ;;\n"
+              u"  mlx)\n"
+              u"    \"$WHISPER\" \"$WAV\" --language zh -o \"$JOB/result.txt\" "
+              u">\"$JOB/whisper.log\" 2>&1 || "
+              u"\"$WHISPER\" \"$WAV\" >\"$JOB/result.txt\" 2>\"$JOB/whisper.log\"\n"
+              u"    ;;\n"
+              u"  *)\n"
+              u"    \"$WHISPER\" \"$WAV\" >\"$JOB/result.txt\" 2>\"$JOB/whisper.log\"\n"
+              u"    ;;\n"
+              u"esac\n"
+              u"if [ -s \"$JOB/result.txt\" ]; then\n"
+              u"  echo OK > \"$JOB/status.txt\"\n"
+              u"else\n"
+              u"  echo WHISPER_FAIL > \"$JOB/status.txt\"\n"
+              u"  exit 2\n"
+              u"fi\n"_ustr);
+
+    if (!writeFile(script, sh.makeStringAndClear()))
+    {
+        rStatusOut = u"无法写入转写脚本"_ustr;
+        return OUString();
+    }
+
+    // chmod +x via shell
+    {
+        OUString chmodScript = u"#!/bin/bash\nchmod +x "_ustr + shellSingleQuote(script) + u"\n"_ustr;
+        const OUString chmodPath = job + u"/chmod.sh"_ustr;
+        writeFile(chmodPath, chmodScript);
+        rtl_uString* args[2] = {};
+        OUString bash(u"/bin/bash"_ustr);
+        args[0] = bash.pData;
+        args[1] = chmodPath.pData;
+        oslProcess hp = nullptr;
+        osl_executeProcess(bash.pData, args + 1, 1, osl_Process_WAIT, nullptr, nullptr, nullptr, 0,
+                           &hp);
+        if (hp)
+            osl_freeProcessHandle(hp);
+    }
+
+    rtl_uString* pArgs[2] = {};
+    OUString bash(u"/bin/bash"_ustr);
+    pArgs[0] = bash.pData;
+    pArgs[1] = script.pData;
+    oslProcess hProc = nullptr;
+    if (osl_executeProcess(bash.pData, pArgs + 1, 1, osl_Process_NORMAL, nullptr, nullptr, nullptr,
+                           0, &hProc)
+        != osl_Process_E_None || !hProc)
+    {
+        rStatusOut = u"无法启动本机转写进程"_ustr;
+        return OUString();
+    }
+
+    // Poll until done or timeout (caller may Reschedule between sleeps externally;
+    // we still sleep in short slices).
+    const sal_Int32 slices = nTimeoutSec * 2; // 500ms
+    bool done = false;
+    for (sal_Int32 i = 0; i < slices; ++i)
+    {
+        if (rOnTick)
+            rOnTick();
+        TimeValue tv{ 0, 500000000 }; // 0.5s
+        osl_waitThread(&tv);
+        if (rOnTick)
+            rOnTick();
+        oslProcessInfo info{};
+        info.Size = sizeof(info);
+        if (osl_getProcessInfo(hProc, osl_Process_EXITCODE, &info) == osl_Process_E_None)
+        {
+            done = true;
+            break;
+        }
+        // also check status file
+        const OUString st = readFileLimited(status, 64).trim();
+        if (st == u"OK"_ustr || st == u"FFMPEG_FAIL"_ustr || st == u"WHISPER_FAIL"_ustr)
+        {
+            // process may still be exiting
+            if (st != u"RUNNING"_ustr)
+            {
+                TimeValue tv2{ 0, 200000000 };
+                osl_waitThread(&tv2);
+                done = true;
+                break;
+            }
+        }
+    }
+    if (!done)
+    {
+        osl_terminateProcess(hProc);
+        osl_freeProcessHandle(hProc);
+        rStatusOut = u"本机转写超时（"_ustr + OUString::number(nTimeoutSec)
+                     + u"s）。可换更短片段，或设置较小 whisper 模型后重试。日志: "_ustr + log;
+        return OUString();
+    }
+    osl_freeProcessHandle(hProc);
+
+    const OUString st = readFileLimited(status, 64).trim();
+    if (st == u"FFMPEG_FAIL"_ustr)
+    {
+        rStatusOut = u"ffmpeg 提取音频失败。日志: "_ustr + job + u"/ffmpeg.log"_ustr;
+        return OUString();
+    }
+    if (st != u"OK"_ustr)
+    {
+        rStatusOut = u"whisper 转写失败（"_ustr + st + u"）。请确认模型已下载。"
+                     u" openai-whisper 首次会下载 base 模型。"
+                     u" whisper-cpp 可设置环境变量 WHISPER_CPP_MODEL=模型.bin 路径。"
+                     u"\n日志: "_ustr
+                     + job + u"/whisper.log"_ustr;
+        return OUString();
+    }
+    OUString text = readFileLimited(result, kMaxSnippetChars).trim();
+    if (text.isEmpty())
+    {
+        rStatusOut = u"转写结果为空"_ustr;
+        return OUString();
+    }
+    // If whisper dumped SRT/VTT-like, keep dialogue only
+    if (text.indexOf(u"-->"_ustr) >= 0 || text.startsWith(u"WEBVTT"_ustr))
+    {
+        const OUString plain = stripSubtitleMarkup(text);
+        if (!plain.isEmpty())
+            text = plain;
+    }
+    rStatusOut = u"本机转写完成（"_ustr + diag.whisperKind + u" · "_ustr
+                 + OUString::number(text.getLength()) + u" 字）· 未上传"_ustr;
+    (void)wav;
+    return text;
 }
 
 bool NotebookMaterialStore::linkToNote(const OUString& rMaterialId, const OUString& rNoteId)

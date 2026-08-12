@@ -268,13 +268,21 @@ DocumentAIInputPrefs DocumentAIInputPrefs::load()
     if (!cmd.isEmpty())
         p.voiceCmd = cmd;
     p.voicePushToTalk = jsonBoolField(body, u"voicePushToTalk"_ustr, p.voicePushToTalk);
+    p.voiceHoldToTalk = jsonBoolField(body, u"voiceHoldToTalk"_ustr, p.voiceHoldToTalk);
     p.voiceAutoSend = jsonBoolField(body, u"voiceAutoSend"_ustr, false);
     p.voiceShowFnHint = jsonBoolField(body, u"voiceShowFnHint"_ustr, p.voiceShowFnHint);
+    p.voiceShowHud = jsonBoolField(body, u"voiceShowHud"_ustr, p.voiceShowHud);
+    {
+        const OUString hk = jsonStringField(body, u"voiceHotkey"_ustr).trim().toAsciiLowerCase();
+        if (hk == u"f4"_ustr || hk == u"cmd-shift-space"_ustr || hk == u"right-cmd"_ustr
+            || hk == u"all"_ustr)
+            p.voiceHotkey = hk;
+    }
     p.voiceMaxRecordSec = jsonIntField(body, u"voiceMaxRecordSec"_ustr, p.voiceMaxRecordSec);
     if (p.voiceMaxRecordSec < 5)
         p.voiceMaxRecordSec = 5;
-    if (p.voiceMaxRecordSec > 180)
-        p.voiceMaxRecordSec = 180;
+    if (p.voiceMaxRecordSec > 600)
+        p.voiceMaxRecordSec = 600;
 
     p.screenshotEnabled = jsonBoolField(body, u"screenshotEnabled"_ustr, p.screenshotEnabled);
     p.screenshotMode = screenshotModeFromString(jsonStringField(body, u"screenshotMode"_ustr));
@@ -299,11 +307,64 @@ DocumentAIInputPrefs DocumentAIInputPrefs::load()
     if (!envOcr.isEmpty())
         p.ocrCmd = envOcr;
 
+    p.inlineMultiVariant = jsonBoolField(body, u"inlineMultiVariant"_ustr, p.inlineMultiVariant);
+    p.inlineGhostTimeoutMs
+        = jsonIntField(body, u"inlineGhostTimeoutMs"_ustr, p.inlineGhostTimeoutMs);
+    if (p.inlineGhostTimeoutMs < 3000)
+        p.inlineGhostTimeoutMs = 3000;
+    if (p.inlineGhostTimeoutMs > 60000)
+        p.inlineGhostTimeoutMs = 60000;
+    p.inlineContextChars = jsonIntField(body, u"inlineContextChars"_ustr, p.inlineContextChars);
+    if (p.inlineContextChars < 120)
+        p.inlineContextChars = 120;
+    if (p.inlineContextChars > 2000)
+        p.inlineContextChars = 2000;
+    // Default false: never auto-trigger model from bare typing without explicit opt-in.
+    p.inlineAutoGhost = jsonBoolField(body, u"inlineAutoGhost"_ustr, false);
+    p.inlineAutoGhostIdleMs
+        = jsonIntField(body, u"inlineAutoGhostIdleMs"_ustr, p.inlineAutoGhostIdleMs);
+    if (p.inlineAutoGhostIdleMs < 400)
+        p.inlineAutoGhostIdleMs = 400;
+    if (p.inlineAutoGhostIdleMs > 5000)
+        p.inlineAutoGhostIdleMs = 5000;
+    p.inlineExtTextGhost = jsonBoolField(body, u"inlineExtTextGhost"_ustr, true);
+    p.applyCaptureEvidence = jsonBoolField(body, u"applyCaptureEvidence"_ustr, true);
+    p.applyVisionDescribe = jsonBoolField(body, u"applyVisionDescribe"_ustr, true);
+    p.applyVisionLocalMultimodal
+        = jsonBoolField(body, u"applyVisionLocalMultimodal"_ustr, true);
+    {
+        const OUString vm = jsonStringField(body, u"visionModel"_ustr);
+        if (!vm.isEmpty())
+            p.visionModel = vm;
+        const OUString vc = jsonStringField(body, u"visionCmd"_ustr);
+        if (!vc.isEmpty())
+            p.visionCmd = vc;
+    }
+    p.chatStreamingDefault = jsonBoolField(body, u"chatStreamingDefault"_ustr, true);
+    p.taskBootstrapModelRefine
+        = jsonBoolField(body, u"taskBootstrapModelRefine"_ustr, true);
+    p.taskBootstrapRefineBelow
+        = jsonIntField(body, u"taskBootstrapRefineBelow"_ustr, p.taskBootstrapRefineBelow);
+    if (p.taskBootstrapRefineBelow < 20)
+        p.taskBootstrapRefineBelow = 20;
+    if (p.taskBootstrapRefineBelow > 90)
+        p.taskBootstrapRefineBelow = 90;
+    // Default false: no enterprise egress surface until explicitly enabled.
+    p.enterpriseConnectorsEnabled
+        = jsonBoolField(body, u"enterpriseConnectorsEnabled"_ustr, false);
+
     // Env still wins for voice cmd if set
     if (!envCmd.isEmpty())
         p.voiceCmd = envCmd;
     return p;
 }
+
+namespace
+{
+DocumentAIInputPrefs::OnSavedCallback g_onSaved = nullptr;
+}
+
+void DocumentAIInputPrefs::setOnSavedCallback(OnSavedCallback fn) { g_onSaved = fn; }
 
 bool DocumentAIInputPrefs::save(const DocumentAIInputPrefs& r)
 {
@@ -329,9 +390,16 @@ bool DocumentAIInputPrefs::save(const DocumentAIInputPrefs& r)
     b.append(u",\n"_ustr);
     appendJsonBool(b, u"voicePushToTalk"_ustr, r.voicePushToTalk);
     b.append(u",\n"_ustr);
+    appendJsonBool(b, u"voiceHoldToTalk"_ustr, r.voiceHoldToTalk);
+    b.append(u",\n"_ustr);
     appendJsonBool(b, u"voiceAutoSend"_ustr, r.voiceAutoSend);
     b.append(u",\n"_ustr);
     appendJsonBool(b, u"voiceShowFnHint"_ustr, r.voiceShowFnHint);
+    b.append(u",\n"_ustr);
+    appendJsonBool(b, u"voiceShowHud"_ustr, r.voiceShowHud);
+    b.append(u",\n"_ustr);
+    appendJsonString(b, u"voiceHotkey"_ustr,
+                     r.voiceHotkey.isEmpty() ? u"all"_ustr : r.voiceHotkey);
     b.append(u",\n"_ustr);
     appendJsonInt(b, u"voiceMaxRecordSec"_ustr, r.voiceMaxRecordSec);
     b.append(u",\n"_ustr);
@@ -352,9 +420,44 @@ bool DocumentAIInputPrefs::save(const DocumentAIInputPrefs& r)
     appendJsonBool(b, u"ocrEnabled"_ustr, r.ocrEnabled);
     b.append(u",\n"_ustr);
     appendJsonString(b, u"ocrCmd"_ustr, r.ocrCmd);
+    b.append(u",\n"_ustr);
+    appendJsonBool(b, u"inlineMultiVariant"_ustr, r.inlineMultiVariant);
+    b.append(u",\n"_ustr);
+    appendJsonInt(b, u"inlineGhostTimeoutMs"_ustr, r.inlineGhostTimeoutMs);
+    b.append(u",\n"_ustr);
+    appendJsonInt(b, u"inlineContextChars"_ustr, r.inlineContextChars);
+    b.append(u",\n"_ustr);
+    appendJsonBool(b, u"inlineAutoGhost"_ustr, r.inlineAutoGhost);
+    b.append(u",\n"_ustr);
+    appendJsonInt(b, u"inlineAutoGhostIdleMs"_ustr, r.inlineAutoGhostIdleMs);
+    b.append(u",\n"_ustr);
+    appendJsonBool(b, u"inlineExtTextGhost"_ustr, r.inlineExtTextGhost);
+    b.append(u",\n"_ustr);
+    appendJsonBool(b, u"applyCaptureEvidence"_ustr, r.applyCaptureEvidence);
+    b.append(u",\n"_ustr);
+    appendJsonBool(b, u"applyVisionDescribe"_ustr, r.applyVisionDescribe);
+    b.append(u",\n"_ustr);
+    appendJsonBool(b, u"applyVisionLocalMultimodal"_ustr, r.applyVisionLocalMultimodal);
+    b.append(u",\n"_ustr);
+    appendJsonString(b, u"visionModel"_ustr, r.visionModel);
+    b.append(u",\n"_ustr);
+    appendJsonString(b, u"visionCmd"_ustr, r.visionCmd);
+    b.append(u",\n"_ustr);
+    appendJsonBool(b, u"chatStreamingDefault"_ustr, r.chatStreamingDefault);
+    b.append(u",\n"_ustr);
+    appendJsonBool(b, u"taskBootstrapModelRefine"_ustr, r.taskBootstrapModelRefine);
+    b.append(u",\n"_ustr);
+    appendJsonInt(b, u"taskBootstrapRefineBelow"_ustr, r.taskBootstrapRefineBelow);
+    b.append(u",\n"_ustr);
+    appendJsonBool(b, u"enterpriseConnectorsEnabled"_ustr, r.enterpriseConnectorsEnabled);
     b.append(u"\n}\n"_ustr);
     const OString utf8 = OUStringToOString(b.makeStringAndClear(), RTL_TEXTENCODING_UTF8);
-    return writeFileUtf8(path, std::string(utf8.getStr(), static_cast<size_t>(utf8.getLength())));
+    const bool ok
+        = writeFileUtf8(path, std::string(utf8.getStr(), static_cast<size_t>(utf8.getLength())));
+    // Hot-reload Spokenly hotkeys / any other listeners (no app restart).
+    if (ok && g_onSaved)
+        g_onSaved();
+    return ok;
 }
 
 } // namespace kqoffice::ai::chat

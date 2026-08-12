@@ -33,14 +33,21 @@ enum class ScreenshotMode
 
 struct DocumentAIInputPrefs
 {
-    // —— Voice ——
+    // —— Voice (Spokenly-inspired) ——
     bool voiceEnabled = true;
-    VoiceBackend voiceBackend = VoiceBackend::SystemDictation;
+    /// Default PushToTalk: local mic + STT. System dictation remains available.
+    VoiceBackend voiceBackend = VoiceBackend::PushToTalkRecord;
     OUString voiceCmd; ///< local STT; may contain $AUDIO for recorded wav path
-    bool voicePushToTalk = true; ///< click start / click end (WeChat-style)
+    bool voicePushToTalk = true; ///< click start / click end
+    /// Hold-to-talk (Spokenly): key down = start, key up = stop+transcribe.
+    /// false = toggle mode (press to start, press again to stop).
+    bool voiceHoldToTalk = true;
     bool voiceAutoSend = false; ///< never default-true (approve/send explicit)
     bool voiceShowFnHint = true; ///< surface system Fn dictation tip
-    sal_Int32 voiceMaxRecordSec = 60;
+    bool voiceShowHud = true; ///< floating “正在听…” HUD while recording
+    /// Spokenly-style hotkey set: all | f4 | cmd-shift-space | right-cmd
+    OUString voiceHotkey = u"all"_ustr;
+    sal_Int32 voiceMaxRecordSec = 120;
 
     // —— Screenshot ——
     bool screenshotEnabled = true;
@@ -62,9 +69,57 @@ struct DocumentAIInputPrefs
     /// KQOFFICE_AI_OCR_CMD or auto-detect `tesseract`.
     OUString ocrCmd;
 
+    // —— Cursor-style inline edit / ghost complete ——
+    /// When true, Ctrl+. / Ctrl+K complete asks for 2 variants; false = single line (faster).
+    bool inlineMultiVariant = true;
+    /// Max wait for ghost/complete light-slot (ms). Edit mode still uses longer budget.
+    sal_Int32 inlineGhostTimeoutMs = 12000;
+    /// Soft max chars of before-context fed to complete prompt.
+    sal_Int32 inlineContextChars = 600;
+    /// Reserved: typing-idle auto ghost (default off; requires edit-surface hook).
+    bool inlineAutoGhost = false;
+    /// Idle ms after last key before auto ghost fires (only if inlineAutoGhost).
+    sal_Int32 inlineAutoGhostIdleMs = 900;
+    /// Writer complete mode: try in-document ExtTextInput gray composition (feature flag).
+    /// Default on; falls back to caret Popover tip. Still Tab-to-accept; reject clears without write.
+    bool inlineExtTextGhost = true;
+
+    // —— Apply evidence (local screenshots, no upload) ——
+    /// Capture passive fullscreen PNG before/after approved write-back (local evidence).
+    bool applyCaptureEvidence = true;
+    /// After pre/post shots: light-slot *text* commentary on expected visual delta (no image upload).
+    bool applyVisionDescribe = true;
+    /// Prefer local multimodal (Ollama loopback / visionCmd) reading pre/post PNG bytes.
+    /// Still never uploads images to public cloud; falls back to text describe.
+    bool applyVisionLocalMultimodal = true;
+    /// Optional vision model tag (empty → KQOFFICE_AI_VISION_MODEL or llava).
+    OUString visionModel;
+    /// Optional local command template with $PRE $POST (stdout = describe text).
+    OUString visionCmd;
+
+    // —— Chat streaming ——
+    /// Prefer SSE/NDJSON token streaming in AI panel (default on; local-model friendly).
+    bool chatStreamingDefault = true;
+
+    // —— Task bootstrap (shengji semantic start) ——
+    /// When rule confidence is low on Required turns, call light slot to refine restatement.
+    bool taskBootstrapModelRefine = true;
+    /// Confidence threshold below which model refine runs (0–100).
+    sal_Int32 taskBootstrapRefineBelow = 55;
+
+    // —— Enterprise connectors (default OFF) ——
+    /// Master switch; even when true each connector needs enabled+granted+approval.
+    bool enterpriseConnectorsEnabled = false;
+
     static OUString defaultConfigPath();
     static DocumentAIInputPrefs load();
     static bool save(const DocumentAIInputPrefs& r);
+
+    /// Optional callback after a successful save (e.g. rebind Spokenly hotkeys).
+    /// Set from sfx at startup; safe no-op if unset.
+    using OnSavedCallback = void (*)();
+    static void setOnSavedCallback(OnSavedCallback fn);
+
     static OUString voiceBackendToString(VoiceBackend e);
     static VoiceBackend voiceBackendFromString(const OUString& s);
     static OUString screenshotModeToString(ScreenshotMode e);

@@ -29,8 +29,13 @@ struct DocumentAIBinding
     OUString providerContext;
     /// Short status line for UI ("writer · 选区 128 字").
     OUString statusLabel;
+    /// GenOffice-style bounded document skeleton (index|type|preview); empty if none.
+    OUString documentSkeleton;
+    /// Snapshot hash of the skeleton used for this bind (stale apply guard).
+    OUString documentSnapshotHash;
     bool hasDocument = false;
     bool hasSelection = false;
+    bool hasDocumentSkeleton = false;
 };
 
 /// Static helpers: always call before Provider / AgentStepRunner.
