@@ -396,21 +396,7 @@ Ctrl+Shift+u aka U_SHIFT_MOD1 under GTK/IBUS is for unicode key input
           <value xml:lang="en-US">.uno:SidebarDeck.PropertyDeck</value>
         </prop>
       </node>
-      <!-- 可圈office: open AI Chat deck with selection context (Ctrl/Cmd+Shift+F6) -->
-      <node oor:name="F6_SHIFT_MOD1" oor:op="replace">
-        <prop oor:name="Command">
-          <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
-          <value xml:lang="en-US">.uno:SidebarDeck.AIChatDeck</value>
-        </prop>
-      </node>
-      <!-- 可圈office: alternate — Ctrl+Alt+J / Cmd+Option+J (avoid Ctrl+J = justify) -->
-      <node oor:name="J_MOD1_MOD2" oor:op="replace">
-        <prop oor:name="Command">
-          <value xml:lang="x-no-translate">L10N SHORTCUTS - NO TRANSLATE</value>
-          <value xml:lang="en-US">.uno:SidebarDeck.AIChatDeck</value>
-        </prop>
-      </node>
-    </node>
+</node>
     <node oor:name="Modules">
       <node oor:name="com.sun.star.script.BasicIDE" oor:op="replace">
         <node oor:name="C_MOD1_MOD2" oor:op="replace">
