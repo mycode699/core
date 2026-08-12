@@ -14,6 +14,7 @@
 #include <rtl/ustring.hxx>
 #include <sal/types.h>
 
+#include <functional>
 #include <vector>
 
 namespace kqoffice::ai
@@ -58,10 +59,18 @@ public:
     /// Never throws.
     OUString generate(const OUString& model, const OUString& prompt);
 
+    /// Streaming /api/generate (stream:true NDJSON). rOnChunk gets response deltas.
+    using StreamChunkFn = std::function<bool(const OUString& rDelta)>;
+    using StreamCancelFn = std::function<bool()>;
+    OUString generateStream(const OUString& model, const OUString& prompt,
+                            const StreamChunkFn& rOnChunk,
+                            const StreamCancelFn& rShouldCancel = StreamCancelFn());
+
     /// Exposed for cppunit: build the exact non-stream /api/generate request body.
     /// The app-level Writer provider path expects runtime JSON, so the request
     /// pins Ollama JSON mode and temperature 0 for deterministic structure.
-    static OString buildGenerateRequestJson(const OUString& model, const OUString& prompt);
+    static OString buildGenerateRequestJson(const OUString& model, const OUString& prompt,
+                                            bool bStream = false);
 
     /// Exposed for cppunit: parse just the `models[].name` fields from
     /// a raw Ollama `/api/tags` JSON body. No generic JSON parser —

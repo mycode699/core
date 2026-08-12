@@ -11,6 +11,7 @@
 
 #include <rtl/strbuf.hxx>
 #include <rtl/string.hxx>
+#include <rtl/ustrbuf.hxx>
 #include <rtl/ustring.hxx>
 
 #include <arpa/inet.h>
@@ -203,8 +204,8 @@ std::vector<OUString> OllamaAdapter::listModels()
     return parseModelsJson(body);
 }
 
-OString OllamaAdapter::buildGenerateRequestJson(const OUString& model,
-                                                const OUString& prompt)
+OString OllamaAdapter::buildGenerateRequestJson(const OUString& model, const OUString& prompt,
+                                                bool bStream)
 {
     OString modelUtf8 = OUStringToOString(model, RTL_TEXTENCODING_UTF8);
     OString promptUtf8 = OUStringToOString(prompt, RTL_TEXTENCODING_UTF8);
@@ -213,7 +214,13 @@ OString OllamaAdapter::buildGenerateRequestJson(const OUString& model,
     appendJsonEscaped(body, modelUtf8);
     body.append("\",\"prompt\":\"");
     appendJsonEscaped(body, promptUtf8);
-    body.append("\",\"stream\":false,\"format\":\"json\",\"options\":{\"temperature\":0}}");
+    body.append("\",\"stream\":");
+    body.append(bStream ? "true" : "false");
+    // Stream path: plain text (no forced JSON mode) so tokens stream cleanly.
+    if (bStream)
+        body.append(",\"options\":{\"temperature\":0}}");
+    else
+        body.append(",\"format\":\"json\",\"options\":{\"temperature\":0}}");
     return body.makeStringAndClear();
 }
 
@@ -404,6 +411,95 @@ OUString OllamaAdapter::parseGenerateJson(const OString& body)
                                  RTL_TEXTENCODING_UTF8);
     }
     return OUString();
+}
+
+OUString OllamaAdapter::generateStream(const OUString& model, const OUString& prompt,
+                                       const StreamChunkFn& rOnChunk,
+                                       const StreamCancelFn& rShouldCancel)
+{
+    // curl -N NDJSON stream from Ollama /api/generate
+    char bodyPath[] = "/tmp/kqoffice-ollama-sbody-XXXXXX";
+    const int bodyFd = ::mkstemp(bodyPath);
+    if (bodyFd < 0)
+        return OUString();
+    const OString jsonBody = buildGenerateRequestJson(model, prompt, /*bStream*/ true);
+    (void)::write(bodyFd, jsonBody.getStr(), static_cast<size_t>(jsonBody.getLength()));
+    ::close(bodyFd);
+
+    OStringBuffer cmd;
+    cmd.append("curl -sS -N --http1.1 --max-time ");
+    cmd.append(static_cast<sal_Int32>(kGenerateTimeoutMs / 1000));
+    cmd.append(" -X POST -H 'Content-Type: application/json' --data-binary @");
+    cmd.append(bodyPath);
+    cmd.append(" http://127.0.0.1:11434/api/generate 2>/dev/null");
+
+    FILE* pipe = ::popen(cmd.makeStringAndClear().getStr(), "r");
+    if (!pipe)
+    {
+        ::unlink(bodyPath);
+        return OUString();
+    }
+
+    OUStringBuffer assembled;
+    char lineBuf[8192];
+    auto cancelled = [&]() { return rShouldCancel && rShouldCancel(); };
+    bool bSaw = false;
+    while (::fgets(lineBuf, sizeof(lineBuf), pipe))
+    {
+        if (cancelled())
+            break;
+        std::string line(lineBuf);
+        while (!line.empty() && (line.back() == '\n' || line.back() == '\r'))
+            line.pop_back();
+        if (line.empty())
+            continue;
+        const OString json(line.data(), static_cast<sal_Int32>(line.size()));
+        // Extract "response":"..."
+        const sal_Int32 k = json.indexOf("\"response\"");
+        if (k < 0)
+            continue;
+        sal_Int32 i = k + 10;
+        while (i < json.getLength()
+               && (json[i] == ' ' || json[i] == '\t' || json[i] == ':'))
+            ++i;
+        if (i >= json.getLength() || json[i] != '"')
+            continue;
+        ++i;
+        OStringBuffer val;
+        while (i < json.getLength())
+        {
+            const char c = json[i];
+            if (c == '\\' && i + 1 < json.getLength())
+            {
+                const char n = json[i + 1];
+                if (n == 'n')
+                    val.append('\n');
+                else if (n == 't')
+                    val.append('\t');
+                else
+                    val.append(n);
+                i += 2;
+                continue;
+            }
+            if (c == '"')
+                break;
+            val.append(c);
+            ++i;
+        }
+        const OUString delta
+            = OStringToOUString(val.makeStringAndClear(), RTL_TEXTENCODING_UTF8);
+        if (delta.isEmpty())
+            continue;
+        bSaw = true;
+        assembled.append(delta);
+        if (rOnChunk && !rOnChunk(delta))
+            break;
+    }
+    ::pclose(pipe);
+    ::unlink(bodyPath);
+    if (!bSaw)
+        return OUString();
+    return assembled.makeStringAndClear();
 }
 
 } // namespace kqoffice::ai
