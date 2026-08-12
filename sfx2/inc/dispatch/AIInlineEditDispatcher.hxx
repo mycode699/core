@@ -19,8 +19,15 @@ public:
     /// Full edit UI (Ctrl/Cmd+K). Empty selection → auto 续写 mode.
     void Show(SfxViewFrame& rFrame);
 
-    /// Ghost-style complete at caret (Ctrl/Cmd+Alt+Space): open + auto-generate via light slot.
+    /// Ghost-style complete at caret (Ctrl/Cmd+.): open + auto-generate via light slot.
     void ShowComplete(SfxViewFrame& rFrame);
+
+    /// Install/reconfigure key-idle auto-ghost watcher from DocumentAIInputPrefs
+    /// (default off). Safe to call repeatedly; no-op when disabled.
+    void EnsureAutoGhostWatch();
+
+    /// True while an inline popover is visible (auto-ghost must not stack).
+    static bool IsActive();
 
 private:
     AIInlineEditDispatcher() = default;
