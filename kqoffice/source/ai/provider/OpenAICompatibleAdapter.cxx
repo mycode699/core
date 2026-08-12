@@ -4,18 +4,16 @@
  */
 
 #include "OpenAICompatibleAdapter.hxx"
+#include "KqNetSocket.hxx"
 
 #include <rtl/strbuf.hxx>
 #include <rtl/string.hxx>
 #include <rtl/ustrbuf.hxx>
 #include <rtl/ustring.hxx>
 
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <sys/time.h>
+#if !defined(_WIN32)
 #include <unistd.h>
+#endif
 
 #include <cstdlib>
 #include <cerrno>
@@ -79,74 +77,19 @@ void appendJsonEscaped(OStringBuffer& out, const OString& s)
     }
 }
 
-bool sendAll(int fd, const char* buf, std::size_t len)
+bool sendAll(KqSock fd, const char* buf, std::size_t len)
 {
-    std::size_t sent = 0;
-    while (sent < len)
-    {
-        ssize_t n = ::send(fd, buf + sent, len - sent, 0);
-        if (n <= 0)
-            return false;
-        sent += static_cast<std::size_t>(n);
-    }
-    return true;
+    return kqNetSendAll(fd, buf, len);
 }
 
-std::string readAllBounded(int fd, std::size_t maxBytes)
+std::string readAllBounded(KqSock fd, std::size_t maxBytes)
 {
-    std::string out;
-    out.reserve(std::min<std::size_t>(maxBytes, std::size_t{2048}));
-    char buf[4096];
-    while (out.size() < maxBytes)
-    {
-        ssize_t n = ::recv(fd, buf, sizeof(buf), 0);
-        if (n == 0)
-            break;
-        if (n < 0)
-        {
-            if (errno == EAGAIN || errno == EWOULDBLOCK)
-                break;
-            return std::string();
-        }
-        out.append(buf, static_cast<std::size_t>(n));
-    }
-    return out;
+    return kqNetRecvBounded(fd, maxBytes);
 }
 
-int openConnection(const OString& hostUtf8, int port, int timeoutMs)
+KqSock openConnection(const OString& hostUtf8, int port, int timeoutMs)
 {
-    int fd = ::socket(AF_INET, SOCK_STREAM, 0);
-    if (fd < 0)
-        return -1;
-
-    struct timeval tv;
-    tv.tv_sec = timeoutMs / 1000;
-    tv.tv_usec = (timeoutMs % 1000) * 1000;
-    ::setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
-    ::setsockopt(fd, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv));
-
-    sockaddr_in addr{};
-    addr.sin_family = AF_INET;
-    addr.sin_port = htons(static_cast<uint16_t>(port));
-
-    // Prefer numeric host; fall back to gethostbyname for LAN hostnames.
-    if (::inet_pton(AF_INET, hostUtf8.getStr(), &addr.sin_addr) != 1)
-    {
-        hostent* he = ::gethostbyname(hostUtf8.getStr());
-        if (!he || he->h_addrtype != AF_INET || !he->h_addr_list || !he->h_addr_list[0])
-        {
-            ::close(fd);
-            return -1;
-        }
-        std::memcpy(&addr.sin_addr, he->h_addr_list[0], sizeof(in_addr));
-    }
-
-    if (::connect(fd, reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) != 0)
-    {
-        ::close(fd);
-        return -1;
-    }
-    return fd;
+    return kqNetConnect(hostUtf8.getStr(), port, timeoutMs);
 }
 
 OUString extractJsonStringAfterKey(const OString& body, const char* key)
@@ -484,10 +427,10 @@ OUString OpenAICompatibleAdapter::probe()
     if (!m_ep.valid)
         return u"unreachable"_ustr;
     const OString host = OUStringToOString(m_ep.host, RTL_TEXTENCODING_UTF8);
-    int fd = openConnection(host, m_ep.port, kProbeTimeoutMs);
+    KqSock fd = openConnection(host, m_ep.port, kProbeTimeoutMs);
     if (fd < 0)
         return u"unreachable"_ustr;
-    ::close(fd);
+    kqNetClose(fd);
     return u"reachable"_ustr;
 }
 
@@ -506,7 +449,7 @@ std::vector<OUString> OpenAICompatibleAdapter::listModels()
     }
 
     const OString host = OUStringToOString(m_ep.host, RTL_TEXTENCODING_UTF8);
-    int fd = openConnection(host, m_ep.port, kProbeTimeoutMs);
+    KqSock fd = openConnection(host, m_ep.port, kProbeTimeoutMs);
     if (fd < 0)
         return {};
 
@@ -524,11 +467,11 @@ std::vector<OUString> OpenAICompatibleAdapter::listModels()
     const OString reqStr = req.makeStringAndClear();
     if (!sendAll(fd, reqStr.getStr(), static_cast<std::size_t>(reqStr.getLength())))
     {
-        ::close(fd);
+        kqNetClose(fd);
         return {};
     }
     std::string raw = readAllBounded(fd, kMaxTagsResponseBytes);
-    ::close(fd);
+    kqNetClose(fd);
     if (raw.empty() || !is2xx(raw))
         return {};
     return parseModelsJson(bodyAfterHeaders(raw));
@@ -659,7 +602,7 @@ OUString OpenAICompatibleAdapter::chat(const OUString& model, const OUString& pr
     }
 
     const OString host = OUStringToOString(m_ep.host, RTL_TEXTENCODING_UTF8);
-    int fd = openConnection(host, m_ep.port, kGenerateTimeoutMs);
+    KqSock fd = openConnection(host, m_ep.port, kGenerateTimeoutMs);
     if (fd < 0)
     {
         m_lastErrorZh = u"无法连接网关 "_ustr + m_ep.host + u":"_ustr
@@ -685,12 +628,12 @@ OUString OpenAICompatibleAdapter::chat(const OUString& model, const OUString& pr
     if (!sendAll(fd, hdrStr.getStr(), static_cast<std::size_t>(hdrStr.getLength()))
         || !sendAll(fd, jsonBody.getStr(), static_cast<std::size_t>(jsonBody.getLength())))
     {
-        ::close(fd);
+        kqNetClose(fd);
         m_lastErrorZh = u"向网关发送请求失败"_ustr;
         return OUString();
     }
     std::string raw = readAllBounded(fd, kMaxGenerateResponseBytes);
-    ::close(fd);
+    kqNetClose(fd);
     if (raw.empty())
     {
         m_lastErrorZh = u"网关返回空响应"_ustr;

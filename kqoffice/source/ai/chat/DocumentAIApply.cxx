@@ -17,8 +17,9 @@
 
 #include <algorithm>
 
-#if defined(MACOSX) || defined(LINUX) || defined(FREEBSD) || defined(NETBSD) || defined(OPENBSD) \
-    || defined(DRAGONFLY) || defined(ANDROID) || defined(EMSCRIPTEN)
+#if !defined(_WIN32) \
+    && (defined(MACOSX) || defined(LINUX) || defined(FREEBSD) || defined(NETBSD) \
+        || defined(OPENBSD) || defined(DRAGONFLY) || defined(ANDROID) || defined(EMSCRIPTEN))
 #include <dlfcn.h>
 #define KQOFFICE_HAVE_DLSYM 1
 #endif

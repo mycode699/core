@@ -22,7 +22,6 @@
 #include <fstream>
 #include <mutex>
 #include <string>
-#include <unistd.h>
 
 namespace kqoffice::ai
 {

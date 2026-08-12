@@ -17,7 +17,9 @@
 #include <cstdlib>
 #include <string>
 #include <string_view>
+#if !defined(_WIN32)
 #include <unistd.h>
+#endif
 #include <vector>
 
 namespace kqoffice::ai::chat

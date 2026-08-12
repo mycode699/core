@@ -8,17 +8,16 @@
  */
 
 #include "OllamaAdapter.hxx"
+#include "KqNetSocket.hxx"
 
 #include <rtl/strbuf.hxx>
 #include <rtl/string.hxx>
 #include <rtl/ustrbuf.hxx>
 #include <rtl/ustring.hxx>
 
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <sys/time.h>
+#if !defined(_WIN32)
 #include <unistd.h>
+#endif
 
 #include <algorithm>
 #include <cerrno>
@@ -49,77 +48,20 @@ constexpr std::size_t kMaxTagsResponseBytes = 8 * 1024;
 // preventing an unbounded read if the daemon misbehaves or streams.
 constexpr std::size_t kMaxGenerateResponseBytes = 256 * 1024;
 
-/// One-shot blocking connect to 127.0.0.1:kPort with SO_RCVTIMEO/SO_SNDTIMEO
-/// set to `timeoutMs`. Returns the connected fd on success, -1 otherwise.
-/// Caller owns the fd and must ::close() it.
-int openConnection(int timeoutMs)
+/// One-shot blocking connect to 127.0.0.1:kPort. Caller must kqNetClose().
+KqSock openConnection(int timeoutMs)
 {
-    int fd = ::socket(AF_INET, SOCK_STREAM, 0);
-    if (fd < 0)
-        return -1;
-
-    struct timeval tv;
-    tv.tv_sec = timeoutMs / 1000;
-    tv.tv_usec = (timeoutMs % 1000) * 1000;
-    // setsockopt failure is non-fatal — we still attempt the connect, just
-    // without the timeout guard. Any later read/connect that hangs will
-    // be killed by cppunit's outer test timeout, not us.
-    ::setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
-    ::setsockopt(fd, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv));
-
-    sockaddr_in addr{};
-    addr.sin_family = AF_INET;
-    addr.sin_port = htons(static_cast<uint16_t>(OllamaAdapter::kPort));
-    if (::inet_pton(AF_INET, OllamaAdapter::kHost, &addr.sin_addr) != 1)
-    {
-        ::close(fd);
-        return -1;
-    }
-
-    if (::connect(fd, reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) != 0)
-    {
-        ::close(fd);
-        return -1;
-    }
-    return fd;
+    return kqNetConnect(OllamaAdapter::kHost, OllamaAdapter::kPort, timeoutMs);
 }
 
-/// Send a fixed buffer fully. Returns true if every byte left.
-bool sendAll(int fd, const char* buf, std::size_t len)
+bool sendAll(KqSock fd, const char* buf, std::size_t len)
 {
-    std::size_t sent = 0;
-    while (sent < len)
-    {
-        ssize_t n = ::send(fd, buf + sent, len - sent, 0);
-        if (n <= 0)
-            return false;
-        sent += static_cast<std::size_t>(n);
-    }
-    return true;
+    return kqNetSendAll(fd, buf, len);
 }
 
-/// Read up to `maxBytes`, then either EOF or cap. Bounded.
-std::string readAllBounded(int fd, std::size_t maxBytes)
+std::string readAllBounded(KqSock fd, std::size_t maxBytes)
 {
-    std::string out;
-    out.reserve(std::min<std::size_t>(maxBytes, std::size_t{2048}));
-    char buf[4096];
-    while (out.size() < maxBytes)
-    {
-        ssize_t n = ::recv(fd, buf, sizeof(buf), 0);
-        if (n == 0)
-            break; // EOF
-        if (n < 0)
-        {
-            // EAGAIN/EWOULDBLOCK from SO_RCVTIMEO — treat as soft EOF;
-            // anything we have so far is what we get.
-            if (errno == EAGAIN || errno == EWOULDBLOCK)
-                break;
-            return std::string();
-        }
-        out.append(buf, static_cast<std::size_t>(n));
-    }
-    return out;
+    return kqNetRecvBounded(fd, maxBytes);
 }
 
 /// Escape `"`, `\`, and control chars (<0x20) inside an OString so the
@@ -162,16 +104,16 @@ void appendJsonEscaped(OStringBuffer& out, const OString& s)
 
 OUString OllamaAdapter::probe()
 {
-    int fd = openConnection(kProbeTimeoutMs);
+    KqSock fd = openConnection(kProbeTimeoutMs);
     if (fd < 0)
         return u"unreachable"_ustr;
-    ::close(fd);
+    kqNetClose(fd);
     return u"reachable"_ustr;
 }
 
 std::vector<OUString> OllamaAdapter::listModels()
 {
-    int fd = openConnection(kProbeTimeoutMs);
+    KqSock fd = openConnection(kProbeTimeoutMs);
     if (fd < 0)
         return {};
 
@@ -182,12 +124,12 @@ std::vector<OUString> OllamaAdapter::listModels()
                           + "\r\nAccept: application/json\r\n\r\n";
     if (!sendAll(fd, req.data(), req.size()))
     {
-        ::close(fd);
+        kqNetClose(fd);
         return {};
     }
 
     std::string raw = readAllBounded(fd, kMaxTagsResponseBytes);
-    ::close(fd);
+    kqNetClose(fd);
     if (raw.empty())
         return {};
 
@@ -230,7 +172,7 @@ OUString OllamaAdapter::generate(const OUString& model, const OUString& prompt)
     // Content-Length and avoid chunked encoding on the request side.
     OString jsonBody = buildGenerateRequestJson(model, prompt);
 
-    int fd = openConnection(kGenerateTimeoutMs);
+    KqSock fd = openConnection(kGenerateTimeoutMs);
     if (fd < 0)
         return OUString();
 
@@ -251,12 +193,12 @@ OUString OllamaAdapter::generate(const OUString& model, const OUString& prompt)
         || !sendAll(fd, jsonBody.getStr(),
                     static_cast<std::size_t>(jsonBody.getLength())))
     {
-        ::close(fd);
+        kqNetClose(fd);
         return OUString();
     }
 
     std::string raw = readAllBounded(fd, kMaxGenerateResponseBytes);
-    ::close(fd);
+    kqNetClose(fd);
     if (raw.empty())
         return OUString();
 
