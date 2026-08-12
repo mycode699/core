@@ -116,8 +116,11 @@ public:
                                           const OUString& rOldText = OUString());
 
     /// Parse outline-to-slides free text into insert ops with targets slide:1..N.
-    /// Recognizes "## N. Title" / "N. Title" headings and following bullet lines.
+    /// Recognizes "## N. Title" / "N. Title" / "第N页" headings and following bullet lines.
     static ApplyPlan extractOutlineSlidePlan(const OUString& rText);
+
+    /// True if free text looks like multi-slide outline suitable for Impress write-back.
+    static bool looksLikeOutlineSlideContent(const OUString& rText);
 
     /// True if free text / scenario output asks for a chart (Calc).
     static bool looksLikeChartIntent(const OUString& rText);
@@ -126,6 +129,54 @@ public:
     /// opType = "chart_insert"; does not mutate cells itself.
     static ApplyPlan makeChartInsertPlan(const OUString& rRangeOrCell,
                                          const OUString& rAdvice = OUString());
+
+    // —— Writer M-W1: structure outline + review fixes (approve-before-apply) ——
+
+    /// True when free text contains Writer heading-outline write-back markers.
+    /// Looks for ===可圈大纲写回=== / "para:N|H1|" lines / markdown # headings with para anchors.
+    static bool looksLikeWriterHeadingOutline(const OUString& rText);
+
+    /// Parse Writer outline write-back block into format ops:
+    ///   para:N|H1|optional title   → format target=para:N newText="heading:1"
+    ///   para:N|H2|…                → heading:2 (H3 → heading:3)
+    /// Markdown fallback: "# Title" lines map to sequential para:1.. only when
+    /// explicit "para:" anchors are present in the same block (no silent guess).
+    static ApplyPlan extractWriterHeadingOutlinePlan(const OUString& rText);
+
+    /// True when free text contains review fix write-back markers.
+    /// Looks for ===可圈审阅修复=== / FIX|old|new lines.
+    static bool looksLikeReviewFixList(const OUString& rText);
+
+    /// Parse review fix lines into replace ops (oldText/newText; target=selection or empty).
+    /// Cap at 12 fixes. planId = ap-review-fixes.
+    static ApplyPlan extractReviewFixPlan(const OUString& rText);
+
+    // —— Calc M-C1: explicit formula / clean write-back blocks ——
+
+    /// True when free text has ===可圈公式写回=== / cell:A1|=… lines.
+    static bool looksLikeCalcFormulaWriteback(const OUString& rText);
+
+    /// Parse cell:X|=formula|note lines into replace ops. planId = ap-calc-formula-writeback.
+    static ApplyPlan extractCalcFormulaWritebackPlan(const OUString& rText);
+
+    /// True when free text has ===可圈清洗写回=== (adjacent-column clean formulas).
+    static bool looksLikeCalcCleanWriteback(const OUString& rText);
+
+    /// Parse clean write-back (same cell:X|=… lines). planId = ap-calc-clean-writeback.
+    static ApplyPlan extractCalcCleanWritebackPlan(const OUString& rText);
+
+    /// Suggest adjacent column target for clean formulas (e.g. range:A1:A10 → cell:B1).
+    /// Returns empty if position cannot be parsed.
+    static OUString adjacentColumnCell(const OUString& rPosition);
+
+    // —— Impress M-I0: speaker notes write-back (notes page only) ——
+
+    /// True when free text has ===可圈讲稿写回=== / slide:N|讲稿|… lines.
+    static bool looksLikeImpressNotesWriteback(const OUString& rText);
+
+    /// Parse slide:N|讲稿|text → insert ops with newText "讲稿：…" (notes-only fill).
+    /// planId = ap-impress-notes.
+    static ApplyPlan extractImpressNotesWritebackPlan(const OUString& rText);
 
 private:
     /// Parse a single JSON fragment into a DiffOperation.

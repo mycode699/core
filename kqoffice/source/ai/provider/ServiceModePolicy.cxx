@@ -19,7 +19,9 @@ namespace
 {
 // Offline/private allow-list. Mirrors W1 spec §"Service Mode Policy",
 // extended for five-slot routing and product edit verbs.
-constexpr std::array<std::u16string_view, 17> kLocalCapabilities{
+// background/hook: Cursor-style ghost / light-slot complete (local-first, no cloud).
+// quick-edit/rewrite-light: short selection polish on light slot.
+constexpr std::array<std::u16string_view, 21> kLocalCapabilities{
     u"rewrite",
     u"summarize",
     u"format-fix",
@@ -37,6 +39,10 @@ constexpr std::array<std::u16string_view, 17> kLocalCapabilities{
     u"shorten",
     u"paraphrase",
     u"proofread",
+    u"background",
+    u"hook",
+    u"quick-edit",
+    u"rewrite-light",
 };
 
 bool capabilityAllowed(const OUString& capability)

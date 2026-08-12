@@ -4,6 +4,8 @@
 
 #include "DocumentAIDocumentTools.hxx"
 #include "DocumentAITaskBootstrap.hxx"
+#include "WorkbenchPhase.hxx"
+#include "FactRouter.hxx"
 
 #include <rtl/ustrbuf.hxx>
 
@@ -22,11 +24,11 @@ OUString clip(const OUString& s, sal_Int32 n)
     return s.copy(0, n) + u"…"_ustr;
 }
 
-bool hasAny(const OUString& low, std::initializer_list<const char16_t*> keys)
+bool hasAny(const OUString& low, std::initializer_list<OUString> keys)
 {
-    for (const auto* k : keys)
+    for (const OUString& k : keys)
     {
-        if (low.indexOf(OUString(k)) >= 0)
+        if (low.indexOf(k) >= 0)
             return true;
     }
     return false;
@@ -62,8 +64,9 @@ bool DocumentAIWorkPlan::looksLikeForcePlan(const OUString& rPrompt)
     if (t.startsWith(u"/plan"_ustr) || t.startsWith(u"/规划"_ustr)
         || t.startsWith(u"/工作计划"_ustr))
         return true;
-    if (hasAny(low, { u"先规划", u"先出计划", u"先做计划", u"制定计划", u"出个计划",
-                      u"工作计划", u"先对齐计划", u"plan mode", u"先 plan" }))
+    if (hasAny(low, { u"先规划"_ustr, u"先出计划"_ustr, u"先做计划"_ustr, u"制定计划"_ustr,
+                      u"出个计划"_ustr, u"工作计划"_ustr, u"先对齐计划"_ustr, u"plan mode"_ustr,
+                      u"先 plan"_ustr }))
         return true;
     return false;
 }
@@ -72,56 +75,36 @@ bool DocumentAIWorkPlan::looksLikeLargeTask(const OUString& rPrompt, const OUStr
                                             bool bHasSelection, bool bAgentCheckbox,
                                             const OUString& rForcedCap)
 {
-    const OUString t = rPrompt.trim();
-    if (t.isEmpty())
-        return false;
-    if (looksLikeForcePlan(t))
-        return true;
-    // Continue / pure QA — never gate
-    if (DocumentAITaskBootstrap::looksLikeContinue(t))
-        return false;
-    if (DocumentAITaskBootstrap::looksLikePureQa(t))
-        return false;
+    kqoffice::ai::control::FactRouteInput in;
+    in.prompt = rPrompt;
+    in.surface = rSurface;
+    in.hasSelection = bHasSelection;
+    in.selectionChars = 0;
+    in.agentCheckbox = bAgentCheckbox
+                       || DocumentAITaskBootstrap::looksLikeDevOrAgent(rPrompt, bAgentCheckbox,
+                                                                       rForcedCap);
+    in.forcedCapability = rForcedCap;
+    in.forcePlanOnce = looksLikeForcePlan(rPrompt);
+    in.knownContinue = DocumentAITaskBootstrap::looksLikeContinue(rPrompt);
+    in.knownPureQa = DocumentAITaskBootstrap::looksLikePureQa(rPrompt);
+    return kqoffice::ai::control::FactRouter::route(in).needsWorkPlan;
+}
 
-    const OUString low = lower(t);
-
-    // Explicit multi-step / full-document scope
-    if (hasAny(low, { u"整篇", u"全文", u"整表", u"整本", u"全部页", u"所有页", u"全面",
-                      u"重构", u"升级", u"分步", u"多步", u"先…再", u"然后再", u"然后在",
-                      u"批量", u"从头到尾", u"系统整理", u"整体优化" }))
-        return true;
-
-    if (DocumentAITaskBootstrap::looksLikeDevOrAgent(t, bAgentCheckbox, rForcedCap)
-        && t.getLength() >= 24)
-        return true;
-
-    // Compound edit asks
-    sal_Int32 verbs = 0;
-    if (hasAny(low, { u"润色", u"改写", u"rewrite", u"polish" }))
-        ++verbs;
-    if (hasAny(low, { u"排版", u"层级", u"大纲", u"layout" }))
-        ++verbs;
-    if (hasAny(low, { u"校对", u"质检", u"审阅", u"proof" }))
-        ++verbs;
-    if (hasAny(low, { u"清洗", u"公式", u"汇总", u"图表" }))
-        ++verbs;
-    if (hasAny(low, { u"大纲", u"多方案", u"成片", u"讲稿" }) && rSurface == u"impress"_ustr)
-        ++verbs;
-    if (verbs >= 2 && t.getLength() >= 16)
-        return true;
-
-    // Long open-ended edit with vague verbs
-    if (t.getLength() >= 48
-        && hasAny(low, { u"优化", u"处理", u"整理", u"改进", u"完善", u"改好", u"弄好" }))
-        return true;
-
-    // Long selection + edit intent without a tight slash contract
-    if (bHasSelection && t.getLength() >= 36
-        && DocumentAIDocumentTools::classifyIntent(t, rForcedCap, true) == u"edit"_ustr
-        && !t.startsWith(u"/"_ustr))
-        return true;
-
-    return false;
+bool DocumentAIWorkPlan::prefersBoundedLoop(const OUString& rPrompt, const OUString& rSurface,
+                                            bool bHasSelection, sal_Int32 nSelectionChars,
+                                            bool bAgentCheckbox, const OUString& rForcedCap)
+{
+    kqoffice::ai::control::FactRouteInput in;
+    in.prompt = rPrompt;
+    in.surface = rSurface;
+    in.hasSelection = bHasSelection;
+    in.selectionChars = nSelectionChars;
+    in.agentCheckbox = bAgentCheckbox;
+    in.forcedCapability = rForcedCap;
+    in.forcePlanOnce = looksLikeForcePlan(rPrompt);
+    in.knownContinue = DocumentAITaskBootstrap::looksLikeContinue(rPrompt);
+    in.knownPureQa = DocumentAITaskBootstrap::looksLikePureQa(rPrompt);
+    return kqoffice::ai::control::FactRouter::route(in).preferMultiRoundTools;
 }
 
 WorkPlanAction DocumentAIWorkPlan::classifyAction(const OUString& rPrompt)
@@ -344,7 +327,7 @@ WorkPlan DocumentAIWorkPlan::build(const WorkPlanInput& rIn)
     // Approach by surface / intent
     OUStringBuffer ap;
     if (surf == u"calc"_ustr
-        || hasAny(low, { u"公式", u"清洗", u"表格", u"汇总", u"图表" }))
+        || hasAny(low, { u"公式"_ustr, u"清洗"_ustr, u"表格"_ustr, u"汇总"_ustr, u"图表"_ustr }))
     {
         ap.append(u"1. 探查选区/表头与数据形态\n"_ustr);
         ap.append(u"2. 生成问题清单或公式草案（含单元格引用）\n"_ustr);
@@ -352,27 +335,27 @@ WorkPlan DocumentAIWorkPlan::build(const WorkPlanInput& rIn)
         ap.append(u"4. 你确认 Diff 后批准写回（可撤销）\n"_ustr);
     }
     else if (surf == u"impress"_ustr
-             || hasAny(low, { u"幻灯", u"演示", u"成片", u"多方案" }))
+             || hasAny(low, { u"幻灯"_ustr, u"演示"_ustr, u"成片"_ustr, u"多方案"_ustr }))
     {
         ap.append(u"1. 大纲/页序（禁止黑盒一次成片）\n"_ustr);
         ap.append(u"2. 多方案对比（若需要）\n"_ustr);
         ap.append(u"3. 选一生成可写回 ## 页结构\n"_ustr);
         ap.append(u"4. 批准写回 → 可选导出 PPTX 指引\n"_ustr);
     }
-    else if (hasAny(low, { u"pdf", u"PDF", u"扫描" }))
+    else if (hasAny(low, { u"pdf"_ustr, u"扫描"_ustr }))
     {
         ap.append(u"1. 确认本地提取文本是否足够（不足则 OCR 提示）\n"_ustr);
         ap.append(u"2. 摘要/问答/大纲（只依据已提取文本）\n"_ustr);
         ap.append(u"3. 可编辑大纲可转入 Writer；不宣称 Acrobat 编辑\n"_ustr);
     }
-    else if (hasAny(low, { u"排版", u"层级", u"大纲写回", u"标题" }))
+    else if (hasAny(low, { u"排版"_ustr, u"层级"_ustr, u"大纲写回"_ustr, u"标题"_ustr }))
     {
         ap.append(u"1. 诊断标题层级与结构问题\n"_ustr);
         ap.append(u"2. 建议标题树（H1–H3）\n"_ustr);
         ap.append(u"3. 输出可圈大纲写回块（按标题软匹配）\n"_ustr);
         ap.append(u"4. Diff + 批准后设标题样式\n"_ustr);
     }
-    else if (hasAny(low, { u"质检", u"校对", u"审阅", u"打分" }))
+    else if (hasAny(low, { u"质检"_ustr, u"校对"_ustr, u"审阅"_ustr, u"打分"_ustr }))
     {
         ap.append(u"1. 通读与四维/严重度诊断\n"_ustr);
         ap.append(u"2. Top 问题 + 最小改动建议\n"_ustr);
@@ -399,7 +382,7 @@ WorkPlan DocumentAIWorkPlan::build(const WorkPlanInput& rIn)
     risks.append(u"- 写回范围可能大于预期 — 务必看 Diff 再批准\n"_ustr);
     if (!rIn.hasSelection && surf == u"writer"_ustr)
         risks.append(u"- 未选区时模型可能覆盖面偏大；建议先选关键段落\n"_ustr);
-    if (hasAny(low, { u"整篇", u"全文", u"全面", u"重构" }))
+    if (hasAny(low, { u"整篇"_ustr, u"全文"_ustr, u"全面"_ustr, u"重构"_ustr }))
         risks.append(u"- 「整篇」任务建议分批批准，避免一次大 diff\n"_ustr);
     if (surf == u"calc"_ustr)
         risks.append(u"- 公式写回前 dry-run 失败时会二次确认\n"_ustr);
@@ -465,6 +448,31 @@ OUString DocumentAIWorkPlan::chipLabelZh(const WorkPlan& rPlan, bool bApproved)
     if (s.getLength() > 42)
         s = s.copy(0, 42) + u"…"_ustr;
     return s;
+}
+
+std::vector<OUString> DocumentAIWorkPlan::approachStepTitles(const WorkPlan& rPlan)
+{
+    const auto steps
+        = kqoffice::ai::control::WorkbenchPhaseMachine::parseStepsFromApproach(rPlan.approach);
+    std::vector<OUString> out;
+    out.reserve(steps.size());
+    for (const auto& s : steps)
+        out.push_back(s.titleZh);
+    return out;
+}
+
+OUString DocumentAIWorkPlan::stepBarZh(const WorkPlan& rPlan, bool bApproved, sal_Int32 currentStep)
+{
+    const auto steps
+        = kqoffice::ai::control::WorkbenchPhaseMachine::parseStepsFromApproach(rPlan.approach);
+    using kqoffice::ai::control::WorkbenchPhase;
+    using kqoffice::ai::control::WorkbenchPhaseMachine;
+    const WorkbenchPhase phase
+        = bApproved ? WorkbenchPhase::Generating : WorkbenchPhase::Planning;
+    const auto snap = WorkbenchPhaseMachine::makeSnapshot(
+        phase, rPlan.planId, OUString(), steps, currentStep, /*streamOpen*/ false,
+        /*toolsOpen*/ false);
+    return snap.stepBarZh;
 }
 
 } // namespace kqoffice::ai::chat

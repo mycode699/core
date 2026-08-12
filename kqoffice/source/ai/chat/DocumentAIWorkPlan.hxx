@@ -13,6 +13,8 @@
 #include <rtl/ustring.hxx>
 #include <sal/types.h>
 
+#include <vector>
+
 namespace kqoffice::ai::chat
 {
 
@@ -67,9 +69,15 @@ class SAL_DLLPUBLIC_EXPORT DocumentAIWorkPlan
 {
 public:
     /// True when task should pause for plan confirmation (or user forced /plan).
+    /// Delegates to FactRouter (measured facts; model confidence not consulted).
     static bool looksLikeLargeTask(const OUString& rPrompt, const OUString& rSurface,
                                    bool bHasSelection, bool bAgentCheckbox,
                                    const OUString& rForcedCap);
+
+    /// Prefer multi-round document-tools without a full work-plan card.
+    static bool prefersBoundedLoop(const OUString& rPrompt, const OUString& rSurface,
+                                   bool bHasSelection, sal_Int32 nSelectionChars,
+                                   bool bAgentCheckbox, const OUString& rForcedCap);
 
     /// User forced plan mode (/plan, 先规划, 先出计划…).
     static bool looksLikeForcePlan(const OUString& rPrompt);
@@ -94,6 +102,12 @@ public:
 
     /// Short status chip label (≤42 chars friendly).
     static OUString chipLabelZh(const WorkPlan& rPlan, bool bApproved);
+
+    /// Numbered approach steps for the unified step bar (max 12).
+    static std::vector<OUString> approachStepTitles(const WorkPlan& rPlan);
+
+    /// Step bar line: 计划待确认 · 1/4 · …
+    static OUString stepBarZh(const WorkPlan& rPlan, bool bApproved, sal_Int32 currentStep = 0);
 };
 
 } // namespace kqoffice::ai::chat

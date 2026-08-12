@@ -18,6 +18,7 @@
  */
 
 #include <AgentChatDiffApplier.hxx>
+#include <AgentChatSelectionCapture.hxx>
 
 #include <sal/log.hxx>
 #include <rtl/ustrbuf.hxx>
@@ -30,9 +31,12 @@
 #include <com/sun/star/text/XTextCursor.hpp>
 #include <com/sun/star/text/XParagraphCursor.hpp>
 #include <com/sun/star/text/XTextRange.hpp>
+#include <com/sun/star/text/XTextViewCursor.hpp>
+#include <com/sun/star/text/XTextViewCursorSupplier.hpp>
 #include <com/sun/star/sheet/XSpreadsheetDocument.hpp>
 #include <com/sun/star/sheet/XSpreadsheets.hpp>
 #include <com/sun/star/sheet/XSpreadsheet.hpp>
+#include <com/sun/star/sheet/XSpreadsheetView.hpp>
 #include <com/sun/star/table/XCell.hpp>
 #include <com/sun/star/drawing/XDrawPagesSupplier.hpp>
 #include <com/sun/star/drawing/XDrawPages.hpp>
@@ -333,6 +337,84 @@ ApplyResult impressFillSlide(
 
         const OUString notesText = notesBuf.makeStringAndClear().trim();
 
+        // M-I0: notes-only payload (讲稿：… without title/body) — update notes page only.
+        if (bodyBuf.isEmpty() && !notesText.isEmpty())
+        {
+            try
+            {
+                css::uno::Reference<css::presentation::XPresentationPage> xPres(
+                    xPage, css::uno::UNO_QUERY);
+                if (xPres.is())
+                {
+                    css::uno::Reference<css::drawing::XDrawPage> xNotes = xPres->getNotesPage();
+                    if (xNotes.is())
+                    {
+                        auto xNoteShapes(css::uno::Reference<css::drawing::XShapes>(
+                            xNotes, css::uno::UNO_QUERY));
+                        if (xNoteShapes.is())
+                        {
+                            // Prefer reusing an existing text shape on notes page.
+                            bool wrote = false;
+                            css::uno::Reference<css::container::XIndexAccess> xIdx(
+                                xNoteShapes, css::uno::UNO_QUERY);
+                            if (xIdx.is())
+                            {
+                                const sal_Int32 n = xIdx->getCount();
+                                for (sal_Int32 si = 0; si < n; ++si)
+                                {
+                                    css::uno::Reference<css::drawing::XShape> sh(
+                                        xIdx->getByIndex(si), css::uno::UNO_QUERY);
+                                    css::uno::Reference<css::text::XText> xt(
+                                        sh, css::uno::UNO_QUERY);
+                                    if (sh.is() && xt.is())
+                                    {
+                                        xt->setString(notesText);
+                                        wrote = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (!wrote)
+                            {
+                                auto xShape(css::uno::Reference<css::drawing::XShape>(
+                                    xSMgr->createInstanceWithContext(
+                                        u"com.sun.star.drawing.TextShape"_ustr,
+                                        comphelper::getProcessComponentContext()),
+                                    css::uno::UNO_QUERY));
+                                if (xShape.is())
+                                {
+                                    xShape->setSize(css::awt::Size(25000, 8000));
+                                    xShape->setPosition(css::awt::Point(1000, 14000));
+                                    auto xShapeText(css::uno::Reference<css::text::XText>(
+                                        xShape, css::uno::UNO_QUERY));
+                                    if (xShapeText.is())
+                                        xShapeText->setString(notesText);
+                                    xNoteShapes->add(xShape);
+                                    wrote = true;
+                                }
+                            }
+                            if (wrote)
+                            {
+                                r.success = true;
+                                SAL_INFO("kqoffice.ai.chat",
+                                         "Impress notes-only slide=" << (slideIdx + 1)
+                                                                     << " notesLen="
+                                                                     << notesText.getLength());
+                                return r;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (const css::uno::Exception& e)
+            {
+                r.error = u"Impress notes-only failed: "_ustr + e.Message;
+                return r;
+            }
+            r.error = u"Impress notes-only: notes page unavailable"_ustr;
+            return r;
+        }
+
         // Strip layout / theme / image meta lines from body before layout.
         // 版式：标题页|标题内容|分栏|章节   主题：商务蓝|简洁灰
         // 配图：描述 → placeholder box
@@ -408,8 +490,47 @@ ApplyResult impressFillSlide(
         }
         title = title.trim();
 
-        auto makeTextShape = [&](const OUString& content, sal_Int32 x, sal_Int32 y, sal_Int32 w,
-                                 sal_Int32 h) {
+        // Reuse existing text shapes when re-applying to the same page (avoid stacking shapes).
+        std::vector<css::uno::Reference<css::drawing::XShape>> existingText;
+        try
+        {
+            css::uno::Reference<css::container::XIndexAccess> xIdx(xShapes, css::uno::UNO_QUERY);
+            if (xIdx.is())
+            {
+                const sal_Int32 n = xIdx->getCount();
+                for (sal_Int32 si = 0; si < n && existingText.size() < 6; ++si)
+                {
+                    css::uno::Reference<css::drawing::XShape> sh(xIdx->getByIndex(si),
+                                                                 css::uno::UNO_QUERY);
+                    css::uno::Reference<css::text::XText> xt(sh, css::uno::UNO_QUERY);
+                    if (sh.is() && xt.is())
+                        existingText.push_back(sh);
+                }
+            }
+        }
+        catch (const css::uno::Exception&)
+        {
+        }
+        sal_Int32 nextExisting = 0;
+
+        auto setOrMakeTextShape = [&](const OUString& content, sal_Int32 x, sal_Int32 y,
+                                      sal_Int32 w, sal_Int32 h) {
+            if (nextExisting < static_cast<sal_Int32>(existingText.size()))
+            {
+                auto xShape = existingText[static_cast<size_t>(nextExisting++)];
+                try
+                {
+                    xShape->setSize(css::awt::Size(w, h));
+                    xShape->setPosition(css::awt::Point(x, y));
+                    css::uno::Reference<css::text::XText> xShapeText(xShape, css::uno::UNO_QUERY);
+                    if (xShapeText.is())
+                        xShapeText->setString(content);
+                    return xShape;
+                }
+                catch (const css::uno::Exception&)
+                {
+                }
+            }
             auto xShape(css::uno::Reference<css::drawing::XShape>(
                 xSMgr->createInstanceWithContext(u"com.sun.star.drawing.TextShape"_ustr,
                                                  comphelper::getProcessComponentContext()),
@@ -423,6 +544,11 @@ ApplyResult impressFillSlide(
                 xShapeText->setString(content);
             xShapes->add(xShape);
             return xShape;
+        };
+
+        auto makeTextShape = [&](const OUString& content, sal_Int32 x, sal_Int32 y, sal_Int32 w,
+                                 sal_Int32 h) {
+            return setOrMakeTextShape(content, x, y, w, h);
         };
 
         auto applyThemeTint = [&](const css::uno::Reference<css::drawing::XShape>& xShape) {
@@ -688,19 +814,180 @@ ApplyResult writerDelete(
     return r;
 }
 
+/// Prefer live view selection when target is "selection" or selection matches oldText.
+bool tryWriterReplaceViewSelection(
+    const css::uno::Reference<css::frame::XModel>& model, const OUString& newText,
+    const OUString& oldText)
+{
+    try
+    {
+        auto xController = model->getCurrentController();
+        if (!xController.is())
+            return false;
+        auto xVcs = css::uno::Reference<css::text::XTextViewCursorSupplier>(
+            xController, css::uno::UNO_QUERY);
+        if (!xVcs.is())
+            return false;
+        auto xView = xVcs->getViewCursor();
+        if (!xView.is())
+            return false;
+        const OUString selected = xView->getString();
+        if (selected.isEmpty())
+            return false;
+        // Match full selection, or selection equals staged oldText (after trim).
+        if (!oldText.isEmpty() && selected.trim() != oldText.trim()
+            && selected != oldText)
+            return false;
+        xView->setString(newText);
+        SAL_INFO("kqoffice.ai.chat",
+                 "Writer replace via view selection len=" << selected.getLength());
+        return true;
+    }
+    catch (const css::uno::Exception&)
+    {
+        return false;
+    }
+}
+
+/// Replace first occurrence of oldText inside a paragraph (selection-sized spans).
+bool tryWriterReplaceSpanInParagraph(
+    const css::uno::Reference<css::text::XText>& xText, sal_Int32 paraIdx,
+    const OUString& oldText, const OUString& newText)
+{
+    if (oldText.isEmpty() || !xText.is())
+        return false;
+    try
+    {
+        auto xCursor = getParaCursor(xText, paraIdx);
+        if (!xCursor.is())
+            return false;
+        auto xParaCursor(css::uno::Reference<css::text::XParagraphCursor>(
+            xCursor, css::uno::UNO_QUERY));
+        if (!xParaCursor.is())
+            return false;
+        // Select full paragraph content.
+        xParaCursor->gotoStartOfParagraph(false);
+        xParaCursor->gotoEndOfParagraph(true);
+        const OUString paraText = xCursor->getString();
+        const sal_Int32 at = paraText.indexOf(oldText);
+        if (at < 0)
+        {
+            // Soft match: trimmed
+            const OUString trimmed = oldText.trim();
+            if (trimmed.isEmpty())
+                return false;
+            const sal_Int32 at2 = paraText.indexOf(trimmed);
+            if (at2 < 0)
+                return false;
+            // Reselect and replace span via character walk.
+            xParaCursor->gotoStartOfParagraph(false);
+            if (at2 > 0)
+                xCursor->goRight(at2, false);
+            xCursor->goRight(trimmed.getLength(), true);
+            xCursor->setString(newText);
+            return true;
+        }
+        xParaCursor->gotoStartOfParagraph(false);
+        if (at > 0)
+            xCursor->goRight(at, false);
+        xCursor->goRight(oldText.getLength(), true);
+        xCursor->setString(newText);
+        SAL_INFO("kqoffice.ai.chat",
+                 "Writer replace span in para=" << (paraIdx + 1)
+                     << " oldLen=" << oldText.getLength());
+        return true;
+    }
+    catch (const css::uno::Exception&)
+    {
+        return false;
+    }
+}
+
 ApplyResult writerReplace(
     const css::uno::Reference<css::text::XTextDocument>& doc,
-    const OUString& target, const OUString& newText)
+    const OUString& target, const OUString& newText, const OUString& oldText)
 {
     ApplyResult r;
     try
     {
         auto xText = doc->getText();
+        const OUString cleanNew = AgentChatDiffApplier::sanitizeApplyText(newText);
+        if (cleanNew.isEmpty())
+        {
+            r.error = u"Writer replace: empty newText after sanitize"_ustr;
+            return r;
+        }
+
+        css::uno::Reference<css::frame::XModel> xModel(doc, css::uno::UNO_QUERY);
+
+        // 1) Explicit selection target → replace live view selection.
+        if (target == u"selection"_ustr || target.startsWith(u"selection:"_ustr))
+        {
+            if (tryWriterReplaceViewSelection(xModel, cleanNew, OUString()))
+            {
+                r.success = true;
+                return r;
+            }
+            // M-W1 review fixes: selection may be empty — search first matching span.
+            if (!oldText.isEmpty())
+            {
+                for (sal_Int32 pi = 0; pi < 500; ++pi)
+                {
+                    if (tryWriterReplaceSpanInParagraph(xText, pi, oldText, cleanNew))
+                    {
+                        r.success = true;
+                        return r;
+                    }
+                    // Stop when we pass last paragraph (helper returns false for OOB).
+                    auto xProbe = getParaCursor(xText, pi);
+                    if (!xProbe.is())
+                        break;
+                }
+                r.error = u"Writer replace: oldText not found for review fix"_ustr;
+                return r;
+            }
+            // Fall through to para: if selection vanished.
+        }
+        // 2) Live selection still matches staged oldText → replace selection (选区改写).
+        else if (!oldText.isEmpty()
+                 && tryWriterReplaceViewSelection(xModel, cleanNew, oldText))
+        {
+            r.success = true;
+            return r;
+        }
 
         const sal_Int32 paraIdx = parseParaTarget(target);
         if (paraIdx < 0)
         {
-            r.error = u"Writer replace: target must be para:N"_ustr;
+            if (tryWriterReplaceViewSelection(xModel, cleanNew, OUString()))
+            {
+                r.success = true;
+                return r;
+            }
+            // Document-wide search when only oldText is known (review fix list).
+            if (!oldText.isEmpty())
+            {
+                for (sal_Int32 pi = 0; pi < 500; ++pi)
+                {
+                    if (tryWriterReplaceSpanInParagraph(xText, pi, oldText, cleanNew))
+                    {
+                        r.success = true;
+                        return r;
+                    }
+                    auto xProbe = getParaCursor(xText, pi);
+                    if (!xProbe.is())
+                        break;
+                }
+            }
+            r.error = u"Writer replace: target must be para:N or selection"_ustr;
+            return r;
+        }
+
+        // 3) Prefer replacing only the oldText span inside the paragraph (选区改写).
+        if (!oldText.isEmpty()
+            && tryWriterReplaceSpanInParagraph(xText, paraIdx, oldText, cleanNew))
+        {
+            r.success = true;
             return r;
         }
 
@@ -712,16 +999,16 @@ ApplyResult writerReplace(
             return r;
         }
 
-        // Select the full paragraph and replace
+        // 4) Fallback: full paragraph replace (legacy behavior).
         auto xParaCursor(css::uno::Reference<css::text::XParagraphCursor>(
             xCursor, css::uno::UNO_QUERY));
         if (xParaCursor.is())
             xParaCursor->gotoEndOfParagraph(true);
 
-        xCursor->setString(newText);
+        xCursor->setString(cleanNew);
         SAL_INFO("kqoffice.ai.chat",
-                 "Writer replace para=" << (paraIdx + 1)
-                     << " newText=\"" << newText << "\"");
+                 "Writer replace full para=" << (paraIdx + 1)
+                     << " newLen=" << cleanNew.getLength());
         r.success = true;
     }
     catch (const css::uno::Exception& e)
@@ -731,19 +1018,115 @@ ApplyResult writerReplace(
     return r;
 }
 
+/// Soft-normalize title for matching (collapse spaces, strip trailing punct).
+OUString softTitleKey(const OUString& s)
+{
+    OUString t = s.trim();
+    while (!t.isEmpty()
+           && (t.endsWith(u"。"_ustr) || t.endsWith(u"."_ustr) || t.endsWith(u"："_ustr)
+               || t.endsWith(u":"_ustr) || t.endsWith(u"、"_ustr) || t.endsWith(u";"_ustr)
+               || t.endsWith(u"；"_ustr)))
+        t = t.copy(0, t.getLength() - 1).trim();
+    // collapse runs of whitespace
+    OUStringBuffer b;
+    bool prevSpace = false;
+    for (sal_Int32 i = 0; i < t.getLength(); ++i)
+    {
+        const sal_Unicode c = t[i];
+        if (c == u' ' || c == u'\t' || c == u'\u00a0')
+        {
+            if (!prevSpace)
+                b.append(u' ');
+            prevSpace = true;
+        }
+        else
+        {
+            prevSpace = false;
+            b.append(c);
+        }
+    }
+    return b.makeStringAndClear();
+}
+
+/// Find first paragraph whose text contains needle (trimmed). Returns 0-based index or -1.
+sal_Int32 findParaIndexByText(const css::uno::Reference<css::text::XText>& xText,
+                              const OUString& needle)
+{
+    if (!xText.is() || needle.isEmpty())
+        return -1;
+    const OUString want = softTitleKey(needle);
+    if (want.isEmpty())
+        return -1;
+    try
+    {
+        sal_Int32 softHit = -1;
+        for (sal_Int32 idx = 0; idx < 4000; ++idx)
+        {
+            auto xCursor = getParaCursor(xText, idx);
+            if (!xCursor.is())
+                break;
+            auto xParaCursor(css::uno::Reference<css::text::XParagraphCursor>(
+                xCursor, css::uno::UNO_QUERY));
+            if (!xParaCursor.is())
+                break;
+            xParaCursor->gotoStartOfParagraph(false);
+            xParaCursor->gotoEndOfParagraph(true);
+            const OUString raw = xCursor->getString().trim();
+            if (raw.isEmpty())
+                continue;
+            const OUString t = softTitleKey(raw);
+            if (t == want || t.indexOf(want) >= 0)
+                return idx;
+            // Short para fully contained in model title line
+            if (want.getLength() >= 2 && want.getLength() <= 120 && t.getLength() <= 200
+                && want.indexOf(t) >= 0 && t.getLength() >= 2)
+            {
+                if (softHit < 0)
+                    softHit = idx;
+            }
+            // Prefix match (first 12 chars) for long titles slightly rephrased
+            if (want.getLength() >= 8 && t.getLength() >= 8)
+            {
+                const OUString wp = want.copy(0, 8);
+                const OUString tp = t.copy(0, 8);
+                if (wp == tp && softHit < 0)
+                    softHit = idx;
+            }
+        }
+        return softHit;
+    }
+    catch (const css::uno::Exception&)
+    {
+    }
+    return -1;
+}
+
 ApplyResult writerFormat(
     const css::uno::Reference<css::text::XTextDocument>& doc,
-    const OUString& target, const OUString& formatSpec)
+    const OUString& target, const OUString& formatSpec,
+    const OUString& titleHint = OUString())
 {
     ApplyResult r;
     try
     {
         auto xText = doc->getText();
 
-        const sal_Int32 paraIdx = parseParaTarget(target);
+        sal_Int32 paraIdx = parseParaTarget(target);
+        // search:标题 or title:… → locate paragraph by text (layout-polish H1|title)
+        if (paraIdx < 0
+            && (target.startsWith(u"search:"_ustr) || target.startsWith(u"title:"_ustr)))
+        {
+            const OUString needle
+                = target.startsWith(u"search:"_ustr) ? target.copy(7) : target.copy(6);
+            paraIdx = findParaIndexByText(xText, needle);
+            if (paraIdx < 0 && !titleHint.isEmpty())
+                paraIdx = findParaIndexByText(xText, titleHint);
+        }
+        if (paraIdx < 0 && !titleHint.isEmpty())
+            paraIdx = findParaIndexByText(xText, titleHint);
         if (paraIdx < 0)
         {
-            r.error = u"Writer format: target must be para:N"_ustr;
+            r.error = u"Writer format: target must be para:N 或 search:标题（未找到匹配段）"_ustr;
             return r;
         }
 
@@ -764,6 +1147,52 @@ ApplyResult writerFormat(
         }
 
         // Parse format spec: simple substring matching on a JSON-like string
+        // M-W1: heading:N / ParaStyleName:Heading N → paragraph style (outline write-back).
+        auto trySetParaStyle = [&](const OUString& rStyleName) -> bool {
+            try
+            {
+                xProps->setPropertyValue(u"ParaStyleName"_ustr, css::uno::Any(rStyleName));
+                return true;
+            }
+            catch (const css::uno::Exception&)
+            {
+                return false;
+            }
+        };
+        sal_Int32 headingLevel = 0;
+        const sal_Int32 hPos = formatSpec.indexOf(u"heading:"_ustr);
+        if (hPos >= 0 && hPos + 8 < formatSpec.getLength())
+        {
+            const sal_Unicode c = formatSpec[hPos + 8];
+            if (c >= u'1' && c <= u'3')
+                headingLevel = c - u'0';
+        }
+        if (headingLevel == 0)
+        {
+            if (formatSpec.indexOf(u"Heading 1"_ustr) >= 0 || formatSpec.indexOf(u"标题 1"_ustr) >= 0
+                || formatSpec.indexOf(u"标题1"_ustr) >= 0)
+                headingLevel = 1;
+            else if (formatSpec.indexOf(u"Heading 2"_ustr) >= 0
+                     || formatSpec.indexOf(u"标题 2"_ustr) >= 0)
+                headingLevel = 2;
+            else if (formatSpec.indexOf(u"Heading 3"_ustr) >= 0
+                     || formatSpec.indexOf(u"标题 3"_ustr) >= 0)
+                headingLevel = 3;
+        }
+        if (headingLevel >= 1 && headingLevel <= 3)
+        {
+            // English first (default template), then Chinese localized names.
+            const OUString en = u"Heading "_ustr + OUString::number(headingLevel);
+            const OUString zh = u"标题 "_ustr + OUString::number(headingLevel);
+            const OUString zh2 = u"标题"_ustr + OUString::number(headingLevel);
+            if (!trySetParaStyle(en) && !trySetParaStyle(zh) && !trySetParaStyle(zh2))
+            {
+                r.error = u"Writer format: cannot set heading style level "_ustr
+                          + OUString::number(headingLevel);
+                return r;
+            }
+        }
+
         if (formatSpec.indexOf(u"bold"_ustr) >= 0)
             xProps->setPropertyValue(u"CharWeight"_ustr,
                 css::uno::Any(css::awt::FontWeight::BOLD));
@@ -823,10 +1252,29 @@ ApplyResult writerFormat(
 // Calc (XSpreadsheetDocument) helpers
 // ---------------------------------------------------------------------------
 
-/// Get the first (active) spreadsheet from a Calc document.
+/// Prefer the sheet shown in the current view; fall back to first sheet.
 css::uno::Reference<css::sheet::XSpreadsheet> getActiveSheet(
     const css::uno::Reference<css::sheet::XSpreadsheetDocument>& doc)
 {
+    try
+    {
+        css::uno::Reference<css::frame::XModel> xModel(doc, css::uno::UNO_QUERY);
+        if (xModel.is())
+        {
+            auto xController = xModel->getCurrentController();
+            css::uno::Reference<css::sheet::XSpreadsheetView> xView(xController,
+                                                                    css::uno::UNO_QUERY);
+            if (xView.is())
+            {
+                auto xActive = xView->getActiveSheet();
+                if (xActive.is())
+                    return xActive;
+            }
+        }
+    }
+    catch (const css::uno::Exception&)
+    {
+    }
     auto xSheets = doc->getSheets();
     auto xIndex(css::uno::Reference<css::container::XIndexAccess>(
         xSheets, css::uno::UNO_QUERY));
@@ -834,6 +1282,20 @@ css::uno::Reference<css::sheet::XSpreadsheet> getActiveSheet(
         return nullptr;
     return css::uno::Reference<css::sheet::XSpreadsheet>(
         xIndex->getByIndex(0), css::uno::UNO_QUERY);
+}
+
+void setCellContent(const css::uno::Reference<css::table::XCell>& xCell, const OUString& rText)
+{
+    if (!xCell.is())
+        return;
+    OUString t = rText.trim();
+    // Fullwidth equals / formula
+    if (t.startsWith(u"＝"_ustr))
+        t = u"="_ustr + t.copy(1);
+    if (t.startsWith(u"="_ustr))
+        xCell->setFormula(t);
+    else
+        xCell->setFormula(t); // LO accepts plain values via setFormula too
 }
 
 ApplyResult calcInsert(
@@ -857,10 +1319,11 @@ ApplyResult calcInsert(
             return r;
         }
         auto xCell = sheet->getCellByPosition(col, row);
-        xCell->setFormula(text);
+        const OUString clean = AgentChatDiffApplier::sanitizeApplyText(text);
+        setCellContent(xCell, clean);
         SAL_INFO("kqoffice.ai.chat",
                  "Calc insert cell=" << target
-                     << " formula=\"" << text << "\"");
+                     << " formula=\"" << clean << "\"");
         r.success = true;
     }
     catch (const css::uno::Exception& e)
@@ -1362,9 +1825,9 @@ ApplyResult dispatchByDocType(
         if (op.opType == u"delete"_ustr)
             return writerDelete(doc, op.target);
         if (op.opType == u"replace"_ustr)
-            return writerReplace(doc, op.target, op.newText);
+            return writerReplace(doc, op.target, op.newText, op.oldText);
         if (op.opType == u"format"_ustr)
-            return writerFormat(doc, op.target, op.newText);
+            return writerFormat(doc, op.target, op.newText, op.oldText);
         ApplyResult r;
         r.error = u"Unsupported operation for writer: "_ustr + op.opType;
         return r;
@@ -1588,11 +2051,151 @@ bool AgentChatDiffApplier::canApply(const DiffOperation& op)
         && op.opType != u"replace"_ustr && op.opType != u"format"_ustr)
         return false;
 
-    // For insert and replace, newText must be non-empty
-    if ((op.opType == u"insert"_ustr || op.opType == u"replace"_ustr) && op.newText.isEmpty())
+    // For insert and replace, newText must be non-empty (after sanitize).
+    if ((op.opType == u"insert"_ustr || op.opType == u"replace"_ustr)
+        && sanitizeApplyText(op.newText).isEmpty())
         return false;
 
     return true;
+}
+
+OUString AgentChatDiffApplier::sanitizeApplyText(const OUString& rText)
+{
+    OUString t = rText.trim();
+    if (t.isEmpty())
+        return t;
+
+    // Strip markdown fenced blocks ```...``` (keep inner).
+    if (t.startsWith(u"```"_ustr))
+    {
+        sal_Int32 nl = t.indexOf(u'\n');
+        if (nl > 0)
+            t = t.copy(nl + 1);
+        const sal_Int32 endFence = t.lastIndexOf(u"```"_ustr);
+        if (endFence >= 0)
+            t = t.copy(0, endFence);
+        t = t.trim();
+    }
+
+    // Drop common Chinese/English lead-ins from model replies.
+    static const sal_Unicode* prefixes[] = {
+        u"改写后：", u"改写：", u"正式改写：", u"润色后：", u"润色：",
+        u"扩写：", u"精简：", u"如下：", u"如下：\n",
+        u"Rewritten:", u"Rewrite:", u"Here is the rewritten text:",
+        u"Here's the rewritten text:", u"Output:",
+    };
+    for (const sal_Unicode* p : prefixes)
+    {
+        const OUString pre(p);
+        if (t.startsWith(pre))
+        {
+            t = t.copy(pre.getLength()).trim();
+            break;
+        }
+        // Case-insensitive for English prefixes
+        if (pre.getLength() > 0 && pre[0] < 128
+            && t.getLength() >= pre.getLength()
+            && t.copy(0, pre.getLength()).equalsIgnoreAsciiCase(pre))
+        {
+            t = t.copy(pre.getLength()).trim();
+            break;
+        }
+    }
+
+    // Strip one layer of wrapping quotes / Chinese quotes.
+    if (t.getLength() >= 2)
+    {
+        const sal_Unicode a = t[0];
+        const sal_Unicode b = t[t.getLength() - 1];
+        if ((a == u'"' && b == u'"') || (a == u'\'' && b == u'\'')
+            || (a == u'“' && b == u'”') || (a == u'「' && b == u'」')
+            || (a == u'『' && b == u'』'))
+            t = t.copy(1, t.getLength() - 2).trim();
+    }
+
+    // Drop trailing “主文档未改” style model chatter lines.
+    const sal_Int32 chat = t.indexOf(u"\n主文档未改"_ustr);
+    if (chat > 0)
+        t = t.copy(0, chat).trim();
+
+    return t;
+}
+
+ApplyPlan AgentChatDiffApplier::normalizePlanForApply(const ApplyPlan& rPlan)
+{
+    ApplyPlan out = rPlan;
+    const SelectionContext sel = AgentChatSelectionCapture::captureCurrent();
+
+    for (auto& op : out.operations)
+    {
+        if (op.opType.isEmpty())
+            op.opType = u"replace"_ustr;
+
+        op.newText = sanitizeApplyText(op.newText);
+
+        // Fill empty target from live selection position.
+        if (op.target.isEmpty() && !sel.position.isEmpty())
+            op.target = sel.position;
+
+        // Writer 选区改写: if live selection matches oldText (or old empty + has sel),
+        // prefer target=selection so we don't overwrite the whole paragraph.
+        if ((op.opType == u"replace"_ustr || op.opType.isEmpty())
+            && sel.surface == u"writer"_ustr && sel.length > 0)
+        {
+            const bool matchOld = op.oldText.isEmpty()
+                                  || sel.text.trim() == op.oldText.trim()
+                                  || sel.text == op.oldText;
+            if (matchOld)
+            {
+                if (op.oldText.isEmpty())
+                    op.oldText = sel.text;
+                op.target = u"selection"_ustr;
+            }
+        }
+
+        // Calc range: → top-left cell for simple write.
+        if (sel.surface == u"calc"_ustr && op.target.startsWith(u"range:"_ustr))
+        {
+            OUString rest = op.target.copy(6);
+            const sal_Int32 colon = rest.indexOf(u':');
+            op.target = u"cell:"_ustr + (colon > 0 ? rest.copy(0, colon) : rest);
+        }
+
+        // Calc formula hygiene: ensure leading '=' for SUM/AVERAGE style lines.
+        if (sel.surface == u"calc"_ustr
+            && (op.opType == u"replace"_ustr || op.opType == u"insert"_ustr || op.opType.isEmpty()))
+        {
+            OUString t = op.newText.trim();
+            if (t.startsWith(u"＝"_ustr))
+                t = u"="_ustr + t.copy(1);
+            // Common model slips: "SUM(A1:A10)" without '='
+            if (!t.startsWith(u"="_ustr) && t.getLength() >= 4)
+            {
+                const OUString up = t.toAsciiUpperCase();
+                if (up.startsWith(u"SUM("_ustr) || up.startsWith(u"AVERAGE("_ustr)
+                    || up.startsWith(u"COUNT("_ustr) || up.startsWith(u"MAX("_ustr)
+                    || up.startsWith(u"MIN("_ustr) || up.startsWith(u"IF("_ustr)
+                    || up.startsWith(u"VLOOKUP("_ustr) || up.startsWith(u"XLOOKUP("_ustr)
+                    || up.startsWith(u"INDEX("_ustr) || up.startsWith(u"MATCH("_ustr)
+                    || up.startsWith(u"ROUND("_ustr) || up.startsWith(u"CONCATENATE("_ustr)
+                    || up.startsWith(u"TEXT("_ustr))
+                    t = u"="_ustr + t;
+            }
+            op.newText = t;
+            if (op.target.isEmpty() && !sel.position.isEmpty())
+            {
+                if (sel.position.startsWith(u"range:"_ustr))
+                {
+                    OUString rest = sel.position.copy(6);
+                    const sal_Int32 colon = rest.indexOf(u':');
+                    op.target = u"cell:"_ustr + (colon > 0 ? rest.copy(0, colon) : rest);
+                }
+                else
+                    op.target = sel.position;
+            }
+        }
+    }
+    return out;
 }
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

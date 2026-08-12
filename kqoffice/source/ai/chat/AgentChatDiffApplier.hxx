@@ -63,6 +63,22 @@ public:
     /// Clear the undo stack (e.g., on document close).
     static void clearUndoStack();
 
+    /**
+     * Sanitize model output before write-back (M17):
+     * strip markdown fences, leading labels like「改写：」, surrounding quotes.
+     * Does not mutate the document.
+     */
+    static OUString sanitizeApplyText(const OUString& rText);
+
+    /**
+     * Normalize a plan for Writer/Calc/Impress apply (M17):
+     * - fill empty targets from live selection
+     * - sanitize newText
+     * - prefer target=selection when live selection matches oldText
+     * Never mutates the main document by itself.
+     */
+    static ApplyPlan normalizePlanForApply(const ApplyPlan& rPlan);
+
 private:
     static std::vector<ApplyPlan> s_undoStack;
 };

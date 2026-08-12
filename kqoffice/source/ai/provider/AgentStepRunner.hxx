@@ -66,6 +66,35 @@ public:
     static AgentPipelineResult runRoleSequence(
         const OUString& rGoal, const std::vector<OUString>& rAgentRoles,
         const std::vector<OUString>& rInstructions, bool bContinueOnError = false);
+
+    /// Ceiling Agent Mode: continuous bind→plan→act→review→verify (no human pause).
+    /// rSurface: writer|calc|impress|none — shapes act prompt write-back markers.
+    /// rDocToolsContext: skeleton / TOOL_RESULT text (may be empty).
+    /// Still never mutates documents; applyCandidateContent is for stage-only ApplyPlan.
+    static AgentPipelineResult runCeilingMode(const OUString& rGoal, const OUString& rContext,
+                                              const OUString& rSurface = OUString(),
+                                              const OUString& rDocToolsContext = OUString());
+
+    /// Human-gate phase 1: bind + plan only. success when plan ok.
+    /// failureReason "awaiting-continue" marks plan ready for Continue button.
+    static AgentPipelineResult runCeilingPlanPhase(const OUString& rGoal,
+                                                   const OUString& rContext = OUString(),
+                                                   const OUString& rSurface = OUString(),
+                                                   const OUString& rDocToolsContext = OUString());
+
+    /// Human-gate phase 2: act → review → local verify using plan from phase 1.
+    static AgentPipelineResult runCeilingExecutePhase(
+        const OUString& rGoal, const OUString& rPlanContent, const OUString& rContext = OUString(),
+        const OUString& rSurface = OUString(), const OUString& rDocToolsContext = OUString());
+
+    /// Q3 Calc Agent Mode: probe → clean → aggregate → chart-suggest (stage only).
+    /// Uses calc-specialized prompts + formula sandbox step. Never mutates sheet.
+    static AgentPipelineResult runCalcAgentMode(const OUString& rGoal,
+                                                const OUString& rContext = OUString(),
+                                                const OUString& rDocToolsContext = OUString());
+
+    /// Parse plan markdown into short step titles for the Agent tree UI (max 8).
+    static std::vector<OUString> parsePlanStepTitles(const OUString& rPlanMarkdown);
 };
 
 } // namespace kqoffice::ai

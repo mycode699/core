@@ -21,13 +21,32 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <string>
 #include <unistd.h>
+#include <vector>
 #include <rtl/string.hxx>
 
 #include "SessionStore.hxx"
 #include "SafeRestore.hxx"
 #include "PermissionCenter.hxx"
 #include "PermissionGrant.hxx"
+#include "WritebackPermission.hxx"
+#include "ErrorClassifier.hxx"
+#include "DiagnosticBundle.hxx"
+#include "ComposerQueue.hxx"
+#include "WorkbenchPhase.hxx"
+#include "ContextUsage.hxx"
+#include "AiFirstRunGate.hxx"
+#include "WorkbenchStatus.hxx"
+#include "FactRouter.hxx"
+#include "ProviderSlotManifest.hxx"
+#include "PolicyEvolutionGuard.hxx"
+#include "EventLedger.hxx"
+#include "ExternalWriteDenier.hxx"
+#include "StallDetector.hxx"
+#include "SandboxCage.hxx"
+#include "HandoffBrief.hxx"
+#include "AiPaths.hxx"
 
 namespace
 {
@@ -145,6 +164,34 @@ public:
     void testPermissionGrantResolveHeadless();
     void testPermissionGrantDecisionLabelsZh();
 
+    // WritebackPermission (Ask / once / session / YOLO ladder)
+    void testWritebackDefaultAsk();
+    void testWritebackExplicitHumanApproval();
+    void testWritebackSessionAllow();
+    void testWritebackResolveDenyOnceSession();
+    void testWritebackActionIdStable();
+    void testWritebackScopeFromPlanTargets();
+
+    // ErrorClassifier + DiagnosticBundle
+    void testErrorClassifierDecks();
+    void testErrorClassifierRedact();
+    void testDiagnosticBundleExport();
+
+    // Workbench P1: queue / phase / context / first-run
+    void testComposerQueueFifo();
+    void testWorkbenchPhaseReadyAndSteps();
+    void testContextUsageEstimate();
+    void testAiFirstRunGateSkipComplete();
+    void testWorkbenchStatusDashboard();
+    void testFactRouterShapes();
+    void testProviderSlotManifest();
+    void testPolicyEvolutionGuard();
+    void testEventLedgerPersistBeforeBroadcast();
+    void testExternalWriteDenier();
+    void testStallDetectorPositiveAndNegative();
+    void testSandboxCageCanaries();
+    void testHandoffBriefFromEvents();
+
     CPPUNIT_TEST_SUITE(ControlPlaneTest);
     CPPUNIT_TEST(testDefaultConstructor);
     CPPUNIT_TEST(testCustomRootDir);
@@ -184,6 +231,28 @@ public:
     CPPUNIT_TEST(testPermissionGrantApplyDecision);
     CPPUNIT_TEST(testPermissionGrantResolveHeadless);
     CPPUNIT_TEST(testPermissionGrantDecisionLabelsZh);
+    CPPUNIT_TEST(testWritebackDefaultAsk);
+    CPPUNIT_TEST(testWritebackExplicitHumanApproval);
+    CPPUNIT_TEST(testWritebackSessionAllow);
+    CPPUNIT_TEST(testWritebackResolveDenyOnceSession);
+    CPPUNIT_TEST(testWritebackActionIdStable);
+    CPPUNIT_TEST(testWritebackScopeFromPlanTargets);
+    CPPUNIT_TEST(testErrorClassifierDecks);
+    CPPUNIT_TEST(testErrorClassifierRedact);
+    CPPUNIT_TEST(testDiagnosticBundleExport);
+    CPPUNIT_TEST(testComposerQueueFifo);
+    CPPUNIT_TEST(testWorkbenchPhaseReadyAndSteps);
+    CPPUNIT_TEST(testContextUsageEstimate);
+    CPPUNIT_TEST(testAiFirstRunGateSkipComplete);
+    CPPUNIT_TEST(testWorkbenchStatusDashboard);
+    CPPUNIT_TEST(testFactRouterShapes);
+    CPPUNIT_TEST(testProviderSlotManifest);
+    CPPUNIT_TEST(testPolicyEvolutionGuard);
+    CPPUNIT_TEST(testEventLedgerPersistBeforeBroadcast);
+    CPPUNIT_TEST(testExternalWriteDenier);
+    CPPUNIT_TEST(testStallDetectorPositiveAndNegative);
+    CPPUNIT_TEST(testSandboxCageCanaries);
+    CPPUNIT_TEST(testHandoffBriefFromEvents);
     CPPUNIT_TEST_SUITE_END();
 };
 
@@ -935,6 +1004,673 @@ void ControlPlaneTest::testPermissionGrantDecisionLabelsZh()
                          PermissionGrant::decisionLabelZh(PermissionDecision::AllowOnce));
     CPPUNIT_ASSERT_EQUAL(u"本轮对话均允许"_ustr,
                          PermissionGrant::decisionLabelZh(PermissionDecision::AllowSession));
+}
+
+// ---- WritebackPermission ------------------------------------------------
+
+void ControlPlaneTest::testWritebackDefaultAsk()
+{
+    using kqoffice::ai::control::WritebackGateRequest;
+    using kqoffice::ai::control::WritebackPermission;
+    using kqoffice::ai::control::WritebackTier;
+
+    ::unsetenv("KQOFFICE_AI_WRITEBACK_YOLO");
+    WritebackPermission::clearSessionWritebackGrants();
+
+    CPPUNIT_ASSERT(WritebackPermission::defaultTier() == WritebackTier::Ask);
+    CPPUNIT_ASSERT(!WritebackPermission::yoloEnabled());
+
+    WritebackGateRequest req;
+    req.surface = u"writer"_ustr;
+    auto r = WritebackPermission::evaluate(req);
+    CPPUNIT_ASSERT(!r.allowed);
+    CPPUNIT_ASSERT(r.needsUi);
+    CPPUNIT_ASSERT_EQUAL(u"human-approval-required"_ustr, r.errorCode);
+    CPPUNIT_ASSERT(r.reasonZh.indexOf(u"Ask") >= 0 || r.reasonZh.indexOf(u"确认") >= 0);
+}
+
+void ControlPlaneTest::testWritebackExplicitHumanApproval()
+{
+    using kqoffice::ai::control::WritebackGateRequest;
+    using kqoffice::ai::control::WritebackPermission;
+    using kqoffice::ai::control::WritebackTier;
+
+    ::unsetenv("KQOFFICE_AI_WRITEBACK_YOLO");
+    WritebackPermission::clearSessionWritebackGrants();
+
+    WritebackGateRequest req;
+    req.explicitHumanApproval = true;
+    req.surface = u"calc"_ustr;
+    auto r = WritebackPermission::evaluate(req);
+    CPPUNIT_ASSERT(r.allowed);
+    CPPUNIT_ASSERT(!r.needsUi);
+    CPPUNIT_ASSERT(r.effectiveTier == WritebackTier::AllowOnce);
+    CPPUNIT_ASSERT_EQUAL(u"writeback-human-approval"_ustr, r.errorCode);
+}
+
+void ControlPlaneTest::testWritebackSessionAllow()
+{
+    using kqoffice::ai::control::PermissionDecision;
+    using kqoffice::ai::control::WritebackGateRequest;
+    using kqoffice::ai::control::WritebackPermission;
+    using kqoffice::ai::control::WritebackScope;
+    using kqoffice::ai::control::WritebackTier;
+
+    ::unsetenv("KQOFFICE_AI_WRITEBACK_YOLO");
+    WritebackPermission::clearSessionWritebackGrants();
+
+    WritebackGateRequest req;
+    req.scope = WritebackScope::Selection;
+    req.surface = u"writer"_ustr;
+    req.docKey = u"doc-abc"_ustr;
+
+    auto denied = WritebackPermission::evaluate(req);
+    CPPUNIT_ASSERT(!denied.allowed);
+
+    auto once = WritebackPermission::resolve(req, PermissionDecision::AllowOnce);
+    CPPUNIT_ASSERT(once.allowed);
+    CPPUNIT_ASSERT(once.effectiveTier == WritebackTier::AllowOnce);
+    // AllowOnce must not stick
+    auto stillNeeds = WritebackPermission::evaluate(req);
+    CPPUNIT_ASSERT(!stillNeeds.allowed);
+
+    auto session = WritebackPermission::resolve(req, PermissionDecision::AllowSession);
+    CPPUNIT_ASSERT(session.allowed);
+    CPPUNIT_ASSERT(session.effectiveTier == WritebackTier::AllowSession);
+
+    WritebackGateRequest again = req;
+    again.explicitHumanApproval = false;
+    auto cached = WritebackPermission::evaluate(again);
+    CPPUNIT_ASSERT(cached.allowed);
+    CPPUNIT_ASSERT(cached.fromSessionCache);
+
+    WritebackPermission::clearSessionWritebackGrants();
+    auto cleared = WritebackPermission::evaluate(req);
+    CPPUNIT_ASSERT(!cleared.allowed);
+}
+
+void ControlPlaneTest::testWritebackResolveDenyOnceSession()
+{
+    using kqoffice::ai::control::PermissionDecision;
+    using kqoffice::ai::control::WritebackGateRequest;
+    using kqoffice::ai::control::WritebackPermission;
+
+    WritebackPermission::clearSessionWritebackGrants();
+
+    WritebackGateRequest req;
+    req.surface = u"impress"_ustr;
+    auto denied = WritebackPermission::resolve(req, PermissionDecision::Deny);
+    CPPUNIT_ASSERT(!denied.allowed);
+    CPPUNIT_ASSERT_EQUAL(u"writeback-denied"_ustr, denied.errorCode);
+    CPPUNIT_ASSERT(denied.reasonZh.indexOf(u"拒绝") >= 0);
+}
+
+void ControlPlaneTest::testWritebackActionIdStable()
+{
+    using kqoffice::ai::control::WritebackPermission;
+    using kqoffice::ai::control::WritebackScope;
+
+    CPPUNIT_ASSERT_EQUAL(u"writeback.selection@writer"_ustr,
+                         WritebackPermission::actionId(WritebackScope::Selection, u"writer"_ustr));
+    CPPUNIT_ASSERT_EQUAL(u"writeback.document@calc"_ustr,
+                         WritebackPermission::actionId(WritebackScope::Document, u"scalc"_ustr));
+    CPPUNIT_ASSERT_EQUAL(
+        u"writeback.selection@writer#doc-1"_ustr,
+        WritebackPermission::actionId(WritebackScope::Selection, u"Writer"_ustr, u"doc-1"_ustr));
+}
+
+void ControlPlaneTest::testWritebackScopeFromPlanTargets()
+{
+    using kqoffice::ai::control::WritebackPermission;
+    using kqoffice::ai::control::WritebackScope;
+
+    CPPUNIT_ASSERT(WritebackPermission::scopeFromPlanTargets(true, false)
+                   == WritebackScope::Selection);
+    CPPUNIT_ASSERT(WritebackPermission::scopeFromPlanTargets(false, false)
+                   == WritebackScope::Document);
+    CPPUNIT_ASSERT(WritebackPermission::scopeFromPlanTargets(false, true)
+                   == WritebackScope::Workspace);
+}
+
+// ---- ErrorClassifier + DiagnosticBundle ---------------------------------
+
+void ControlPlaneTest::testErrorClassifierDecks()
+{
+    using kqoffice::ai::control::ErrorClassifier;
+    using kqoffice::ai::control::ErrorDeck;
+
+    auto auth = ErrorClassifier::classify(u"401 unauthorized api key invalid"_ustr);
+    CPPUNIT_ASSERT(auth.deck == ErrorDeck::Auth);
+
+    auto net = ErrorClassifier::classify(u"connection refused timeout DNS"_ustr);
+    CPPUNIT_ASSERT(net.deck == ErrorDeck::Network);
+
+    auto perm = ErrorClassifier::classify(u"x"_ustr, u"human-approval-required"_ustr);
+    CPPUNIT_ASSERT(perm.deck == ErrorDeck::Permission);
+    CPPUNIT_ASSERT_EQUAL(u"human-approval-required"_ustr, perm.code);
+
+    auto apply = ErrorClassifier::classify(u"stale-document-snapshot apply-blocked"_ustr);
+    CPPUNIT_ASSERT(apply.deck == ErrorDeck::Apply);
+
+    auto crash = ErrorClassifier::classify(u"SIGABRT lockfile multi-instance"_ustr);
+    CPPUNIT_ASSERT(crash.deck == ErrorDeck::Crash);
+}
+
+void ControlPlaneTest::testErrorClassifierRedact()
+{
+    using kqoffice::ai::control::ErrorClassifier;
+
+    const OUString raw = u"Bearer sk-abc1234567890secret and token=supersecrettokenvalue"_ustr;
+    const OUString red = ErrorClassifier::redact(raw);
+    CPPUNIT_ASSERT(red.indexOf(u"sk-abc1234567890secret") < 0);
+    CPPUNIT_ASSERT(red.indexOf(u"[REDACTED]") >= 0);
+    CPPUNIT_ASSERT(red.indexOf(u"supersecrettokenvalue") < 0);
+}
+
+void ControlPlaneTest::testDiagnosticBundleExport()
+{
+    using kqoffice::ai::control::DiagnosticBundle;
+    using kqoffice::ai::control::DiagnosticBundleRequest;
+    using kqoffice::ai::control::DiagnosticErrorSample;
+
+    char templ[] = "/tmp/kqoffice-diag-test-XXXXXX";
+    char* dir = ::mkdtemp(templ);
+    CPPUNIT_ASSERT(dir != nullptr);
+    const OUString outDir = OUString::createFromAscii(dir);
+
+    DiagnosticBundleRequest req;
+    req.outputDir = outDir;
+    req.productVersion = u"26.8.0-test"_ustr;
+    req.buildId = u"unit"_ustr;
+    req.platformHint = u"macos-arm64"_ustr;
+    DiagnosticErrorSample sample;
+    sample.message = u"human-approval-required Bearer sk-should-not-leak-12345678"_ustr;
+    sample.errorCodeHint = u"human-approval-required"_ustr;
+    sample.atMs = 1;
+    req.recentErrors.push_back(sample);
+    req.notes.push_back(u"note with api_key=leakedsecretvalue"_ustr);
+
+    auto result = DiagnosticBundle::exportBundle(req);
+    CPPUNIT_ASSERT(result.success);
+    CPPUNIT_ASSERT(result.fileCount >= 3);
+    CPPUNIT_ASSERT(!result.manifestPath.isEmpty());
+    CPPUNIT_ASSERT(result.summaryZh.indexOf(u"脱敏") >= 0);
+
+    // Read errors.jsonl and ensure secret redacted
+    OUString url;
+    CPPUNIT_ASSERT(osl::FileBase::getFileURLFromSystemPath(
+                       kqoffice::ai::kqofficePathJoin(outDir, u"errors.jsonl"_ustr), url)
+                   == osl::FileBase::E_None);
+    osl::File f(url);
+    CPPUNIT_ASSERT(f.open(osl_File_OpenFlag_Read) == osl::FileBase::E_None);
+    sal_uInt64 size = 0;
+    f.getSize(size);
+    std::vector<char> buf(static_cast<size_t>(size) + 1, 0);
+    sal_uInt64 read = 0;
+    f.read(buf.data(), size, read);
+    f.close();
+    const OUString content = OUString::createFromAscii(buf.data());
+    CPPUNIT_ASSERT(content.indexOf(u"sk-should-not-leak") < 0);
+    CPPUNIT_ASSERT(content.indexOf(u"permission") >= 0 || content.indexOf(u"human-approval") >= 0);
+
+    // cleanup
+    ::system((std::string("rm -rf ") + dir).c_str());
+}
+
+// ---- ComposerQueue / WorkbenchPhase / ContextUsage / FirstRun ------------
+
+void ControlPlaneTest::testComposerQueueFifo()
+{
+    using kqoffice::ai::control::ComposerQueue;
+
+    ComposerQueue q(3);
+    CPPUNIT_ASSERT(q.empty());
+    CPPUNIT_ASSERT(q.enqueue(u"one"_ustr));
+    CPPUNIT_ASSERT(q.enqueue(u"two"_ustr));
+    CPPUNIT_ASSERT(q.enqueue(u"three"_ustr));
+    bool overflow = false;
+    CPPUNIT_ASSERT(q.enqueue(u"four"_ustr, false, &overflow));
+    CPPUNIT_ASSERT(overflow);
+    CPPUNIT_ASSERT_EQUAL(static_cast<sal_Int32>(3), q.size());
+    auto a = q.dequeue();
+    CPPUNIT_ASSERT(a.has_value());
+    CPPUNIT_ASSERT_EQUAL(u"two"_ustr, a->prompt); // oldest "one" dropped
+    auto b = q.dequeue();
+    CPPUNIT_ASSERT_EQUAL(u"three"_ustr, b->prompt);
+
+    q.clear();
+    CPPUNIT_ASSERT(q.enqueue(u"keep"_ustr));
+    CPPUNIT_ASSERT(q.enqueue(u"replace-me"_ustr, /*replaceCurrent*/ true));
+    CPPUNIT_ASSERT_EQUAL(static_cast<sal_Int32>(1), q.size());
+    CPPUNIT_ASSERT_EQUAL(u"replace-me"_ustr, q.peek()->prompt);
+    CPPUNIT_ASSERT(q.statusLineZh().indexOf(u"排队") >= 0);
+}
+
+void ControlPlaneTest::testWorkbenchPhaseReadyAndSteps()
+{
+    using kqoffice::ai::control::WorkbenchPhase;
+    using kqoffice::ai::control::WorkbenchPhaseMachine;
+
+    CPPUNIT_ASSERT(WorkbenchPhaseMachine::isReadyForPrimaryInput(WorkbenchPhase::Idle, false, false));
+    CPPUNIT_ASSERT(!WorkbenchPhaseMachine::isReadyForPrimaryInput(WorkbenchPhase::Generating, true, false));
+    CPPUNIT_ASSERT(!WorkbenchPhaseMachine::isReadyForPrimaryInput(WorkbenchPhase::ToolsOpen, false, true));
+    CPPUNIT_ASSERT(WorkbenchPhaseMachine::isTurnBusy(WorkbenchPhase::Generating, false, false));
+    CPPUNIT_ASSERT(WorkbenchPhaseMachine::canTransition(WorkbenchPhase::Idle, WorkbenchPhase::Planning));
+    CPPUNIT_ASSERT(WorkbenchPhaseMachine::canTransition(WorkbenchPhase::Planning, WorkbenchPhase::Generating));
+    CPPUNIT_ASSERT(WorkbenchPhaseMachine::canTransition(WorkbenchPhase::Generating, WorkbenchPhase::AwaitingApply));
+
+    const auto steps = WorkbenchPhaseMachine::parseStepsFromApproach(
+        u"1. 读上下文\n2. 生成草案\n3. Diff 批准\n"_ustr);
+    CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(3), steps.size());
+    CPPUNIT_ASSERT(steps[0].titleZh.indexOf(u"读上下文") >= 0);
+
+    const auto snap = WorkbenchPhaseMachine::makeSnapshot(
+        WorkbenchPhase::Planning, u"wp-1"_ustr, OUString(), steps, 0, false, false);
+    CPPUNIT_ASSERT(snap.stepBarZh.indexOf(u"待确认计划") >= 0 || snap.stepBarZh.indexOf(u"步") >= 0);
+    CPPUNIT_ASSERT(snap.readyForPrimaryInput);
+
+    const auto busySnap = WorkbenchPhaseMachine::makeSnapshot(
+        WorkbenchPhase::Generating, u"wp-1"_ustr, OUString(), steps, 2, true, false);
+    CPPUNIT_ASSERT(!busySnap.readyForPrimaryInput);
+    CPPUNIT_ASSERT(busySnap.stepBarZh.indexOf(u"排队") >= 0 || busySnap.stepBarZh.indexOf(u"流式") >= 0);
+}
+
+void ControlPlaneTest::testContextUsageEstimate()
+{
+    using kqoffice::ai::control::ContextUsage;
+    using kqoffice::ai::control::ContextUsageSample;
+
+    ContextUsageSample s;
+    s.userChars = 100;
+    s.selectionChars = 400;
+    s.documentContextChars = 2000;
+    s.historyChars = 1000;
+    s.budgetTokens = 1000;
+    auto e = ContextUsage::estimate(s);
+    CPPUNIT_ASSERT(e.totalChars == 3500);
+    CPPUNIT_ASSERT(e.approxTokens > 0);
+    CPPUNIT_ASSERT(e.chipZh.indexOf(u"上下文") >= 0);
+    CPPUNIT_ASSERT(e.overLimit || e.nearLimit); // 3500*0.6 >> 1000
+
+    CPPUNIT_ASSERT_EQUAL(static_cast<sal_Int32>(0), ContextUsage::charsToApproxTokens(0));
+    CPPUNIT_ASSERT(ContextUsage::formatK(1500).indexOf(u"k") >= 0);
+}
+
+void ControlPlaneTest::testAiFirstRunGateSkipComplete()
+{
+    using kqoffice::ai::control::AiFirstRunGate;
+    using kqoffice::ai::control::FirstRunState;
+
+    char templ[] = "/tmp/kqoffice-firstrun-XXXXXX";
+    char* dir = ::mkdtemp(templ);
+    CPPUNIT_ASSERT(dir != nullptr);
+    AiFirstRunGate::setRootDirForTests(OUString::createFromAscii(dir));
+    CPPUNIT_ASSERT(AiFirstRunGate::resetForTests());
+    CPPUNIT_ASSERT(AiFirstRunGate::shouldShowWelcome());
+    CPPUNIT_ASSERT(AiFirstRunGate::welcomeMarkdownZh().indexOf(u"欢迎") >= 0);
+
+    CPPUNIT_ASSERT(AiFirstRunGate::markSkipped());
+    CPPUNIT_ASSERT(!AiFirstRunGate::shouldShowWelcome());
+    CPPUNIT_ASSERT(AiFirstRunGate::state() == FirstRunState::Skipped);
+
+    CPPUNIT_ASSERT(AiFirstRunGate::markCompleted());
+    CPPUNIT_ASSERT(AiFirstRunGate::state() == FirstRunState::Completed);
+
+    AiFirstRunGate::setRootDirForTests(OUString());
+    ::system((std::string("rm -rf ") + dir).c_str());
+}
+
+void ControlPlaneTest::testWorkbenchStatusDashboard()
+{
+    using kqoffice::ai::control::WorkbenchPhase;
+    using kqoffice::ai::control::WorkbenchStatus;
+    using kqoffice::ai::control::WorkbenchStatusInput;
+
+    WorkbenchStatusInput in;
+    in.phase = WorkbenchPhase::Generating;
+    in.workPlanId = u"wp-9"_ustr;
+    in.applyPlanId = u"ap-1"_ustr;
+    in.queueSize = 2;
+    in.queueStatusZh = u"排队 2 条"_ustr;
+    in.streamOpen = true;
+    in.surface = u"writer"_ustr;
+    in.contextChipZh = u"上下文约 1.2k/24k"_ustr;
+    in.membershipChipZh = u"会员 · 今日剩 3"_ustr;
+
+    auto rep = WorkbenchStatus::build(in);
+    CPPUNIT_ASSERT(!rep.readyForPrimaryInput);
+    CPPUNIT_ASSERT(rep.markdownZh.indexOf(u"工作台状态") >= 0);
+    CPPUNIT_ASSERT(rep.markdownZh.indexOf(u"wp-9") >= 0);
+    CPPUNIT_ASSERT(rep.markdownZh.indexOf(u"排队") >= 0 || rep.markdownZh.indexOf(u"2") >= 0);
+    CPPUNIT_ASSERT(rep.chipZh.indexOf(u"忙") >= 0 || rep.chipZh.indexOf(u"生成") >= 0);
+    CPPUNIT_ASSERT(WorkbenchStatus::staticPoliciesMarkdownZh().indexOf(u"写回") >= 0);
+    CPPUNIT_ASSERT(WorkbenchStatus::staticPoliciesMarkdownZh().indexOf(u"资源信封") >= 0
+                   || WorkbenchStatus::staticPoliciesMarkdownZh().indexOf(u"资源") >= 0);
+}
+
+void ControlPlaneTest::testFactRouterShapes()
+{
+    using kqoffice::ai::control::FactRouteInput;
+    using kqoffice::ai::control::FactRouter;
+    using kqoffice::ai::control::RouteShape;
+
+    {
+        FactRouteInput in;
+        in.prompt = u"解释一下这段话是什么意思"_ustr;
+        in.knownPureQa = true;
+        auto d = FactRouter::route(in);
+        CPPUNIT_ASSERT(d.shape == RouteShape::Direct);
+        CPPUNIT_ASSERT(!d.needsWorkPlan);
+    }
+    {
+        FactRouteInput in;
+        in.prompt = u"请把整篇文章重构并系统整理层级"_ustr;
+        in.surface = u"writer"_ustr;
+        auto d = FactRouter::route(in);
+        CPPUNIT_ASSERT(d.shape == RouteShape::PlanGate);
+        CPPUNIT_ASSERT(d.needsWorkPlan);
+        CPPUNIT_ASSERT_EQUAL(u"full-doc"_ustr, d.reasonCode);
+    }
+    {
+        FactRouteInput in;
+        in.prompt = u"先规划再改"_ustr;
+        in.forcePlanOnce = true;
+        auto d = FactRouter::route(in);
+        CPPUNIT_ASSERT(d.needsWorkPlan);
+    }
+    {
+        FactRouteInput in;
+        in.prompt = u"润色一下"_ustr;
+        in.hasSelection = true;
+        in.selectionChars = 40;
+        auto d = FactRouter::route(in);
+        CPPUNIT_ASSERT(d.shape == RouteShape::Direct || d.shape == RouteShape::BoundedLoop);
+        CPPUNIT_ASSERT(!d.needsWorkPlan || d.preferMultiRoundTools || d.shape == RouteShape::Direct);
+    }
+    {
+        FactRouteInput in;
+        in.prompt = u"请改写并润色选中内容，使语气更正式一些"_ustr;
+        in.hasSelection = true;
+        in.selectionChars = 100;
+        auto d = FactRouter::route(in);
+        // compound or selection-edit
+        CPPUNIT_ASSERT(d.shape == RouteShape::PlanGate || d.shape == RouteShape::BoundedLoop
+                       || d.shape == RouteShape::Direct);
+    }
+}
+
+void ControlPlaneTest::testProviderSlotManifest()
+{
+    using kqoffice::ai::control::ProviderSlotManifest;
+    using kqoffice::ai::control::ProviderSlotRegistry;
+
+    CPPUNIT_ASSERT(ProviderSlotRegistry::isValidId(u"ollama-local"_ustr));
+    CPPUNIT_ASSERT(!ProviderSlotRegistry::isValidId(u"../evil"_ustr));
+    CPPUNIT_ASSERT(!ProviderSlotRegistry::isValidId(u""_ustr));
+
+    ProviderSlotManifest m;
+    const OUString json
+        = u"{\"id\":\"my-gw\",\"displayNameZh\":\"测\",\"backend\":\"openai-compatible\","
+          "\"baseUrl\":\"http://127.0.0.1:9\",\"aliases\":[\"mine\"],\"enabled\":true}"_ustr;
+    CPPUNIT_ASSERT(ProviderSlotRegistry::parseOne(json, m));
+    CPPUNIT_ASSERT_EQUAL(u"my-gw"_ustr, m.id);
+    CPPUNIT_ASSERT_EQUAL(u"openai-compatible"_ustr, m.backend);
+    CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), m.aliases.size());
+
+    auto slots = ProviderSlotRegistry::builtinDefaults();
+    CPPUNIT_ASSERT(slots.size() >= 3);
+    CPPUNIT_ASSERT(ProviderSlotRegistry::find(slots, u"ollama"_ustr) != nullptr);
+    CPPUNIT_ASSERT(ProviderSlotRegistry::find(slots, u"membership"_ustr) != nullptr);
+    CPPUNIT_ASSERT(ProviderSlotRegistry::summaryLineZh(slots).indexOf(u"Provider") >= 0
+                   || ProviderSlotRegistry::summaryLineZh(slots).indexOf(u"Slot") >= 0);
+}
+
+void ControlPlaneTest::testPolicyEvolutionGuard()
+{
+    using kqoffice::ai::control::PolicyEvolutionGuard;
+
+    auto ok = PolicyEvolutionGuard::validateFieldName(u"router_direct_max_chars"_ustr);
+    CPPUNIT_ASSERT(ok.allowed);
+
+    auto yolo = PolicyEvolutionGuard::validateFieldName(u"writeback_yolo_default"_ustr);
+    CPPUNIT_ASSERT(!yolo.allowed);
+
+    auto token = PolicyEvolutionGuard::validateFieldName(u"api_token_store"_ustr);
+    CPPUNIT_ASSERT(!token.allowed);
+
+    auto unknown = PolicyEvolutionGuard::validateFieldName(u"fancy_new_knob"_ustr);
+    CPPUNIT_ASSERT(!unknown.allowed);
+
+    std::vector<OUString> fields = { u"composer_queue_max"_ustr, u"resource_fts_top_k"_ustr };
+    CPPUNIT_ASSERT(PolicyEvolutionGuard::validateCandidateFields(fields).allowed);
+
+    std::vector<OUString> bad = { u"composer_queue_max"_ustr, u"sandbox_profile"_ustr };
+    CPPUNIT_ASSERT(!PolicyEvolutionGuard::validateCandidateFields(bad).allowed);
+
+    CPPUNIT_ASSERT(PolicyEvolutionGuard::ceilingMayOnlyFall(10, 8));
+    CPPUNIT_ASSERT(!PolicyEvolutionGuard::ceilingMayOnlyFall(10, 12));
+    CPPUNIT_ASSERT(PolicyEvolutionGuard::policyHintZh().indexOf(u"晋升") >= 0
+                   || PolicyEvolutionGuard::policyHintZh().indexOf(u"人工") >= 0);
+}
+
+void ControlPlaneTest::testEventLedgerPersistBeforeBroadcast()
+{
+    using kqoffice::ai::control::EventLedger;
+    using kqoffice::ai::control::LedgerEvent;
+
+    char templ[] = "/tmp/kqoffice-ledger-XXXXXX";
+    char* dir = ::mkdtemp(templ);
+    CPPUNIT_ASSERT(dir != nullptr);
+    ::setenv("KQOFFICE_AI_LEDGER_DIR", dir, 1);
+    EventLedger::clearSubscribersForTests();
+
+    sal_Int32 broadcasts = 0;
+    EventLedger::subscribe([&](const LedgerEvent& ev) {
+        ++broadcasts;
+        CPPUNIT_ASSERT(ev.sequence > 0);
+        CPPUNIT_ASSERT(!ev.type.isEmpty());
+    });
+
+    EventLedger ledger(OUString::createFromAscii(dir));
+    const sal_Int64 s1 = ledger.append(u"route"_ustr, u"direct short-selection"_ustr, u"run-a"_ustr);
+    CPPUNIT_ASSERT(s1 >= 1);
+    CPPUNIT_ASSERT_EQUAL(static_cast<sal_Int32>(1), broadcasts);
+
+    const sal_Int64 s2 = ledger.append(u"apply"_ustr, u"ok plan=ap-1"_ustr, u"ap-1"_ustr);
+    CPPUNIT_ASSERT(s2 > s1);
+    CPPUNIT_ASSERT_EQUAL(static_cast<sal_Int32>(2), broadcasts);
+
+    auto replay = ledger.replaySince(0, 50);
+    CPPUNIT_ASSERT(replay.size() >= 2);
+    CPPUNIT_ASSERT_EQUAL(s1, replay[0].sequence);
+
+    auto after = ledger.replaySince(s1, 50);
+    CPPUNIT_ASSERT(!after.empty());
+    CPPUNIT_ASSERT(after.front().sequence > s1);
+
+    // Secret-ish payload redacted on store path via ErrorClassifier
+    ledger.append(u"system"_ustr, u"Bearer sk-abcdefghijklmnopqrst"_ustr, OUString());
+    auto last = ledger.replaySince(s2, 10);
+    bool found = false;
+    for (const auto& e : last)
+    {
+        if (e.type == u"system"_ustr)
+        {
+            found = true;
+            CPPUNIT_ASSERT(e.payload.indexOf(u"sk-abcdefghijklmnopqrst") < 0);
+        }
+    }
+    CPPUNIT_ASSERT(found);
+
+    EventLedger::clearSubscribersForTests();
+    ::unsetenv("KQOFFICE_AI_LEDGER_DIR");
+    ::system((std::string("rm -rf ") + dir).c_str());
+}
+
+void ControlPlaneTest::testExternalWriteDenier()
+{
+    using kqoffice::ai::control::ExternalWriteDenier;
+
+    CPPUNIT_ASSERT(!ExternalWriteDenier::evaluateCommandLine(u"git push origin main"_ustr).allowed);
+    CPPUNIT_ASSERT(
+        !ExternalWriteDenier::evaluateCommandLine(u"git push --force origin main"_ustr).allowed);
+    CPPUNIT_ASSERT(ExternalWriteDenier::evaluateCommandLine(u"git status"_ustr).allowed);
+    CPPUNIT_ASSERT(ExternalWriteDenier::evaluateCommandLine(u"git commit -m x"_ustr).allowed);
+    CPPUNIT_ASSERT(ExternalWriteDenier::evaluateCommandLine(u"git clone https://x"_ustr).allowed);
+    CPPUNIT_ASSERT(!ExternalWriteDenier::evaluateCommandLine(u"npm publish"_ustr).allowed);
+    CPPUNIT_ASSERT(!ExternalWriteDenier::evaluateCommandLine(u"docker push img"_ustr).allowed);
+    CPPUNIT_ASSERT(ExternalWriteDenier::evaluateCommandLine(u"curl https://example.com"_ustr).allowed);
+    CPPUNIT_ASSERT(
+        !ExternalWriteDenier::evaluateCommandLine(u"curl -X POST https://example.com"_ustr).allowed);
+
+    CPPUNIT_ASSERT(!ExternalWriteDenier::evaluateAction(u"push_branch"_ustr).allowed);
+    CPPUNIT_ASSERT(!ExternalWriteDenier::evaluateAction(u"publish"_ustr).allowed);
+    CPPUNIT_ASSERT(ExternalWriteDenier::evaluateAction(u"apply_approved"_ustr).allowed);
+
+    std::vector<OUString> args = { u"status"_ustr };
+    CPPUNIT_ASSERT(ExternalWriteDenier::evaluate(u"/usr/bin/git"_ustr, args).allowed);
+    args = { u"push"_ustr, u"origin"_ustr };
+    CPPUNIT_ASSERT(!ExternalWriteDenier::evaluate(u"/usr/bin/git"_ustr, args).allowed);
+}
+
+void ControlPlaneTest::testStallDetectorPositiveAndNegative()
+{
+    using kqoffice::ai::control::DetectorEvent;
+    using kqoffice::ai::control::DetectorSignalKind;
+    using kqoffice::ai::control::StallDetector;
+    using kqoffice::ai::control::StallVerdict;
+
+    // Negative: TDD red-green — different fail details then progress
+    {
+        std::vector<DetectorEvent> h;
+        DetectorEvent f1;
+        f1.kind = DetectorSignalKind::ToolFail;
+        f1.action = u"test"_ustr;
+        f1.detail = u"assert A failed"_ustr;
+        f1.timeUnit = 1;
+        h.push_back(f1);
+        DetectorEvent prog;
+        prog.kind = DetectorSignalKind::Progress;
+        prog.action = u"edit"_ustr;
+        prog.timeUnit = 2;
+        h.push_back(prog);
+        DetectorEvent f2;
+        f2.kind = DetectorSignalKind::ToolFail;
+        f2.action = u"test"_ustr;
+        f2.detail = u"assert B failed"_ustr; // different detail
+        f2.timeUnit = 3;
+        h.push_back(f2);
+        auto d = StallDetector::evaluate(h);
+        CPPUNIT_ASSERT(d.verdict == StallVerdict::None
+                       || d.verdict != StallVerdict::LoopSuspect);
+    }
+
+    // Negative: research read burst with progress at end should not ReadNoWrite
+    {
+        std::vector<DetectorEvent> h;
+        for (sal_Int32 i = 0; i < 15; ++i)
+        {
+            DetectorEvent r;
+            r.kind = DetectorSignalKind::ReadOnly;
+            r.action = u"read"_ustr;
+            r.timeUnit = i;
+            h.push_back(r);
+        }
+        DetectorEvent p;
+        p.kind = DetectorSignalKind::Progress;
+        p.action = u"token"_ustr;
+        p.timeUnit = 20;
+        h.push_back(p);
+        auto d = StallDetector::evaluate(h);
+        CPPUNIT_ASSERT(d.verdict != StallVerdict::ReadNoWrite);
+    }
+
+    // Positive: identical fails
+    {
+        std::vector<DetectorEvent> h;
+        for (int i = 0; i < 2; ++i)
+        {
+            DetectorEvent f;
+            f.kind = DetectorSignalKind::ToolFail;
+            f.action = u"compile"_ustr;
+            f.detail = u"error 42"_ustr;
+            f.timeUnit = i;
+            h.push_back(f);
+        }
+        auto d = StallDetector::evaluate(h);
+        CPPUNIT_ASSERT(d.verdict == StallVerdict::LoopSuspect);
+        CPPUNIT_ASSERT(d.shouldNudge);
+    }
+
+    // Positive: soft stall idle
+    {
+        std::vector<DetectorEvent> h;
+        for (sal_Int32 i = 0; i < 5; ++i)
+        {
+            DetectorEvent idle;
+            idle.kind = DetectorSignalKind::IdleTick;
+            idle.timeUnit = i;
+            h.push_back(idle);
+        }
+        auto d = StallDetector::evaluate(h);
+        CPPUNIT_ASSERT(d.verdict == StallVerdict::SoftStall);
+    }
+
+    // Fingerprint collapses digits
+    CPPUNIT_ASSERT_EQUAL(StallDetector::normalizeFingerprint(u"t1"_ustr, u"e99"_ustr),
+                         StallDetector::normalizeFingerprint(u"t2"_ustr, u"e00"_ustr));
+}
+
+void ControlPlaneTest::testSandboxCageCanaries()
+{
+    using kqoffice::ai::control::CanaryResult;
+    using kqoffice::ai::control::SandboxCage;
+
+    auto denier = SandboxCage::runOne(u"denier-self-test"_ustr);
+    CPPUNIT_ASSERT(denier.result == CanaryResult::Pass);
+
+    auto ask = SandboxCage::runOne(u"writeback-default-ask"_ustr);
+    CPPUNIT_ASSERT(ask.result == CanaryResult::Pass);
+
+    auto cfg = SandboxCage::runOne(u"config-writable"_ustr);
+    CPPUNIT_ASSERT(cfg.result == CanaryResult::Pass || cfg.result == CanaryResult::Fail);
+
+    auto rep = SandboxCage::runCanaries();
+    CPPUNIT_ASSERT(rep.checks.size() >= 5);
+    CPPUNIT_ASSERT(!rep.summaryZh.isEmpty());
+    // Product default: should allow AI run on a normal developer machine
+    // (home full-auth Fail is rare). If fails, bypass must still document.
+    if (!rep.mayStartAiRun)
+        CPPUNIT_ASSERT(!rep.failedCanaryId.isEmpty());
+}
+
+void ControlPlaneTest::testHandoffBriefFromEvents()
+{
+    using kqoffice::ai::control::HandoffBriefBuilder;
+    using kqoffice::ai::control::LedgerEvent;
+
+    std::vector<LedgerEvent> evs;
+    LedgerEvent e1;
+    e1.sequence = 1;
+    e1.type = u"route"_ustr;
+    e1.payload = u"direct short"_ustr;
+    evs.push_back(e1);
+    LedgerEvent e2;
+    e2.sequence = 2;
+    e2.type = u"apply"_ustr;
+    e2.payload = u"ok plan=ap-1"_ustr;
+    evs.push_back(e2);
+
+    auto b = HandoffBriefBuilder::fromEvents(evs, u"测试交接"_ustr);
+    CPPUNIT_ASSERT(b.fromLedger);
+    CPPUNIT_ASSERT_EQUAL(static_cast<sal_Int32>(2), b.eventCount);
+    CPPUNIT_ASSERT_EQUAL(static_cast<sal_Int64>(2), b.lastSequence);
+    CPPUNIT_ASSERT(b.markdownZh.indexOf(u"测试交接") >= 0);
+    CPPUNIT_ASSERT(b.markdownZh.indexOf(u"route") >= 0);
+    CPPUNIT_ASSERT(b.markdownZh.indexOf(u"硬约束") >= 0);
+
+    auto empty = HandoffBriefBuilder::fromEvents({});
+    CPPUNIT_ASSERT(empty.markdownZh.indexOf(u"暂无") >= 0);
 }
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ControlPlaneTest);

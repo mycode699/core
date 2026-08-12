@@ -108,7 +108,7 @@ Provider::call(const css::ai::ProviderRequest& req)
 
         if (OpenAICompatibleAdapter::isOpenAICompatibleBackend(backend))
         {
-            // Private/local OpenAI-compatible gateway (HTTP only; no TLS yet).
+            // OpenAI-compatible gateway (HTTP sockets; HTTPS via curl transport).
             const OUString baseUrl = routing.baseUrl.isEmpty()
                                          ? u"http://127.0.0.1:8080"_ustr
                                          : routing.baseUrl;
@@ -120,6 +120,8 @@ Provider::call(const css::ai::ProviderRequest& req)
                 auto models = adapter.listModels();
                 const ModelRoleResolution resolved
                     = resolveModelForCapability(req.capability, routing, models);
+                // Prefer resolved slot; allow explicit primaryModel (e.g. "auto") when
+                // /v1/models is empty or unauthorized.
                 const OUString modelId = resolved.model.isEmpty() ? routing.primaryModel
                                                                   : resolved.model;
                 providerLabel = u"openai-compatible: "_ustr
@@ -139,8 +141,14 @@ Provider::call(const css::ai::ProviderRequest& req)
                     if (text.isEmpty())
                     {
                         rsp.status = "provider-error";
-                        rsp.content = "openai-compatible chat failed for model " + modelId
-                                      + " (timeout, non-2xx, empty content, or https URL)";
+                        // Prefer adapter Chinese detail (401/key missing/timeout).
+                        const OUString err = adapter.lastErrorZh();
+                        if (!err.isEmpty())
+                            rsp.content = err;
+                        else
+                            rsp.content
+                                = u"openai-compatible 调用失败 · 模型="_ustr + modelId
+                                  + u" · 请检查 API Key（~/.config/kqoffice/api-key）与 baseUrl"_ustr;
                     }
                     else
                     {
@@ -153,7 +161,7 @@ Provider::call(const css::ai::ProviderRequest& req)
             {
                 rsp.status = "provider-error";
                 rsp.content = "openai-compatible gateway unreachable at " + baseUrl
-                              + " (HTTP only; set baseUrl in model-routing.json)";
+                              + " (set baseUrl in model-routing.json; HTTPS needs network)";
             }
         }
         else

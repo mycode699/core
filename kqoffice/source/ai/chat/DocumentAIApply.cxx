@@ -6,6 +6,7 @@
 #include <DocumentAIApply.hxx>
 #include <AgentChatDiffApplier.hxx>
 #include <AgentChatSelectionCapture.hxx>
+#include <DocumentAIDocumentTools.hxx>
 
 #include <comphelper/dispatchcommand.hxx>
 #include <rtl/ustrbuf.hxx>
@@ -355,7 +356,22 @@ OUString DocumentAIApply::chatPlanToWriterRuntimeJson(const ApplyPlan& rPlan)
         }
         else
         {
-            b.append(u"      \"format_changes\": {}\n");
+            // Prefer structured heading level when op.newText is "heading:N"
+            OUString styleHint;
+            if (op.newText.startsWith(u"heading:"_ustr) && op.newText.getLength() >= 9)
+            {
+                const sal_Unicode c = op.newText[8];
+                if (c >= u'1' && c <= u'3')
+                    styleHint = u"Heading "_ustr + OUString::number(static_cast<sal_Int32>(c - u'0'));
+            }
+            b.append(u"      \"format_changes\": {");
+            if (!styleHint.isEmpty())
+            {
+                b.append(u"\"para_style\": \"");
+                appendJsonEscaped(b, styleHint);
+                b.append(u"\"");
+            }
+            b.append(u"}\n");
         }
 
         b.append(u"    }");
@@ -619,13 +635,30 @@ DocumentAIApplyResult DocumentAIApply::applyApprovedWithRawFallback(
     DocumentAIApplyResult out;
     out.planId = rPlan.planId;
 
+    // M17: sanitize newText + prefer selection target before any engine runs.
+    const ApplyPlan plan = AgentChatDiffApplier::normalizePlanForApply(rPlan);
+    out.planId = plan.planId.isEmpty() ? rPlan.planId : plan.planId;
+
     const SelectionContext sel = AgentChatSelectionCapture::captureCurrent();
     out.surface = sel.surface;
 
+    // GenOffice-style stale guard: if the user edited the document after the plan
+    // was staged, refuse write-back so block indexes / text anchors stay honest.
+    if (DocumentAIDocumentTools::isStale())
+    {
+        out.success = false;
+        out.engine = u"none"_ustr;
+        out.error = DocumentAIDocumentTools::staleApplyErrorZh();
+        out.evidenceNote = u"apply-blocked reason=stale-document-snapshot plan="_ustr
+                           + out.planId + u" main-document-mutation=false"_ustr;
+        SAL_INFO("kqoffice.ai.chat", out.evidenceNote);
+        return out;
+    }
+
     // Chart insert: open Calc chart wizard on current selection (explicit approval only).
-    const bool bChartPlan = rPlan.planId == u"ap-chart-insert"_ustr
-                            || (!rPlan.operations.empty()
-                                && rPlan.operations.front().opType == u"chart_insert"_ustr);
+    const bool bChartPlan = plan.planId == u"ap-chart-insert"_ustr
+                            || (!plan.operations.empty()
+                                && plan.operations.front().opType == u"chart_insert"_ustr);
     if (bChartPlan)
     {
         out.surface = sel.surface.isEmpty() ? u"calc"_ustr : sel.surface;
@@ -641,8 +674,8 @@ DocumentAIApplyResult DocumentAIApply::applyApprovedWithRawFallback(
                 out.appliedCount = 1;
                 out.evidenceNote = u"chart-insert-dispatched plan="_ustr + out.planId
                                    + u" target="_ustr
-                                   + (rPlan.operations.empty() ? u"selection"_ustr
-                                                               : rPlan.operations.front().target)
+                                   + (plan.operations.empty() ? u"selection"_ustr
+                                                              : plan.operations.front().target)
                                    + u" explicit-human-approval=true"_ustr;
                 SAL_INFO("kqoffice.ai.chat", out.evidenceNote);
                 return out;
@@ -659,15 +692,32 @@ DocumentAIApplyResult DocumentAIApply::applyApprovedWithRawFallback(
         return out;
     }
 
-    if (out.surface == u"writer"_ustr || out.surface.isEmpty() || out.surface == u"unknown"_ustr)
+    // Writer selection-path: skip native engine when ops target live selection —
+    // native paragraph-replace would overwrite the whole paragraph.
+    const bool bWriterSelectionReplace
+        = (out.surface == u"writer"_ustr || out.surface.isEmpty() || out.surface == u"unknown"_ustr)
+          && !plan.operations.empty()
+          && (plan.operations.front().target == u"selection"_ustr
+              || plan.operations.front().target.startsWith(u"selection:"_ustr));
+
+    // M-W1: heading outline (format/ParaStyle) + review text fixes need UNO DiffApplier
+    // (native writer-apply-engine does not yet apply heading:N / document-wide oldText search).
+    const bool bWriterMw1Structure
+        = plan.planId == u"ap-writer-outline-headings"_ustr
+          || plan.planId == u"ap-review-fixes"_ustr
+          || (!plan.operations.empty() && plan.operations.front().opType == u"format"_ustr
+              && plan.operations.front().newText.startsWith(u"heading:"_ustr));
+
+    if ((out.surface == u"writer"_ustr || out.surface.isEmpty() || out.surface == u"unknown"_ustr)
+        && !bWriterSelectionReplace && !bWriterMw1Structure)
     {
         OUString runtimeJson;
         if (looksLikeWriterRuntimeJson(rRawProviderContent))
             runtimeJson = rRawProviderContent;
-        else if (looksLikeWriterRuntimeJson(rPlan.rawOutput))
-            runtimeJson = rPlan.rawOutput;
+        else if (looksLikeWriterRuntimeJson(plan.rawOutput))
+            runtimeJson = plan.rawOutput;
         else
-            runtimeJson = chatPlanToWriterRuntimeJson(rPlan);
+            runtimeJson = chatPlanToWriterRuntimeJson(plan);
 
         if (!runtimeJson.isEmpty())
         {
@@ -696,10 +746,10 @@ DocumentAIApplyResult DocumentAIApply::applyApprovedWithRawFallback(
         OUString runtimeJson;
         if (looksLikeCalcRuntimeJson(rRawProviderContent))
             runtimeJson = rRawProviderContent;
-        else if (looksLikeCalcRuntimeJson(rPlan.rawOutput))
-            runtimeJson = rPlan.rawOutput;
+        else if (looksLikeCalcRuntimeJson(plan.rawOutput))
+            runtimeJson = plan.rawOutput;
         else
-            runtimeJson = chatPlanToCalcRuntimeJson(rPlan);
+            runtimeJson = chatPlanToCalcRuntimeJson(plan);
 
         if (!runtimeJson.isEmpty())
         {
@@ -724,18 +774,36 @@ DocumentAIApplyResult DocumentAIApply::applyApprovedWithRawFallback(
         }
     }
 
+    // Impress multi-slide outline (slide:N insert without shape:) must use UNO fill path.
+    bool bImpressOutlineFill = false;
+    if (out.surface == u"impress"_ustr && !plan.operations.empty())
+    {
+        bImpressOutlineFill = true;
+        for (const auto& op : plan.operations)
+        {
+            if (!(op.opType == u"insert"_ustr || op.opType == u"replace"_ustr)
+                || !op.target.startsWith(u"slide:"_ustr) || op.target.indexOf(u":shape:"_ustr) >= 0)
+            {
+                bImpressOutlineFill = false;
+                break;
+            }
+        }
+        if (plan.planId == u"ap-outline-slides"_ustr)
+            bImpressOutlineFill = true;
+    }
+
     // Impress: prefer native I1 skeleton (shape-text-replace) via C ABI.
     // Outline multi-slide / bare slide:N insert falls through to UNO when conversion
     // yields empty runtime JSON or native returns unsupported/fail.
-    if (out.surface == u"impress"_ustr)
+    if (out.surface == u"impress"_ustr && !bImpressOutlineFill)
     {
         OUString runtimeJson;
         if (looksLikeImpressRuntimeJson(rRawProviderContent))
             runtimeJson = rRawProviderContent;
-        else if (looksLikeImpressRuntimeJson(rPlan.rawOutput))
-            runtimeJson = rPlan.rawOutput;
+        else if (looksLikeImpressRuntimeJson(plan.rawOutput))
+            runtimeJson = plan.rawOutput;
         else
-            runtimeJson = chatPlanToImpressRuntimeJson(rPlan);
+            runtimeJson = chatPlanToImpressRuntimeJson(plan);
 
         if (!runtimeJson.isEmpty())
         {
@@ -760,7 +828,7 @@ DocumentAIApplyResult DocumentAIApply::applyApprovedWithRawFallback(
         }
     }
 
-    const ApplyResult ar = AgentChatDiffApplier::apply(rPlan);
+    const ApplyResult ar = AgentChatDiffApplier::apply(plan);
     out.success = ar.success;
     out.engine = u"uno-diff-applier"_ustr;
     out.appliedCount = static_cast<sal_Int32>(ar.appliedOps.size());
@@ -769,7 +837,10 @@ DocumentAIApplyResult DocumentAIApply::applyApprovedWithRawFallback(
         out.error.clear();
         out.evidenceNote = u"uno-diff-applier plan="_ustr + out.planId + u" applied="_ustr
                            + OUString::number(out.appliedCount) + u" surface="_ustr
-                           + out.surface;
+                           + out.surface
+                           + (bWriterSelectionReplace ? u" path=selection-replace"_ustr
+                                                      : OUString())
+                           + (bImpressOutlineFill ? u" path=outline-slides"_ustr : OUString());
     }
     else
     {

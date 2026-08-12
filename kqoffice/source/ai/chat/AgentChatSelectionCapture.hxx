@@ -26,9 +26,13 @@ namespace kqoffice::ai::chat
 struct SelectionContext
 {
     OUString surface;    ///< "writer", "calc", or "impress"
-    OUString text;       ///< Captured text content
+    OUString text;       ///< Captured text content (selection; empty at bare caret)
     OUString position;   ///< Paragraph/cell/slide reference (e.g., "para:42", "cell:B3", "slide:5")
-    sal_Int32 length = 0;///< Character/byte length of captured text
+    sal_Int32 length = 0;///< Character length of selected text
+    /// Paragraph / nearby context for high-quality complete (not part of replace target).
+    OUString beforeText; ///< text before caret in current paragraph (capped)
+    OUString afterText;  ///< text after caret in current paragraph (capped)
+    OUString paraText;   ///< full current paragraph plain text (capped)
 };
 
 /// Static capture utilities for current document selection.

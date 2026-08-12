@@ -31,6 +31,7 @@
 #include <com/sun/star/sheet/XSpreadsheetView.hpp>
 #include <com/sun/star/table/XCell.hpp>
 #include <com/sun/star/table/XCellRange.hpp>
+#include <com/sun/star/text/XParagraphCursor.hpp>
 #include <com/sun/star/text/XText.hpp>
 #include <com/sun/star/text/XTextCursor.hpp>
 #include <com/sun/star/text/XTextDocument.hpp>
@@ -196,40 +197,95 @@ SelectionContext AgentChatSelectionCapture::captureFromWriter()
         if (!xTextCursor.is())
             return ctx;
 
-        // Get selected text
+        // Get selected text (empty when caret-only → complete path).
         ctx.text = xViewCursor->getString();
+        ctx.length = ctx.text.getLength();
 
-        // Get paragraph position from the text range start
+        // Count *paragraphs* from document start + enrich paragraph context for complete.
         auto xText = xTextDoc->getText();
         auto xStartRange = xTextCursor->getStart();
-        if (xStartRange.is())
+        auto xEndRange = xTextCursor->getEnd();
+        sal_Int32 paraIdx = 0; // 0-based
+        if (xStartRange.is() && xText.is())
         {
-            // Count paragraphs from start to find position
-            auto xCursor = xText->createTextCursor();
-            xCursor->gotoStart(false);
-            sal_Int32 paraIdx = 0;
-            while (xCursor->goRight(1, false))
+            try
             {
-                css::uno::Reference<css::text::XTextRange> xCursorRange(
+                auto xCursor = xText->createTextCursorByRange(xStartRange);
+                css::uno::Reference<css::text::XParagraphCursor> xPara(
                     xCursor, css::uno::UNO_QUERY);
-                if (xCursorRange.is() && xCursorRange == xStartRange)
-                    break;
-                paraIdx++;
-                if (paraIdx > 10000)
-                    break; // safety limit
+                if (xPara.is())
+                {
+                    sal_Int32 steps = 0;
+                    while (xPara->gotoPreviousParagraph(false))
+                    {
+                        ++paraIdx;
+                        if (++steps > 50000)
+                            break;
+                    }
+                }
             }
-            ctx.position = u"para:"_ustr + OUString::number(paraIdx + 1);
-        }
-        else
-        {
-            ctx.position = u"para:1"_ustr;
-        }
+            catch (const css::uno::Exception&)
+            {
+                paraIdx = 0;
+            }
 
-        ctx.length = ctx.text.getLength();
+            // Paragraph-local before/after for high-quality ghost complete.
+            try
+            {
+                auto xParaCursor = xText->createTextCursorByRange(xStartRange);
+                css::uno::Reference<css::text::XParagraphCursor> xPara(
+                    xParaCursor, css::uno::UNO_QUERY);
+                if (xPara.is())
+                {
+                    // Full paragraph
+                    xPara->gotoStartOfParagraph(false);
+                    xPara->gotoEndOfParagraph(true);
+                    ctx.paraText = xPara->getString();
+                    if (ctx.paraText.getLength() > 2000)
+                        ctx.paraText = ctx.paraText.copy(0, 2000);
+
+                    // Before caret: start-of-para → caret
+                    auto xBefore = xText->createTextCursorByRange(xStartRange);
+                    css::uno::Reference<css::text::XParagraphCursor> xB(
+                        xBefore, css::uno::UNO_QUERY);
+                    if (xB.is())
+                    {
+                        xB->gotoStartOfParagraph(false);
+                        xB->gotoRange(xStartRange, true);
+                        ctx.beforeText = xB->getString();
+                        // Keep up to 2k so DocumentAIInputPrefs::inlineContextChars can use it.
+                        if (ctx.beforeText.getLength() > 2000)
+                            ctx.beforeText
+                                = ctx.beforeText.copy(ctx.beforeText.getLength() - 2000);
+                    }
+
+                    // After caret: caret end → end-of-para
+                    auto xAfterStart = xEndRange.is() ? xEndRange : xStartRange;
+                    auto xAfter = xText->createTextCursorByRange(xAfterStart);
+                    css::uno::Reference<css::text::XParagraphCursor> xA(
+                        xAfter, css::uno::UNO_QUERY);
+                    if (xA.is())
+                    {
+                        xA->gotoEndOfParagraph(true);
+                        ctx.afterText = xA->getString();
+                        if (ctx.afterText.getLength() > 1000)
+                            ctx.afterText = ctx.afterText.copy(0, 1000);
+                    }
+                }
+            }
+            catch (const css::uno::Exception&)
+            {
+                // Context is best-effort; selection path still works.
+            }
+        }
+        ctx.position = u"para:"_ustr + OUString::number(paraIdx + 1);
 
         SAL_INFO("kqoffice.ai.chat",
                  "Writer selection: pos=" << ctx.position
-                     << " len=" << ctx.length);
+                     << " len=" << ctx.length
+                     << " before=" << ctx.beforeText.getLength()
+                     << " after=" << ctx.afterText.getLength()
+                     << " hasSelection=" << (ctx.length > 0 ? "true" : "false"));
     }
     catch (const css::uno::Exception& e)
     {
