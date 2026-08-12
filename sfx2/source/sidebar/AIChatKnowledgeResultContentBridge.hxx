@@ -34,6 +34,12 @@ public:
     AIChatKnowledgeResultContentBridgeResult
     RegisterResult(const AIChatKnowledgeRetrievalResult& rResult) const;
 
+    /// Register result and materialize optional local preview body for sidebar open.
+    /// Preview body stays in content-object sidecar; registry keeps @artifact reference only.
+    AIChatKnowledgeResultContentBridgeResult
+    RegisterResultWithPreview(const AIChatKnowledgeRetrievalResult& rResult,
+                              const OUString& rLocalOpenableCard) const;
+
     static OUString MakeKnowledgeResultEvidenceId(const AIChatKnowledgeRetrievalResult& rResult);
     static OUString MakeKnowledgeResultHashReference(const AIChatKnowledgeRetrievalResult& rResult);
 };

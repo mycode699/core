@@ -23,6 +23,8 @@ struct AIChatKnowledgeRetrievalQuery
     OUString WorkspaceIdentity;
     OUString QueryId;
     OUString QueryTextHash;
+    /// Runtime-only plain query for local FTS MATCH (never persisted to registry/audit raw logs).
+    OUString RuntimeQueryText;
     OUString Intent;
     OUString Language;
     OUString Mode;
@@ -32,6 +34,8 @@ struct AIChatKnowledgeRetrievalQuery
     bool VectorOptIn = false;
     bool PublicEgressAllowed = false;
     bool TenantPolicyApproved = false;
+    /// When true, index the open document into local FTS before search.
+    bool IndexOpenDocument = false;
 };
 
 struct AIChatKnowledgeRetrievalChunkResult
@@ -65,6 +69,14 @@ class AIChatKnowledgeRetrievalRuntime final
 public:
     AIChatKnowledgeRetrievalResult Query(const AIChatKnowledgeRetrievalQuery& rQuery) const;
 
+    /// Convenience: FTS over open document with runtime query text (local only).
+    static AIChatKnowledgeRetrievalResult QueryOpenDocumentFts(const OUString& rQueryText,
+                                                               sal_Int32 nTopK = 6);
+
+    /// Prompt injection block from last-style FTS hits (local).
+    static OUString BuildFtsPromptBlock(const AIChatKnowledgeRetrievalResult& rResult,
+                                        const OUString& rQueryText, sal_Int32 nMaxChars = 4500);
+
     static bool IsTopKAllowed(sal_Int32 nTopK);
     static bool IsFtsQuery(const AIChatKnowledgeRetrievalQuery& rQuery);
     static bool IsHybridQuery(const AIChatKnowledgeRetrievalQuery& rQuery);
@@ -73,6 +85,7 @@ public:
     static OUString MakeResultId(const OUString& rQueryId);
     static OUString MakeSnippetHash(const AIChatKnowledgeIndexChunk& rChunk,
                                     const OUString& rQueryTextHash);
+    static OUString MakeQueryTextHash(const OUString& rQueryText);
 };
 
 } // namespace sfx2::sidebar

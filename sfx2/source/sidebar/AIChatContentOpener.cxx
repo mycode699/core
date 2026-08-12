@@ -136,7 +136,7 @@ bool AIChatContentOpener::OpenWithSystemOrFilters(const OUString& rFileUrl)
     }
 }
 
-bool AIChatContentOpener::LoadTextPreviewBody(const AIChatContentRegistryEntry& rEntry,
+bool AIChatContentOpener::LoadTextPreview(const AIChatContentRegistryEntry& rEntry,
                                              const AIChatPreviewResult& rPreview, OUString& rBody,
                                              OUString& rDetailMessage)
 {
@@ -174,14 +174,18 @@ bool AIChatContentOpener::LoadTextPreviewBody(const AIChatContentRegistryEntry& 
             if (sText.getLength() > MAX_TEXT_PREVIEW_CHARS)
                 sText = sText.copy(0, MAX_TEXT_PREVIEW_CHARS) + u"\n…（预览已截断）"_ustr;
             if (rPreview.FileKind == AIChatPreviewFileKind::Markdown
-                || rEntry.Type == u"structured-text"_ustr)
+                || rEntry.Type == u"structured-text"_ustr
+                || rEntry.Type == u"document-tool-read"_ustr
+                || rEntry.Type == u"document-tool-context"_ustr
+                || rEntry.Type == u"knowledge-index-result"_ustr)
             {
                 const AIChatMarkdownRenderResult aMd = RenderMarkdownSubset(sText);
                 if (!aMd.Rejected && !aMd.Text.isEmpty())
                     sText = aMd.Text;
             }
             rBody = sText;
-            rDetailMessage = u"侧栏只读预览 · 内容对象 "_ustr + sObjectId;
+            rDetailMessage = u"侧栏只读预览 · 内容对象 "_ustr + sObjectId
+                             + u" · 主文档未改"_ustr;
             return true;
         }
     }
@@ -190,12 +194,18 @@ bool AIChatContentOpener::LoadTextPreviewBody(const AIChatContentRegistryEntry& 
     if (rPreview.FileKind == AIChatPreviewFileKind::Text
         || rPreview.FileKind == AIChatPreviewFileKind::Markdown
         || rEntry.PreviewMode == u"text-preview"_ustr
-        || rEntry.Type == u"assistant-output"_ustr)
+        || rEntry.PreviewMode == u"read-only-preview"_ustr
+        || rEntry.Type == u"assistant-output"_ustr
+        || rEntry.Type == u"document-tool-context"_ustr
+        || rEntry.Type == u"document-tool-read"_ustr
+        || rEntry.Type == u"knowledge-index-result"_ustr)
     {
         rDetailMessage
-            = u"文本预览：正文在对话记录中，产物列表仅保留元数据（只读，不改主文档）"_ustr;
-        rBody = u"（无独立文件正文）\n标识："_ustr + rEntry.ObjectId + u"\n类型："_ustr
-                + rEntry.Type + u"\n来源："_ustr + rEntry.SourceSurface;
+            = u"文本预览：侧栏只读 · 不改主文档 · 类型="_ustr + rEntry.Type;
+        rBody = u"（无独立文件正文或 sidecar 未找到）\n标识："_ustr + rEntry.ObjectId
+                + u"\n类型："_ustr + rEntry.Type + u"\n来源："_ustr + rEntry.SourceSurface
+                + u"\n引用："_ustr + rEntry.HashReference
+                + u"\n证据："_ustr + rEntry.EvidenceId;
         return true;
     }
 
@@ -242,8 +252,8 @@ AIChatContentOpener::OpenReadOnlyPreview(const AIChatContentRegistryEntry& rEntr
         {
             OUString sBody;
             OUString sDetail;
-            const bool bLoaded = LoadTextPreviewBody(rEntry, aPreview, sBody, sDetail);
-            aResult.PreviewBody = sBody;
+            const bool bLoaded = LoadTextPreview(rEntry, aPreview, sBody, sDetail);
+            aResult.PreviewText = sBody;
             if (bLoaded)
             {
                 aResult.Success = true;
@@ -369,10 +379,10 @@ AIChatContentOpener::OpenReadOnlyPreview(const AIChatContentRegistryEntry& rEntr
     aResult.Message = aMessage.makeStringAndClear();
 
     // Enrich PreviewSummary for details panel.
-    if (!aResult.PreviewBody.isEmpty())
+    if (!aResult.PreviewText.isEmpty())
     {
         aResult.PreviewSummary = aPreview.Summary + u"\n\n—— 预览正文 ——\n"_ustr
-                                 + aResult.PreviewBody;
+                                 + aResult.PreviewText;
     }
     else if (!aResult.UserMessage.isEmpty())
     {

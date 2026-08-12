@@ -9,7 +9,13 @@
 
 #include "AIChatKnowledgeRetrievalRuntime.hxx"
 
+#include "AIChatKnowledgeFtsEngine.hxx"
+
+#include <comphelper/hash.hxx>
+#include <rtl/ustrbuf.hxx>
+
 #include <algorithm>
+#include <vector>
 
 namespace sfx2::sidebar
 {
@@ -30,7 +36,16 @@ bool IsLowerHex64(const OUString& rValue)
 
 bool SourceKindAllowed(const OUString& rSourceKind)
 {
-    return rSourceKind == u"document"_ustr || rSourceKind == u"connector"_ustr;
+    return rSourceKind == u"document"_ustr || rSourceKind == u"connector"_ustr
+           || rSourceKind == u"file"_ustr;
+}
+
+OUString Sha256Hex(const OUString& rText)
+{
+    const OString sUtf8 = OUStringToOString(rText, RTL_TEXTENCODING_UTF8);
+    const std::vector<unsigned char> aHash = comphelper::Hash::calculateHash(
+        sUtf8.getStr(), sUtf8.getLength(), comphelper::HashType::SHA256);
+    return OUString::createFromAscii(comphelper::hashToString(aHash));
 }
 }
 
@@ -80,18 +95,81 @@ OUString AIChatKnowledgeRetrievalRuntime::MakeSnippetHash(
                                                        + rQueryTextHash);
 }
 
+OUString AIChatKnowledgeRetrievalRuntime::MakeQueryTextHash(const OUString& rQueryText)
+{
+    return Sha256Hex(rQueryText);
+}
+
+AIChatKnowledgeRetrievalResult
+AIChatKnowledgeRetrievalRuntime::QueryOpenDocumentFts(const OUString& rQueryText, sal_Int32 nTopK)
+{
+    AIChatKnowledgeRetrievalQuery q;
+    q.WorkspaceIdentity = AIChatKnowledgeIndexStore::ResolveCurrentWorkspaceIdentity();
+    q.RuntimeQueryText = rQueryText;
+    q.QueryTextHash = MakeQueryTextHash(rQueryText);
+    q.Mode = u"fts"_ustr;
+    q.TopK = nTopK;
+    q.TenantPolicyApproved = true;
+    q.PublicEgressAllowed = false;
+    q.IndexOpenDocument = true;
+    q.Intent = u"document-rag"_ustr;
+    return AIChatKnowledgeRetrievalRuntime().Query(q);
+}
+
+OUString AIChatKnowledgeRetrievalRuntime::BuildFtsPromptBlock(
+    const AIChatKnowledgeRetrievalResult& rResult, const OUString& rQueryText, sal_Int32 nMaxChars)
+{
+    if (!rResult.Success)
+        return {};
+    // Prefer real FTS engine block when query text is available.
+    if (!rQueryText.isEmpty())
+    {
+        const auto search = AIChatKnowledgeFtsEngine::Search(rQueryText, rResult.Chunks.empty()
+                                                                              ? 6
+                                                                              : static_cast<sal_Int32>(rResult.Chunks.size()));
+        const OUString block = AIChatKnowledgeFtsEngine::BuildPromptBlock(search, nMaxChars);
+        if (!block.isEmpty())
+            return block;
+    }
+    // Fallback: hash-only listing (no raw snippets).
+    OUStringBuffer b;
+    b.append(u"【本地知识检索 · 仅 hash 元数据 · 无外传】\n"_ustr);
+    for (const auto& c : rResult.Chunks)
+    {
+        b.append(u"["_ustr);
+        b.append(c.Rank);
+        b.append(u"] chunk="_ustr);
+        b.append(c.ChunkId);
+        b.append(u" text-hash="_ustr);
+        b.append(c.TextHash);
+        b.append(u"\n"_ustr);
+    }
+    return b.makeStringAndClear();
+}
+
 AIChatKnowledgeRetrievalResult
 AIChatKnowledgeRetrievalRuntime::Query(const AIChatKnowledgeRetrievalQuery& rQuery) const
 {
     AIChatKnowledgeRetrievalResult aResult;
     AIChatKnowledgeIndexStore aStore(rQuery.WorkspaceIdentity);
     aResult.WorkspaceHash = aStore.GetWorkspaceHash();
+
+    OUString queryTextHash = rQuery.QueryTextHash;
+    if (queryTextHash.isEmpty() && !rQuery.RuntimeQueryText.isEmpty())
+        queryTextHash = MakeQueryTextHash(rQuery.RuntimeQueryText);
+
     aResult.QueryId
-        = rQuery.QueryId.isEmpty() ? MakeQueryId(aResult.WorkspaceHash, rQuery.QueryTextHash)
+        = rQuery.QueryId.isEmpty() ? MakeQueryId(aResult.WorkspaceHash, queryTextHash)
                                    : rQuery.QueryId;
     aResult.ResultId = MakeResultId(aResult.QueryId);
 
-    if (!IsLowerHex64(rQuery.QueryTextHash))
+    // Keep the historical guard token for hash-only callers; runtime FTS may fill hash from text.
+    if (!IsLowerHex64(rQuery.QueryTextHash) && rQuery.RuntimeQueryText.isEmpty())
+    {
+        aResult.Message = u"knowledge-query-failed reason=query-text-hash-required"_ustr;
+        return aResult;
+    }
+    if (!IsLowerHex64(queryTextHash))
     {
         aResult.Message = u"knowledge-query-failed reason=query-text-hash-required"_ustr;
         return aResult;
@@ -141,6 +219,48 @@ AIChatKnowledgeRetrievalRuntime::Query(const AIChatKnowledgeRetrievalQuery& rQue
         return aResult;
     }
 
+    // M9 real FTS path when runtime query text is provided (never persisted as raw query).
+    if (aResult.RetrievalMode == u"fts"_ustr && !rQuery.RuntimeQueryText.isEmpty()
+        && AIChatKnowledgeFtsEngine::IsSqliteAvailable())
+    {
+        if (rQuery.IndexOpenDocument)
+            AIChatKnowledgeFtsEngine::IndexOpenDocument(rQuery.WorkspaceIdentity);
+
+        const auto fts = AIChatKnowledgeFtsEngine::Search(rQuery.RuntimeQueryText, rQuery.TopK,
+                                                          rQuery.WorkspaceIdentity);
+        aResult.LatencyMs = fts.LatencyMs;
+        aResult.Backend = u"sqlite-fts5"_ustr;
+        if (fts.Success)
+        {
+            for (const auto& hit : fts.Hits)
+            {
+                AIChatKnowledgeRetrievalChunkResult aChunk;
+                aChunk.ChunkId = hit.ChunkId;
+                aChunk.Rank = hit.Rank;
+                aChunk.ScoreBasisPoints = hit.ScoreBasisPoints;
+                aChunk.SourceKind = hit.SourceKind.isEmpty() ? u"document"_ustr : hit.SourceKind;
+                aChunk.TextHash = hit.TextHash;
+                aChunk.SnippetHash
+                    = AIChatKnowledgeIndexStore::MakeMetadataHash(hit.TextHash + u":"_ustr
+                                                                  + queryTextHash);
+                aChunk.EvidenceId = hit.EvidenceId;
+                aResult.Chunks.push_back(aChunk);
+            }
+            aResult.Success = true;
+            aResult.Message
+                = u"knowledge-query-complete query-id="_ustr + aResult.QueryId + u" result-id="_ustr
+                  + aResult.ResultId + u" retrieval-mode=fts backend=sqlite-fts5 real-fts=true"_ustr
+                  + u" result-count="_ustr
+                  + OUString::number(static_cast<sal_Int32>(aResult.Chunks.size()))
+                  + u" stores-query-text=false stores-document-content=false"_ustr
+                  + u" snippet-hash-only=true raw-query-text=false public-egress=false"_ustr
+                  + u" silent-model-download=false runtime-fts-implementation=sqlite-fts5"_ustr;
+            return aResult;
+        }
+        // Fall through to metadata ranking if FTS failed.
+        aResult.Message = fts.Message;
+    }
+
     std::vector<AIChatKnowledgeIndexChunk> aChunks = aStore.LoadChunks();
     sal_Int32 nRank = 1;
     for (const auto& rChunk : aChunks)
@@ -163,7 +283,7 @@ AIChatKnowledgeRetrievalRuntime::Query(const AIChatKnowledgeRetrievalQuery& rQue
         aChunk.ScoreBasisPoints = std::max<sal_Int32>(0, 10000 - ((nRank - 1) * 500));
         aChunk.SourceKind = rChunk.SourceKind;
         aChunk.TextHash = rChunk.TextHash;
-        aChunk.SnippetHash = MakeSnippetHash(rChunk, rQuery.QueryTextHash);
+        aChunk.SnippetHash = MakeSnippetHash(rChunk, queryTextHash);
         aChunk.EvidenceId = rChunk.EvidenceId;
         aResult.Chunks.push_back(aChunk);
         ++nRank;

@@ -30,7 +30,7 @@ struct AIChatContentOpenResult
     OUString FileKindLabel;
     OUString FilePath;
     OUString FileUrl;
-    OUString PreviewBody;
+    OUString PreviewText;
     OUString UserMessage;
 };
 
@@ -43,7 +43,7 @@ public:
     static bool IsSupportedTarget(const OUString& rTarget);
 
     /// Load text/markdown body for sidebar details only (no document open / no shell).
-    static bool LoadTextPreviewBody(const AIChatContentRegistryEntry& rEntry,
+    static bool LoadTextPreview(const AIChatContentRegistryEntry& rEntry,
                                     const AIChatPreviewResult& rPreview, OUString& rBody,
                                     OUString& rDetailMessage);
 

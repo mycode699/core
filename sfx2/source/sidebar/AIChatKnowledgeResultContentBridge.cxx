@@ -9,6 +9,7 @@
 
 #include "AIChatKnowledgeResultContentBridge.hxx"
 
+#include "AIChatContentObjectStore.hxx"
 #include "AIChatSourceProvenance.hxx"
 
 namespace sfx2::sidebar
@@ -105,6 +106,49 @@ AIChatKnowledgeResultContentBridge::RegisterResult(
                       + u" citation-id="_ustr + aResult.CitationId
                       + u" metadata-only=true raw-query-text=false raw-snippet=false"_ustr
                       + u" stores-document-content=false read-only=true main-document-mutation=false"_ustr;
+    return aResult;
+}
+
+AIChatKnowledgeResultContentBridgeResult
+AIChatKnowledgeResultContentBridge::RegisterResultWithPreview(
+    const AIChatKnowledgeRetrievalResult& rResult, const OUString& rLocalOpenableCard) const
+{
+    AIChatKnowledgeResultContentBridgeResult aResult = RegisterResult(rResult);
+    if (!aResult.Success || rLocalOpenableCard.isEmpty())
+        return aResult;
+
+    // Materialize local openable card for sidebar open (registry keeps reference only).
+    AIChatContentObjectStore aObjects;
+    const AIChatMaterializedContent mat = aObjects.MaterializeText(rLocalOpenableCard);
+    if (mat.Reference.isEmpty())
+    {
+        aResult.Message += u" preview-materialize=failed"_ustr;
+        return aResult;
+    }
+
+    aResult.HashReference = mat.Reference;
+    aResult.RegistryEntry.HashReference = mat.Reference;
+    aResult.RegistryEntry.PreviewMode = u"read-only-preview"_ustr;
+    aResult.RegistryEntry.OpenTarget = u"sidebar-preview"_ustr;
+
+    // Re-register with openable artifact reference (append-only registry).
+    AIChatContentRegistry aRegistry;
+    aRegistry.RegisterObject(aResult.RegistryEntry);
+
+    AIChatSourceProvenance aProvenance;
+    AIChatSourceProvenanceEntry aSource;
+    aSource.SourceId = AIChatSourceProvenance::MakeSourceId(rResult.ResultId + u":preview"_ustr);
+    aSource.SourceType = u"knowledge-index-result"_ustr;
+    aSource.CitationId = AIChatSourceProvenance::MakeCitationId(rResult.ResultId);
+    aSource.EvidenceId = aResult.EvidenceId;
+    aSource.HashReference = mat.Reference;
+    aSource.SourceSurface = u"knowledge-index-query"_ustr;
+    aSource.OpenTarget = u"sidebar-preview"_ustr;
+    aSource.SpanReference = u"span:knowledge-query-preview:"_ustr + rResult.QueryId;
+    aProvenance.RegisterSource(aSource);
+
+    aResult.Message += u" preview-materialize=true preview-mode=read-only-preview"_ustr
+                       u" openable=true main-document-mutation=false"_ustr;
     return aResult;
 }
 
